@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# **Hello World**
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Lecture 0 – Getting Started**
+
+- **Instructor:** Sayan Goswami
+- **Office:** Schaefer Hall, Room 152
+- **Office Hours:** Monday and Wednesday from 3:00 PM to 4:00 PM or [by appointment.](https://calendar.app.google/US4qyrTFrBZs72yG8)
+- **Phone:** 240-895-2153
+- **Email:** sgoswami@smcm.edu
+- **Textbook:** [Think Java](https://greenteapress.com/wp/think-java/)
+- **Prerequisites:** *None*
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Welcome to COSC 130**
+
+- *Focus*: a practical, hands-on introduction to programming using the Java language
+- Think algorithmically 
+- Build something big - programming project at the end of the course
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Where we are going**
+
+- Variables and types  
+- Branching (`if/else`)  
+- Loops 
+- Arrays 🤞🤞
+- Methods  
+- Basic debugging
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Learning Outcomes**
+
+By the end of this course, you will be able to:
+- **Summarize** the core principles of object-oriented programming (OOP).
+- **Write** basic Java programs that use variables, methods, and control flow structures.
+- **Implement** a class with appropriate fields and methods to model a real-world object.
+- **Utilize** built-in data-structures to store and manage a collection of objects.
+- **Analyze** a simple program to identify potential logic errors or bugs.
+- **Design** and **construct** a complete, object-oriented program from a given class diagram to solve a practical problem.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# **Course Logistics**
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Engaged Learning**
+
+The Engaged Learning component will emphasize teamwork in solving programming problems. 
+
+Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Evaluation Components**
+
+
+- **Homework Assignments (15%)**  
+    You will complete several programming assignments throughout the semester. *Use your own device*, *borrow a Chromebook* from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or *work on library desktop computers* (Windows) available on the first and second floors. See the [SMCM library computing page](https://library.smcm.edu/services/computers/) for details.
+    
+- **Quizzes (20%)**  
+    
+- **Midterm Exam (20%)** and **Final Exam (25%)**  
+    
+- **Programming Project (20%)** 
+
+*All quizzes and exams will be paper-based.*
+
+*Assignment submission on CodeCheck +  Blackboard*. We will do a demo submission in this class
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Grading Overview**
+
+| Points     | Letter Grade |
+| ---------- | ------------ |
+| 93 -  100  | A or higher  |
+| 86 -  92.9 | A- or higher |
+| 79 -  85.9 | B+ or higher |
+| 72 -  78.9 | B or higher  |
+| 65 -  71.9 | B- or higher |
+| 58 -  64.9 | C+ or higher |
+| 51 - 57.9  | C or higher  |
+| 44 - 50.9  | C- or higher |
+| 37 - 43.9  | D+ or higher |
+| 30 - 36.9  | D or higher  |
+| 0 -  29.9  | F or higher  |
+
+- Exact cutoffs decided at end of course  
+- **You can only benefit from adjustments (never penalized)**
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Goals of Today’s Lecture**
+
+By the end of this session, you will:
+
+- Understand what programming is and why it matters
+    
+- Learn what it means to “think like a computer scientist”
+    
+- Explore the basic building blocks of Java programs
+    
+- Work with **variables** and **operators** 🤞
+    
+- Practice simple coding examples
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **What Is Programming?**
+
+- A **program** = sequence of instructions that defines a computation
+    
+- Computations may include:
+    
+    - **Input** – get data from the keyboard, file, sensor
+        
+    - **Output** – display data on screen, write to file, send to device
+        
+    - **Math** – perform arithmetic, compute results
+        
+    - **Decisions** – execute different steps based on conditions
+        
+    - **Repetition** – loop steps until a condition is met
+        
+
+<aside class="notes"><p><em>Talking Point:</em> Emphasize how all complex programs are built from these simple actions.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **What Is Computer Science?**
+
+- **Computer Science** = study of computation, information, automation
+	
+- **Algorithms** and **Data Structures** are first class citizens of CS
+    
+    - How to create them
+        
+    - How to evaluate them (speed, memory, clarity)
+        
+- **Not just programming!**
+    - Includes problem-solving, abstraction, and design
+        
+
+<aside class="notes"><p>“Can you think of an algorithm you use in daily life?” (e.g., making a cup of tea).</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **The Way of the Program**
+
+- Computer science draws on three disciplines:
+    
+    - **Math** – formal languages, proofs
+        
+    - **Engineering** – building reliable systems under constraints
+        
+    - **Science** – experimentation, debugging, testing hypotheses
+        
+
+🔑 Key skill: **Debugging** — finding and fixing errors.
+
+- Debugging = experimental process, like science.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Your First Program (Hello World)**
+
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java" 
+ width="400%"
+ ></iframe>
+</div>
+
+- `public class Main` → defines a class
+- `main` → special method, entry point
+- `System.out.println` → outputs text
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Formatting Code**
+
+*Spaces* - Some required, most are optional. *Newlines* are also optional.
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java" 
+ width="400%"
+ ></iframe>
+</div>
+
+- Comments: `//` and `/* */`
+- **Make some mistakes. Play around**
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Vocabulary**
+
+- **Program** – sequence of instructions
+    
+- **Algorithm** – set of steps for solving a problem
+    
+- **Bug** – an error in the program
+    
+- **Debugging** – process of finding and fixing errors
+
+- **Syntax** – rules that define what is legal in the language
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Variables**
+
+A **variable**:
+- A _named storage location_ for data
+- Stored in memory (RAM)
+- Can change as program executes
+- Has a *data type* and a *name*
+- Has to be *declared* before using.
+
+ _Analogy:_ Think of a variable as a **labeled box** that holds a value.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Data Types in Java**
+
+- **int** – whole numbers
+- **double** – decimal numbers (floating point)
+- **String** – text
+- **boolean** – true/false
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->Which data type would you use to store
+	- &shy;<!-- .element: class="fragment" data-fragment-index="2" --> A person’s age?
+	- &shy;<!-- .element: class="fragment" data-fragment-index="3" --> Pi (3.14159)?
+	- &shy;<!-- .element: class="fragment" data-fragment-index="4" --> A username?
+	- &shy;<!-- .element: class="fragment" data-fragment-index="5" --> Whether the light switch is on?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Declaring Variables**
+
+
+A *declaration* statement declares a variable's *name* and the *type of value* it stores (data type).
+
+A variable can *store only a single type of data* which *must be decided in advance*.
+
+```java
+int x;
+String firstName; 
+String lastName; 
+int hour, minute;
+float pi;
+boolean finished; 
+```
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Assignment**
+
+An *assignment* statement *assigns a value to a variable*.
+
+```java
+message = "Hello!"; // give message the value "Hello!" 
+hour = 11; // assign the value 11 to hour 
+minute = 59; // set minute to 59
+```
+
+*Can be done in the declaration itself*.
+
+```java
+String message = "Hello!"; 
+int hour = 11; 
+int minute = 59;|
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Assignment (contd.)**
+
+A variable has to have the *same type* as the value you assign to it.
+
+```java
+String message;
+message = "123"; // legal 
+message = 123; // not legal
+```
+
+
+Variables *must be initialized* (assigned for the first time) *before they can be used*.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Printing variables**
+
+Just *pass* the variable name to the `println` *method* - i.e. put the variable name within the parentheses.
+
+```java
+String firstLine = "Hello, again!"; 
+System.out.println(firstLine);
+```
+
+You can print without a newline using the `print` function
+
+```java
+int hour = 11; 
+int minute = 59; 
+System.out.print("The current time is "); 
+System.out.print(hour); 
+System.out.print(":"); 
+System.out.print(minute); 
+System.out.println(".");
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Operators and Expressions**
+
+- **Arithmetic operators:** `+`, `-`, `*`, `/`, `%`
+- **Assignment operator:** `=`
+- An **expression** is a combination of:
+    - Variables
+    - Operators
+    - *Literals* (Values)
+- Always produces a *result*
+
+Example:
+
+```java
+int hour = 11; 
+int minute = 59;
+int seconds = (hour * 60 + minute) * 60;
+```
+
+<aside class="notes"><p><em>Explain:</em> <code>%</code> gives remainder (modulus).</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Common Errors**
+
+- **Syntax errors:** grammar mistakes in code (compiler catches them)
+    
+- **Runtime errors:** program crashes while running (divide by zero)
+    
+- **Logic errors:** program runs but gives wrong result (hardest to find!)
+    
+
+<aside class="notes"><p><em>Example:</em> swapping two variables incorrectly.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Debugging Strategies**
+
+- Read error messages carefully
+    
+- Print intermediate values (`System.out.println`)
+    
+- Break problem into smaller pieces
+    
+- Check assumptions step by step
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Interactive Example**
+
+*Problem*: Convert Celsius to Fahrenheit  
+*Formula*: `F = (C × 9/5) + 32`
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java" 
+ width="400%"
+ ></iframe>
+</div>
+
+<aside class="notes"><p><em>Engage students:</em><br>“What happens if celsius = -40? What about 100?”</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Summary**
+
+
+- What is programming, computer science, algorithms, debugging
+
+- Variables, data types, operators, expressions
+        
+- Together, these are the **building blocks** of programming in Java
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Next Steps**
+
+- More on operators
+- Input and Output
+- Practice:
+    - Write a program to compute the area of a circle
+    - Experiment with different variable types and operators
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
