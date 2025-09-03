@@ -1,7 +1,15 @@
 # Teaching
 
-[COSC 130 Syllabus](smcm_cosc130_fa25/Syllabus.html)
+- Sayan Goswami
 
-[COSC 130 Lecture 0](Lecture0/index.html)
+## COSC120 - Fall 25
 
-[COSC 120 Lecture 0](smcm_cosc120_fa25/Lecture0/index.html)
+- [Syllabus](Notes/fa25.120/Syllabus.html)
+- [Lecture 0](Slides/fa25.120.0.html)
+
+## COSC130 - Fall 25
+
+- [Syllabus](Notes/fa25.130/Syllabus.html)
+- [Lecture 0](Slides/fa25.130.0.html)
+
+
