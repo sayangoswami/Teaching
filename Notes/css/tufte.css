@@ -75,7 +75,9 @@
 @font-face { font-family: "fira-code";
              src: url("../fonts/Fira_Code/FiraCode-VariableFont_wght.ttf") format("truetype");
              font-weight: normal;
-             font-style: normal; }
+             font-style: normal; 
+             font-variant-ligatures: none;
+            }
 
 /* END Taken from tufte-css */
 
