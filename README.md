@@ -11,5 +11,6 @@
 
 - [Syllabus](Notes/fa25.130/Syllabus.html)
 - [Lecture 0](Slides/fa25.130.0.html)
+- [Lecture 1](Slides/fa25.130.1.html)
 
 
