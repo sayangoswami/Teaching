@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# **Variables and Operators**
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Agenda**
+
+Today, we will cover:
+
+- **Data Types:** What kind of information can we store?
+    
+- **Variables:** How do we name and store information?
+    
+- **Expressions:** How do we combine data to get a new value?
+    
+- **Operators:** What tools do we use to manipulate data?
+    
+- **Printing:** How do we show information to the user?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Variables**
+
+A **variable**:
+- A _named storage location_ for data
+- Stored in memory (RAM)
+- Can change as program executes
+- Has a *data type* and a *name*
+- Has to be *declared* before using.
+
+ _Analogy:_ Think of a variable as a **labeled box** that holds a value.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Data Types**
+
+A **data type** defines the kind of data stored in a variable. Think of it as a label that tells the computer what to expect.
+
+These are the most fundamental types of data in Java.
+
+- `int`: a whole number (e.g., `10`, `500`)
+    
+- `double`: a decimal number (e.g., `3.14`, `99.9`)
+    
+- `boolean`: a true/false value (`true`, `false`)
+    
+- `char`: a single character (e.g., `'a'`, `'@'`)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Class Data Types (The Complex Ones)**
+
+*Classes are custom data types.*
+
+Classes are often *composed* up of one or more *primitive types*, *or even more classes*.
+
+`String` is our first example of a class. It's a complex type made up of many individual `char` primitive types.
+
+**Example:** The `String` `"Hello"` is made up of its length (`int`) and the individual `char`s
+
+| 5     | 'H'    | 'e'    | 'l'    | 'l'    | 'o'    |
+| ----- | ------ | ------ | ------ | ------ | ------ |
+| `int` | `char` | `char` | `char` | `char` | `char` |
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Declaring Variables**
+
+Before you can use a variable, you must **declare** it. This tells the computer to reserve a space in memory for a value of a specific type.
+
+The syntax is simple: 
+```
+dataType variableName;
+```
+
+*You can only declare a variable once within a **scope** (curly braces).*
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Declaring an integer variable:**
+    
+```java
+    int studentsInClass;
+```
+    
+2. **Declaring a variable for text:**
+    
+```java
+    String courseName;
+```
+    
+3. **Declaring a decimal variable:**
+    
+```java
+    double examGrade;
+```
+    
+4. **Declaring a boolean variable:**
+    
+```java
+    boolean isComplete;
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Assigning Values to Variables**
+
+After declaring a variable, you can give it a value using the **assignment operator** (`=`).
+
+You can do this on a separate line or combine it with the declaration.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Declaration and assignment in one line:**
+    
+```java
+    int score = 95;
+```
+    
+2. **Separate declaration and assignment:**
+    
+```java
+    String favoriteColor;
+    favoriteColor = "blue";
+```
+    
+3. **Assigning a decimal value:**
+    
+```java
+    double pi = 3.14159;
+```
+    
+4. **Assigning a boolean value:**
+    
+```java
+    boolean isOnline = true;
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Displaying the Value of a Variable**
+
+To see what's stored in a variable, you just pass its name to `System.out.println()`. 
+
+The computer will find the variable in memory and print its current value.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Printing an integer:**
+    
+```java
+    int studentCount = 30;
+    System.out.println(studentCount);
+    // Output: 30
+```
+    
+2. **Printing a string:**
+    
+```java
+    String greeting = "Good morning!";
+    System.out.println(greeting);
+    // Output: Good morning!
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples (contd.)**
+
+
+
+
+1. **Printing a decimal number:**
+    
+```java
+    double finalGrade = 98.7;
+    System.out.println(finalGrade);
+    // Output: 98.7
+```
+    
+2. **Printing a boolean:**
+    
+```java
+    boolean finished = false;
+    System.out.println(finished);
+    // Output: false
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Displaying a Constant (Literal)**
+
+A **constant**, or **literal**, is a fixed value that you type directly into your code. We can print these directly without storing them in a variable first.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Printing an integer literal:**
+    
+```java
+    System.out.println(25);
+```
+    
+2. **Printing a string literal:**
+    
+```java
+    System.out.println("Hello, everyone!");
+```
+    
+3. **Printing a decimal literal:**
+    
+```java
+    System.out.println(10.5);
+```
+    
+4. **Printing a boolean literal:**
+    
+```java
+    System.out.println(true);
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Arithmetic Operators**
+
+These operators let you perform mathematical calculations on numbers.
+
+|Operator|Name|Example|
+|---|---|---|
+|`+`|Addition|`10 + 5`|
+|`-`|Subtraction|`20 - 7`|
+|`*`|Multiplication|`4 * 3`|
+|`/`|Division|`10 / 2`|
+|`%`|Modulus|`10 % 3`|
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Addition and subtraction:**
+    
+```java
+    int sum = 5 + 3; // sum is 8
+    int difference = 15 - 7; // difference is 8
+```
+    
+2. **Multiplication and division:**
+    
+```java
+    int product = 4 * 6; // product is 24
+    int quotient = 10 / 2; // quotient is 5
+```
+    
+3. **Using `double` for decimals:**
+    
+```java
+    double result = 10.0 / 4.0; // result is 2.5
+```
+    
+4. **Modulus (remainder):**
+    
+```java
+    int remainder = 10 % 4; // remainder is 2
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **State Diagram of Variables**
+
+A state diagram helps visualize how the values of variables change in your program's memory. It's like a snapshot of your program's state at different points in time.
+
+```java
+int x;
+x = 5;
+int y = 10;
+x = x + y;
+```
+
+
+<div class="mermaid">
+graph TD
+    A[Start] --> B(int x);
+    B --> C(x = 5);
+    C --> D(int y = 10);
+    D --> E(x = x + y);
+    E --> F[End];
+
+    subgraph Memory
+        direction LR
+        x1[x: undefined]
+        x2[x: 5]
+        y1[y: 10]
+        x3[x: 15]
+    end
+
+    B --- x1
+    C --- x2
+    D --- y1
+    E --- x3
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Puzzle**
+
+Rearrange the code snippets to form a correct program. Some snippets may be *distractors* (they don't add anything to the program).
+
+1. `int result = (num1 + num2) / 2;`
+2. `int result`
+3. `System.out.println(result);`
+4. `int num1 = 10;`
+5. `int num2 = 20;`
+6. `result = num1 + num2 / 2;`
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **String Operators**
+
+The primary operator for `String` is *`+`*, used for concatenation. 
+
+When you use *`+`* with a *`String` and another data type*, Java automatically converts the other type into a `String`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Joining two strings:**
+    
+```java
+    String s1 = "Hello";
+    String s2 = "World";
+    System.out.println(s1 + s2); // Output: HelloWorld
+```
+    
+2. **Joining a string and an integer:**
+    
+```java
+    String message = "Your score is: " + 95;
+    System.out.println(message); // Output: Your score is: 95
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples (contd.)**
+
+
+
+
+3. **Joining a string and a boolean:**
+    
+```java
+    System.out.println("It is sunny today: " + true);
+    // Output: It is sunny today: true
+```
+    
+4. **Using parentheses to control order:**
+    
+```java
+    System.out.println("Result: " + (5 + 3)); // Output: Result: 8
+    System.out.println("Result: " + 5 + 3);   // Output: Result: 53
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Expressions**
+
+An **expression** is a combination of literals, variables, and operators that evaluates to a single value.
+
+*Cannot be on the left hand side of an assignment operator.*
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Simple arithmetic expression:**
+    
+```java
+    int finalScore = 50 + 25; // Evaluates to 75
+```
+    
+2. **Expression using variables:**
+    
+```java
+    int itemPrice = 10;
+    int quantity = 3;
+    int total = itemPrice * quantity; // Evaluates to 30
+```
+    
+3. **Complex expression with multiple operators:**
+    
+```java
+    double result = (10 + 20) / 5.0 - 2; // Evaluates to 4.0
+```
+    
+4. **String expression (concatenation):**
+    
+```java
+    String fullName = "John" + " " + "Doe"; // Evaluates to "John Doe"
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Printing Variables**
+
+This slide summarizes what we've learned about printing by combining strings and variables.
+
+Remember to use the `+` operator to join them together.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Print a simple, descriptive message:**
+    
+```java
+    int year = 2024;
+    System.out.println("The current year is: " + year);
+```
+    
+2. **Print a variable's value on a new line:**
+    
+```java
+    String product = "Laptop";
+    System.out.println("Product:\n" + product);
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples (contd.)**
+
+
+
+
+3. **Create a formatted report:**
+    
+```java
+    String name = "Emily";
+    double balance = 50.75;
+    System.out.println("Account Holder: " + name + "\nBalance: $" + balance);
+```
+    
+4. **Print the result of a calculation directly:**
+    
+```java
+    int num1 = 10;
+    int num2 = 3;
+    System.out.println("The product is: " + (num1 * num2));
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Practice**
+
+**Product Info:** Write a program that declares a `String` variable for a product name and a `double` variable for its price. Assign values to each variable and print them in a formatted way, like "*The price of a Laptop is $1250.00*".
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Practice**
+
+**Square and Cubed:** Declare an `int` variable and assign it the value `4`. Write expressions to calculate the square and the cube of this number. Store the results in new variables and print both values.
+
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Operations on Floating Point Numbers**
+
+"Floating point" refers to numbers with a decimal part. The decimal point can "float" or move.
+
+When dividing two integers, Java performs **integer division** and ignores any decimal remainder. 
+
+To get a decimal result, *at least one of the numbers must be a `double`*.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Integer division (common pitfall):**
+    
+```java
+    int a = 10;
+    int b = 4;
+    double result = a / b;
+    System.out.println(result); // Output: 2.0 (The decimal is lost!)
+```
+    
+2. **Correct floating point division:**
+    
+```java
+    int a = 10;
+    double b = 4.0;
+    double result = a / b;
+    System.out.println(result); // Output: 2.5
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples (contd.)**
+
+
+
+
+1. **Using a cast to a double:**
+    
+```java
+    int a = 10;
+    int b = 4;
+    double result = (double) a / b; // The `(double)` converts `a` temporarily
+    System.out.println(result); // Output: 2.5
+```
+    
+2. **Another correct example:**
+    
+```java
+    double avg = (85 + 92 + 78) / 3.0;
+    System.out.println(avg); // Output: 85.0
+```
+    
+
+**Question:** If you have `int x = 7;` and `int y = 2;`, what is the result of `(double) x / y`?
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## **Escape Sequences: Newline and Tab**
+
+Escape sequences are special character combinations that let you do things you can't normally do with a keyboard.
+
+- `\n`: Creates a **newline** (moves the cursor to the next line).
+    
+- `\t`: Creates a **tab** (adds a horizontal space).
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Using a newline:**
+    
+```java
+    System.out.println("Hello\nWorld");
+    // Output:
+    // Hello
+    // World
+```
+    
+2. **Using a tab:**
+    
+```java
+    System.out.println("Name:\tBob");
+    // Output: Name:   Bob
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples(contd.)**
+
+
+
+
+1. **Combining them:**
+    
+```java
+    System.out.println("Task\tStatus\n" + "Buy Milk\tPending");
+    // Output:
+    // Task    Status
+    // Buy Milk  Pending
+```
+    
+2. **Creating a simple poem:**
+    
+```java
+    System.out.println(
+	    "Roses are red,\n" + 
+	    "Violets are blue,\n" + 
+	    "Java is cool,\n" + 
+	    "And so are you!"
+	);
+```
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
