@@ -4,6 +4,15 @@
  *
  * This theme is Copyright (C) 2012-2013 Owen Versteeg, http://owenversteeg.com - it is MIT licensed.
  */
+
+ /**
+ Accessible AA and AAA color palette on white (#FFFFFF) background-
+ #003b49 - footnotes, links
+ #d3273e - italics
+ #1d4289 - bold
+ #007a78 - title
+ #000000 - main color
+ */
 .reveal a {
   line-height: 1.3em;
 }
@@ -23,13 +32,13 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   --r-block-margin: 20px;
   --r-heading-margin: 0 0 20px 0;
   --r-heading-font: Fira Sans, Tahoma, Verdana, Helvetica, Arial, sans serif;
-  --r-heading-color: #383D3D;
+  --r-heading-color: #007a78;
   --heading-underline-color: #48555a;
   --r-heading-line-height: 1.1;
   --r-heading-letter-spacing: normal;
   --r-heading-text-transform: none;
   --r-heading-text-shadow: none;
-  --r-heading-font-weight: normal;
+  --r-heading-font-weight: bold;
   --r-heading1-text-shadow: none;
   --r-heading1-size: 3.77em;
   --r-heading2-size: 2.11em;
@@ -40,15 +49,16 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   --xxs-font-size: 0.6em;
   --quote-font-size: 2rem;
   --r-code-font: Fira code, monospace;
-  --r-link-color: #51483D;
+  --r-link-color: #003b49;
   --r-link-color-dark: #25211c;
   --r-link-color-hover: #8b7c69;
   --r-selection-background-color: #26351C;
   --r-selection-color: #fff;
-  --primary-color: #41a3a9;
-  --secondary-color:  #f75323;
+  --primary-color: #1d4289;
+  --secondary-color:  #d3273e;
   --bullet-color: var(--secondary-color);
   --nested-bullet-color: var(--primary-color);
+  --r-code-color: var(--r-link-color);
 }
 
 .reveal-viewport {
@@ -267,9 +277,9 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   width: 90%;
   margin: var(--r-block-margin) auto;
   text-align: left;
-  font-size: 0.65em;
+  font-size: 0.85em;
   font-family: var(--r-code-font);
-  line-height: 1.2em;
+  line-height: 1.5em;
   word-wrap: break-word;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
   font-variant-ligatures: none;
@@ -280,6 +290,7 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   text-transform: none;
   tab-size: 2;
   font-variant-ligatures: none;
+  color: var(--r-code-color);
 }
 
 .reveal pre code {
@@ -444,4 +455,18 @@ em, strong em, li strong em, blockquote strong em {
 .reveal ul ul li::marker {
   color: var(--nested-bullet-color);
   content: '\2012\ ';
+}
+
+.reveal .footnotes ol li:first-child {
+    border-top: 1px solid #000; /* This is the horizontal line */
+    text-align: left;
+}
+
+/* editor and reading view footnote text */
+.reveal .footnotes,
+.cm-s-obsidian .cm-line.HyperMD-footnote {
+    color: var(--r-link-color);
+    font-weight: normal;
+    font-size: 0.5em;
+    text-align: left;
 }

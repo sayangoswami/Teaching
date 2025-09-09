@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Refresher: Loops
+
+>*Note - Assignment 1 is due tonight, Assignment 2 will be posted today and due on Thursday*
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `while` statement
+
+```java
+int n = 10;
+while (n > 0) {
+	System.out.println(n);
+	n = n - 1;
+}
+System.out.println("Blastoff!");
+```
+
+- Almost reads like English!
+- The expression in parentheses is called the *condition*. 
+- The statements in braces are called the *body*.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### How it works
+
+- The flow of execution for a `while` statement is:
+	1. Evaluate the condition, yielding `true` or `false`.
+	2. If the condition is `false`, skip the body and go to the next statement.
+	3. If the condition is `true`, execute the body and go back to step 1.
+-  The body of the loop should change the value of one or more variables so that, eventually, the condition becomes `false` and the loop *terminates*. 
+- Otherwise the loop will repeat forever, which is called an **infinite loop**.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Be the computer
+
+What will the following program print:
+
+```java
+int n = 3;
+while (n != 1) { 
+	System.out.println(n); 
+	if (n % 2 == 0) { 
+		n = n / 2; 
+	} else { 
+		n = n * 3 + 1; 
+	} 
+} 
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `for` loop
+
+```java
+int n = 10;
+for (int i = 1; i <= n; i = i + 1) { 
+	System.out.println(i);
+}
+```
+
+`for` loops have three components in parentheses, separated by semicolons: the *initializer*, the *condition*, and the *update*.
+
+1. The _initializer_ runs once at the very beginning of the loop.
+2. The _condition_ is checked each time through the loop. If it is `false`, the loop ends. Otherwise, the body of the loop is executed (again).
+3. At the end of each iteration, the _update_ runs, and we go back to step 2.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Scope of initialized variable in for loop
+
+
+```java
+int n = 10;
+for (int i = 0; i < n; i = i + 1) { 
+	System.out.println(i);
+}
+System.out.println(i);  // error. i is not defined
+```
+
+If you declare a variable in the initializer, it *only exists inside* the `for` loop.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Correct version
+
+```java
+int n = 10;
+int i;
+for (i = 0; i < n; i = i + 1) { 
+	System.out.println(i);
+}
+System.out.println(i);  // this is ok
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `do`-`while` loop
+
+The `while` and `for` statements are *pretest* loops; they test the condition first and at the beginning of each pass through the loop.
+
+The `do`-`while` is a *posttest* loop. Its useful when you need to run the body of the loop at least once.
+
+```java
+boolean more = true;  
+Scanner input = new Scanner(System.in);  
+do  {  
+    // some business logic, such as add a transaction  
+    addTransaction();
+    System.out.println("Do you want to add another one.");  
+    char ch = input.nextLine().charAt(0);  
+    if (ch == 'N' || ch == 'n') more = false;  
+} while (more);
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `break` statement
+
+When a program reaches a `break` statement, it exits the current loop.
+
+```java
+Scanner input = new Scanner(System.in);  
+while (true) {  
+    System.out.println("Enter amount: ");  
+    int amount = input.nextInt();  
+    if (amount < 0) {  
+        System.out.println("Come back when you are serious.");  
+        break;  
+    }  
+    System.out.println("Enter description: ");  
+    String desc = input.next();  
+    enterAmount(amount, desc);  
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `continue` statement
+
+A `continue` statement skips everything below it and moves on to the next iteration.
+
+```java
+Scanner in = new Scanner(System.in);  
+int x = -1;  
+int sum = 0;  
+while (x != 0) {  
+    x = in.nextInt();  
+    if (x <= 0) {  
+        continue;  
+    }  
+    System.out.println("Adding " + x);  
+    sum += x;  
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Arrays
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The problem with variables
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" --> Variables can only store one value at a time.
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" --> What if we wanted to store many values at once
+	- &shy;<!-- .element: class="fragment" data-fragment-index="3" --> declare many variables
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Example
+
+Say, we have 25 students in a class, and we want to store all their scores.
+
+```java
+// declare 25 variables
+int score0, score1, score2, score3, score4;
+int score5, score6, score7, score8, score9;
+int score10, score11, score12, score13, score14;
+int score15, score16, score17, score18, score19;
+int score20, score21, score22, score23, score24; 
+
+// take 25 inputs from the user
+Scanner in = new Scanner(System.in);  
+score0 = in.nextInt();  
+score1 = in.nextInt();  
+score2 = in.nextInt();  
+score3 = in.nextInt();  
+score4 = in.nextInt();  
+score5 = in.nextInt();  
+score6 = in.nextInt();  
+score7 = in.nextInt();  
+score8 = in.nextInt();  
+score9 = in.nextInt();  
+score10 = in.nextInt();  
+score11 = in.nextInt();  
+score12 = in.nextInt();  
+score13 = in.nextInt();  
+score14 = in.nextInt();  
+score15 = in.nextInt();  
+score16 = in.nextInt();  
+score17 = in.nextInt();  
+score18 = in.nextInt();  
+score19 = in.nextInt();  
+score20 = in.nextInt();  
+score21 = in.nextInt();  
+score22 = in.nextInt();  
+score23 = in.nextInt();  
+score24 = in.nextInt();
+```
+<!-- .element: class="fragment" -->
+
+What if we wanted to store the scores of **all students in the college**?
+<!-- .element: class="fragment" -->
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### The problem with variables (contd.)
+
+What if we don't even know the number of students in advance?
+
+```java
+Scanner input = new Scanner(System.in);  
+System.out.println("Enter the number of students: ");  
+int n = input.nextInt();  
+// how do we store n values now??
+```
+<!-- .element: class="fragment" -->
+
+**Answer**: Use Arrays
+<!-- .element: class="fragment" -->
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Array
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->A *data structure* is a collection of data organized so that you can perform operations on it *efficiently*.
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->An *array* is a type of data structure that can *hold multiple values under one common name*. 
+- &shy;<!-- .element: class="fragment" data-fragment-index="3" -->Each value in an array assigned a unique number known as an *index*, which *starts from 0*.
+- &shy;<!-- .element: class="fragment" data-fragment-index="4" -->A value can be *accessed* using the array name and index
+- &shy;<!-- .element: class="fragment" data-fragment-index="5" -->Arrays are *mutable* (changeable), which means that once an array is created, the values of its elements can be changed.
+- &shy;<!-- .element: class="fragment" data-fragment-index="6" -->Arrays must have a specified *type* and *size* (number of items that it stores).
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to create an array
+
+The syntax to declare an array is
+```java
+type[] name;
+```
+
+The syntax to actually create an empty array is
+```java
+name = new type[]
+```
+
+Example:
+```java
+int[] scores;
+scores = new int[25];
+```
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->What is the type of the elements in the array?
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->How many elements can this array store?
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Creating an array in one statement
+
+Just like variables, the declaration and assignment can be done in the same statement.
+
+```java
+int[] scores = new int[25];
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Another example
+
+
+```java
+Scanner input = new Scanner(System.in);  
+System.out.println("Enter the number of students: ");  
+int n = input.nextInt();  
+int[] scores = new int[25];
+```
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" -->How many elements can this array store?
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" -->We can store any number of items, even though we don't know how many, in advance.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to access an array location (index)
+
+The syntax to access an array element is
+```java
+name[index]
+```
+
+Example
+
+```java
+int[] scores = new int[25];
+scores[0]; // this is the first grade
+scores[24]; // this is the last grade
+// scores[25] will throw an error
+// scores[-1] will also throw an error
+```
+
+The array location `scores[0]` is equivalent to variable `score0` in the motivating example.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to modify an array element
+
+The syntax to modify an array element is
+```java
+name[index] = value;
+```
+
+Example
+
+```java
+int[] scores = new int[25];
+Scanner in = new Scanner(System.in);  
+scores[0] = in.nextInt(); // get the first grade
+grades[24] = in.nextInt(); // get the last grade
+```
+
+Again, `grade[0]` can be modified just like `grade0` in the motivating example.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The array index can be a variable
+
+```java
+int[] scores = new int[25];
+Scanner in = new Scanner(System.in);
+int i = 0;
+scores[i] = in.nextInt(); // get the first grade
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The array index can also be an expression
+
+```java
+int[] scores = new int[25];
+Scanner in = new Scanner(System.in);
+int i = 0;
+scores[i+0] = in.nextInt(); // get the first grade
+scores[i+1] = in.nextInt(); // get the second grade
+scores[i+2] = in.nextInt(); // get the third grade
+// ...
+scores[i+24] = in.nextInt(); // get the last (25th) grade
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Storing the scores using an Array
+
+```java
+int[] scores = new int[25];  
+Scanner input = new Scanner(System.in);
+
+// input scores  
+for (int i = 0; i < 25; i++) {  
+    scores[i] = input.nextInt();  
+}  
+  
+// print all the scores  
+for (int i = 0; i < 25; i++) {  
+    System.out.println(scores[i]);  
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Practice
+
+Write a program that calculates and prints the average value of all the numbers in an array. Use loops to prompt the user for number of *elements* in the array and the elements themselves.
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
