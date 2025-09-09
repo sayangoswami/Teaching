@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Variables and operators continued
+
+>*Note - Assignment 1 is due tonight, Assignment 2 will be posted today and due on Thursday*
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Polling
+
+1. Open your browser
+
+2. Go to **https://pollev.com/sayangoswami435**
+<img src="images/Pastedimage20250909115141.png" alt="" style="width: 300px; object-fit: fill">
+
+
+4. Introduce yourself
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap - Variables
+
+
+A variable is a place in	
+1. hard disk	
+2. DVD	
+3. USB drive	
+4. All of these	
+5. None of these
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap - variables
+
+<iframe src="https://embed.polleverywhere.com/multiple_choice_polls/iCyKYz6qxdhw8tbuJQUJZ?controls=none&short_poll=true" width="800px" height="600px"></iframe>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap - variables
+
+
+A variable can hold	
+1. one value at a time	
+2. many values at a time	
+3. all of these	
+4. none of these
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap - variables
+
+<iframe src="https://embed.polleverywhere.com/multiple_choice_polls/7jR9AhZNTgy1yrOfvEYF9?controls=none&short_poll=true" width="800px" height="600px"></iframe>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Computers and programming
+
+
+- Computers can perform so many different tasks because of their *ability to be programmed*. 
+- A computer can perform any job that a program tells it to. 
+- A program is a set of statements that a computer follows in order to perform a specific task.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Hardware vs Program
+
+| Parts of a Computer | Parts of a Program                                     |
+| ------------------- | ------------------------------------------------------ |
+| CPU                 | Perform computation                                    |
+| RAM                 | Store data *temporarily*                               |
+| SSD / HDD           | Store data *permanently*<br>Store the *program itself* |
+| Input devices       | Collect information<br>Take data from us               |
+| Output devices      | Give data back to us                                   |
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Rank order
+
+In a program that takes 2 numbers and adds them arrange the parts in the order in which you expect them to occur	
+1. Perform computation	
+2. Store data temporarily
+3. Take data from us	
+4. Give data back to us
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Rank order
+
+
+<iframe src="https://embed.polleverywhere.com/ranking_polls/HbAin0btC7vGPtkNI7Glq?controls=none&short_poll=true" width="800px" height="600px"></iframe>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Algorithm
+
+An algorithm is
+- sequence of *well-defined* statements 
+- provides a solution to a problem or a specific class of problems
+- works any acceptable set of input values
+- like a recipe - breaks a problem down into little steps that a computer _can do for you_
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## An algorithm for fishing<sup id="fnref:1" role="doc-noteref">1</sup>
+
+1. &shy;<!-- .element: class="fragment" data-fragment-index="1" -->Put worm on hook
+1. &shy;<!-- .element: class="fragment" data-fragment-index="2" -->Cast line into pond
+1. &shy;<!-- .element: class="fragment" data-fragment-index="3" -->*While* the bobber is not under water, keep waiting.
+1. &shy;<!-- .element: class="fragment" data-fragment-index="4" -->Hook and pull in fish
+1. &shy;<!-- .element: class="fragment" data-fragment-index="5" -->*If* done fishing, go home, *else* *go to* step 1.
+
+
+Simple instructions, conditions, repetitions
+<!-- .element: class="fragment" -->
+
+Is this well defined enough?
+<!-- .element: class="fragment" -->
+
+
+
+<div class="footnotes" role="doc-endnotes">
+<ol>
+<li id="fn:1" role="doc-endnote" class="footnote"><p>
+
+Source: Head first Learn to Code
+
+</p></li></ol>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Algorithm vs Program
+
+- Once we have an algorithm, we can turn it into a program using a programming language of our choice.
+
+- We write the program and run (execute) it - the computer executes the steps specified
+
+- If everything is correct, we will see the output we expected (given valid inputs)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap: Arithmetic Operators
+
+These operators let you perform mathematical calculations on numbers or variables containing numbers.
+
+| Operator | Name           | Example                     |
+| -------- | -------------- | --------------------------- |
+| `+`      | Addition       | `int x = 10 + 5`            |
+| `-`      | Subtraction    | `int a = 20; int b = a - 7` |
+| `*`      | Multiplication | `4 * 3`                     |
+| `/`      | Division       | `10 / 2`                    |
+| `%`      | Modulus        | `10 % 3`                    |
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap String Operators
+
+The primary operator for `String` is *`+`*, used for concatenation. 
+
+When you use *`+`* with a *`String` and another data type*, Java automatically converts the other type into a `String`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples
+
+1. **Joining two strings:**
+    
+```java
+    String s1 = "Hello";
+    String s2 = "World";
+    System.out.println(s1 + s2); // Output: HelloWorld
+```
+    
+2. **Joining a string and an integer:**
+    
+```java
+    String message = "Your score is: " + 95;
+    System.out.println(message); // Output: Your score is: 95
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples (contd.)
+
+
+
+
+3. **Joining a string and a boolean:**
+    
+```java
+    System.out.println("It is sunny today: " + true);
+    // Output: It is sunny today: true
+```
+    
+4. **Using parentheses to control order:**
+    
+```java
+    System.out.println("Result: " + (5 + 3)); // Output: Result: 8
+    System.out.println("Result: " + 5 + 3);   // Output: Result: 53
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Expressions
+
+An **expression** is a combination of literals, variables, and operators that evaluates to a single value.
+
+*Cannot be on the left hand side of an assignment operator.*
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples
+
+1. **Simple arithmetic expression:**
+    
+```java
+    int finalScore = 50 + 25; // Evaluates to 75
+```
+    
+2. **Expression using variables:**
+    
+```java
+    int itemPrice = 10;
+    int quantity = 3;
+    int total = itemPrice * quantity; // Evaluates to 30
+```
+    
+3. **Complex expression with multiple operators:**
+    
+```java
+    double result = (10 + 20) / 5.0 - 2; // Evaluates to 4.0
+```
+    
+4. **String expression (concatenation):**
+    
+```java
+    String fullName = "John" + " " + "Doe"; // Evaluates to "John Doe"
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Printing Variables
+
+This slide summarizes what we've learned about printing by combining strings and variables.
+
+Remember to use the `+` operator to join them together.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Examples**
+
+1. **Print a simple, descriptive message:**
+    
+```java
+    int year = 2024;
+    System.out.println("The current year is: " + year);
+```
+    
+2. **Print a variable's value on a new line:**
+    
+```java
+    String product = "Laptop";
+    System.out.println("Product: " + product);
+```
+    
+3. **Print the result of a calculation directly:**
+    
+```java
+    int num1 = 10;
+    int num2 = 3;
+    System.out.println("The product is: " + (num1 * num2));
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Practice
+
+**Greetings:** Write a program that declares a `String` variable for a person's name and an `int` variable for their age. Assign your own name and age to these variables, then print them in a single sentence.
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Practice
+
+**Square and Cubed:** Declare an `int` variable and assign it the value `4`. Write expressions to calculate the square and the cube of this number. Store the results in new variables and print both values.
+
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Practice
+
+**Time Conversion:** Declare a variable called `totalSeconds` with a value of `150`. Use integer division and the modulus operator to calculate and print the number of full minutes and the remaining seconds.
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Operations on Floating Point Numbers
+
+"Floating point" refers to numbers with a decimal part. The decimal point can "float" or move.
+
+When dividing two integers, Java performs **integer division** and ignores any decimal remainder. 
+
+To get a decimal result, *at least one of the numbers must be a `double`*.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples
+
+1. **Integer division (common pitfall):**
+    
+```java
+    int a = 10;
+    int b = 4;
+    double result = a / b;
+    System.out.println(result); // Output: 2.0 (The decimal is lost!)
+```
+    
+2. **Correct floating point division:**
+    
+```java
+    int a = 10;
+    double b = 4.0;
+    double result = a / b;
+    System.out.println(result); // Output: 2.5
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Practice
+
+**Sales Tax:** Declare a `double` variable for the price of an item (e.g., `55.75`). Assume a sales tax of 8%. Calculate the total price including tax and print the final amount.
+
+<div style="width: 1200px">
+<iframe
+ frameBorder="0"
+ height="450px"  
+ src="https://onecompiler.com/embed/java?availableLanguages=False&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true" 
+ width="400%"
+ ></iframe>
+</div>
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Escape Sequences: Newline and Tab
+
+Escape sequences are special character combinations that let you do things you can't normally do with a keyboard.
+
+- `\n`: Creates a **newline** (moves the cursor to the next line).
+    
+- `\t`: Creates a **tab** (adds a horizontal space).
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples
+
+1. **Using a newline:**
+    
+```java
+    System.out.println("Hello\nWorld");
+    // Output:
+    // Hello
+    // World
+```
+    
+2. **Using a tab:**
+    
+```java
+    System.out.println("Name:\tBob");
+    // Output: Name:   Bob
+```
+
+3. **Create a formatted report:**
+    
+```java
+    String name = "Emily";
+    double balance = 50.75;
+    System.out.println("Account Holder: " + name + "\nBalance: $" + balance);
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples(contd.)
+
+
+
+
+1. **Combining them:**
+    
+```java
+    System.out.println("Task\tStatus\n" + "Buy Milk\tPending");
+    // Output:
+    // Task    Status
+    // Buy Milk  Pending
+```
+    
+2. **Creating a simple poem:**
+    
+```java
+    System.out.println(
+	    "Roses are red,\n" + 
+	    "Violets are blue,\n" + 
+	    "Java is cool,\n" + 
+	    "And so are you!"
+	);
+```
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>

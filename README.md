@@ -7,6 +7,7 @@
 - [Syllabus](Notes/fa25.120/Syllabus.html)
 - [Lecture 0](Slides/fa25.120.0.html)
 - [Lecture 1](Slides/fa25.120.1.html)
+- [Lecture 2](Slides/fa25.120.2.html)
 
 ## COSC130 - Fall 25
 
