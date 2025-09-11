@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+	<link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.19.10/dist/snippet.css" />
+
+	<script id="Main.java" type="text/plain">
+	public class Main {
+		public static void main(String[] args) {
+			##CODE##
+		}
+	}
+	</script>
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Printing formatted output and Taking input
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Escape Sequences
+
+
+Escape sequences are *some character combinations* that are used to denote *some special characters* in a String *literal*.
+
+Examples:
+- `\n` denotes a new line (the return/enter key in the keyboard).
+- `\t` denotes a tab.
+- `\"` denotes a quotation mark.
+
+**Question**: Why cant we use the actual characters in the literal?
+<!-- .element: class="fragment" -->
+
+**Answer**: The actual characters are reserved for other purposes.
+<!-- .element: class="fragment" -->
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Usecase - Quotes inside a string
+
+Say we want to print a string which has a quotation marks within it. For example:
+
+>"Programmers are tools for converting caffeine into code." - Anonymous
+
+Lets give it a shot:
+```java
+String quote = ""Programmers are tools for converting caffeine into code." - Anonymous";
+System.out.println(quote);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+
+This program will throw a syntax error because we can not differentiate between the quotation marks inside the string and the ones enclosing it. Even if it didn't throw an error, it will not print what we wanted it to.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Solution
+
+To solve this problem, we need to tell the computer (compiler) to ignore (escape) the quotation marks inside the string. This is done using a **`\`** before of the quotation marks.
+
+Example:
+
+```java
+String quote = "\"Programmers are tools for converting caffeine into code.\" - Anonymous";
+System.out.println(quote);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+1. **Using a newline:**
+    
+```java
+System.out.println("Hello\nWorld");
+```
+<codapi-snippet sandbox="java" editor="basic"  template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+2. **Using a tab:**
+    
+```java
+System.out.println("Name:\tBob");
+```
+<codapi-snippet sandbox="java" editor="basic"  template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+3. **Create a formatted report:**
+    
+```java
+String name = "Emily";
+double balance = 50.75;
+System.out.println("Account Holder: " + name + "\nBalance: $" + balance);
+```
+<codapi-snippet sandbox="java" editor="basic"  template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+4. **Combining them:**
+    
+```java
+System.out.println("Task\tStatus\n" + "Buy Milk\tPending");
+```
+<codapi-snippet sandbox="java" editor="basic"  template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+5. **Creating a simple poem:**
+    
+```java
+String puzzle = "This component stores data so fast\nBut that knowledge is not meant to last\nWith a system reset\nIt will quickly forget —\nSay \"bye bye\" to those bytes it amassed\n";
+System.out.println(puzzle);
+```
+<codapi-snippet sandbox="java" editor="basic"  template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Avoiding escape sequences with Text Blocks.
+
+- *Text Blocks* are the modern and recommended way to define multiline strings in Java.
+- They are enclosed by three double-quote characters (`"""`) at the beginning and end.
+- The content of a text block can span multiple lines directly in your code, and newlines are automatically preserved.
+- Escape sequences like `\n` are generally not needed within text blocks for newlines, as the formatting in the code is maintained in the resulting string.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Example
+
+
+```java
+String poem = """
+This component stores data so fast  
+But that knowledge is not meant to last  
+With a system reset  
+It will quickly forget —  
+Say "bye bye" to those bytes it amassed
+""";
+System.out.println(poem);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+
+This does not require any escape sequences.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Formatted strings
+
+*Formatted strings* allow us to create a string with *placeholders* for variables. This gives us precise control over how text and data are combined, especially when dealing with numbers and different data types.
+
+**Why use formatted strings?**
+
+- **Readability:** They make code cleaner and easier to read than string concatenation.
+    
+- **Control:** They provide fine-grained control over number formatting, like the *number of decimal places* for a floating-point number.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Format Specifiers
+
+*Format specifiers* are the placeholders inside the format string. 
+
+They always start with a **`%`** and end with a character that specifies the type of data to be formatted.
+
+| Specifier | Data Type      | Description                                          | Example                                   |
+| --------- | -------------- | ---------------------------------------------------- | ----------------------------------------- |
+| **`%s`**  | String         | Placeholder for a string.                            | `String.format("Hello, %s", "World")`     |
+| **`%d`**  | Integer        | Placeholder for a decimal integer.                   | `String.format("The year is %d", 2025)`   |
+| **`%f`**  | Floating-point | Placeholder for a floating-point number.             | `String.format("Pi is %f", 3.14159)`      |
+| **`%b`**  | Boolean        | Placeholder for a boolean value (`true` or `false`). | `String.format("The answer is %b", true)` |
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples
+
+```java
+String s1 = "Hello %s";
+String S2 = "The year is %d";
+String s3 = "Pi is %f";
+String s4 = "The answer is %b";
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Printing formatted strings with actual data
+
+To print a formatted string with data, we use the **`System.out.printf()`** method.
+
+This method *does not add a newline* by itself, so be sure to add one using `\n`;
+
+```java
+String s1 = "Hello %s\n";
+String s2 = "The year is %d\n";
+String s3 = "Pi is %f\n";
+String s4 = "The answer is %b\n";
+
+System.out.printf(s1, "World");  
+System.out.printf(s2, 2025);  
+System.out.printf(s3, 3.14159);  
+System.out.printf(s4, true);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Formatting Text Blocks
+
+Text blocks can also be formatted. The previous code can also written as:
+
+```java
+String s = """
+Hello %s.
+The year is %d.
+Pi is still %f.
+The answer is %b.
+""";
+
+System.out.printf(s, "World", 2025, 3.14159, true);
+```
+<codapi-snippet sandbox="java" editor="basic"  template="#Main.java">
+</codapi-snippet>
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Controlling Decimal Places
+
+When we use `%f` to format a floating-point number, Java will often show many digits after the decimal point. We can specify exactly how many digits we want to display by adding a number right after the `%` and before the `f`.
+
+**The Rule:** **`%.Nf`**
+
+- Replace **`N`** with the number of decimal places you want.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Examples
+
+Rounds to **2** decimal places.
+```java
+System.out.printf("Total: %.2f", 12.3456);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+
+Rounds to **4** decimal places.
+```java
+System.out.printf("Average: %.4f", 98.76543);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+
+Rounds to **0** decimal places (a whole number).
+```java
+System.out.printf("PI is: %.0f", 3.14159);
+```
+<codapi-snippet sandbox="java" editor="basic" template="#Main.java">
+</codapi-snippet>
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Taking Input
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Why Do We Need User Input?
+
+Most of the programs we've seen so far are like a movie—they just play out from start to finish. But what if we want to make our program more like a conversation? User input lets us do that! It lets the user **give information to the program** while it's running.
+
+Think about everyday things:
+
+- A calculator needs you to type in numbers.
+    
+- A video game needs you to press a button.
+    
+- A social media app needs you to type your password.
+    
+
+These are all examples of **user input**. It makes a program interactive and useful.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Magic "Scanner" Tool
+
+In Java, getting user input is like using a special tool called a **`Scanner`**. This tool knows how to "scan" what a person types on the keyboard.
+
+To use this tool, you need to do two things:
+
+1. &shy;<!-- .element: class="fragment" data-fragment-index="1" -->**Get the tool ready:** We have to tell our program that we're going to use this **`Scanner`** tool. We do this by writing a special line at the very top of our code.
+	```java
+	import java.util.Scanner;
+	```
+	<!-- .element: class="fragment" data-fragment-index="1" -->
+
+1. &shy;<!-- .element: class="fragment" data-fragment-index="2" -->**Turn the tool on:** Inside our main program, we create the tool and tell it to look at the keyboard. We'll always use this exact line for now.
+	```java
+	Scanner input = new Scanner(System.in);
+	```
+	<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Here, **`input`** is a variable that stores the tool. For now, think of **`input`** as a name we're giving our tool so we can *call* it later.
+<!-- .element: class="fragment" -->
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Asking Questions and Getting Answers
+
+Once you have your `Scanner` tool (`input`), you can use it to ask for different kinds of information. We'll use special commands to tell the `Scanner` what to look for.
+
+|Command|What It Gets|Example|
+|---|---|---|
+|**`input.nextInt()`**|A whole number (like 10 or 500)|`int age = input.nextInt();`|
+|**`input.nextDouble()`**|A number with a decimal (like 3.14)|`double price = input.nextDouble();`|
+|**`input.nextLine()`**|A whole line of text (a sentence)|`String name = input.nextLine();`|
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Example: Your First Interactive Program
+
+Let's write a program that asks for a person's name and age and then says hello.
+<div>
+<iframe src="https://trinket.io/embed/java/44565d687e69"height="500px" width="1000" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## What Happens When You Run It?
+
+1. &shy;<!-- .element: class="fragment" data-fragment-index="1" -->The program starts and prints: `What is your name?`
+1. &shy;<!-- .element: class="fragment" data-fragment-index="2" -->The program **waits** for you to type. You type your name and press **Enter**.
+1. &shy;<!-- .element: class="fragment" data-fragment-index="3" -->The `input.nextLine()` command reads what you entered and puts it into the `name` variable.
+1. &shy;<!-- .element: class="fragment" data-fragment-index="4" -->Next, the program prints: `How old are you?`
+1. &shy;<!-- .element: class="fragment" data-fragment-index="5" -->Again, the program waits. You type your age (just the number) and press **Enter**.
+1. &shy;<!-- .element: class="fragment" data-fragment-index="6" -->The `input.nextInt()` command reads your age and puts it into the `age` variable.
+1. &shy;<!-- .element: class="fragment" data-fragment-index="7" -->Finally, the program uses the information in the variables to print: `Hello, <your name>! You are <your age> years old.`
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+
+	<script src="https://unpkg.com/@antonz/codapi@0.19.10/dist/snippet.js"></script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
