@@ -15,5 +15,6 @@
 - [Lecture 0](Slides/fa25.130.0.html)
 - [Lecture 1](Slides/fa25.130.1.html)
 - [Lecture 2](Slides/fa25.130.2.html)
+- [Lecture 3](Slides/fa25.130.3.html)
 
 
