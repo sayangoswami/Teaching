@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.19.10/dist/snippet.css" />
+
+	<script id="Main.java" type="text/plain">
+	public class Main {
+		public static void main(String[] args) {
+			##CODE##
+		}
+	}
+	</script>
+    <script id="NoMain.java" type="text/plain">
+	public class Main {
+		##CODE##
+	}
+	</script>
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Introduction to methods
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Welcome to the World of Methods!
+
+Today, we're going to learn about one of the most powerful ideas in programming: **methods**. Methods let us organize our code and make it much easier to manage.
+
+**What we've learned so far:**
+
+- **Variables**: Storing information (like names and ages).
+    
+- **Expressions**: Doing math (`10 + 5`).
+    
+- The **`main` method**: The place where our program starts.
+    
+
+**What we'll learn today:**
+
+- Why we need methods.
+    
+- How to create our own methods.
+    
+- How to use methods.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## A complicated recipe
+
+<img src="images/fullenglish.jpg" alt="" style="width: 500px; object-fit: fill">
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Problem with complicated recipes
+
+Imagine you are teaching someone how to make a *full english breakfast*:
+
+>1. Add oil to a large frying pan.
+>2. Place two sausages in the pan. 
+>3. Fry the sausages for 10 minutes, turning halfway through. 
+>4. Now, add three slices of bacon to the pan.
+>5. Fry bacon until crispy. 
+>6. Get a small pan.
+>7. Pour a can of baked beans and heat it.
+>8. Once the bacon is done, crack two eggs into the same pan and fry them.
+>9. ..."
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### The Problem with complicated recipes
+
+This is messy - its a *jumble* of instructions, *hard to read* and *easy to mess up*.
+
+Programs are the same way. If we write all our code in one long list, it gets *messy* and *hard to understand*, and even *harder to debug*.
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Solution: Mini-recipes!
+
+Lets break down our full english breakfast recipe into a few mini-recipes, and give each mini-recipe a name:
+
+- **`prepareSausagesAndBacon`**: This is the mini-recipe to fry the sausages and bacon. It has its own list of ingredients and steps, and once it's done, it "reports back" that the meat is cooked.
+    
+- **`cookBakedBeans`**: This is a separate mini-recipe whose only job is to heat the baked beans.
+    
+- **`fryEggs`**: This mini-recipe handles the task of frying the eggs.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### The Main Program (The Final Breakfast Recipe)
+
+Our main recipe is now just a simple list of these mini-recipes, called in order.
+
+> 1. `prepareSausagesAndBacon();`
+> 2. `cookBakedBeans();`
+> 3. `fryEggs();`
+> 4. `serveBreakfast();`
+
+This makes our recipe much cleaner. Instead of one long, complicated list, we have a series of simple, easy-to-manage tasks.
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Yer a wizard \<insert your name here\>
+
+<img src="https://media1.tenor.com/m/WUVqyY-KBbAAAAAd/your-a-wizard-harry.gif" alt="" style="object-fit: scale-down">
+
+
+
+A wizard doesn't list out every single action to cast a spell. Instead, they just **call the spell by its name**.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+This is exactly how methods work in programming! Each spell is like a **mini-program** that does one specific, magical job.
+
+**Our Magic Spells (Methods):**
+
+- **`expelliarmus()`**
+    
+    - This spell's job is to disarm an opponent. It has its own list of magical steps, but all the wizard has to do is call its name.
+        
+- **`wingardiumLeviosa()`**
+    
+    - This is a separate spell whose only job is to make an object levitate.
+        
+- **`lumos()`**
+    
+    - This spell creates light at the tip of the wizard's wand.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**How Harry Casts Spells (The Main Magic):**
+
+Harry doesn't need to know the detailed mechanics of each spell. He just calls them by their names.
+
+> 1. `expelliarmus();`
+> 2. `wingardiumLeviosa();`
+> 3. `lumos();`
+
+This makes casting spells much cleaner. Instead of one long, complicated list of movements and words, Harry has a series of simple, easy-to-manage "tasks." 
+
+In programming, spells are called *methods*. 
+<!-- .element: class="fragment" -->
+
+*Calling a method* is like casting a spell - just use the name of the method (spell) and it does something specific. 
+<!-- .element: class="fragment" -->
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## What is a method?
+
+A **method** is a way to group a set of instructions into a single, reusable "chunk" or "block."
+
+A method has a *name*, just like a recipe or a magic spell does. The rules for naming a method is the same as that of a variable.
+
+Think of a method as a **magic spell**.  We can **call** or **run** methods whenever we need to do that task, just by referring to its name, without repeating the steps.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to define your own method
+
+Let's look at the basic pieces of creating a method.
+
+```Java
+public static void sayHello() {
+    System.out.println("Hello, World!");
+}
+```
+<!-- .element: class="fragment" data-fragment-index="0" -->
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" --> **`public static`**: Don't worry about these words for now. Just know you need them for your methods to work.    
+- &shy;<!-- .element: class="fragment" data-fragment-index="2" --> **`void`**: This means the method does not send any information back to its *caller* when it's finished.
+- &shy;<!-- .element: class="fragment" data-fragment-index="3" --> **`sayHello`**: This is the **method's name**. We'll use this name to *call* the method.
+- &shy;<!-- .element: class="fragment" data-fragment-index="4" --> **`()`**: These parentheses are for putting information into the method, which we'll learn about soon.
+- &shy;<!-- .element: class="fragment" data-fragment-index="5" --> **`{ ... }`**: These curly braces hold all the instructions for the method.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Again, What is a Method?
+
+A method is a **named group of instructions** that does a specific job.
+
+- Every Java program has at least one method: **`main`**.
+    
+- A method has a **name**. We can define our own methods and name them.
+	
+- A method has **optional input arguments**. We will see this later.
+    
+- A method contains a list of instructions inside its curly braces `{...}`.
+    
+- A method can be **called** from other parts of the program to run those instructions.
+    
+- A method may **return a value** to the *caller* after its done executing its set of steps. Again, more on this later.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to Call a Method
+
+Once a method is made, we can tell it to run by simply typing its name, followed by parentheses and a semicolon. This is called **calling** the method.
+
+**First, we make the method outside main:** <!-- .element: class="fragment" -->
+
+```java
+public static void sayHello() {
+    System.out.println("Hello from the method!");
+}
+```
+<!-- .element: class="fragment" -->
+
+**Then, we call it from our `main` method:** <!-- .element: class="fragment" -->
+
+```java
+public static void main(String[] args) {
+    System.out.println("Starting the program...");
+    sayHello(); // This is the method call!
+    System.out.println("Program finished.");
+}
+```
+<!-- .element: class="fragment" -->
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Try it out
+
+```java
+public static void sayHello() {
+    System.out.println("Hello from the method!");
+}
+
+public static void main(String[] args) {
+    System.out.println("Starting the program...");
+    sayHello(); // This is the method call!
+    System.out.println("Program finished.");
+}
+```
+<codapi-snippet sandbox="java" editor="basic" template="#NoMain.java">
+</codapi-snippet>
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Path of the Program
+
+It's helpful to imagine how a program moves around.
+
+1. The program always starts at the `main` method.
+    
+2. When it sees a method call (like `sayHello();`), it **jumps to that method's code**.
+    
+3. The program does everything inside that method.
+    
+4. When it reaches the end of the method's curly brace `}`, the program **jumps back** to the exact spot where it left off.
+    
+5. It then continues with the next line of code.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Why Use Methods? Let's Review
+
+**1. Reusing Code:**
+
+- You write a block of code once and can use it over and over, just by calling its name.
+
+**2. Easier to Read:**
+
+- A method's name tells you exactly what that part of the program does.
+    
+- Example: `calculateGrade()` is much clearer than a long block of math expressions.
+    
+
+**3. Staying Organized:**
+
+- Methods help break a big problem into smaller, bite-sized pieces. It makes it easier to write and fix your code.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Methods with Parameters
+
+What if we want our method to be more flexible? 
+
+For example, what if we want to print multiple greeting messages, with only *small changes*? 
+
+This is where **parameters** come in. Parameters are variables that we define inside the parentheses `()` of the method. They act as **inputs** for our method.
+
+- When you call the method, you give it the actual information it needs. This information is called an **argument**.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to Use Parameters
+
+Let's make a method that takes a name as an input.
+
+```java
+public static void sayHello(String name) {
+    System.out.println("*************************");
+    System.out.println("Hello, " + name + "!");
+    System.out.println("*************************");
+}
+```
+<!-- .element: class="fragment" data-fragment-index="0" -->
+
+- &shy;<!-- .element: class="fragment" data-fragment-index="1" --> `String name`: This is our **parameter**. It's a special variable that will hold the name we give the method.
+
+**To call this method, we must give it a value!**
+<!-- .element: class="fragment" -->
+
+```java
+public static void main(String[] args) {
+    sayHello("Alice"); // "Alice" is the argument
+    sayHello("Bob");   // "Bob" is the argument
+}
+```
+<!-- .element: class="fragment" -->
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Try it out
+
+Run the code snippet. The modify it so that it says **`Happy birthday`** to Alice, Bob, and Charlie. Then, Try doing the same thing without a method.
+
+```java
+public static void sayHello(String name) {
+    System.out.println("*************************");
+    System.out.println("Hello, " + name + "!");
+    System.out.println("*************************");
+}
+
+public static void main(String[] args) {
+    sayHello("Alice"); // "Alice" is the argument
+    sayHello("Bob");   // "Bob" is the argument
+}
+```
+<codapi-snippet sandbox="java" editor="basic" template="#NoMain.java">
+</codapi-snippet>
+
+</p></p></p></p>
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Example: The `sayHello` Program with Parameters
+
+Let's see this in a complete program.
+
+```java
+public class Greeting {
+
+    // The method with a parameter
+    public static void sayHello(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+
+    public static void main(String[] args) {
+        String studentName = "Sarah";
+        sayHello(studentName); // You can use a variable as an argument!
+        sayHello("David");     // Or you can use a string directly
+    }
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Parameters vs. Arguments
+
+This can be a little confusing. Let's make it simple.
+
+- **Parameter**: The *variable* that waits for data in the **method's recipe**. (The empty box)
+    
+- **Argument**: The *actual value* you pass to the method when you **call** it. (The item you put in the box)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## More Than One Parameter
+
+A method can take any number of parameters, and they can be different types.
+
+```java
+public static void printInfo(String name, int age) {
+    System.out.println("Name: " + name);
+    System.out.println("Age: " + age);
+}
+
+public static void main(String[] args) {
+    printInfo("Jane", 22);
+    printInfo("Bob", 45);
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `return` Statement
+
+What if we want a method to calculate something and **give the answer back** to us?
+
+- Instead of **`void`**, we specify the **type of data** the method will send back.
+    
+- We use the **`return`** keyword to send the value back.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to Use a `return`
+
+Let's make a method that adds two numbers and sends the answer back.
+
+```java
+public static int addTwoNumbers(int number1, int number2) {
+    int sum = number1 + number2;
+    return sum; // This sends the value of sum back
+}
+```
+
+- `int` before `addTwoNumbers`: This is the **return type**. It tells us this method will send back a whole number.
+    
+- `return sum;`: The method's job is finished here, and the value in `sum` is sent back to the *calling code*.
+	
+- The calling code can *ignore* the result, save it in a *variable*, use it in an *expression* or generally use it anywhere it can use an integer value.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Using the Value That's Returned
+
+When a method gives back a value, we can catch it and store it in a variable.
+
+```java
+public static int addTwoNumbers(int number1, int number2) {
+    int sum = number1 + number2;
+    return sum;
+}
+
+public static void main(String[] args) {
+    // We call the method and store the result in a variable
+    int result = addTwoNumbers(5, 10);
+    System.out.println("The result is: " + result);
+
+    // We can also use the returned value directly
+    System.out.println("The result is: " + addTwoNumbers(25, 75));
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## More on `return`
+
+- A method can only send back **one value**.
+    
+- The type of the value you send back must match the **return type** you put in the method's header.
+    
+- If a method's return type is `void`, it **cannot** send back a value.
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Putting It All Together: A Simple Calculator
+
+Let's build a simple calculator using methods.
+
+**Our Goal:** Create a program that has methods for addition, subtraction, multiplication, and division.
+
+**Method 1: `add()`**
+
+- **Inputs (Parameters):** Two real numbers (`double num1`, `double num2`)
+    
+- **Output (Return Value):** The sum of the two numbers (`double`)
+    
+- **Job:** Add the two numbers and return the result.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Method 1: `subtract()`**
+
+- **Inputs (Parameters):** Two real numbers (`double num1`, `double num2`)
+    
+- **Output (Return Value):** The difference of the two numbers `num1 - num2` (`double`)
+    
+- **Job:** Subtract `num2` from `num1` and return the result.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Method 1: `multiply()`**
+
+- **Inputs (Parameters):** Two real numbers (`double num1`, `double num2`)
+    
+- **Output (Return Value):** The product of the two numbers (`double`)
+    
+- **Job:** Multiply the two numbers and return the result.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Method 1: `divide()`**
+
+- **Inputs (Parameters):** Two real numbers (`double num1`, `double num2`)
+    
+- **Output (Return Value):** The division of `num1` by `num2` (`double`)
+    
+- **Job:** Divide `num1` by `num2` and return the result.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Simple Calculator Program (Part 1)
+
+Here are the methods for our calculator. They are simple, but they are very reusable!
+
+```java
+public class Calculator {
+
+    public static double add(double num1, double num2) {
+        return num1 + num2;
+    }
+
+    public static double subtract(double num1, double num2) {
+        return num1 - num2;
+    }
+
+    public static double multiply(double num1, double num2) {
+        return num1 * num2;
+    }
+    // ... we'll add the division method on the next slide
+```
+
+Notice how each method does only one small job.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Simple Calculator Program (Part 2)
+
+Now let's see our division method and how we can use all of them in our `main` method.
+
+```java
+    public static double divide(double num1, double num2) {
+        return num1 / num2;
+    }
+
+    public static void main(String[] args) {
+        int sum = add(10, 5);
+        System.out.println("10 + 5 = " + sum);
+
+        int difference = subtract(10, 5);
+        System.out.println("10 - 5 = " + difference);
+
+        System.out.println("10 * 5 = " + multiply(10, 5));
+
+        System.out.println("10 / 5 = " + divide(10.0, 5.0));
+    }
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Methods Calling Other Methods
+
+A method doesn't have to be called only from `main`. A method can call another method!
+
+**Example:**
+We want to calculate (a + b) * c. We can create a method calculateExpression that uses our add method to get the sum.
+
+```java
+public static int calculateExpression(int a, int b, int c) {
+    int sum = add(a, b); // Calling our add() method
+    int result = sum * c;
+    return result;
+}
+```
+
+This is a great way to break down a big problem into smaller, simpler pieces.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## A Quick Challenge 🧠
+
+**Problem:** Create a method that takes a person's name and age and prints their age in "dog years." (Remember, 1 human year is about 7 dog years).
+
+Your *Method Signature* should be:
+
+**`public static void printDogAge(String name, int humanAge)`**
+
+**Inside the method:**
+
+1. Calculate the `dogAge`.
+    
+2. Print a message like: "Alex is 28 in dog years!"
+    
+
+**In `main`:**
+
+- Call your method with a name and an age.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Try it out
+
+<div>
+<iframe src="https://trinket.io/embed/java/05a2bf2c1d7f" width="1200" height="500" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Common Mistakes with Methods
+
+- **Forgetting `static`**: For now, all our methods must have the `static` word.
+    
+- **Mismatched types**: Calling a method with an `int` when it's expecting a `String`.
+    
+- **Forgetting `return`**: A method that's supposed to return a value must have a `return` statement.
+    
+- **Forgetting to call the method**: Just making a method isn't enough; you have to call it to run the code inside.
+    
+- **Putting a method inside another method**: Methods must be defined side-by-side, inside the `class` but not inside another `{}` block.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Summary: Three Types of Methods
+
+|Type|Sends back a value?|Takes inputs?|Example|
+|---|---|---|---|
+|**Simple Method**|No (`void`)|No|`public static void sayHello()`|
+|**Method with Inputs**|No (`void`)|Yes|`public static void printName(String name)`|
+|**Method with Output**|Yes (`int`, `double`, etc.)|Yes or No|`public static int add(int num1, int num2)`|
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Practice Time!
+
+Now it's your turn. Let's work on some problems to make sure you understand methods.
+
+**Area of a Circle:**
+
+- Create a method `calculateCircleArea` that takes the radius as a `double`.
+- It should **return** the area as a `double`.
+- Formula: `Area = 3.14159 * radius * radius`.
+- Call the method 4 times with arguments 5, 6, 7, and 7 (Domino's pizza radii!) from the main method.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Try it yourself
+
+<div>
+<iframe src="https://trinket.io/embed/java/2abada581c47" width="1200" height="500" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+</div>
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Conclusion
+
+Methods are the building blocks of well-organized programs. They help us:
+
+- **Organize** our code.
+    
+- **Avoid repeating** code.
+    
+- Make our programs **easier to read**.
+    
+- Break down big problems into **smaller, easier tasks**.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**You now have a powerful new tool to write more useful and complex programs!**
+
+<img src="https://media1.tenor.com/m/rmXAvPvvIRcAAAAd/im-basically-a-wizard-danny-docile.gif" alt="" style="object-fit: scale-down">
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+    <script src="https://unpkg.com/@antonz/codapi@0.19.10/dist/snippet.js"></script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
