@@ -10,6 +10,7 @@
 - [Lecture 2](Slides/fa25.120.2.html)
 - [Lecture 3](Slides/fa25.120.3.html)
 - [Lecture 4](Slides/fa25.120.4.html)
+- [Lecture 5](Slides/fa25.120.5.html)
 
 ## COSC130 - Fall 25
 
