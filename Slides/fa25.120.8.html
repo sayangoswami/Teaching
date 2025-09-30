@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Constructors
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Agenda
+
+**What We'll Cover Today**
+
+1. **Recap:** The Class as a Table Blueprint
+    
+2. **The Problem:** Adding Empty Rows to Our Table
+    
+3. **The Solution:** Constructors as a "Data Entry Form"
+    
+4. **Constructor Syntax**
+    
+5. **Default Constructors**
+    
+6. **Multiple Constructors (Different Entry Forms)**
+    
+7. **The `this` Keyword**
+    
+8. **Putting it all together: Building Our Table**
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Recap: The Class as a Table Blueprint
+
+Let's revisit our analogy. A **Class** defines the _columns_ of a table.
+
+```java
+class Dog {
+    String name;
+    int age;
+}
+```
+
+This class is the blueprint for a table with two columns: `| name | age |`
+
+An **Object** is a _single row_ in that table. Creating an object with `new Dog()` is like telling the system, "Add a new row to the Dog table."
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Problem: Adding Empty Rows to Our Table
+
+Right now, when we add a new row, what's in the cells?
+
+```java
+Dog myDog = new Dog(); // Command: "Add a new row to the Dog table."
+```
+
+The table looks like this. The cells are filled with default values (`null` for objects, `0` for numbers).
+
+| variable | name | age |
+| -------- | ---- | --- |
+| myDog    | null | 0   |
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+We then have to fill in the cells manually, one by one.
+
+```java
+myDog.name = "Buddy"; // "Go to the 'name' cell of that new row and write 'Buddy'."
+myDog.age = 3;       // "Go to the 'age' cell of that new row and write 3."
+```
+
+**This is inefficient and risky.** What if we forget to fill in a cell?
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Solution: Constructors as a "Data Entry Form"
+
+A **Constructor** is like a **required data entry form** that pops up the moment you try to add a new row.
+
+- It guarantees that every new row is filled out with valid data from the very beginning.
+    
+- You can't create a row without filling out the form.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+Instead of adding an empty row and filling it later, we provide the data _up front_.
+
+```java
+// "Add a new Dog row, using this form to pre-fill the cells."
+Dog buddy = new Dog("Buddy", 3);
+```
+
+This single command creates a complete, valid row immediately.
+
+| variable | name  | age |
+| -------- | ----- | --- |
+| buddy    | Buddy | 3   |
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Constructor Syntax
+
+Here's how we define the "Data Entry Form" for our `Dog` table. Its called a ***constructor***. Its a special method that creates objects.
+
+```java
+public class Dog {
+    String name; // Column 1
+    int age;     // Column 2
+
+    // This is the Constructor! It defines the data entry form.
+    public Dog(String newName, int newAge) { // The fields on the form
+        name = newName; // Take the data from the 'newName' field and put it in the 'name' column
+        age = newAge;   // Take the data from the 'newAge' field and put it in the 'age' column
+    }
+}
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Key Rules for the *constructor*:**
+
+1. **Same Name as Class:** The constructor's name **must** match the class name (`Dog`).
+2. **No Return Type:** It doesn't "return" a value, *not even `void`*; its job is to _configure_ the new row.
+3. **Must be `public`**: For this course, our constructors will be `public`. Exceptions exist, but are beyond the scope of this course.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Using Our New Constructor to Build the Table
+
+Now, every time we add a row, we use our constructor to supply the initial data.
+
+```java
+public class Kennel {
+    public static void main(String[] args) {
+        // Create three complete rows for our Dog table
+        Dog buddy = new Dog("Buddy", 3);
+        Dog lucy = new Dog("Lucy", 1);
+        Dog max = new Dog("Max", 5);
+    }
+}
+```
+
+
+
+
+| variable | name  | age |
+| -------- | ----- | --- |
+| buddy    | Buddy | 3   |
+| lucy     | Lucy  | 1   |
+| max      | Max   | 5   |
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The "Default" Blank Form
+
+If you **do not create any constructor**, Java gives you a simple, blank one for free. This is the **default constructor**.
+
+It takes no arguments and lets you add an empty row, just like we did in the beginning.
+
+```java
+public class Cat {
+    // No constructor defined here...
+    // So Java gives us a free one: public Cat() {}
+}
+
+Cat myCat = new Cat(); // This works because we are using the free, blank form.
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## A Crucial Rule
+
+**IMPORTANT:** If you define _any_ custom constructor, Java **takes the free, blank one away**.
+
+```java
+public class Dog {
+    // We defined our own form that requires a name and age.
+    public Dog(String newName, int newAge) {
+        // ...
+    }
+    // The free, blank Dog() form is now GONE!
+}
+
+Dog buddy = new Dog("Buddy", 3); // Works! We used the form we defined.
+// Dog strayDog = new Dog();    // ERROR! There is no blank form available anymore.
+```
+
+If you want to allow blank rows, you must *explicitly create a no-argument constructor yourself*.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Multiple Constructors (Different Entry Forms)
+
+A class can have **multiple data entry forms**. This is useful for providing different ways to create a row. Java picks the correct form based on the data you provide.
+
+```Java
+class Dog {
+    String name; int age; String breed;
+
+    // Form 1: Requires all three columns
+    public Dog(String name, int age, String breed) { /* ... */ }
+
+    // Form 2: Requires name and age, sets a default for breed
+    public Dog(String name, int age) { /* ... */ }
+
+    // Form 3: A blank form for unknown dogs
+    public Dog() { /* ... */ }
+}
+...
+
+	new Dog("Rex", 4, "Shepherd"); // Uses Form 1
+	new Dog("Luna", 2); // Uses Form 2
+	new Dog(); // Uses Form 3
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `this` Keyword
+
+What if the fields on our form have the same names as our table columns?
+
+```java
+public class Dog {
+    String name; // The column header
+    int age;     // The column header
+
+    public Dog(String name, int age) { // The form fields
+        // Which 'name' is which? It's ambiguous!
+        this.name = name; // 'this.name' means: the 'name' column OF THIS ROW.
+                          // '= name' means: the 'name' value provided on the form.
+        this.age = age;
+    }
+}
+```
+
+**`this`** means "the current object" or, in our analogy, **"this specific row that we are currently creating."** It resolves ambiguity.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Summary: Constructors Build Your Table
+
+1. A **Class** is a blueprint for a table's **columns**.
+    
+2. An **Object** is a **row** in that table.
+    
+3. A **Constructor** is the **official data entry form** for creating a new row.
+    
+4. Its job is to ensure every new row is **initialized with valid data**, preventing empty or null cells.
+    
+5. You can have multiple forms (**overloading**) to provide different ways to create rows.
+    
+6. The `this` keyword refers to **the specific row being created**.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Part 2: Constructor Programming Problems (5 Problems)
+
+These problems are designed to test understanding of basic constructors, constructor overloading, and the `this` keyword.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### CS1 Constructor Practice Problems
+
+**Instructions:** For each problem, create the specified Java class file. Do not include a `main` method unless explicitly asked, and focus solely on defining the class and its constructors.
+
+<mark>**[Your Code Here](https://onecompiler.com/java)**</mark>
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Problem 1: `Circle` Class**
+
+Create a `Circle` class.
+
+- **Instance Variable:**
+    
+    - `radius` (type `double`)
+        
+- **Constructor:**
+    
+    - A single constructor `public Circle(double initialRadius)` that takes a `double` for the radius and initializes the `radius` instance variable.
+        
+- **Method:**
+    
+    - `public double calculateArea()`: Returns the area of the circle (`Math.PI * radius * radius`).
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Example Usage:**
+
+```java
+Circle c1 = new Circle(5.0);
+System.out.println(c1.calculateArea()); // Expected: approx 78.5398...
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Problem 2: `Rectangle` Class (Default Constructor)**
+
+Create a `Rectangle` class.
+
+- **Instance Variables:**
+    
+    - `width` (type `double`)
+        
+    - `height` (type `double`)
+        
+- **Constructors:**
+    
+    - A no-argument constructor `public Rectangle()` that initializes `width` to `1.0` and `height` to `1.0`.
+        
+    - A constructor `public Rectangle(double initialWidth, double initialHeight)` that takes two `double` arguments and initializes `width` and `height` accordingly.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+- **Method:**
+    
+    - `public double calculatePerimeter()`: Returns the perimeter of the rectangle (`2 * (width + height)`).
+        
+
+
+**Example Usage:**
+
+
+
+```java
+Rectangle r1 = new Rectangle(); // width=1.0, height=1.0
+System.out.println(r1.calculatePerimeter()); // Expected: 4.0
+
+Rectangle r2 = new Rectangle(3.0, 4.0);
+System.out.println(r2.calculatePerimeter()); // Expected: 14.0
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Problem 3: `Product` Class (`this` keyword for instance variables)**
+
+Create a `Product` class.
+
+- **Instance Variables:**
+    
+    - `name` (type `String`)
+        
+    - `price` (type `double`)
+        
+- **Constructor:**
+    
+    - A constructor `public Product(String name, double price)` that takes parameters with the _same names_ as the instance variables. Use the `this` keyword to distinguish between the parameters and the instance variables.
+        
+- **Method:**
+    
+    - `public void printDetails()`: Prints the product's name and price in the format: `"Product: [name], Price: $[price]"`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Example Usage:**
+
+
+
+```java
+Product item = new Product("Laptop", 1200.50);
+item.printDetails(); // Expected: "Product: Laptop, Price: $1200.50"
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Problem 4: `Point` Class (Constructor Chaining with `this()`)**
+
+Create a `Point` class representing a 2D point.
+
+- **Instance Variables:**
+    
+    - `x` (type `int`)
+        
+    - `y` (type `int`)
+        
+- **Constructors:**
+    
+    - A constructor `public Point(int xCoord, int yCoord)` that initializes `x` to `xCoord` and `y` to `yCoord`.
+        
+    - A no-argument constructor `public Point()` that uses `this()` to call the two-argument constructor, initializing the point to `(0, 0)`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+- **Method:**
+    
+    - `public String getLocation()`: Returns a string in the format `"(x, y)"`.
+        
+
+
+
+**Example Usage:**
+
+
+
+```java
+Point p1 = new Point(10, 20);
+System.out.println(p1.getLocation()); // Expected: "(10, 20)"
+
+Point p2 = new Point(); // Should default to (0,0)
+System.out.println(p2.getLocation()); // Expected: "(0, 0)"
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Problem 5: `Student` Class (Full Constructor Practice)**
+
+Create a `Student` class.
+
+- **Instance Variables:**
+    
+    - `firstName` (type `String`)
+        
+    - `lastName` (type `String`)
+        
+    - `studentId` (type `String`)
+        
+    - `major` (type `String`)
+        
+    - `gpa` (type `double`)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+- **Constructors:**
+    
+    - A constructor `public Student(String firstName, String lastName, String studentId, String major, double gpa)` that initializes all fields. Use `this` for clarity.
+        
+    - A constructor `public Student(String firstName, String lastName, String studentId)` that initializes `firstName`, `lastName`, and `studentId`, and uses `this()` to call the full constructor, setting `major` to `"Undeclared"` and `gpa` to `0.0`.
+        
+- **Method:**
+    
+    - `public String getFullInfo()`: Returns a string with all student information, e.g., `"Name: [firstName] [lastName], ID: [studentId], Major: [major], GPA: [gpa]"`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Example Usage:**
+
+
+```java
+Student s1 = new Student("Alice", "Smith", "A123", "Computer Science", 3.8);
+System.out.println(s1.getFullInfo());
+
+Student s2 = new Student("Bob", "Johnson", "B456"); // Undeclared, GPA 0.0
+System.out.println(s2.getFullInfo());
+```
+</div></script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
