@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Access Control and Shared Data
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Today's Agenda
+
+1. **A Quick Review:** What is a class and an object?
+    
+2. **The Problem:** Why letting everyone touch your data is a bad idea.
+    
+3. **Access Modifiers:** Introducing `public` and `private`.
+    
+4. **Encapsulation:** The principle of building "black boxes."
+    
+5. **Getters & Setters:** The official doors to your object's data.
+    
+6. **The `static` Keyword:** When data and methods belong to the class, not the object.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Review: A Simple `Student` Class
+
+A class is a **blueprint**. An object is an **instance** built from that blueprint. So far, all members of our classes have been open for anyone to change.
+
+```java
+class Student {
+    int studentID;
+    double gpa;
+
+    Student(int id, double initialGpa) {
+        this.studentID = id;
+        this.gpa = initialGpa;
+    }
+}
+```
+
+```java
+// inside the main method
+Student s1 = new Student(12345, 3.8);
+System.out.println(s1.gpa); // Prints 3.8
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The Problem: Uncontrolled Access
+
+What happens when code _outside_ the class directly modifies an object's data?
+
+
+
+```java
+Student s1 = new Student(12345, 3.8);
+
+// This is possible, but is it valid?
+s1.gpa = 5.0; // A 5.0 GPA is not possible in a 4.0 system!
+
+// Can a student just change their own ID number?
+s1.studentID = 99999;
+
+System.out.println("GPA: " + s1.gpa); // Prints "GPA: 5.0"
+```
+
+**Problem:** The object cannot protect itself. Its data integrity is compromised. We need a way to enforce rules.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Access Modifiers: `public` vs. `private`
+
+We can control access to class members using special keywords.
+
+**`public`**
+
+- **"Come on in!"**
+    
+- The member is accessible from anywhere—inside or outside the class.
+    
+- This is the least restrictive level.
+    
+
+<!-- .element: class="fragment" -->
+
+**`private`**
+
+- **"Employees Only!"**
+    
+- The member can **only** be accessed by code _inside the same class_.
+    
+- Code outside the class cannot see or modify it. It's hidden.
+    
+<!-- .element: class="fragment" -->
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## `private` in Action
+
+Let's make our attributes `private` to protect them.
+
+```java
+class Student {
+    private int studentID;
+    private double gpa;
+
+    // Constructor is still public. why??
+    public Student(int id, double initialGpa) {
+        this.studentID = id;
+        this.gpa = initialGpa;
+    }
+}
+```
+<!-- .element: class="fragment" -->
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Accessing private variables in restricted
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Student s1 = new Student(12345, 3.8);
+		
+		// the following is COMPILER ERROR! gpa has private access
+		s1.gpa = 5.0;
+		
+		// Again, COMPILER ERROR! gpa has private access
+		System.out.println(s1.gpa);
+	}
+}
+```
+<!-- .element: class="fragment" -->
+
+**Success!** Our data is now protected from the outside world. 
+<!-- .element: class="fragment" -->
+
+**Problem!** But... how do we interact with it at all?
+<!-- .element: class="fragment" -->
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Encapsulation: The "Black Box" Principle
+
+**Encapsulation** is a core concept of Object-Oriented Programming.
+
+- **Definition:** Bundling an object's data (attributes) and the methods that operate on that data together.
+    
+- **Strategy:**
+    
+    1. Make all your attributes `private` (hide the details).
+        
+    2. Provide `public` methods to carefully control access to that data (the public interface).
+        
+
+**The *car* analogy:** You don't interact with the engine's internal pistons (private). You use the gas pedal and steering wheel (public methods).
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Controlled Access: Getters and Setters
+
+We create special `public` methods to provide safe, controlled access to `private` data.
+
+**Getter (or Accessor):** A method to _read_ the value of a private attribute.
+
+```java
+// Getter for gpa
+public double getGpa() {
+    return this.gpa;
+}
+```
+<!-- .element: class="fragment" -->
+
+**Setter (or Mutator):** A method to _change_ the value of a private attribute.
+
+```java
+// Setter for gpa
+public void setGpa(double newGpa) {
+    // We can add logic here!
+    this.gpa = newGpa;
+}
+```
+<!-- .element: class="fragment" -->
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Building a "Smarter" Setter
+
+The real power of setters is adding validation logic to protect our data.
+
+**`Student.java`**
+
+```java
+public void setGpa(double newGpa) {
+    // Only update the GPA if the new value is valid
+    if (newGpa >= 0.0 && newGpa <= 4.0) {
+        this.gpa = newGpa;
+    } else {
+        // Otherwise, do nothing or print an error
+        System.out.println("Error: Invalid GPA value " + newGpa);
+    }
+}
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**`Main.java`**
+
+
+
+```java
+Student s1 = new Student(12345, 3.8);
+s1.setGpa(5.0); // Prints "Error: Invalid GPA value 5.0"
+                // s1.gpa remains 3.8
+
+s1.setGpa(3.9); // This works!
+                // s1.gpa is now 3.9
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Shifting Gears: The `static` Keyword
+
+So far, every attribute (`gpa`, `studentID`) belongs to a specific **object** (an instance).
+
+- Student `s1` has their own GPA.
+    
+- Student `s2` has their own GPA.
+    
+
+**Question:** What if we need a piece of data that is **shared** by ALL `Student` objects?
+
+For example: How can we keep a count of the total number of students created?
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## `static` Variables (Class Variables)
+
+A `static` variable belongs to the **class itself**, not to any single object.
+
+- There is only **one copy** of a static variable, shared among all instances of the class.
+    
+- It's often used for constants or class-wide counters.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**`Student.java`**
+
+```java
+class Student {
+    private int studentID;
+    private double gpa;
+    private static int studentCount = 0; // Belongs to the CLASS
+
+    public Student(int id, double initialGpa) {
+        this.studentID = id;
+        this.gpa = initialGpa;
+        studentCount++; // Increment the shared counter
+    }
+    // ... getters and setters
+}
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## `static` Methods (Class Methods)
+
+A `static` method also belongs to the **class**, not an object.
+
+- It is called using the **Class Name**, not an object reference (e.g., `Student.getStudentCount()`).
+    
+- **The Golden Rule:** A `static` method can **only** access other `static` members. It cannot access instance variables like `gpa` or `studentID` because it doesn't know _which_ student's GPA to use!
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**`Student.java`**
+
+```java
+// A static method to get the value of a static variable
+public static int getStudentCount() {
+    return studentCount; // This works: static method accessing static variable
+}
+
+/* This would be an ERROR!
+public static double getAnGpa() {
+    return this.gpa; // ERROR: Cannot access non-static 'gpa'
+                     // from a static context.
+}
+*/
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Using `static` Members
+
+You access static members using the *class name, not the object name*.
+
+**`Main.java`**
+
+```java
+// No students have been created yet
+System.out.println("Total students: " + Student.getStudentCount()); // Prints 0
+
+Student s1 = new Student(12345, 3.8);
+Student s2 = new Student(67890, 3.5);
+
+// We've created two students
+System.out.println("Total students: " + Student.getStudentCount()); // Prints 2
+
+System.out.println(s1.getStudentCount()); // ERROR - NOT ALLOWED
+
+// Another example: The Math class uses static methods
+double result = Math.pow(2, 3); // We don't create a "Math" object
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Summary: Instance vs. `static`
+
+| **Instance Members (no `static`)**                                 | **`static` Members (Class Members)**                             |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| Belongs to an **object** (instance).                               | Belongs to the **class**.                                        |
+| Every object gets its own copy.                                    | **One copy** is shared by all objects.                           |
+| Accessed via an object reference: `myStudent.getGpa()`             | Accessed via the class name: `Student.getStudentCount()`         |
+| Can access both instance and `static` members.                     | Can **only** access other `static` members.                      |
+| Used for data that is unique to each object (e.g., `name`, `gpa`). | Used for data shared by all objects (e.g., counters, constants). |
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **Recap: The Core Analogy**
+
+- **Class:** The blueprint for a table. It defines the **column headers**. For a `Student` class, the columns are `studentID`, `gpa`, etc.
+    
+- **Object:** A **single row** in that table. Each row is a unique `Student` with its own specific data filling in the columns.
+    
+
+|studentID (int)|gpa (double)|<-- Class (The Columns)|
+|---|---|---|
+|12345|3.8|<-- Object `s1` (Row 1)|
+|67890|3.5|<-- Object `s2` (Row 2)|
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **How `public` and `private` Fit In: Column Permissions**
+
+Think of `public` and `private` as setting the **permissions** for who can read or write data in a column.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### `public` Columns
+
+A `public` attribute is like a column in a shared spreadsheet that **everyone can see and edit directly**.
+
+- Anyone with access to the spreadsheet can click on any cell in that column and type in a new value.
+    
+- There are no rules. You could type "Hello!" into the `gpa` column, or `5.0`. The column itself has no way to prevent bad data.
+    
+
+This is exactly what we had at the beginning: `s1.gpa = 5.0;` was like going to Row `s1`, Column `gpa`, and just typing `5.0`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### `private` Columns (with `public` Getters/Setters)
+
+A `private` attribute is like a **protected or "system-managed" column**.
+
+- **You, the user, cannot edit the cells in this column directly.** It's locked. If you try, you get an error.
+    
+- To interact with this column, you must go through the system's official user interface (the **public methods**).
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Getters (`getGpa()`):** This is the "View Details" button.
+
+- You can't select the cell yourself, but you can ask the system, "Hey, what's the GPA for student 12345?" and it will _show you the value_. The system retrieves it for you.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Setters (`setGpa()`):** This is the "Update GPA" form.
+
+- You can't type directly into the cell. You have to fill out a form (call the `setGpa` method) to _request a change_.
+    
+- When you submit the form, the system's internal logic (the `if` statement in our setter) **validates your input**.
+    
+    - If you request to set the GPA to `3.9`, the system checks it, sees it's valid, and updates the protected cell for you.
+        
+    - If you request to set the GPA to `5.0`, the system's validation fails, and it rejects the change, leaving the original data intact.
+        
+
+**In this way, the table (the class) is now responsible for maintaining the integrity of its own data.**
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### **How `static` Fits In: Data About the Whole Table**
+
+A `static` member **does not belong in a row or a column of the main table**. It's a piece of metadata that belongs to the **table itself**.
+
+Think of it like a **sticky note attached to the table's blueprint** or a special cell in the spreadsheet header.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+- **`static` variable (`studentCount`):** This is a single value written on that sticky note, called "Total Rows". It doesn't belong to Row 1 or Row 2; it describes the table as a whole.
+    
+    - Every time you add a new row (create a new object), you update the number on that one sticky note. `studentCount++`.
+        
+- **`static` method (`getStudentCount()`):** This is like an action or a button labeled "Show Total Rows".
+    
+    - You don't need to select a specific row to ask this question. You are asking the _table itself_ how many rows it contains. This is why you call it using the class name: `Student.getStudentCount()`.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Key Takeaways
+
+- **`private`**: Use for your attributes to protect them from invalid outside changes.
+    
+- **`public`**: Use for constructors and methods to create a usable interface for your class.
+    
+- **Encapsulation**: The practice of making attributes `private` and providing `public` getters/setters. This allows for validation and control, making your classes robust.
+    
+- **`static`**: Use when a piece of data or a method should be shared across all instances of a class. It belongs to the class, not the object.
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
