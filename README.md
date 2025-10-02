@@ -31,4 +31,8 @@
 - [Lecture 8](Slides/fa25.130.8.html)
 - [Lecture 9](Slides/fa25.130.8.html#/14)
 
+## Misc
+
+- [Tracer example](Misc/tracer_example.html)
+
 
