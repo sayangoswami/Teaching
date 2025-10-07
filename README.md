@@ -30,6 +30,7 @@
 - [Lecture 7](Slides/fa25.130.7.html)
 - [Lecture 8](Slides/fa25.130.8.html)
 - [Lecture 9](Slides/fa25.130.8.html#/14)
+- [Lecture 10](Slides/fa25.130.10.html)
 
 ## Misc
 
