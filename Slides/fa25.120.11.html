@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Midterm review
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Format
+
+- Mostly *multiple choice* and some fill-in the blanks.
+- 70 minutes (please be in class on time)
+- 30 questions
+- Choose *a single best answer* unless otherwise specified
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**1. Which of the following is a valid variable declaration and initialization in Java?**
+
+A) `int #_count = 5;`
+
+B) `double my-value = 10.5;`
+
+C) `String bookTitle = "Hello World";`
+
+D) `boolean 1stPlace = true;`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**2. What is the output of the following code snippet?**
+
+```java
+public class Calculator {
+    public static void main(String[] args) {
+        int x = 5;
+        int y = 10;
+        int z = 3;
+        int result = x + y * z;
+        System.out.println(result);
+    }
+}
+```
+
+A) 45
+
+B) 35
+
+C) 18
+
+D) The code fails to compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**3. Given the file `Robot.java` below, which of the marked lines can you independently insert the line `public int modelNumber;` into and still have the code compile?**
+
+
+
+```
+// line r1
+public class Robot {
+   // line r2
+   public void activate() {
+      // line r3
+   }
+   // line r4
+}
+```
+
+A) r1 and r3
+
+B) r2 and r4
+
+C) r1, r2, and r4
+
+D) r1, r2, r3, and r4
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**4. Fill in the blank to have the code print "bark".**
+
+
+
+```
+public class Dog {
+   public Dog() {
+      System.out.println("bark");
+   }
+   public static void main(String[] args) {
+       _____________________
+   }
+}
+```
+
+A) Dog;
+
+B) new Dog;
+
+C) Dog();
+
+D) new Dog();
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**5. What is the output of the following program?**
+
+
+
+```
+public class Test {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 3;
+        System.out.println(a % b);
+    }
+}
+```
+
+A) 3
+
+B) 1
+
+C) 0
+
+D) 3.33
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**6. Which of these variable declarations will compile without an error?**
+
+A) String car model = "Sedan";
+
+B) String $carModel = "Sedan";
+
+C) String car&Model = "Sedan";
+
+D) String final = "Sedan";
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**7. You have written the following Java program:**
+
+
+
+```
+public class MyApp {
+  public static void main(String[] args){
+    String message;
+    System.out.println(message);
+  }
+}
+```
+
+**What is the result when you compile and run this code?**
+
+A) It prints null.
+
+B) It prints an empty string.
+
+C) The code fails to compile because message has not been initialized.
+
+D) The code compiles but throws a NullPointerException at runtime.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**8. What can you put at LINE 3 so that the output of the program will be `20`?**
+
+
+
+```
+public class Exam {
+  public static void main(String[] args){
+    int a = 2;
+    // LINE 3
+    System.out.println(result);
+  }
+}
+```
+
+A) int result = (a + 3) * a + 10;
+
+B) int result = a + 3 * (a + 10);
+
+C) int result = (a + 3) * (a + 1);
+
+D) int result = a * (3 + a) * 2;
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**9. A class `Song` needs to store its title. The title should be readable from other classes, but not modifiable.**
+
+```
+public class Song {
+    private String title;
+    // LINE X
+}
+```
+
+**Which method should be placed at `LINE X` to achieve this?**
+
+A) `public String getTitle() {return title; }`
+
+B) `public void getTitle() {return title; }`
+
+C) `private String getTitle() {return title; }`
+
+D) `public void setTitle(String newTitle) {title = newTitle; }`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**10. What does the `private` modifier do for the `id` and `name` fields?**
+
+
+
+```
+class Product {
+  private int id;
+  private String name;
+}
+```
+
+A) id and name can only be accessed by methods defined inside the Product class.
+
+B) id and name are hidden from all other classes in the same package.
+
+C) id and name can only be changed once.
+
+D) id and name can be accessed by any class that inherits from Product.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**11. How can you create an instance of the `User` class and set its `age` to 25?**
+
+
+
+```
+public class User {
+    private String username;
+    private int age;
+
+    public void setUsername(String value) {
+        username = value;
+    }
+    public void setAge(int value) {
+        age = value;
+    }
+}
+```
+
+A) User u = new User(25);
+
+B) User u = new User(); u.age = 25;
+
+C) User u = new User(); u.setAge(25);
+
+D) You cannot create an instance because no constructor is defined.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**12. What will the output be when you run this program?**
+
+
+
+```
+class Box {
+    private static int boxCount = 0;
+    public int getBoxCount() { return boxCount; }
+    public Box() { boxCount++; }
+}
+public class Main {
+    public static void main(String[] args) {
+        Box a = new Box();
+        Box b = new Box();
+        System.out.println(a.getBoxCount());
+        System.out.println(b.getBoxCount());
+    }
+}
+```
+
+A) 1 1  
+B) 1 2  
+C) 2 1  
+D) 2 2
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**13. What will the output be when you run this program?**
+
+
+```
+class Light {
+    private String state = "off";
+    public String getState() { return state; }
+    public Light() { state = "on"; }
+}
+public class Room {
+    public static void main(String[] args) {
+        Light light = new Light();
+        System.out.println(light.getState());
+    }
+}
+```
+
+A) off  
+B) on  
+C) null  
+D) The code will not compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**14. Which method is a valid accessor (getter) for the `price` field?**
+
+```
+public class Item {
+    private double price;
+}
+```
+
+A) `public double getPrice() { return price; }`
+
+B) `private double getPrice() { return price; }`
+
+C) `public void getPrice() { return price; }`
+
+D) `public static double getPrice() { return price; }`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**15. You want to overload the `calculate` method. Which of the following methods can be added to the `MathHelper` class without causing a compilation error?**
+
+
+
+```
+public class MathHelper {
+    public int calculate(int x, int y) {
+        return x + y;
+    }
+}
+```
+
+A) public int calculate(int a, int b) { return a * b; }
+
+B) public double calculate(int x, int y) { return x + y; }
+
+C) public int calculate(int x) { return x * x; }
+
+D) None of the above.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**16. What is the output of the following program?**
+
+
+
+```
+public class Park {
+    static int numTrees = 0;
+    public void addTree() { numTrees++; }
+
+    public static void main(String[] args) {
+        Park p1 = new Park();
+        Park p2 = new Park();
+        p1.addTree();
+        p2.addTree();
+        System.out.println(Park.numTrees);
+    }
+}
+```
+
+A) 0  
+B) 1  
+C) 2  
+D) The code fails to compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**17. Which of the following is a valid constructor for the `Car` class?**
+
+
+
+```
+public class Car {
+    String model;
+    int year;
+}
+```
+
+A) void Car(String m, int y) { model = m; year = y; }
+
+B) public Car(String m, int y) { model = m; year = y; }
+
+C) public constructCar(String m, int y) { model = m; year = y; }
+
+D) public Car() { return this; }
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**18. What is the result of the following boolean expression?**
+
+
+
+```
+int a = 5;
+int b = 10;
+boolean result = (a > b) || (b > 0);
+```
+
+A) true
+
+B) false
+
+C) The code fails to compile.
+
+D) The code throws an exception at runtime.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**19. What is printed to the console?**
+
+
+
+```
+public class LogicCheck {
+    public static void main(String[] args) {
+        int score = 85;
+        if (score >= 90) {
+            System.out.print("A");
+        } else if (score >= 80) {
+            System.out.print("B");
+        } else {
+            System.out.print("C");
+        }
+    }
+}
+```
+
+A) A  
+B) B  
+C) C  
+D) AB
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**20. Fill in the blank to make the code compile and set the `color` field.**
+
+
+
+```
+public class Pen {
+    public String color;
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Pen myPen = new Pen();
+        ___________ = "Blue";
+    }
+}
+```
+
+A) myPen[color]  
+B) myPen-color  
+C) myPen.color  
+D) Pen.color
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**21. What is the output of this program?**
+
+```
+public class Greeter {
+    public static void sayHello() {
+        System.out.println("Hello!");
+    }
+
+    public static void main(String[] args) {
+        Greeter greeter = null;
+        greeter.sayHello();
+    }
+}
+```
+
+A) Hello!
+
+B) The code fails to compile.
+
+C) The code throws a NullPointerException at runtime.
+
+D) Nothing is printed.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**22. Which condition will cause the message "Access Granted" to be printed?**
+
+
+
+```
+boolean isMember = false;
+int loyaltyYears = 5;
+
+if ( /*CONDITION GOES HERE*/ ) {
+    System.out.println("Access Granted");
+}
+```
+
+A) isMember && loyaltyYears > 10
+
+B) isMember || loyaltyYears > 2
+
+C) !isMember && loyaltyYears < 3
+
+D) isMember
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**23. A method is defined as `public static void calculate()`. Which statement is true?**
+
+A) The method can only be called from an instance of the class.
+
+B) The method can access both static and instance variables.
+
+C) The method can be called using the class name, without creating an instance.
+
+D) The method must return a value.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**24. What is the result of compiling and executing the following class?**
+
+
+
+```
+public class Ranger {
+   int birds = 10;
+   public static void main(String[] args) {
+      int trees = 5;
+      System.out.print(trees + birds);
+   }
+}
+```
+
+A) It compiles and outputs 15.
+
+B) It compiles and outputs 5.
+
+C) It compiles but throws an exception at runtime.
+
+D) It does not compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**25. Which statement correctly creates an object of the `Player` class and calls its `play` method?**
+
+
+
+```
+public class Player {
+    public void play() {
+        System.out.println("Playing...");
+    }
+}
+```
+
+A) Player p; p.play();
+
+B) new Player().play();
+
+C) Player p = Player(); p.play();
+
+D) Player.play();
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**26. What is the value of `x` after this code runs?**
+
+
+
+```
+int x = 20;
+x = x / 3;
+```
+
+A) 6.66
+
+B) 7
+
+C) 6
+
+D) The code causes an error.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**27. An `if` statement's condition evaluates to `false`. What happens next?**
+
+A) The code inside the if block is executed.
+
+B) If an else block exists, its code is executed.
+
+C) The program terminates immediately.
+
+D) The program re-evaluates the condition.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**28. What is the output of this program?**
+
+
+
+```
+public class Airplane {
+   static int start = 2;
+   int end;
+
+   public Airplane(int x) { x = 4; end = x; }
+   
+   public void fly(int distance) {
+      System.out.print(end - start + " ");
+      System.out.print(distance);
+   }
+   public static void main(String... args) {
+      new Airplane(10).fly(5);
+   }
+}
+```
+
+A) 8 5  
+B) 2 5  
+C) 6 5  
+D) The code does not compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**29. A method is defined as `public void doSomething(String text)`. Which of the following is a valid method overload?**
+
+A) public void doSomething(String text, int count)
+
+B) public void doSomething(String message)
+
+C) public int doSomething(String text)
+
+D) private void doSomething(String text)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**30. What is the output of this code?**
+
+
+
+```
+public class Logic {
+    public static void main(String[] args) {
+        boolean isReady = true;
+        if (!isReady) {
+            System.out.print("A");
+        } else {
+            System.out.print("B");
+        }
+        if (isReady) {
+            System.out.print("C");
+        }
+    }
+}
+```
+
+A) A  
+B) B  
+C) AC  
+D) BC
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>

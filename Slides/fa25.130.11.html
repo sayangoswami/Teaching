@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Midterm review
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Format
+
+- Mostly *multiple choice* and some fill-in the blanks.
+- 70 minutes (please be in class on time)
+- 30 questions
+- Choose *a single best answer* unless otherwise specified
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**1. Given the following `Computer` class:**
+
+```java
+public class Computer {
+    String model;
+    int ram;
+
+    public Computer(String model, int ram) {
+        this.model = model;
+        this.ram = ram;
+    }
+}
+```
+
+**Which code snippet, when placed in a `main` method, will fail to compile?**
+
+A)  `Computer c1 = new Computer("Spectre", 16);`         
+B)  `Computer c2 = new Computer();`      
+C)  `System.out.println("New computer created.");`     
+D)  `Computer c3 = null;`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**2. What is the output of the following program?**
+
+```java
+class Vehicle {
+    public Vehicle() {
+        System.out.print("Vehicle ");
+    }
+}
+class Car extends Vehicle {
+    public Car() {
+        System.out.print("Car ");
+    }
+}
+public class TestDrive {
+    public static void main(String[] args) {
+        new Car();
+    }
+}
+```
+A)  `Car`        
+B)  `Vehicle`     
+C)  `Car Vehicle`     
+D)  `Vehicle Car`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**3. What is the output of the following program?**
+
+```java
+class Counter {
+    public static int count = 0;
+    public Counter() {
+        count++;
+    }
+}
+public class App {
+    public static void main(String[] args) {
+        Counter c1 = new Counter();
+        Counter c2 = new Counter();
+        Counter c3 = new Counter();
+        System.out.println(Counter.count);
+    }
+}
+```
+A)  `0`        
+B)  `1`     
+C)  `3`     
+D)  The code fails to compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**4. What is the output of the following program?**
+
+```java
+class Animal {
+    public void makeSound() {
+        System.out.println("Generic Sound");
+    }
+}
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Woof");
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Animal myPet = new Dog();
+        myPet.makeSound();
+    }
+}
+```
+
+A)  `Generic Sound`        
+B)  `Woof`     
+C)  The code fails to compile.     
+D)  An exception is thrown at runtime.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**5. Given the following class definition:**
+
+```java
+public class Employee {
+    private String name;
+    public int employeeId;
+
+    public Employee(String name, int iD)  {
+        this.name = name;
+        this.employeeId = id;
+    }
+    public String getName() {
+        return name;
+    }
+}
+```
+
+**Which line of code, if located in another class, will cause a compilation error?**
+
+A)  `Employee emp = new Employee("John", 101);`        
+B)  `System.out.println(emp.employeeID) ;`     
+C)  `System.out.println(emp.getName());`     
+D)  `System.out.println(emp.name);`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**6. What is the output of the following code?**
+
+```java
+class Plant {
+    String type = "Generic";
+}
+class Flower extends Plant {
+    String type = "Rose";
+    public void printType() {
+        System.out.print(type + " ");
+        System.out.print(super.type);
+    }
+}
+public class Garden {
+    public static void main(String[] args) {
+	    Plant f = new Flower();
+        f.printType();
+    }
+}
+```
+A) `Rose Generic`      
+B) `Generic Rose`   
+C) `Rose Rose`   
+D) The code fails to compile because `super.type` is invalid.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**7. What is the result of attempting to compile and run the following code?**
+
+```java
+class Box {
+    private int size;
+    public Box(int size) {
+        this.size = size;
+    }
+}
+class Widget extends Box {
+    // Missing constructor
+}
+public class Factory {
+    public static void main(String[] args) {
+        Widget w = new Widget();
+    }
+}
+```
+A) The code compiles and runs successfully.   
+B) A NullPointerException is thrown at runtime.   
+C) The code fails to compile because of an error in the Widget class.   
+D) The code fails to compile because of an error in the Factory class.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**8. Given the following array and loop:**
+
+```java
+class Shape {
+    public void draw() { System.out.println("Drawing Shape "); }
+}
+class Circle extends Shape {
+    @Override
+    public void draw() { System.out.println("Drawing Circle "); }
+}
+class Square extends Shape {
+    @Override
+    public void draw() { System.out.println("Drawing Square "); }
+}
+
+// In a main method:
+Shape[] shapes = { new Circle(), new Square(), new Shape() };
+for (Shape s : shapes) {
+    s.draw();
+}
+```
+
+**What is the complete output?**
+
+A) `Drawing Shape Drawing Shape Drawing Shape`   
+B) `Drawing Circle Drawing Square Drawing Shape`   
+C) `Drawing Shape Drawing Circle Drawing Square`   
+D) The code fails to compile.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**9. What is the output of this program?**
+
+```java
+public class Person {
+    private String name;
+    public Person(String name) {
+        name = name; // Note this line
+    }
+    public String getName() {
+        return name;
+    }
+    public static void main(String[] args) {
+        Person p = new Person("Alice");
+        System.out.println(p.getName());
+    }
+}
+```
+A) `Alice`   
+B) `null`   
+C) The code fails to compile.   
+D) An empty string is printed.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**10. Which statement is true about the `static` keyword in Java?**
+
+A) A static method can directly access instance variables of the class.   
+B) Each object of a class has its own copy of a static variable.   
+C) A static method can be called without creating an instance of the class.   
+D) The this keyword can be used inside a static method.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**11. What is the result of attempting to compile and run the following code?**
+
+```java
+public class Service {
+    private int serviceId;
+
+    public static void logService() {
+        System.out.println("Service ID: " + serviceID) ;
+    }
+    public static void main(String[] args) {
+        logService();
+    }
+}
+```
+A) It prints `Service ID: 0`.   
+B) It throws a NullPointerException at runtime.   
+C) It fails to compile.   
+D) It prints `Service ID: null`.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**12. Which of the following statements best describes encapsulation in object-oriented programming?**
+
+A) It allows a class to use methods and fields from a parent class.   
+B) It is the mechanism for creating a new class from an existing class.   
+C) It bundles the data (fields) and methods that operate on the data into a single unit, hiding the internal state from the outside.   
+D) It allows a method to have different implementations depending on the object it is called on.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**13. What is the output of the following program?**
+
+```java
+public class Account {
+    private double balance;
+
+    public Account(double startBalance) {
+        this.balance = startBalance;
+    }
+
+    public void setBalance(double newBalance) {
+        if (newBalance >= 0) {
+            this.balance = newBalance;
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public static void main(String[] args) {
+        Account acc = new Account(100.0);
+        acc.setBalance(-50.0);
+        System.out.println(acc.getBalance());
+    }
+}
+```
+A) `-50.0`   
+B) `50.0`   
+C) `100.0`   
+D) `0.0`
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**14. What is the output of the following program?**
+
+```java
+public class TestArrays {
+    public static void main(String[] args) {
+        String[] words = new String[3];
+        words[0] = "Java";
+        words[2] = "Rocks";
+        System.out.println(words[1]);
+    }
+}
+```
+A) An empty string `""` is printed.   
+B) `null`   
+C) A NullPointerException is thrown at runtime.   
+D) The code fails to compile.
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
