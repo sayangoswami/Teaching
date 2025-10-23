@@ -18,6 +18,7 @@
 - [Lecture 9](Slides/fa25.120.9.html)
 - [Lecture 10](Slides/fa25.120.10.html)
 - [Midterm review](Slides/fa25.120.11.html)
+- [Lecture 13](Slides/fa25.120.13.html)
 
 ## COSC130 - Fall 25
 

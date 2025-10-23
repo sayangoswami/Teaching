@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/custom1.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Miscellaneous Topics
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Agenda
+    
+1. **Data Types**: A quick review of size.
+2. **Casting**: Changing a variable's type.
+3. **The `Object` Class**: The master blueprint.   
+4. **`toString()`**: Giving your objects a voice.
+5. **`equals()`**: Comparing objects the _right_ way.
+6. **`Math` Class**: Your built-in calculator.
+7. **Scope**: Where do variables live?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## A Quick Look at Data Types
+
+The *type* tells Java what kind of data it is (a number, a character, etc.).
+
+The *size* tells Java how much memory to set aside for it.
+
+There are two main categories of types:
+
+1. **Primitive Types:** The 8 simple, built-in types.
+    
+2. **Reference Types:** Objects (like `String`, `Student`, `Scanner`).
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Data Types: Primitives
+
+|**Type**|**Size**|**Stores**|**Example**|
+|---|---|---|---|
+|`boolean`|~1 bit|`true` or `false`|`boolean isDone = true;`|
+|`char`|16 bits|A single character|`char grade = 'A';`|
+|`byte`|8 bits|Small whole numbers (-128 to 127)|`byte b = 100;`|
+|`short`|16 bits|Small whole numbers|`short s = 30000;`|
+|**`int`**|**32 bits**|**Whole numbers** (Most common)|`int count = 1000000;`|
+|`long`|64 bits|Very large whole numbers|`long bigNum = 1234567890L;`|
+|`float`|32 bits|Decimal numbers (less precise)|`float price = 19.99f;`|
+|**`double`**|**64 bits**|**Decimal numbers** (Most common)|`double pi = 3.14159;`|
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Primitives vs. Reference Types
+
+This is a **CRITICAL** concept.
+
+**Primitive Types** (like `int`)
+
+- The variable **directly holds the value**.
+    
+- Think of it as a small box that holds the number itself.
+    
+```java
+int x = 5;
+int y = x; // y gets a *copy* of 5.
+y = 10;    // x is still 5.
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Reference Types** (like `Student` or `String`)
+
+- The variable **holds a memory address (a "pointer")** that _points to_ the object.
+    
+- Think of it as a small box that holds a piece of paper with an _address_ on it. The real object lives at that address.
+    
+```java
+Student s1 = new Student("Alice", 123);
+Student s2 = s1; // s2 gets a *copy* of the address.
+                 // Both s1 and s2 point to the SAME object!
+s2.setName("Bob"); // s1.getName() will now also return "Bob"!
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Casting
+
+Casting is **treating a variable of one type as another type**. Think of it like pouring liquid from one container into another.
+
+This is based on the data type sizes we just saw!
+
+There are two kinds:
+
+1. **Widening:** Safe, "small box to big box."
+    
+2. **Narrowing:** Risky, "big box to small box."
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Widening Casting (Implicit)
+
+This happens **automatically** when you go from a "smaller" type to a "larger" type. No data is lost.
+
+```java
+int myInt = 9;         // 32 bits
+double myDouble = myInt; // Automatic! (int fits inside a double)
+System.out.println(myDouble); // 9.0
+
+long number = 10;    // 10 is an int but its fits in long
+```
+
+This is always safe. You can't lose information by putting a small thing in a big box.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Narrowing Casting (Explicit)
+
+This is when you go from a "larger" type to a "smaller" type. You must do this **explicitly** with `(type)`. **This is risky!**
+
+```java
+// you have to be explicit
+int x = 3.14;    // THIS LINE WILL NOT COMPILE
+float x = 1.0;   // neither will this one;
+int x = (int)3.14  // BUT THIS LINE WILL COMPILE
+
+// Data can be lost!
+double myDouble = 9.87;    // 64 bits
+int myInt = (int) myDouble; // Explicit (int) cast is required.
+System.out.println(myInt); // 9 (The .87 is truncated!)
+```
+
+This can fail. What if you try to put a big thing in a small box?
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `Object` Class
+
+**What is it?**
+
+- Think of `Object` as the "master blueprint" or "common ancestor" for _all_ objects in Java.
+    
+- Every class you use (`String`, `Scanner`) and every class you _make_ (`Student`) is automatically given a set of default behaviors from `Object`.
+    
+
+**What does it give us?**
+
+It provides the default versions of several critical methods, including:
+
+- `toString()`: How the object represents itself as a `String`.
+    
+- `equals()`: How the object compares itself to another object.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Casting Objects
+
+**Widening Cast (Implicit, Safe)**
+
+```java
+Student s1 = new Student("Bob", 567);
+Object obj = s1; // Automatic! A Student "fits" inside a
+                   // general Object variable.
+Object foo = new Student("Alice", 123); // this is valid
+```
+
+**Narrowing cast (Explicit, Risky)**
+
+```java
+Object obj = new Student("Eve", 789);
+Student s2 = (Student) obj; // Required! We're "promising" the compiler
+                           // that 'obj' is really a Student.
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Casting Objects: The Danger
+
+Narrowing a variable can fail at **runtime** (when the program is running).
+
+```java
+Object obj = "I am a String, not a Student";
+Student s = (Student) obj; // Compiles fine!
+                           // Throws ClassCastException at runtime!
+```
+
+This will crash your program with a **`ClassCastException`**.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**The Solution: `instanceof`**
+
+Use the `instanceof` keyword to check the type _before_ you cast. This prevents the crash.
+
+```java
+if (obj instanceof Student) {
+    Student s = (Student) obj; // Now it's safe!
+    System.out.println(s.getStudentID());
+} else {
+    System.out.println("This object is not a Student.");
+}
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## The `toString()` Method
+
+**The Problem**
+
+Remember the `Object` class? It gives our classes a default `toString()` method. But... it's not useful!
+
+```java
+Student s1 = new Student("Alice", 12345);
+System.out.println(s1); 
+```
+
+You get something like this...
+```
+Student@1a2b3c4d
+```
+...which is the class name and the object's memory address (hash code).
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Providing Your Own `toString()`
+
+**The Solution**
+
+You can **override** (provide your own version of) the `toString()` method in your class to return something meaningful.
+
+```java
+public class Student {
+    private String name;
+    private int studentID;
+
+    // ... constructor ...
+
+    // Provide our version of toString()
+    public String toString() {
+        return "Student[Name: " + this.name + ", ID: " + this.studentID + "]";
+    }
+}
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Now, when you print:**
+
+```java
+Student s1 = new Student("Alice", 12345);
+System.out.println(s1); 
+```
+
+The output is:
+```
+Student[Name: Alice, ID: 12345]
+```
+
+**Pro-tip:** `System.out.println(someObject)` automatically calls `someObject.toString()` for you!
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## `equals()` vs. `==`
+
+This is one of the most common bugs for new programmers!
+
+**`==` (The Identity Operator)** 
+
+- Checks if two variables point to the **exact same object in memory**.
+    
+- It asks: "Are these two variables the _same one_ object?"
+    
+
+**`.equals()` (Comparing Object _Content_)** 
+
+- Checks if two objects have the same **content or value**.
+    
+- It asks: "Are these two objects _equivalent_?"
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## `==` vs. `.equals()`: String Example
+
+`String` is a perfect example.
+
+```java
+// Example 1: String Literals
+String s1 = "Hello";
+String s2 = "Hello";
+System.out.println(s1 == s2);       // true (Java re-uses the same "Hello" object)
+System.out.println(s1.equals(s2)); // true (Both have the same characters)
+
+// Example 2: Using 'new' (Forces new objects)
+String s3 = new String("Hello");
+String s4 = new String("Hello");
+System.out.println(s3 == s4);       // false! (They are two different objects in memory)
+System.out.println(s3.equals(s4)); // true (They still have the same characters)
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**Rule of Thumb:**
+
+- Use `==` for primitive types (`int`, `double`, `boolean`).
+    
+- **ALWAYS** use `.equals()` to compare objects (like `String`, or your own `Student` objects).
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Why `.equals()` Doesn't Work By Default
+
+**The Problem**
+
+By default, the `.equals()` method that your `Student` class gets from `Object`... **just uses `==`!** This is almost never what you want.
+
+```java
+Student alice1 = new Student("Alice", 12345);
+Student alice2 = new Student("Alice", 12345); // A separate, but identical, object
+
+System.out.println(alice1.equals(alice2)); // false! (This is not what we want!)
+```
+
+**The Solution**
+
+You must **override `equals()`** to define what makes two `Student` objects "equal."
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## How to Provide Your Own `equals()`
+
+Now we can use what we just learned about `instanceof` and casting!
+
+```java
+public class Student {
+    private String name;
+    private int studentID;
+
+    // ... constructor ...
+
+    public boolean equals(Object obj) {
+        // 'Object obj' is required. It means this method
+        // can accept *any* object for comparison.
+
+        // 1. Check if the other object is actually a Student
+        //    (We just learned this!)
+        if (!(obj instanceof Student)) {
+            return false;
+        }
+
+        // 2. Cast 'obj' to a Student so we can access its fields
+        //    (We just learned this!)
+        Student other = (Student) obj;
+
+        // 3. Compare the fields that matter for equality
+        return this.studentID == other.studentID;
+    }
+}
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Topic 6: The `Math` Class
+
+**What is it?**
+
+A built-in Java class that gives you common mathematical functions and constants.
+
+**How to use it?**
+
+You do not create a Math object (e.g., new Math()).
+
+You use the class name directly to access its methods. We call these static methods.
+
+```java
+// You just call methods on the 'Math' class itself
+double x = Math.pow(2, 3); // 2 to the power of 3
+double pi = Math.PI;       // The constant PI
+```
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Common `Math` Methods
+
+Here are some of the most useful ones:
+
+- `Math.pow(double a, double b)`
+    
+    - Returns `a` to the power of `b` ( `$a^b$` ).
+        
+    - `Math.pow(2, 3)` returns `8.0`.
+        
+- `Math.sqrt(double a)`
+    
+    - Returns the square root of `a` ( `$\sqrt{a}$` ).
+        
+    - `Math.sqrt(16)` returns `4.0`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Common `Math` Methods
+
+- `Math.abs(double a)` or `Math.abs(int a)`
+    
+    - Returns the absolute value (makes it positive).
+        
+    - `Math.abs(-5.5)` returns `5.5`. `Math.abs(-10)` returns `10`.
+        
+- `Math.max(a, b)` / `Math.min(a, b)`
+    
+    - Returns the larger or smaller of two numbers.
+        
+    - `Math.max(10, 20)` returns `20`.
+        
+- **Constants:** `Math.PI` (3.14159...) and `Math.E` (2.71828...)
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Using `Math.random()` 
+
+This is one of the most useful methods!
+
+- Math.random() returns a double value in the range:
+    
+    `$[0.0, 1.0)$` (This means 0.0 is included, but 1.0 is not).
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+How to get a random integer in a range?
+
+(e.g., a random number between 1 and 10, inclusive)
+
+```java
+// 1. Get the random double
+double rand = Math.random(); // e.g., 0.735...
+
+// 2. Multiply by your range size (10)
+rand = rand * 10;           // e.g., 7.35...
+
+// 3. Shift it up (to start at 1 instead of 0)
+rand = rand + 1;            // e.g., 8.35...
+
+// 4. Cast to an int (this chops off the decimal)
+int myRandomNum = (int) rand; // e.g., 8
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+The General Formula:
+
+To get a random integer from MIN to MAX (inclusive):
+
+```java
+int num = (int)(Math.random() * (MAX - MIN + 1)) + MIN;
+```
+
+Example (1 to 10):
+
+```java
+int num = (int)(Math.random() * 10) + 1;
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Scope
+
+Scope defines where a variable can be seen and used.
+
+The simplest rule: "*Scope is defined by the nearest set of curly braces `{}`*."
+
+A variable declared inside a set of `{}` only exists _inside_ those `{}`.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+```java
+public class ScopeExample {
+    // 1. CLASS SCOPE (Field)
+    private int classVar = 10; // Visible to ALL methods in the class.
+
+    public void myMethod(int paramVar) { // 2. METHOD SCOPE (Parameter)
+                                        // 'paramVar' lives only in this method.
+        // 3. METHOD SCOPE (Local Variable)
+        int methodVar = 20; // 'methodVar' lives only in this method.
+
+        if (methodVar > 10) {
+            // 4. BLOCK SCOPE
+            int blockVar = 30; // 'blockVar' lives ONLY in this if-block.
+            System.out.println(classVar);  // OK
+            System.out.println(methodVar); // OK
+        }
+
+        System.out.println(classVar);    // OK
+        System.out.println(methodVar);   // OK
+        // System.out.println(blockVar); // ERROR! 'blockVar' is out of scope.
+    }
+}
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Scope: Shadowing and `this`
+
+**Shadowing** is when a local variable has the **same name** as a class-level (field) variable.
+
+The local variable "wins" and hides the field.
+
+```java
+public class Student {
+    private String name; // Class scope
+
+    // A common constructor pattern:
+    public Student(String name) { // 'name' is in method/parameter scope
+        name = name; // BUG! This assigns the parameter to itself.
+                     // The class 'name' is "shadowed" and untouched.
+    }
+}
+```
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**The Solution: The `this` keyword**
+
+`this` is a reference to the **current object**. It lets you "reach past" the local scope to get the class-level field.
+
+```java
+public class Student {
+    private String name; 
+
+    public Student(String name) {
+        // "this.name" refers to the class field.
+        // "name"      refers to the method parameter.
+        this.name = name; // CORRECT!
+    }
+}
+```
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Scope: A Common `if-else` Pitfall
+
+A variable declared _inside_ a block (like `if`) **cannot** be seen from the _outside_.
+
+**The Problem:**
+
+```java
+int x = 10;
+if (x > 5) {
+    String result = "x is greater than 5";
+} else {
+    String result = "x is 5 or less"; // This is a *different* 'result'
+}
+System.out.println(result); // ERROR! 'result' cannot be resolved
+```
+
+**Why?** The `result` variable inside the `if` _only_ exists in that block. The `result` in the `else` _only_ exists in _that_ block. The `println` can't see either of them.
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**The Solution:**
+
+Declare the variable in the outer scope before the if-else block.
+
+```java
+int x = 10;
+String result; // 1. Declare in the outer scope
+if (x > 5) {
+    result = "x is greater than 5"; // 2. Assign value
+} else {
+    result = "x is 5 or less"; // 2. Assign value
+}
+System.out.println(result); // OK! 'result' is visible here.
+```
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Summary
+
+- **`Object` Class**: The "master blueprint" that gives all objects their default methods.
+    
+- **Data Types**: Primitives (`int`, `double`) store values. References (`String`) store addresses.
+    
+- **Casting**: Use `(type)` to change types. `instanceof` helps you check _before_ you cast.
+    
+- **`toString()`**: Override it to get a helpful `String` representation.
+    
+- **`equals()`**: Override it to compare object _content_. Use `==` for primitives.
+    
+- **`Math` Class**: A built-in toolkit for math. Use `Math.pow()`, `Math.sqrt()`, `Math.random()`.
+    
+- **Scope**: Variables only "live" inside their `{}`. Declare variables in a wider scope if you need to access them after a block (like `if-else`).
+    
+- **`this`**: Use `this` to access class fields when they are "shadowed."
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
