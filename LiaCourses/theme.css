@@ -1,0 +1,190 @@
+/* === Custom LiaScript Theme with Dark Mode === */
+
+/* ---------- Base (light mode) ---------- */
+:root {
+  /* --main-bg-color: #ffffff; */
+  --main-font: "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
+  --global-font-mono: "Fira Code";
+  /* --main-font-size: 20px; */
+  /* --main-color: #000000; */
+  --heading-color: rgb(var(--color-highlight));
+  /* --heading-underline-color: #48555a; */
+  --primary-color: #1d4289;
+  --secondary-color: #d3273e;
+  --link-color: #003b49;
+  --link-color-hover: #8b7c69;
+  --selection-bg: #26351C;
+  --selection-color: #ffffff;
+
+  --bold-color: #1d4289;
+  --italic-color: #007a78;
+  --bold-italic-color: #d3273e;
+  --math-color: #25211c;
+}
+
+/* ---------- Dark mode ---------- */
+html.lia-variant-dark {
+    /* --main-bg-color: #111111; */
+    --main-font: "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
+    /* --main-font-size: 20px; */
+    /* --main-color: #ffffff; */
+    --heading-color: rgb(from rgb(var(--color-highlight))calc(r*2.5)calc(g*2.5)calc(b*2.5));
+    /* --heading-underline-color: #8bd3dd; */
+    --link-color: #8bd3dd;
+    --link-color-hover: #aeeeee;
+    --primary-color: #88aaff;
+    --secondary-color: #ff597a;
+    --selection-bg: #26351C;
+    --selection-color: #ffffff;
+
+    --bold-color: #88aaff;
+    --italic-color: #4fd4d0;
+    --bold-italic-color: #ff597a;
+    --math-color: #cccccc;
+}
+
+/* ---------- Body ---------- */
+
+body {
+  /* background-color: var(--main-bg-color) !important; */
+  /* color: var(--main-color) !important; */
+  font-family: var(--main-font) !important;
+  /* font-size: var(--main-font-size) !important; */
+  line-height: 1.6 !important;
+  /* margin: 0 auto !important; */
+  /* max-width: 960px !important; */
+}
+
+/* ---------- Headings ---------- */
+
+h1.lia-h1, h2.lia-h2, h3.lia-h3, h4.lia-h4, h1, h2, h3 {
+  color: var(--heading-color) !important;
+  font-family: var(--main-font) !important;
+  font-weight: bold !important;
+  /* margin: 0 0 20px 0 !important; */
+}
+
+/* ---------- Links ---------- */
+
+a.lia-link {
+  color: var(--link-color) !important;
+  text-decoration: none !important;
+  border-bottom: 1px dotted var(--link-color) !important;
+}
+
+a.lia-link:hover {
+  color: var(--link-color-hover) !important;
+  border-bottom: 1px solid var(--link-color-hover) !important;
+}
+
+/* ---------- Lists ---------- */
+
+ul.lia-ul > li::marker {
+  color: var(--secondary-color) !important;
+}
+
+ul.lia-ul ul.lia-ul > li::marker {
+  color: var(--primary-color) !important;
+}
+
+/* ---------- Code blocks & inline code ---------- */
+
+code.lia-code, pre.lia-code {
+  font-family: "Fira Code", monospace !important;
+  /* color: var(--link-color) !important; */
+  /* background-color: rgba(0, 0, 0, 0.04) !important; */
+  /* border-left: 4px solid var(--primary-color) !important; */
+  /* padding: 0.3em 0.6em !important; */
+  /* border-radius: 4px !important; */
+}
+
+@media (prefers-color-scheme: dark) {
+  code.lia-code, pre.lia-code {
+    font-family: "Fira Code", monospace !important;
+  }
+}
+
+/* pre.lia-code {
+  display: block !important;
+  overflow-x: auto !important;
+} */
+
+/* ---------- Quotes ---------- */
+
+blockquote.lia-blockquote {
+  font-size: 2rem !important;
+  border-left: 5px solid var(--heading-underline-color) !important;
+  color: var(--heading-color) !important;
+  margin: 20px !important;
+  padding: 10px 20px !important;
+  background: #f4f7f7 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  blockquote.lia-blockquote {
+    background: #1a1a1a !important;
+  }
+}
+
+/* ---------- Tables ---------- */
+
+table.lia-table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+table.lia-table th,
+table.lia-table td {
+  border: 1px solid #ddd !important;
+  padding: 10px !important;
+}
+
+table.lia-table th {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+/* ---------- Text emphasis ---------- */
+
+strong.lia-bold {
+  color: var(--bold-color) !important;
+}
+
+em.lia-italic {
+  color: var(--italic-color) !important;
+}
+
+b.lia-b i.lia-i,
+strong.lia-strong em.lia-em {
+  color: var(--bold-italic-color) !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+/* ---------- Math expressions ---------- */
+
+.lia-math, .MathJax, .MathJax_Display {
+  color: var(--math-color) !important;
+  font-size: 1.05em !important;
+}
+
+/* ---------- Selection ---------- */
+
+::selection {
+  background-color: var(--selection-bg) !important;
+  color: var(--selection-color) !important;
+}
+
+/* ---------- Small text variants ---------- */
+
+small.lia-sm {
+  font-size: 0.9em !important;
+}
+
+small.lia-xs {
+  font-size: 0.7em !important;
+}
+
+small.lia-xxs {
+  font-size: 0.6em !important;
+}
