@@ -37,6 +37,7 @@
 - [Midterm review](Slides/fa25.130.11.html)
 - [Lecture 13](Slides/fa25.130.13.html)
 - [Lecture 14](Slides/fa25.130.14.html)
+- [Lecture 15](Slides/fa25.130.15.html)
 
 ## Misc
 
