@@ -19,6 +19,8 @@
 - [Lecture 10](Slides/fa25.120.10.html)
 - [Midterm review](Slides/fa25.120.11.html)
 - [Lecture 13](Slides/fa25.120.13.html)
+- [Lecture 14](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.120.14.md#1)
+- [Lecture 15](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.120.15.md#1)
 
 ## COSC130 - Fall 25
 
@@ -38,6 +40,7 @@
 - [Lecture 13](Slides/fa25.130.13.html)
 - [Lecture 14](Slides/fa25.130.14.html)
 - [Lecture 15](Slides/fa25.130.15.html)
+- [Lecture 16](Slides/fa25.130.16.html)
 
 ## Misc
 
