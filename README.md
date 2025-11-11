@@ -42,6 +42,7 @@
 - [Lecture 14](Slides/fa25.130.14.html)
 - [Lecture 15](Slides/fa25.130.15.html)
 - [Lecture 16](Slides/fa25.130.16.html)
+- [Lecture 17](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.130.17.md#1)
 
 ## Misc
 
