@@ -26,6 +26,7 @@
 - [Lecture 18](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.120.18.md#1)
 - [Lecture 19](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.120.19.md#1)
 - [Lecture 21](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.120.21.md#1)
+- [Lecture 22](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/LiaCourses/fa25.120.22.md#1)
 
 ## COSC130 - Fall 25
 
