@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# pandoc Notes/cosc445/lecture01.md \
-#   -s \
-#   -t html5 \
-#   --template templates/notes.html \
-#   --css ../../css/accessible-notes.css \
-#   --toc \
-#   --toc-depth=3 \
-#   --section-divs \
-#   --metadata title="Lecture 01: Scheduling" \
-#   --metadata lang="en" \
-#   --mathjax \
-#   -o output/cosc445/lecture01.html
-
-
 pandoc Notes/cosc445/lecture01.md \
   -t html5 \
   --standalone \

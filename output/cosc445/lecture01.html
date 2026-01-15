@@ -10,9 +10,28 @@
   <link rel="stylesheet" href="../../css/tufte.css" />
   <link rel="stylesheet" href="../../css/skylighting-solarized-theme.css" />
 
-  <script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
+<script>
+  window.MathJax = {
+    loader: {
+      load: ['ui/menu', 'a11y/explorer'] // explorer automatically loads speech and enrich
+    },
+    options: {
+      enableMenu: true,
+      a11y: {
+        speech: true,      // Generates speech strings for screen readers
+        braille: true,     // Support for Braille displays
+        explorer: true     // Allows keyboard users to walk through equations
+      }
+    },
+    // chtml: {
+    //   fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0-beta.7/es5/output/chtml/fonts/woff-v2'
+    // },
+    output: {
+      font: 'mathjax-fira'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 
 </head>
 

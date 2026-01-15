@@ -333,9 +333,3 @@ p, li {
     display: none;
   }
 }
-
-/* Force MathJax CHTML to use Fira Math */
-mjx-container[jax="CHTML"],
-mjx-container[jax="CHTML"] * {
-  font-family: "Fira Math", "STIX Two Math", sans-serif !important;
-}
