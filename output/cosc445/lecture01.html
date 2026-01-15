@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc-markdown-css-theme" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Introduction to Algorithms</title>
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/tufte.css" />
+  <link rel="stylesheet" href="../../css/skylighting-solarized-theme.css" />
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<!-- Skip link for keyboard users -->
+<a href="#main" class="skip-link">Skip to content</a>
+
+
+<header>
+<h1 class="title">Introduction to Algorithms</h1>
+<blockquote class="metadata">
+</blockquote>
+</header>
+
+<nav id="TOC" role="doc-toc" aria-label="Table of contents">
+    <strong>Contents</strong><label for="contents">⊕</label>
+  <input type="checkbox" id="contents">
+  <ul>
+  <li><a href="#introduction-to-algorithms"
+  id="toc-introduction-to-algorithms">Introduction to
+  Algorithms</a></li>
+  </ul>
+</nav>
+
+<!-- Main content landmark -->
+<main id="main">
+<section id="introduction-to-algorithms" class="level1">
+<h1>Introduction to Algorithms</h1>
+<p>Algorithms are the ideas behind computer programs.</p>
+<p>An algorithm is the thing which stays the same whether the program is
+in assembly language running on a supercomputer in New York or running
+on a cell phone in Kathmandu in Python!</p>
+<p>To be interesting, an algorithm has to solve a general, specified
+problem.</p>
+<p>An algorithmic problem is specified by describing the set of
+instances it must work on, and what desired properties the output must
+have.</p>
+<p>Input: A sequence of <span class="math inline">\(N\)</span> numbers
+<span class="math inline">\(a_{1} \dots a_{n}\)</span></p>
+<p>Output: the permutation (reordering) of the input sequence such as
+<span class="math inline">\(a_{1} \leq a_{2} \leq a_{3} \dots \leq
+a_{n}\)</span>.</p>
+<p>We seek algorithms which are <em>correct</em> and
+<em>efficient</em>.</p>
+<p>A faster algorithm running on a slower computer will <em>always</em>
+win for sufficiently large instances, as we shall see.</p>
+<p>Usually, problems don’t have to get that large before the faster
+algorithm wins.</p>
+<p>For any algorithm, we must prove that it <em>always</em> returns the
+desired output for all legal instances of the problem.</p>
+<p>For sorting, this means even if (1) the input is already sorted, or
+(2) it contains repeated elements.</p>
+<p>Algorithm correctness is not obvious in many optimization
+problems!</p>
+<p>Algorithms <em>problems</em> must be carefully specified to allow a
+provably correct algorithm to exist. We can find the “shortest tour” but
+not the “best tour”.</p>
+<p>We need some way to express the sequence of steps comprising an
+algorithm.</p>
+<p>In order of increasing precision, we have English, pseudocode, and
+real programming languages. Unfortunately, ease of expression moves in
+the reverse order.</p>
+<p>I prefer to describe the <em>ideas</em> of an algorithm in English,
+moving to pseudocode to clarify sufficiently tricky details of the
+algorithm.</p>
+<p>Suppose you have a robot arm equipped with a tool, say a soldering
+iron. To enable the robot arm to do a soldering job, we must construct
+an ordering of the contact points, so the robot visits (and solders) the
+points in order.</p>
+<p>We seek the order which minimizes the testing time (i.e. travel
+distance) it takes to assemble the circuit board.</p>
+<figure>
+<img src="" alt="A bunch of dots arranged haphazardly" />
+<figcaption aria-hidden="true">A bunch of dots arranged
+haphazardly</figcaption>
+</figure>
+<figure>
+<img src="" alt="A tour that connects the dots from the image above" />
+<figcaption aria-hidden="true">A tour that connects the dots from the
+image above</figcaption>
+</figure>
+<p>You are given the job to program the robot arm. Give me an algorithm
+to find the most efficient tour!</p>
+<p>A popular solution starts at some point <span
+class="math inline">\(p_{0}\)</span> and then walks to its nearest
+neighbor <span class="math inline">\(p_{1}\)</span> first, then repeats
+from <span class="math inline">\(p_{1}\)</span>, etc. until done.</p>
+<p>Pick and visit an initial point _p_0 <em>p</em> = _p_0 <em>i</em> = 0
+While there are still unvisited points <em>i</em> = <em>i</em> + 1 Let
+<em>pi</em> be the closest unvisited point to _pi__−_1 Visit <em>pi</em>
+Return to _p_0 from <em>pi</em></p>
+<figure>
+<img src=""
+alt="A bunch of points arranged linearly and a tour that starts from the mid point" />
+<figcaption aria-hidden="true">A bunch of points arranged linearly and a
+tour that starts from the mid point</figcaption>
+</figure>
+<figure>
+<img src=""
+alt="A bunch of points arranged linearly and a tour that starts from the leftmost point" />
+<figcaption aria-hidden="true">A bunch of points arranged linearly and a
+tour that starts from the leftmost point</figcaption>
+</figure>
+<p>Starting from the leftmost point will not fix the problem.</p>
+<p>Another idea is to repeatedly connect the closest pair of points
+whose connection will not cause a cycle or a three-way branch, until all
+points are in one tour.</p>
+<p>Let <em>n</em> be the number of points in the set For <em>i</em> = 1
+to <em>n</em> <em>−</em> 1 do <em>d</em> = <em>∞</em> For each pair of
+endpoints (<em>x, y</em>) of partial paths If <em>dist</em>(<em>x,
+y</em>) <em>≤</em> <em>d</em> then <em>xm</em> = <em>x</em>, <em>ym</em>
+= <em>y</em>, <em>d</em> = <em>dist</em>(<em>x, y</em>) Connect (<em>xm,
+ym</em>) by an edge Connect the two endpoints by an edge.</p>
+<p>Although it works correctly on the previous example, other data
+causes trouble:</p>
+<p>1 +
+e                                                                           
+1 + e</p>
+<p>1 - e</p>
+<p>1 - e</p>
+<p>1 - e</p>
+<p>1 - e</p>
+<p>1 + e</p>
+<ol start="12" type="a">
+<li></li>
+</ol>
+<p>1 + e</p>
+<ol start="18" type="a">
+<li></li>
+</ol>
+<p>We could try all possible orderings of the points, then select the
+one which minimizes the total length:</p>
+<p><em>d</em> = <em>∞</em></p>
+<p>For each of the <em>n</em>! permutations Π_i_ of the <em>n</em>
+points If (<em>cost</em>(Π_i_) <em>≤</em> <em>d</em>) then</p>
+<p><em>d</em> = <em>cost</em>(Π_i_) and <em>Pmin</em> = Π_i_</p>
+<p>Return <em>Pmin</em></p>
+<p>Since all possible orderings are considered, we are guaranteed to end
+up with the shortest possible tour.</p>
+<p>Because it tries all <em>n</em>! permutations, it is much too slow to
+use when there are more than 10-20 points.</p>
+<p>No   efficient,   correct   algorithm   exists   for   the  
+<em>traveling salesman problem</em>, as we will see later.</p>
+<p>A movie star wants to the select the maximum number of staring roles
+such that no two jobs require his presence at the same time.</p>
+<p>Tarjan of the Jungle</p>
+<p>The President’s Algorist             Steiner’s Tree</p>
+<p>The Four Volume Problem</p>
+<p>Process Terminated</p>
+<p>“Discrete” Mathematics</p>
+<p>Halting State                Programming Challenges</p>
+<p>Calculated Bets</p>
+<p>Input: A set <em>I</em> of <em>n</em> intervals on the line.</p>
+<p>Output:     What   is   the   largest   subset   of   mutually  
+non-overlapping intervals which can be selected from <em>I</em>?</p>
+<p>Give an algorithm to solve the problem!</p>
+<p><img
+src="file:////Users/sgoswami/Library/Group%20Containers/UBF8T346G9.Office/TemporaryItems/msohtmlclip/clip_image009.jpg" />Start
+working as soon as there is work available: EarliestJobFirst(I)</p>
+<p>Accept the earlest starting job <em>j</em> from <em>I</em> which does
+not overlap any previously accepted job, and repeat until no more such
+jobs remain.</p>
+<p>The first job might be so long (War and Peace) that it prevents us
+from taking any other job.</p>
+<table>
+<tbody>
+<tr>
+<td></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Always take the shortest possible job, so you spend the least time
+working (and thus unavailable).</p>
+<p>ShortestJobFirst(I)</p>
+<p>While (<em>I</em> <em>/</em>= <em>∅</em>) do</p>
+<p>Accept the shortest possible job <em>j</em> from <em>I</em>.</p>
+<p>Delete <em>j</em>, and intervals which intersect <em>j</em> from
+<em>I</em>.</p>
+<p>Taking the shortest job can prevent us from taking two longer jobs
+which barely overlap it.</p>
+<table>
+<tbody>
+<tr>
+<td></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><img
+src="file:////Users/sgoswami/Library/Group%20Containers/UBF8T346G9.Office/TemporaryItems/msohtmlclip/clip_image009.jpg" />Take
+the job with the earliest completion date: OptimalScheduling(I)</p>
+<p>While (<em>I</em> <em>/</em>= <em>∅</em>) do</p>
+<p>Accept job <em>j</em> with the earliest completion date.</p>
+<p>Delete <em>j</em>, and whatever intersects <em>j</em> from
+<em>I</em>.</p>
+<p>Proof: Other jobs may well have started before the first to complete
+(say, <em>x</em>), but all must at least partially overlap both
+<em>x</em> and each other.</p>
+<p>Thus we can select at most one from the group.</p>
+<p>The first these jobs to complete is <em>x</em>, so selecting any job
+but</p>
+<p><em>x</em> would only block out more opportunties after
+<em>x</em>.</p>
+<p>Searching for counterexamples is the best way to disprove the
+correctness of a heuristic.</p>
+<p>•   Think about all small examples.</p>
+<p>•   Think about examples with ties on your decision criteria
+(e.g. pick the nearest point)</p>
+<p>•   Think about examples with extremes of big and small. . .</p>
+<p>Failure to find a counterexample to a given algorithm does not mean
+“it is obvious” that the algorithm is correct.</p>
+<p>Mathematical induction is a very useful method for proving the
+correctness of recursive algorithms.</p>
+<p>Recursion and induction are the same basic idea: (1) basis case, (2)
+general assumption, (3) general case.</p>
+<p>L_n_</p>
+<p><em>i</em>=1</p>
+<p><em>i</em> = <em>n</em>(<em>n</em> + 1)_/_2</p>
+</section>
+</main>
+
+
+<script>
+;(function() {
+  // Non-essential if user has JavaScript off. Just makes checkboxes look nicer.
+  var selector = '.task-list > li > input[type="checkbox"]';
+  var checkboxes = document.querySelectorAll(selector);
+  Array.from(checkboxes).forEach((checkbox) => {
+    var wasChecked = checkbox.checked;
+    checkbox.disabled = false;
+    checkbox.addEventListener('click', (ev) => {ev.target.checked = wasChecked});
+  });
+})();
+</script>
+
+
+</body>
+</html>
