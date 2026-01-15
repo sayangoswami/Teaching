@@ -8,8 +8,8 @@ pandoc Notes/cosc445/lecture01.md \
   --toc-depth=2 \
   --section-divs \
   --metadata lang=en \
+  --mathjax \
   --css ../../css/theme.css \
   --css ../../css/tufte.css \
   --css ../../css/skylighting-solarized-theme.css \
-  --mathjax \
   -o output/cosc445/lecture01.html
