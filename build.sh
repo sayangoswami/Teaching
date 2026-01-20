@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pandoc Notes/cosc445/lec01.md \
+pandoc Notes/cosc130/syllabus-sec1.md \
   -t html5 \
   --standalone \
   --template templates/notes.html \
@@ -12,4 +12,4 @@ pandoc Notes/cosc445/lec01.md \
   --highlight-style=zenburn \
   --css ../../css/theme.css \
   --css ../../css/tufte.css \
-  -o output/cosc445/lec01.html
+  -o output/cosc130/syllabus-sec1.html

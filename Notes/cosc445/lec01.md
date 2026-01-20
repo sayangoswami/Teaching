@@ -1,17 +1,3 @@
-<!--
-author:   Sayan Goswami
-email:    sgoswami@smcm.edu
-version:  0.1.0
-language: en
-narrator: US English Female
-
-link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
-
-link: https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap
-
-link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
-
--->
 
 # Introduction to Algorithms
 
@@ -37,6 +23,10 @@ An algorithmic problem is specified by describing the *complete set of input ins
 
 An instance of sorting might be an array of names, like `['Mike', 'Bob', 'Sally', 'Jill', 'Jan']`, or a list of numbers like `[154, 245, 568, 324, 654, 324]`.
 
+--
+
+### (Contd.)
+
 There are many different algorithms that can solve the problem of sorting.
 
 We seek algorithms which are _correct_ and _efficient_.
@@ -55,7 +45,7 @@ For sorting, this means even if (1) the input is already sorted, or (2) it conta
 
 Algorithm correctness is not obvious in many optimization problems!
 
-Algorithms _problems_ must be carefully specified to allow a provably correct algorithm to exist. We can find the “shortest tour” but not the “best tour”.
+Algorithms _problems_ must be carefully specified to allow a provably correct algorithm to exist.  Say we want to visit a bunch of places. We can find the “shortest tour” but not the “best tour”.
 
 ---
 
@@ -81,18 +71,18 @@ We seek the *order which minimizes the time (i.e. travel distance)* it takes to 
 
 ## Robot tour optimization
 
-![A set of points arranged in a circular fashion](fig/01.01-tour-points.svg)
+![A bunch of points arranged in a circular fashion](fig/01.01-tour-points.svg)
 
 
-You are given the job to program the robot arm. Give me an algorithm to find the most efficient tour, starting from point 0.
+You are given the job to program the robot arm. Give me an algorithm to find the most efficient tour, starting from point *A*.
 
 ---
 
 ## Nearest neighbor tour
 
-Lets start at some point $p_{0}$ and then walk to its nearest neighbor $p_{1}$ first, then repeat from $p_{1}$, etc. until we visit all points.
+Lets start at some point *A* and then walk to its nearest neighbor *B* first, then repeat from *B*, etc. until we visit all points.
 
-![A set of points arranged in a circular fashion](fig/01.01-tour-points.svg)
+![A bunch of points arranged in a circular fashion](fig/01.01-tour-points.svg)
 
 
 ---
@@ -100,7 +90,7 @@ Lets start at some point $p_{0}$ and then walk to its nearest neighbor $p_{1}$ f
 ## Nearest neighbor tour is wrong
 
 
-![A set of points arranged in a linearly](fig/01.02-tour-points-linear.svg)
+![A bunch of points arranged in a linear fashion](fig/01.02-tour-points-linear.svg)
 
 ---
 
@@ -108,18 +98,18 @@ Lets start at some point $p_{0}$ and then walk to its nearest neighbor $p_{1}$ f
 
 Another idea is to repeatedly connect the closest pair of points whose connection will not cause a cycle or a three-way branch, until all points are in one tour.
 
+</p></p>
 
-
-![A set of points arranged in a linearly](fig/01.02-tour-points-linear.svg)
+![A bunch of points arranged in a linear fashion](fig/01.02-tour-points-linear.svg)
 
 
 ---
 
 ## Closest pair tour is wrong
 
+</p></p></p>
 
-
-![A set of 6 points arranged in 2 rows and 3 colums where the rows are closer than the columns](fig/01.03-tour-points-rectangular.svg)
+![6 points arranged in 2 rows and 3 columns where the rows are closer than the columns](fig/01.03-tour-points-rectangular.svg)
 
 
 ---
@@ -146,7 +136,7 @@ No   efficient,   correct   algorithm   exists   for   the   _trav
 
 A movie star wants to the select the maximum number of starring roles such that no two jobs require their presence at the same time.
 
-![[01.04-jobs.svg]]
+![A bunch of overlapping intervals depicted by overlapping line segments](fig/01.04-jobs.svg)
 
 
 ---
@@ -168,12 +158,16 @@ Start working as soon as there is work available:
 
 Accept the earliest starting job _j_ from _I_ which does not overlap any previously accepted job, and repeat until no more such jobs remain.
 
+![A bunch of overlapping intervals depicted by overlapping line segments](fig/01.04-jobs.svg)
+
 
 ---
 
 ## Earliest Job First is wrong
 
-The first job might be so long (War and Peace) that it prevents us from taking any other job.
+The first job might be so long that it prevents us from taking any other job.
+
+</p></p></p></p></p></p>
 
 
 
@@ -186,6 +180,7 @@ Always take the shortest possible job, so you spend the least time working (and 
 
 Once a job is selected, remove all other jobs that intersect with it.
 
+![A bunch of overlapping intervals depicted by overlapping line segments](fig/01.04-jobs.svg)
 
 ---
 
@@ -195,7 +190,7 @@ Once a job is selected, remove all other jobs that intersect with it.
 
 Taking the shortest job can prevent us from taking two longer jobs which barely overlap it.
 
-
+</p></p></p></p></p></p>
 
 
 ---
@@ -206,6 +201,8 @@ Taking the shortest job can prevent us from taking two longer jobs which barely 
 Accept job _j_ with the earliest completion date.
 
 Delete _j_, and whatever intersects _j_ from _I_.
+
+![A bunch of overlapping intervals depicted by overlapping line segments](fig/01.04-jobs.svg)
 
 
 ---
@@ -258,39 +255,17 @@ Recursion and induction are the same basic idea:
 
 Prove that the following formula is correct:
 $$
-\sum_{i = 0}^{n} a^i = \frac{a^{n+1} - 1}{a - 1}
+\sum_{i = 0}^{n} a^{i} = \frac{a^{n+1} - 1}{a - 1}
 $$
 
-+ Base case: $i = 0 \implies a^0 = 1 = \frac{a^1 - 1}{a-1}$ which is true.
-+ Inductive hypothesis: Assume that the formula holds for all $n$.
-+ Inductive step: $\sum_{i = 0}^{n+1} a^i$
-+ $= \sum_{i = 0}^{n} a^i + a^{n+1}$
-+ $=\frac{a^{n+1} - 1}{a - 1} + a^{n+1}$
-+ = ${} \frac{a^{n+2} - 1}{a - 1} {}$
++ Base case: $n = 0 \implies a^{0} = 1 = \frac{a^{0+1} - 1}{a-1}$ which is true.
++ Inductive hypothesis: Assume that the formula holds for all $n$ up to $m$.
++ Inductive step: $\sum_{i = 0}^{m+1} a^{i}$
++ ${} = \sum_{i = 0}^{m} a^{i} + a^{m+1} {}$
++ ${} =\frac{a^{m+1} - 1}{a - 1} + a^{m+1} {}$
++ = $\frac{a^{m+2} - 1}{a - 1}$
++ Conclusion: If the formula holds true for $n = m$, it also holds true for $n = m+1$. Therefore, it holds true for all $n$.
 
----
-
-## Example - Euclid's GCD algorithm
-
-```python
-# a recursive algorithm to compute the greatest common divisor
-# input : Non-negative integers a, b such that b ≤ a 
-# output: gcd(a, b)
-def euclid(a, b):
-	if b == 0: return a
-	else return euclid(b, a % b)
-```
-
----
-
-## Euclid's GCD algorithm - Proof of correctness
-
-+ We will prove that $gcd(a,b)=gcd(b,r)$ where $r = a \bmod b$
-+ Let $a = qb + r$ where $q$ and $b$ are integers and ${} 0 \leq r < b$.
-+ If some integer $p$ divides both $a$ and $b$, then it must also divide $r = a - qb$
-+ Thus, the set of all integers that divide $a$ and $b$, and the set of all integers that divide $b$ and $r$ are the same.
-+ Choose the largest number form this set. This is the GCD.
-+ Therefore $gcd(a, b) = gcd(b, r)$
 
 ---
 
@@ -309,10 +284,35 @@ Prove that there are infinitely many prime numbers.
 
 + Assume that statement above is incorrect. That is there are only a finite number of primes $m$.
 + List the primes $\{ p_{1}, p_{2}, \dots, p_{m} \}$
-+ Suppose we construct the integer formed as the product of “all” of the listed primes: $N = \prod_{i=1}^m p_{i}$
++ Suppose we construct the integer formed as the product of “all” of the listed primes: $N = \prod^m_{i=1} p_{i}$
 + This integer N has the property that it is divisible by each and every one of the known primes, because of how it was built.
 + Lets consider the integer $N+1$. It is not divisible by any of the primes $\{ p_{1}, p_{2}, \dots, p_{m} \}$ because $N$ is. Thus $N+1$ is a prime itself - *contradiction*.
 + Therefore our assumption must be false.
+
+
+---
+
+## Example - Euclid's GCD algorithm
+
+```python
+# a recursive algorithm to compute GCDs
+# input : Non-negative integers a, b such that b ≤ a 
+# output: gcd(a, b)
+def euclid(a, b):
+	if b == 0: return a
+	else return euclid(b, a % b)
+```
+
+---
+
+## Euclid's GCD algorithm - Proof of correctness
+
++ We will prove that $gcd(a,b)=gcd(b,r)$ where $r = a \bmod b$
++ Let $a = qb + r$ where $q$ and $b$ are integers and ${} 0 \leq r < b$.
++ If some integer $p$ divides both $a$ and $b$, then it must also divide $r = a - qb$
++ Thus, the set of all integers that divide $a$ and $b$, and the set of all integers that divide $b$ and $r$ are the same.
++ Choose the largest number form this set. This is the GCD.
++ Therefore $gcd(a, b) = gcd(b, r)$
 
 
 ---
