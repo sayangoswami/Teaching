@@ -45,10 +45,11 @@ import: https://raw.githubusercontent.com/LiaScript/CodeRunner/master/README.md
 ## What You Should Already Know
 
 From COSC 120:
+
 - Variables and types  
 - Branching (`if/else`)  
 - Loops 
-- Arrays  ??
+- Arrays ??
 - Methods  
 - Basic debugging  
 
@@ -93,9 +94,11 @@ double pi = 3.14159;
 boolean isOn = true;
 String name = "Ada Lovelace";
 ```
+    {{1}}
+Which of these are primitives?
 
- + Which of these are primitives?
- + Which is an object?
+    {{2}}
+Which is an object?
 
 ---
 
@@ -149,32 +152,8 @@ Breakdown:
 
 *Walkthrough of submission process* - We will submit a dummy assignment now.
 
-
 ---
 
-## Deadlines and Late Work Policy
-
-Assignments are due at **11:59 PM Eastern Time (UTC – 4)** on the posted due date, with a one-hour grace period. 
-
-Submissions received after that time will be subject to a late penalty of **1% of the maximum possible points per additional hour** past the deadline. 
-
-The minimum grade on any assignment is zero; late penalties will not reduce a score below this.
-
-
----
-
-
-## Use of Generative AI
-
-For this course, *I encourage you to use the generative AI tools* at your disposal, including creating study guides or assisting with class assignments. 
-
-However it is your responsibility to properly evaluate the information created through generative AI as well as *explicitly cite its use within your assignments*. 
-
-We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. 
-
-Failure to use the proper citation of generative AI tools may be considered *plagiarism* and will be handled via the SMCM Academic Misconduct policies.
-
----
 
 ## Install Java and VS Code
 
