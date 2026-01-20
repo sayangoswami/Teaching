@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pandoc Notes/cosc130/syllabus-sec2.md \
+pandoc Notes/cosc445/lec01.md \
   -t html5 \
   --standalone \
   --template templates/notes.html \
@@ -9,7 +9,7 @@ pandoc Notes/cosc130/syllabus-sec2.md \
   --section-divs \
   --metadata lang=en \
   --mathjax \
+  --highlight-style=zenburn \
   --css ../../css/theme.css \
   --css ../../css/tufte.css \
-  --css ../../css/skylighting-solarized-theme.css \
-  -o output/cosc130/syllabus-sec2.html
+  -o output/cosc445/lec01.html

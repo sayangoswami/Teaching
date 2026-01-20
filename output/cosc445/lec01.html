@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc-markdown-css-theme" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lec01</title>
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/tufte.css" />
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<!-- Skip link for keyboard users -->
+<a href="#main" class="skip-link">Skip to content</a>
+
+
+<header>
+<h1 class="title"></h1>
+<blockquote class="metadata">
+</blockquote>
+</header>
+
+<nav id="TOC" role="doc-toc" aria-label="Table of contents">
+    <strong>Contents</strong><label for="contents">⊕</label>
+  <input type="checkbox" id="contents">
+  <ul>
+  <li><a href="#introduction-to-algorithms"
+  id="toc-introduction-to-algorithms">Introduction to Algorithms</a>
+  <ul>
+  <li><a href="#what-is-an-algorithm" id="toc-what-is-an-algorithm">What
+  is an algorithm</a></li>
+  <li><a href="#example-problem---sorting"
+  id="toc-example-problem---sorting">Example problem - sorting</a></li>
+  <li><a href="#correctness" id="toc-correctness">Correctness</a></li>
+  <li><a href="#expressing-algorithms"
+  id="toc-expressing-algorithms">Expressing algorithms</a></li>
+  <li><a href="#robot-tour-optimization"
+  id="toc-robot-tour-optimization">Robot tour optimization</a></li>
+  <li><a href="#robot-tour-optimization-1"
+  id="toc-robot-tour-optimization-1">Robot tour optimization</a></li>
+  <li><a href="#nearest-neighbor-tour"
+  id="toc-nearest-neighbor-tour">Nearest neighbor tour</a></li>
+  <li><a href="#nearest-neighbor-tour-is-wrong"
+  id="toc-nearest-neighbor-tour-is-wrong">Nearest neighbor tour is
+  wrong</a></li>
+  <li><a href="#closest-pair-tour" id="toc-closest-pair-tour">Closest
+  pair tour</a></li>
+  <li><a href="#closest-pair-tour-is-wrong"
+  id="toc-closest-pair-tour-is-wrong">Closest pair tour is
+  wrong</a></li>
+  <li><a href="#exhaustive-search" id="toc-exhaustive-search">Exhaustive
+  search</a></li>
+  <li><a href="#exhaustive-search-is-correct"
+  id="toc-exhaustive-search-is-correct">Exhaustive search is
+  correct</a></li>
+  <li><a href="#job-scheduling" id="toc-job-scheduling">Job
+  Scheduling</a></li>
+  <li><a href="#job-scheduling-1" id="toc-job-scheduling-1">Job
+  Scheduling</a></li>
+  <li><a href="#earliest-job-first" id="toc-earliest-job-first">Earliest
+  Job First</a></li>
+  <li><a href="#earliest-job-first-is-wrong"
+  id="toc-earliest-job-first-is-wrong">Earliest Job First is
+  wrong</a></li>
+  <li><a href="#shortest-job-first" id="toc-shortest-job-first">Shortest
+  Job First</a></li>
+  <li><a href="#shortest-job-first-is-wrong"
+  id="toc-shortest-job-first-is-wrong">Shortest Job First is
+  wrong</a></li>
+  <li><a href="#earliest-job-to-finish-first"
+  id="toc-earliest-job-to-finish-first">Earliest Job to Finish
+  First</a></li>
+  <li><a href="#earliest-job-to-finish-first-is-correct"
+  id="toc-earliest-job-to-finish-first-is-correct">Earliest Job to
+  Finish First is correct</a></li>
+  <li><a href="#demonstrating-incorrectness"
+  id="toc-demonstrating-incorrectness">Demonstrating
+  incorrectness</a></li>
+  <li><a href="#demonstrating-correctness"
+  id="toc-demonstrating-correctness">Demonstrating correctness</a></li>
+  <li><a href="#induction" id="toc-induction">Induction</a></li>
+  <li><a href="#example---sum-of-exponents"
+  id="toc-example---sum-of-exponents">Example - Sum of
+  exponents</a></li>
+  <li><a href="#example---euclids-gcd-algorithm"
+  id="toc-example---euclids-gcd-algorithm">Example - Euclid’s GCD
+  algorithm</a></li>
+  <li><a href="#euclids-gcd-algorithm---proof-of-correctness"
+  id="toc-euclids-gcd-algorithm---proof-of-correctness">Euclid’s GCD
+  algorithm - Proof of correctness</a></li>
+  <li><a href="#proof-by-contradiction"
+  id="toc-proof-by-contradiction">Proof by contradiction</a></li>
+  <li><a href="#example---number-of-primes"
+  id="toc-example---number-of-primes">Example - Number of
+  primes</a></li>
+  <li><a href="#homework-problems" id="toc-homework-problems">Homework
+  Problems</a></li>
+  </ul></li>
+  </ul>
+</nav>
+
+<!-- Main content landmark -->
+<main id="main">
+<!--
+author:   Sayan Goswami
+email:    sgoswami@smcm.edu
+version:  0.1.0
+language: en
+narrator: US English Female
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+
+link: https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap
+
+link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
+
+-->
+<section id="introduction-to-algorithms" class="level1">
+<h1>Introduction to Algorithms</h1>
+<hr />
+<section id="what-is-an-algorithm" class="level2">
+<h2>What is an algorithm</h2>
+<p>Algorithms are the <em>ideas</em> behind computer programs.</p>
+<p>An algorithm for a program <em>stays the same</em> regardless of the
+programming language used, or the device its running on.</p>
+<p>To be interesting, an algorithm has to solve a <em>general,
+well-specified</em> problem.</p>
+<p>An algorithmic problem is specified by describing the <em>complete
+set of input instances it must work on</em>, and what desired properties
+the output must have.</p>
+<hr />
+</section>
+<section id="example-problem---sorting" class="level2">
+<h2>Example problem - sorting</h2>
+<p><strong>Input:</strong> A sequence of <span
+class="math inline">\(N\)</span> numbers <span
+class="math inline">\(a_{1} \dots a_{n}\)</span></p>
+<p><strong>Output:</strong> the permutation (reordering) of the input
+sequence such as <span class="math inline">\(a_{1} \leq a_{2} \leq a_{3}
+\dots \leq a_{n}\)</span>.</p>
+<p>An instance of sorting might be an array of names, like
+<code>['Mike', 'Bob', 'Sally', 'Jill', 'Jan']</code>, or a list of
+numbers like <code>[154, 245, 568, 324, 654, 324]</code>.</p>
+<p>There are many different algorithms that can solve the problem of
+sorting.</p>
+<p>We seek algorithms which are <em>correct</em> and
+<em>efficient</em>.</p>
+<p>A faster algorithm running on a slower computer will <em>always</em>
+win for sufficiently large instances, as we shall see.</p>
+<p>Usually, problems don’t have to get that large before the faster
+algorithm wins.</p>
+<hr />
+</section>
+<section id="correctness" class="level2">
+<h2>Correctness</h2>
+<p>For any algorithm, we must prove that it <em>always</em> returns the
+desired output for all legal instances of the problem.</p>
+<p>For sorting, this means even if (1) the input is already sorted, or
+(2) it contains repeated elements.</p>
+<p>Algorithm correctness is not obvious in many optimization
+problems!</p>
+<p>Algorithms <em>problems</em> must be carefully specified to allow a
+provably correct algorithm to exist. We can find the “shortest tour” but
+not the “best tour”.</p>
+<hr />
+</section>
+<section id="expressing-algorithms" class="level2">
+<h2>Expressing algorithms</h2>
+<p>We need some way to express the sequence of steps comprising an
+algorithm.</p>
+<p>In order of increasing precision, we have English, pseudocode, and
+real programming languages. Unfortunately, ease of expression moves in
+the reverse order.</p>
+<p>We start by describing the <em>ideas</em> of an algorithm in English,
+moving to pseudocode to clarify sufficiently tricky details of the
+algorithm.</p>
+<hr />
+</section>
+<section id="robot-tour-optimization" class="level2">
+<h2>Robot tour optimization</h2>
+<p>Suppose you have a <em>robot arm</em> equipped with a tool, say a
+soldering iron.</p>
+<p>To enable the robot arm to do a soldering job, we must construct
+<em>an ordering of the contact points</em>, so the robot visits (and
+solders) the points in order.</p>
+<p>We seek the <em>order which minimizes the time (i.e. travel
+distance)</em> it takes to assemble the circuit board.</p>
+<hr />
+</section>
+<section id="robot-tour-optimization-1" class="level2">
+<h2>Robot tour optimization</h2>
+<figure>
+<img src="fig/01.01-tour-points.svg"
+alt="A set of points arranged in a circular fashion" />
+<figcaption aria-hidden="true">A set of points arranged in a circular
+fashion</figcaption>
+</figure>
+<p>You are given the job to program the robot arm. Give me an algorithm
+to find the most efficient tour, starting from point 0.</p>
+<hr />
+</section>
+<section id="nearest-neighbor-tour" class="level2">
+<h2>Nearest neighbor tour</h2>
+<p>Lets start at some point <span class="math inline">\(p_{0}\)</span>
+and then walk to its nearest neighbor <span
+class="math inline">\(p_{1}\)</span> first, then repeat from <span
+class="math inline">\(p_{1}\)</span>, etc. until we visit all
+points.</p>
+<figure>
+<img src="fig/01.01-tour-points.svg"
+alt="A set of points arranged in a circular fashion" />
+<figcaption aria-hidden="true">A set of points arranged in a circular
+fashion</figcaption>
+</figure>
+<hr />
+</section>
+<section id="nearest-neighbor-tour-is-wrong" class="level2">
+<h2>Nearest neighbor tour is wrong</h2>
+<figure>
+<img src="fig/01.02-tour-points-linear.svg"
+alt="A set of points arranged in a linearly" />
+<figcaption aria-hidden="true">A set of points arranged in a
+linearly</figcaption>
+</figure>
+<hr />
+</section>
+<section id="closest-pair-tour" class="level2">
+<h2>Closest pair tour</h2>
+<p>Another idea is to repeatedly connect the closest pair of points
+whose connection will not cause a cycle or a three-way branch, until all
+points are in one tour.</p>
+<figure>
+<img src="fig/01.02-tour-points-linear.svg"
+alt="A set of points arranged in a linearly" />
+<figcaption aria-hidden="true">A set of points arranged in a
+linearly</figcaption>
+</figure>
+<hr />
+</section>
+<section id="closest-pair-tour-is-wrong" class="level2">
+<h2>Closest pair tour is wrong</h2>
+<figure>
+<img src="fig/01.03-tour-points-rectangular.svg"
+alt="A set of 6 points arranged in 2 rows and 3 colums where the rows are closer than the columns" />
+<figcaption aria-hidden="true">A set of 6 points arranged in 2 rows and
+3 colums where the rows are closer than the columns</figcaption>
+</figure>
+<hr />
+</section>
+<section id="exhaustive-search" class="level2">
+<h2>Exhaustive search</h2>
+<p>We could try all possible orderings of the points, then select the
+one which minimizes the total length.</p>
+<hr />
+</section>
+<section id="exhaustive-search-is-correct" class="level2">
+<h2>Exhaustive search is correct</h2>
+<p>Since all possible orderings are considered, we are guaranteed to end
+up with the shortest possible tour.</p>
+<p>Because it tries all <em>n</em>! permutations, it is much too slow to
+use when there are more than 10-20 points.</p>
+<p>No   efficient,   correct   algorithm   exists   for   the  
+<em>traveling salesman problem</em>, as we will see later.</p>
+<hr />
+</section>
+<section id="job-scheduling" class="level2">
+<h2>Job Scheduling</h2>
+<p>A movie star wants to the select the maximum number of starring roles
+such that no two jobs require their presence at the same time.</p>
+<p>![[01.04-jobs.svg]]</p>
+<hr />
+</section>
+<section id="job-scheduling-1" class="level2">
+<h2>Job Scheduling</h2>
+<p><strong>Input:</strong> A set <em>I</em> of <em>n</em> intervals on
+the line.</p>
+<p><strong>Output:</strong>     What   is   the   largest   subset  
+of   mutually   non-overlapping intervals which can be selected from
+<em>I</em>?</p>
+<p>Give an algorithm to solve the problem!</p>
+<hr />
+</section>
+<section id="earliest-job-first" class="level2">
+<h2>Earliest Job First</h2>
+<p>Start working as soon as there is work available:</p>
+<p>Accept the earliest starting job <em>j</em> from <em>I</em> which
+does not overlap any previously accepted job, and repeat until no more
+such jobs remain.</p>
+<hr />
+</section>
+<section id="earliest-job-first-is-wrong" class="level2">
+<h2>Earliest Job First is wrong</h2>
+<p>The first job might be so long (War and Peace) that it prevents us
+from taking any other job.</p>
+<hr />
+</section>
+<section id="shortest-job-first" class="level2">
+<h2>Shortest Job First</h2>
+<p>Always take the shortest possible job, so you spend the least time
+working (and thus unavailable).</p>
+<p>Once a job is selected, remove all other jobs that intersect with
+it.</p>
+<hr />
+</section>
+<section id="shortest-job-first-is-wrong" class="level2">
+<h2>Shortest Job First is wrong</h2>
+<p>Taking the shortest job can prevent us from taking two longer jobs
+which barely overlap it.</p>
+<hr />
+</section>
+<section id="earliest-job-to-finish-first" class="level2">
+<h2>Earliest Job to Finish First</h2>
+<p>Accept job <em>j</em> with the earliest completion date.</p>
+<p>Delete <em>j</em>, and whatever intersects <em>j</em> from
+<em>I</em>.</p>
+<hr />
+</section>
+<section id="earliest-job-to-finish-first-is-correct" class="level2">
+<h2>Earliest Job to Finish First is correct</h2>
+<p><strong>Proof:</strong> Other jobs may well have started before the
+first to complete (say, <em>x</em>), but all must at least partially
+overlap both <em>x</em> and each other.</p>
+<p>Thus we can select at most one from the group.</p>
+<p>The first these jobs to complete is <em>x</em>, so selecting any job
+but <em>x</em> would only block out more opportunities after
+<em>x</em>.</p>
+<hr />
+</section>
+<section id="demonstrating-incorrectness" class="level2">
+<h2>Demonstrating incorrectness</h2>
+<p>Searching for counterexamples is the best way to disprove the
+correctness of a heuristic.</p>
+<ul>
+<li>Think about all small examples.</li>
+<li>Think about examples with ties on your decision criteria (e.g. pick
+the nearest point).</li>
+<li>Think about examples with extremes of big and small …</li>
+</ul>
+<hr />
+</section>
+<section id="demonstrating-correctness" class="level2">
+<h2>Demonstrating correctness</h2>
+<p>Failure to find a counterexample to a given algorithm does not mean
+“it is obvious” that the algorithm is correct.</p>
+<p><em>Mathematical induction</em> is a very useful method for proving
+the correctness of recursive algorithms.</p>
+<p>Another common way to prove correctness is <em>by
+contradiction</em>.</p>
+<hr />
+</section>
+<section id="induction" class="level2">
+<h2>Induction</h2>
+<p>Recursion and induction are the same basic idea: 1. <em>basis
+case</em> - prove that the algorithm is correct for some basis case like
+an input of size <span class="math inline">\(n = 1\)</span>. 2.
+<em>general assumption</em> - assume that the algorithm is correct all
+the way for <span class="math inline">\(n = m - 1\)</span> 3.
+<em>general case</em> - prove that if its true for <span
+class="math inline">\(n = m - 1\)</span>, then it is also true for <span
+class="math inline">\(n = m\)</span></p>
+<hr />
+</section>
+<section id="example---sum-of-exponents" class="level2">
+<h2>Example - Sum of exponents</h2>
+<p>Prove that the following formula is correct: <span
+class="math display">\[
+\sum_{i = 0}^{n} a^i = \frac{a^{n+1} - 1}{a - 1}
+\]</span></p>
+<ul>
+<li>Base case: <span class="math inline">\(i = 0 \implies a^0 = 1 =
+\frac{a^1 - 1}{a-1}\)</span> which is true.</li>
+<li>Inductive hypothesis: Assume that the formula holds for all <span
+class="math inline">\(n\)</span>.</li>
+<li>Inductive step: <span class="math inline">\(\sum_{i = 0}^{n+1}
+a^i\)</span></li>
+<li><span class="math inline">\(= \sum_{i = 0}^{n} a^i +
+a^{n+1}\)</span></li>
+<li><span class="math inline">\(=\frac{a^{n+1} - 1}{a - 1} +
+a^{n+1}\)</span></li>
+<li>= <span class="math inline">\({} \frac{a^{n+2} - 1}{a - 1}
+{}\)</span></li>
+</ul>
+<hr />
+</section>
+<section id="example---euclids-gcd-algorithm" class="level2">
+<h2>Example - Euclid’s GCD algorithm</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a recursive algorithm to compute the greatest common divisor</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># input : Non-negative integers a, b such that b ≤ a </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># output: gcd(a, b)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> euclid(a, b):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> <span class="dv">0</span>: <span class="cf">return</span> a</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">return</span> euclid(b, a <span class="op">%</span> b)</span></code></pre></div>
+<hr />
+</section>
+<section id="euclids-gcd-algorithm---proof-of-correctness"
+class="level2">
+<h2>Euclid’s GCD algorithm - Proof of correctness</h2>
+<ul>
+<li>We will prove that <span
+class="math inline">\(gcd(a,b)=gcd(b,r)\)</span> where <span
+class="math inline">\(r = a \bmod b\)</span></li>
+<li>Let <span class="math inline">\(a = qb + r\)</span> where <span
+class="math inline">\(q\)</span> and <span
+class="math inline">\(b\)</span> are integers and <span
+class="math inline">\({} 0 \leq r &lt; b\)</span>.</li>
+<li>If some integer <span class="math inline">\(p\)</span> divides both
+<span class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span>, then it must also divide <span
+class="math inline">\(r = a - qb\)</span></li>
+<li>Thus, the set of all integers that divide <span
+class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span>, and the set of all integers that
+divide <span class="math inline">\(b\)</span> and <span
+class="math inline">\(r\)</span> are the same.</li>
+<li>Choose the largest number form this set. This is the GCD.</li>
+<li>Therefore <span class="math inline">\(gcd(a, b) = gcd(b,
+r)\)</span></li>
+</ul>
+<hr />
+</section>
+<section id="proof-by-contradiction" class="level2">
+<h2>Proof by contradiction</h2>
+<p>The basic scheme of a contradiction argument is as follows: - Assume
+that the hypothesis (the statement you want to prove) is false. -
+Develop some logical consequences of this assumption. - Show that one
+consequence is demonstrably false, thereby showing that the assumption
+is incorrect and the hypothesis is true.</p>
+<hr />
+</section>
+<section id="example---number-of-primes" class="level2">
+<h2>Example - Number of primes</h2>
+<p>Prove that there are infinitely many prime numbers.</p>
+<ul>
+<li>Assume that statement above is incorrect. That is there are only a
+finite number of primes <span class="math inline">\(m\)</span>.</li>
+<li>List the primes <span class="math inline">\(\{ p_{1}, p_{2}, \dots,
+p_{m} \}\)</span></li>
+<li>Suppose we construct the integer formed as the product of “all” of
+the listed primes: <span class="math inline">\(N = \prod_{i=1}^m
+p_{i}\)</span></li>
+<li>This integer N has the property that it is divisible by each and
+every one of the known primes, because of how it was built.</li>
+<li>Lets consider the integer <span class="math inline">\(N+1\)</span>.
+It is not divisible by any of the primes <span class="math inline">\(\{
+p_{1}, p_{2}, \dots, p_{m} \}\)</span> because <span
+class="math inline">\(N\)</span> is. Thus <span
+class="math inline">\(N+1\)</span> is a prime itself -
+<em>contradiction</em>.</li>
+<li>Therefore our assumption must be false.</li>
+</ul>
+<hr />
+</section>
+<section id="homework-problems" class="level2">
+<h2>Homework Problems</h2>
+<p>The knapsack problem is as follows: given a set of integers <span
+class="math inline">\(S = \{ s_{1}, s_{2}, \dots, s_{n} \}\)</span> and
+a target number T, find a subset of S that adds up exactly to T.</p>
+<p>For example, there exists a subset within <span
+class="math inline">\(S\)</span> = {1, 2, 5, 9, 10} that adds up to
+<span class="math inline">\(T\)</span> = 22 but not <span
+class="math inline">\(T\)</span> = 23.</p>
+<p>Find counterexamples to each of the following algorithms for the
+knapsack problem. That is, give an S and T where the algorithm does not
+find a solution that leaves the knapsack completely full, even though a
+full-knapsack solution exists.</p>
+<ol type="a">
+<li><p>Put the elements of S in the knapsack in left to right order if
+they fit, that is, the first-fit algorithm.</p></li>
+<li><p>Put the elements of S in the knapsack from smallest to largest,
+that is, the best-fit algorithm.</p></li>
+<li><p>Put the elements of S in the knapsack from largest to
+smallest.</p></li>
+</ol>
+</section>
+</section>
+</main>
+
+
+<script>
+;(function() {
+  // Non-essential if user has JavaScript off. Just makes checkboxes look nicer.
+  var selector = '.task-list > li > input[type="checkbox"]';
+  var checkboxes = document.querySelectorAll(selector);
+  Array.from(checkboxes).forEach((checkbox) => {
+    var wasChecked = checkbox.checked;
+    checkbox.disabled = false;
+    checkbox.addEventListener('click', (ev) => {ev.target.checked = wasChecked});
+  });
+})();
+</script>
+
+
+</body>
+</html>
