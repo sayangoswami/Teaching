@@ -3,7 +3,7 @@
 /* ---------- Base (light mode) ---------- */
 :root {
   /* --main-bg-color: #ffffff; */
-  --main-font: "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
+  --main-font: "Atkinson Hyperlegible", "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
   --global-font-mono: "Fira Code";
   /* --main-font-size: 20px; */
   /* --main-color: #000000; */
@@ -25,7 +25,7 @@
 /* ---------- Dark mode ---------- */
 html.lia-variant-dark {
     /* --main-bg-color: #111111; */
-    --main-font: "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
+    --main-font: "Atkinson Hyperlegible", "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
     /* --main-font-size: 20px; */
     /* --main-color: #ffffff; */
     --heading-color: rgb(from rgb(var(--color-highlight))calc(r*2.5)calc(g*2.5)calc(b*2.5));

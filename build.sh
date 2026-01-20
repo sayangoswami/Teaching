@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pandoc Notes/cosc445/Syllabus.md \
+pandoc Notes/cosc130/syllabus-sec2.md \
   -t html5 \
   --standalone \
   --template templates/notes.html \
@@ -12,4 +12,4 @@ pandoc Notes/cosc445/Syllabus.md \
   --css ../../css/theme.css \
   --css ../../css/tufte.css \
   --css ../../css/skylighting-solarized-theme.css \
-  -o output/cosc445/Syllabus.html
+  -o output/cosc130/syllabus-sec2.html
