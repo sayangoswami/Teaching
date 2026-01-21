@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/tufte.css" />
+  <link rel="stylesheet" href="../../css/skylighting-solarized-theme.css" />
 
   <script
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -495,40 +496,33 @@ r)\)</span></li>
 <h2>Homework Problems</h2>
 <p>The knapsack problem is as follows: given a set of integers <span
 class="math inline">\(S = \{ s_{1}, s_{2}, \dots, s_{n} \}\)</span> and
-a target number T, find a subset of S that adds up exactly to T.</p>
+a target number <span class="math inline">\(T\)</span>, find a subset of
+<span class="math inline">\(S\)</span> that adds up exactly to <span
+class="math inline">\(T\)</span>.</p>
 <p>For example, there exists a subset within <span
 class="math inline">\(S\)</span> = {1, 2, 5, 9, 10} that adds up to
 <span class="math inline">\(T\)</span> = 22 but not <span
 class="math inline">\(T\)</span> = 23.</p>
 <p>Find counterexamples to each of the following algorithms for the
-knapsack problem. That is, give an S and T where the algorithm does not
-find a solution that leaves the knapsack completely full, even though a
+knapsack problem. That is, give an <span
+class="math inline">\(S\)</span> and <span
+class="math inline">\(T\)</span> where the algorithm does not find a
+solution that leaves the knapsack completely full, even though a
 full-knapsack solution exists.</p>
 <ol type="a">
-<li><p>Put the elements of S in the knapsack in left to right order if
-they fit, that is, the first-fit algorithm.</p></li>
-<li><p>Put the elements of S in the knapsack from smallest to largest,
-that is, the best-fit algorithm.</p></li>
-<li><p>Put the elements of S in the knapsack from largest to
-smallest.</p></li>
+<li><p>Put the elements of <span class="math inline">\(S\)</span> in the
+knapsack in left to right order if they fit, that is, the first-fit
+algorithm.</p></li>
+<li><p>Put the elements of <span class="math inline">\(S\)</span> in the
+knapsack from smallest to largest, that is, the best-fit
+algorithm.</p></li>
+<li><p>Put the elements of <span class="math inline">\(S\)</span> in the
+knapsack from largest to smallest.</p></li>
 </ol>
 </section>
 </section>
 </main>
 
-
-<script>
-;(function() {
-  // Non-essential if user has JavaScript off. Just makes checkboxes look nicer.
-  var selector = '.task-list > li > input[type="checkbox"]';
-  var checkboxes = document.querySelectorAll(selector);
-  Array.from(checkboxes).forEach((checkbox) => {
-    var wasChecked = checkbox.checked;
-    checkbox.disabled = false;
-    checkbox.addEventListener('click', (ev) => {ev.target.checked = wasChecked});
-  });
-})();
-</script>
 
 
 </body>
