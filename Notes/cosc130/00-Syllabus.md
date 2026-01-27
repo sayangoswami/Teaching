@@ -1,5 +1,5 @@
 
-## COSC 130: INTRO TO COMPUTER SCIENCE II
+# COSC 130: INTRO TO COMPUTER SCIENCE II
 
 - **Section:** 01
 - **Credit hours:** 4
