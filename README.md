@@ -1,6 +1,4 @@
-# Teaching
-
-- Sayan Goswami
+# Class Notes
 
 ## COSC120 - Fall 25
 

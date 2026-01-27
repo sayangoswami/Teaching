@@ -692,7 +692,7 @@ figure > img, figure > pre, figure > div.sourceCode {
 }
 
 img {
-  width: 100%;
+  /* width: 100%; */
   display: block;
 }
 
