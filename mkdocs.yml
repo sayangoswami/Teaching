@@ -10,8 +10,15 @@ theme:
     text: Atkinson Hyperlegible Next
     code: Atkinson Hyperlegible Mono
   features:
+    - navigation.instant
+    - navigation.tabs
     - navigation.sections
+    - navigation.tracking
+    - navigation.path
+    - toc.follow
+    - toc.integrate
     - search.suggest
+    - search.highlight
 
 markdown_extensions:
   - pymdownx.highlight:
