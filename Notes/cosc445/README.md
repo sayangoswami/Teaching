@@ -1,4 +1,10 @@
 
+# COSC445 - Design/Analysis of Algorithms
+
+- [Syllabus](00-Syllabus.md)
+- [Introduction to Algorithms](L01.md)
+- [Algorithm analysis](L02.md)
+
 If you want to view the notes as slides (not accessible), then clone the repository:
 `git clone https://github.com/sayangoswami/Teaching.git`
 
