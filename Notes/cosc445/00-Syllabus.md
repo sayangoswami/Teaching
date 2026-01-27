@@ -1,5 +1,5 @@
 
-# COSC 445: DESIGN/ANALYSIS OF ALGORITHMS
+# COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
 
 - **Section:** 01
 - **Credit hours:** 4

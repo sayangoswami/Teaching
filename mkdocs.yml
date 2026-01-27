@@ -1,6 +1,7 @@
 site_name: My Course Slides & Notes
 site_url: https://sayangoswami.github.io/Teaching/
 docs_dir: Notes
+exclude_docs: Slides.md
 theme:
   name: material
   palette:
