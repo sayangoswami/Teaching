@@ -24,7 +24,7 @@ highlightTheme: atom-one-light
 
 - To understand how good or bad an algorithm is in general, we must know how it works over all possible instances.
 
-![600](images/02.01.svg)
+![600](fig/02.01.svg)
 
 --
 
@@ -52,7 +52,7 @@ highlightTheme: atom-one-light
 	- May have bumps on some inputs.
 	- Require too much detail to specify precisely, can't be done without actually implementing it.
 
-![500](images/02.02.svg)
+![500](fig/02.02.svg)
 
 --
 
@@ -76,18 +76,18 @@ highlightTheme: atom-one-light
 
 --
 
-![](images/02.03.svg)
+![](fig/02.03.svg)
 
 - $f(n) = \mathcal{O}(g(n))$ if there are positive constants $n_{0}$ and $c$ such that to the right of $n_{0}$, the value of $f(n)$ always lies on or below $c.g(n)$
 
 --
 
-![](images/02.04.svg)
+![](fig/02.04.svg)
 - $f(n) = \mathcal{\Omega}(g(n))$ if there are positive constants $n_{0}$ and $c$ such that to the right of $n_{0}$, the value of $f(n)$ always lies on or above $c.g(n)$
 
 --
 
-![](images/02.05.svg)
+![](fig/02.05.svg)
 
 - $f(n) = \mathcal{\Theta}(g(n))$ if there exist positive constants $n_{0}, c_{1}, c_{2}$ such that to the right of $n_{0}$, the value of $f(n)$ always lies between $c_{1}.g(n)$ and $c_{2}.g(n)$ inclusive.
 
