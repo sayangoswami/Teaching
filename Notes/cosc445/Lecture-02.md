@@ -24,7 +24,7 @@ highlightTheme: atom-one-light
 
 - To understand how good or bad an algorithm is in general, we must know how it works over all possible instances.
 
-![[02.01.svg | 600]]
+![600](images/02.01.svg)
 
 --
 
@@ -52,7 +52,7 @@ highlightTheme: atom-one-light
 	- May have bumps on some inputs.
 	- Require too much detail to specify precisely, can't be done without actually implementing it.
 
-![[02.02.svg | 500]]
+![500](images/02.02.svg)
 
 --
 
@@ -145,12 +145,12 @@ Think of the equality as meaning _in the set of functions_.
 ---
 ## Is $2^{n+1} = \mathcal{\Theta}(2^{n})$?
 
-</p></p></p></p></p></p></p></p></p></p></p>
+
 
 ---
 ## Is $(x+y)^{2} = \mathcal{O}(x^{2} + y^{2})$?
 
-</p></p></p></p></p></p></p></p></p></p></p>
+
 
 
 
@@ -225,26 +225,26 @@ This is the same as saying $g(n) = \mathcal{O}(f(n))$
 
 ## Example: $n^{2}$ vs $2n^{2}$
 
-</p></p></p></p></p></p></p></p></p></p></p>
+
 
 ---
 
 ## Example: $n^{2}$ vs $n^{3}$
 
-</p></p></p></p></p></p></p></p></p></p></p>
+
 
 ---
 
 ## Example: $n^{2}$ vs $n^{1.9}$
 
-</p></p></p></p></p></p></p></p></p></p></p>
+
 
 
 ---
 
 ## Example: $3^{n}$ vs $2^{n}$
 
-</p></p></p></p></p></p></p></p></p></p></p>
+
 
 ---
 

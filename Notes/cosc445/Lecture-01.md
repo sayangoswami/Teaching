@@ -75,7 +75,7 @@ We seek the *order which minimizes the time (i.e. travel distance)* it takes to 
 
 ## Robot tour optimization
 
-![](images/01.01-tour-points.svg)
+![A bunch of points arranged in a circular fashion](images/01.01-tour-points.svg)
 
 
 You are given the job to program the robot arm. Give me an algorithm to find the most efficient tour, starting from point *A*.
@@ -93,9 +93,9 @@ Lets start at some point *A* and then walk to its nearest neighbor *B* first, th
 
 ## Nearest neighbor tour is wrong
 
-</p></p></p></p>
 
-![](images/01.02-tour-points-linear.svg)
+
+![A bunch of points arranged in a linear fashion](images/01.02-tour-points-linear.svg)
 
 ---
 
@@ -103,7 +103,7 @@ Lets start at some point *A* and then walk to its nearest neighbor *B* first, th
 
 Another idea is to repeatedly connect the closest pair of points whose connection will not cause a cycle or a three-way branch, until all points are in one tour.
 
-</p></p>
+
 
 ![](images/01.02-tour-points-linear.svg)
 
@@ -112,9 +112,9 @@ Another idea is to repeatedly connect the closest pair of points whose connectio
 
 ## Closest pair tour is wrong
 
-</p></p></p>
 
-![](images/01.03-tour-points-rectangular.svg)
+
+![6 points arranged in 2 rows and 3 columns where the rows are slightly closer than the columns](images/01.03-tour-points-rectangular.svg)
 
 
 ---
@@ -172,7 +172,7 @@ Accept the earliest starting job _j_ from _I_ which does not overlap any previou
 
 The first job might be so long that it prevents us from taking any other job.
 
-</p></p></p></p></p></p>
+
 
 
 
@@ -195,7 +195,7 @@ Once a job is selected, remove all other jobs that intersect with it.
 
 Taking the shortest job can prevent us from taking two longer jobs which barely overlap it.
 
-</p></p></p></p></p></p>
+
 
 
 ---
