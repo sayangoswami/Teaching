@@ -18,6 +18,6 @@ link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.cs
 
 ## Table of contents
 
-- [Syllabus](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/COSC445/00-Syllabus.md)
-- [Introduction to Algorithms](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/COSC445/L01.md)
-- [Algorithm analysis](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/COSC445/L02.md)
+- [Syllabus](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/00-Syllabus.md)
+- [Introduction to Algorithms](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/L01.md)
+- [Algorithm analysis](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/L02.md)
