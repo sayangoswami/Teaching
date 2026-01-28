@@ -18,8 +18,9 @@ link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.cs
 ## Table of contents
 
 - [Syllabus](00-Syllabus.md)
-- [Introduction to Algorithms](Teaching/LectureNotes/COSC445/L01.md)
-- [Algorithm analysis](Teaching/LectureNotes/COSC445/L02.md)
+- [Refresher - Variables, Operators, Branches](L01.md)
+- [Refresher: Loops and Arrays](L02.md)
+- [Refresher - Methods and Objects](L04.md)
 
 These "Notes" are just slides I use in class, and thus are not comprehensive. Eventually, my plan is to make them more like notes. If you would like to contribute material (**with attribution**) such as add your own notes or annotations or exercise solutions, please come talk to me.
 
