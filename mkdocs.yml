@@ -1,4 +1,4 @@
-site_name: My Course Slides & Notes
+site_name: Course Notes
 site_url: https://sayangoswami.github.io/Teaching/
 docs_dir: Notes
 exclude_docs: Slides.md
@@ -23,7 +23,7 @@ theme:
 
 markdown_extensions:
   - pymdownx.highlight:
-      anchor_linenums: true
+      linenums: true
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
