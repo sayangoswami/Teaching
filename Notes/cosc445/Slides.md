@@ -21,3 +21,4 @@ link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.cs
 - [Syllabus](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/00-Syllabus.md)
 - [Introduction to Algorithms](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/L01.md)
 - [Algorithm analysis](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/L02.md)
+- [Program analysis](https://liascript.github.io/course/?https://raw.githubusercontent.com/sayangoswami/Teaching/main/Notes/cosc445/L03.md)
