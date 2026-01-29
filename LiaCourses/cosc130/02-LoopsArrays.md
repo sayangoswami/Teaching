@@ -1,3 +1,22 @@
+<!--
+author:   Sayan Goswami
+email:	sgoswami@smcm.edu
+version:  0.1.0
+language: en
+narrator: US English Female
+
+comment: Loops and Arrays
+
+import: https://raw.githubusercontent.com/liaScript/mermaid_template/master/README.md
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+
+link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
+
+-->
+
 
 # Refresher: Loops and Arrays
 
@@ -183,7 +202,7 @@ Then, the inner loop (minute hand) must complete its entire cycle (all 60 minute
 ...before the outer loop ticks again.
 
 
-```mermaid
+```mermaid @mermaid
 graph TD
     A[Start] --> B[Outer: i = 0];
     B --> C{Outer: i < 3};
@@ -237,6 +256,7 @@ public class Main {
 
 Let's trace the execution. `i` is the row, `j` is the column.
 
+<!-- data-type="none" data-sortable="false" -->
 |i|j|Output|
 |---|---|---|
 |0|0|`*`|
@@ -508,4 +528,9 @@ int[] arr = {5, 10, 15, 20, 25};
 for (int i = 0; i < 5; i++)
 	System.out.println(arr[i]);
 ```
+
+
+
+
+
 

@@ -1,16 +1,3 @@
-<!--
-author:   Sayan Goswami
-email:	sgoswami@smcm.edu
-version:  0.1.0
-language: en
-narrator: US English Female
-
-link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
-
-link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
-
-link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
--->
 
 
 # COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
