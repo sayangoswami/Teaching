@@ -1,0 +1,164 @@
+<!--
+author:   Sayan Goswami
+email:	sgoswami@smcm.edu
+version:  0.1.0
+language: en
+narrator: US English Female
+
+comment: Program Analysis
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+
+link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
+
+-->
+
+# Program analysis
+
+## Homework problem
+
+For each of the following pairs of functions $f(n)$ and $g(n)$ state whether $f(n) = \mathcal{O}(g(n))$, $f(n) = \mathcal{\Omega}(g(n))$, or $f(n) = \mathcal{\Theta}(g(n))$, or none of the above.
+
+1. $f(n) = n^{2} + 3n + 4$ and $g(n) = 6n + 7$
+2. $f(n) = n \sqrt{ n }$ and $g(n) = n^{2} - n$
+3. $f(n) = 2^{n} - n^{2}$ and $g(n) = n^4 + n^{2}$
+
+
+## Reasoning about efficiency - Selection Sort
+
+```python
+def selection_sort(s):
+	n = len(s)   # length of s
+	for i in range(n):  # loop from 0 to n-1
+		min_idx = i
+		for j in range(i+1, n):
+			if s[j] < s[min_idx]:
+				min_idx = j
+		# swap the values at indices i and min_idx
+		swap(s, i, min_idx)
+```
+
+
+## Worst-case analysis
+
+The outer loop goes around $n$ times.
+
+The inner loop goes around at most $n$ times for each iteration of the outer loop
+
+Thus selection sort takes at most $n \times n = \mathcal{O}(n^{2})$ time in the worst case.
+
+In fact, it is $\mathcal{\Theta}(n^{2})$, because at least $\frac{n}{2}$ times it scans through at least $\frac{n}{2}$ elements, for a total of at least $\frac{n^{2}}{4}$ steps.
+
+
+
+## More careful analysis
+
+The exact number of times the `if` statement is executed is given by:
+
+$$
+\begin{aligned}
+T(n) = \sum_{i=0}^{n-1} n - i - 1 \\
+= (n-1) + (n-2) + (n-3) + \dots + 2 + 1 \\
+= \frac{n(n-1)}{2}
+\end{aligned}
+$$
+
+Thus, the worst case running time is $\mathcal{\Theta}(n^{2})$.
+
+
+## Insertion sort
+
+```python
+def insertion_sort(s):
+	n = len(s)
+	for i in range(1, n): # loop from 1 to n-1
+		for j in range(i, 0, -1): # loop from i to 1
+			if s[j] < s[j-1]:
+				swap(s, j, j-1)
+			else:
+				break
+```
+
+
+## Worst-case analysis
+
+
+- The outer loop runs $n-1$ times
+- In the $i$-th iteration of the outer loop, the inner loop runs $i-1$ times **in the worst case**.
+- The total number of times the `swap` function is called in the worst case is $1 + 2 + 3 + \dots + n-1 = \frac{n(n-1)}{2} = \mathcal{\Theta}(n^{2})$
+
+## Substring search
+
+Here's a function that finds the first position of pattern (`p`) in text (`t`):
+
+```python
+def find(p, t):
+	m = len(p)
+	n = len(t)
+	for i in range(n - m + 1):
+		matched = True
+		for j in range(m):
+			if p[j] != t[i+j]:
+				matched = False
+				break
+		if matched:
+			return i
+```
+
+
+## Worst-case analysis
+
+- The outer loop runs $n-m+1$ times
+- In each iteration of the outer loop, the inner loop runs $m$ times in the worst case
+- In the worst case, the if block in line 7 runs $m(n-m+1)$ times.
+- Typically, $n \gg m$ so $m(n-m+1) = \mathcal{\Theta}(mn)$
+
+
+## Sum of Series
+
+- Often arise in algorithm analysis
+
+- Notation: $\sum_{i=1}^{n} f(i) = f(1) + f(2) + f(3) + \dots + f(n)$
+
+- Some commonly encountered summation classes:
+	1. $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$
+	2. In general, $\sum_{i=1}^{n} i^{p} = \mathcal{\Theta}(n^{p+1})$
+	3. $\sum_{i=1}^{n} a^{i} = \frac{a^{n+1} - 1}{a-1}$
+
+
+
+## Logarithms
+
+- Frequently used in data-structure and algorithm analysis - very important to understand what they are and where they come from.
+- A logarithm is simply an *inverse exponential function*.
+- Saying $b^x = y$  is equivalent to saying $x = \log_{b}y$.
+- Exponential algorithms grow extremely fast. Hence logarithmic algorithms grow extremely slowly.
+
+## Binary search
+
+- In binary search we throw away half the possible number of keys after each comparison. 
+- We only need 30 comparisons to search in an array of billion elements.
+- How many time can we halve $n$ before getting to 1?
+	- $\lceil \lg n \rceil$ (${} \lg = \log_{2} {}$)
+
+## Logarithms and Trees
+
+- How tall a binary tree do we need until we have $n$ leaves?
+- The number of potential leaves doubles with each level.
+- How many times can we double 1 until we get to n?
+	- $\lceil \lg n \rceil$
+
+## Logarithms and Bits
+
+- How many bits do you need to represent the numbers from $0$ to $2^i - 1$?
+- Each bit you add doubles the possible number of bit patterns, so the number of bits equals $\lg 2^i = i$
+
+## Properties of logarithms
+
+- $\log_{a} xy = \log_{a}x + \log_{a} y$
+- $\log_{a}b = \frac{\log_{c}b}{\log_{c}a}$
+- $\sum_{i=1}^{n} \frac{1}{i} = \mathcal{\Theta}(\log n)$
+	- This series is called the $n$-th harmonic number
+	- If this result seems incredulous, recall the integral ${} \int \frac{1}{x} dx = \log x + c {}$

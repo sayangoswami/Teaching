@@ -15,6 +15,8 @@ link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,w
 
 link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
 
+import: https://raw.githubusercontent.com/LiaScript/CodeRunner/master/README.md
+
 -->
 
 
@@ -24,13 +26,18 @@ link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.cs
 ## The `while` statement
 
 ```java
-int n = 10;
-while (n > 0) {
-	System.out.println(n);
-	n = n - 1;
+public class Main {
+    public static void main(String[] args) {
+        int n = 10;
+        while (n > 0) {
+            System.out.println(n);
+            n = n - 1;
+        }
+        System.out.println("Blastoff!");
+    }
 }
-System.out.println("Blastoff!");
 ```
+@LIA.java(Main)
 
 - Almost reads like English!
 - The expression in parentheses is called the *condition*. 
@@ -52,25 +59,35 @@ System.out.println("Blastoff!");
 What will the following program print:
 
 ```java
-int n = 3;
-while (n != 1) { 
-	System.out.println(n); 
-	if (n % 2 == 0) { 
-		n = n / 2; 
-	} else { 
-		n = n * 3 + 1; 
-	} 
-} 
+public class Main {
+    public static void main(String[] args) {
+        int n = 3;
+        while (n != 1) { 
+            System.out.println(n); 
+            if (n % 2 == 0) { 
+                n = n / 2; 
+            } else { 
+                n = n * 3 + 1; 
+            } 
+        } 
+    }
+}
 ```
+@LIA.java(Main)
 
 ## The `for` loop
 
 ```java
-int n = 10;
-for (int i = 1; i <= n; i = i + 1) { 
-	System.out.println(i);
+public class Main {
+    public static void main(String[] args) {
+        int n = 10;
+        for (int i = 1; i <= n; i = i + 1) { 
+            System.out.println(i);
+        }
+    }
 }
 ```
+@LIA.java(Main)
 
 `for` loops have three components in parentheses, separated by semicolons: the *initializer*, the *condition*, and the *update*.
 
@@ -83,12 +100,17 @@ for (int i = 1; i <= n; i = i + 1) {
 
 
 ```java
-int n = 10;
-for (int i = 0; i < n; i = i + 1) { 
-	System.out.println(i);
+public class Main {
+    public static void main(String[] args) {
+        int n = 10;
+        for (int i = 0; i < n; i = i + 1) { 
+            System.out.println(i);
+        }
+        System.out.println(i);  // error. i is not defined
+    }
 }
-System.out.println(i);  // error. i is not defined
 ```
+@LIA.java(Main)
 
 If you declare a variable in the initializer, it *only exists inside* the `for` loop.
 
@@ -96,13 +118,18 @@ If you declare a variable in the initializer, it *only exists inside* the `for` 
 ### Correct version
 
 ```java
-int n = 10;
-int i;
-for (i = 0; i < n; i = i + 1) { 
-	System.out.println(i);
+public class Main {
+    public static void main(String[] args) {
+        int n = 10;
+        int i;
+        for (i = 0; i < n; i = i + 1) { 
+            System.out.println(i);
+        }
+        System.out.println(i);  // this is ok
+    }
 }
-System.out.println(i);  // this is ok
 ```
+@LIA.java(Main)
 
 
 ## The `do`-`while` loop
@@ -112,16 +139,21 @@ The `while` and `for` statements are *pretest* loops; they test the condition fi
 The `do`-`while` is a *posttest* loop. Its useful when you need to run the body of the loop at least once.
 
 ```java
-boolean more = true;  
-Scanner input = new Scanner(System.in);  
-do  {  
-    // some business logic, such as add a transaction  
-    addTransaction();
-    System.out.println("Do you want to add another one.");  
-    char ch = input.nextLine().charAt(0);  
-    if (ch == 'N' || ch == 'n') more = false;  
-} while (more);
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        boolean more = true;  
+        Scanner input = new Scanner(System.in);  
+        do  {  
+            // some business logic, such as add a transaction  
+            System.out.println("Added transaction. Do you want to add another one.");  
+            char ch = input.nextLine().charAt(0);  
+            if (ch == 'N' || ch == 'n') more = false;  
+        } while (more);
+    }
+}
 ```
+@LIA.java(Main)
 
 
 ## The `break` statement
@@ -129,19 +161,25 @@ do  {
 When a program reaches a `break` statement, it exits the current loop.
 
 ```java
-Scanner input = new Scanner(System.in);  
-while (true) {  
-    System.out.println("Enter amount: ");  
-    int amount = input.nextInt();  
-    if (amount < 0) {  
-        System.out.println("Come back when you are serious.");  
-        break;  
-    }  
-    System.out.println("Enter description: ");  
-    String desc = input.next();  
-    enterAmount(amount, desc);  
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);  
+        while (true) {  
+            System.out.println("Enter amount: ");  
+            double amount = input.nextDouble();  
+            if (amount < 0) {  
+                System.out.println("Come back when you are serious.");  
+                break;  
+            }  
+            System.out.println("Enter description: ");  
+            String desc = input.next();  
+            System.out.printf("Processing $%.2f for %s", amount, desc); 
+        }
+    }
 }
 ```
+@LIA.java(Main)
 
 
 ## The `continue` statement
@@ -149,18 +187,24 @@ while (true) {
 A `continue` statement skips everything below it and moves on to the next iteration.
 
 ```java
-Scanner in = new Scanner(System.in);  
-int x = -1;  
-int sum = 0;  
-while (x != 0) {  
-    x = in.nextInt();  
-    if (x <= 0) {  
-        continue;  
-    }  
-    System.out.println("Adding " + x);  
-    sum += x;  
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);  
+        int x = -1;  
+        int sum = 0;  
+        while (x != 0) {  
+            x = in.nextInt();  
+            if (x <= 0) {  
+                continue;  
+            }  
+            System.out.println("Adding " + x);  
+            sum += x;  
+        }
+    }
 }
 ```
+@LIA.java(Main)
 
 ## Nested Loops
 
@@ -248,7 +292,7 @@ public class Main {
     }
 }
 ```
-
+@LIA.java(Main)
 
 
 
@@ -303,7 +347,7 @@ public class Main {
     }
 }
 ```
-
+@LIA.java(Main)
 
 
 # Arrays
@@ -466,10 +510,10 @@ Example
 int[] scores = new int[25];
 Scanner in = new Scanner(System.in);  
 scores[0] = in.nextInt(); // get the first grade
-grades[24] = in.nextInt(); // get the last grade
+scores[24] = in.nextInt(); // get the last grade
 ```
 
-Again, `grade[0]` can be modified just like `grade0` in the motivating example.
+Again, `scores[0]` can be modified just like `score0` in the motivating example.
 
 
 ## The array index can be a variable
@@ -499,20 +543,25 @@ scores[i+24] = in.nextInt(); // get the last (25th) grade
 ## Storing the scores using an Array
 
 ```java
-int[] scores = new int[25];  
-Scanner input = new Scanner(System.in);
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        int[] scores = new int[25];  
+        Scanner input = new Scanner(System.in);
 
-// input scores  
-for (int i = 0; i < 25; i++) {  
-    scores[i] = input.nextInt();  
-}  
-  
-// print all the scores  
-for (int i = 0; i < 25; i++) {  
-    System.out.println(scores[i]);  
+        // input scores  
+        for (int i = 0; i < 25; i++) {  
+            scores[i] = input.nextInt();  
+        }  
+        
+        // print all the scores  
+        for (int i = 0; i < 25; i++) {  
+            System.out.println(scores[i]);  
+        }
+    }
 }
 ```
-
+@LIA.java(Main)
 
 
 ## Initializing an array with values
