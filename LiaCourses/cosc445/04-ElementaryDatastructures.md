@@ -146,12 +146,13 @@ There is an inherent tradeoff between these operations. We will see that no sing
 
 What is the asymptotic worst-case running times for each of the seven fundamental dictionary operations when the data structure is implemented as
 
+- Unsorted array
+- Sorted array
 - A singly-linked unsorted list,
-
 - A doubly-linked unsorted list,
 
+Bonus
 - A singly-linked sorted list, and finally
-
 - A doubly-linked sorted list.
 
 

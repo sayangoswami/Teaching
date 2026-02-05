@@ -188,3 +188,7 @@ small.lia-xs {
 small.lia-xxs {
   font-size: 0.6em !important;
 }
+
+.lia-mode--presentation .lia-slide__footer {
+  display: none !important;
+}
