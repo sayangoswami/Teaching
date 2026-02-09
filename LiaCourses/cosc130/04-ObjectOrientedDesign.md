@@ -14,7 +14,7 @@ link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,w
 
 import: https://raw.githubusercontent.com/sayangoswami/lia-annotate/main/README.md
 
-link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
+link: ../theme.css
 
 -->
 
@@ -361,12 +361,29 @@ public class Transaction {
 - Someone could get the date object from our transaction and then change it, altering our transaction's internal state without us knowing.
 
     {{3}}
+```java
+public class Transaction {
+    private Date transactionDate;
+    private int amountInCents;
+
+    public Transaction(int amountInCents, Date date) {
+        this.transactionDate = date;
+        this.amountInCents = amountInCents;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+}
+```    
+
+    {{4}}
 - To prevent this, we use something called a "defensive copy." 
 - In the constructor, we save a *copy* of the incoming `Date` object. 
 - And in the getter, we return a *copy* of our internal `Date` object. 
 - This way, our internal state is completely insulated from the outside world.
 
-      {{4}}
+      {{5}}
 ```java
 // Defensive copying for a mutable field
 public class Transaction {

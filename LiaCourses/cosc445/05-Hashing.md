@@ -14,14 +14,14 @@ link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,w
 
 import: https://raw.githubusercontent.com/sayangoswami/lia-annotate/main/README.md
 
-link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
+link: ../theme.css
 
 -->
 
 
 # Hashing
 
-## Dictionaries implementations so far
+## Dictionary implementations so far
 
 | Datastructure           | Insert               | Search               | Delete               | Min/Max              | Pred/Succ            |
 | ----------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
