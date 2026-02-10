@@ -7,9 +7,9 @@ narrator: US English Female
 
 comment: Object Oriented Design
 
-link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap
 
-link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap
 
 
 import: https://raw.githubusercontent.com/sayangoswami/lia-annotate/main/README.md
@@ -161,6 +161,7 @@ for (String name : names) {
     System.out.println(name);
 }
 ```
+@LIA.java(Main)
 
 **Output:** Alice Smith Charlie David
 
