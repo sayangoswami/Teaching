@@ -4,7 +4,7 @@
 :root {
   /* --main-bg-color: #ffffff; */
   --main-font: "Atkinson Hyperlegible Next", "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
-  --global-font-mono: "Fira Code";
+  --global-font-mono: "Atkinson Hyperlegible Mono", "Fira Code", monospace;
   /* --main-font-size: 20px; */
   /* --main-color: #000000; */
   --heading-color: rgb(var(--color-highlight));
@@ -26,6 +26,7 @@
 html.lia-variant-dark {
     /* --main-bg-color: #111111; */
     --main-font: "Atkinson Hyperlegible Next", "Fira Sans", Tahoma, Verdana, Helvetica, Arial, sans-serif;
+    --global-font-mono: "Atkinson Hyperlegible Mono", "Fira Code", monospace;
     /* --main-font-size: 20px; */
     /* --main-color: #ffffff; */
     --heading-color: rgb(from rgb(var(--color-highlight))calc(r*2.5)calc(g*2.5)calc(b*2.5));
