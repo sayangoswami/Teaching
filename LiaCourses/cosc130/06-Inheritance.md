@@ -1,0 +1,682 @@
+<!--
+author:   Sayan Goswami
+email:	sgoswami@smcm.edu
+version:  0.1.0
+language: en
+narrator: US English Female
+
+comment: Inheritance
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap
+
+link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap
+
+import: https://raw.githubusercontent.com/sayangoswami/lia-annotate/main/README.md
+
+link: https://cdn.jsdelivr.net/gh/sayangoswami/Teaching@main/LiaCourses/theme.css
+
+import: https://raw.githubusercontent.com/LiaScript/CodeRunner/master/README.md
+
+import: https://raw.githubusercontent.com/liaScript/mermaid_template/master/README.md
+
+-->
+
+
+# Inheritance - I
+
+
+## Agenda
+
+1. **The Problem:** Code Duplication & Maintenance
+    
+2. **The Solution:** What is Inheritance?
+    
+3. **Core Concepts:** The "Is-A" Relationship
+    
+4. **Java Implementation:**
+    
+    - `extends` keyword
+        
+    - Superclass & Subclass
+        
+5. **Method Overriding:** Specializing Behavior
+    
+6. **The `super` Keyword:** Accessing the Parent
+    
+7. **Inheritance and Constructors**
+    
+8. **Benefits of Inheritance**
+    
+
+
+## The Problem: Code Duplication
+
+Let's imagine we're building a system for a university. We might have a `Student` class and a `Professor` class.
+
+    {{1}}
+
+```java 
+public class Student {
+    private String name;
+    private String id;
+    private double gpa;
+    public Student(String name, String id, double gpa) {
+        this.name = name;
+        this.id = id;
+        this.gpa = gpa;
+    }
+    public String getName() { return name; }
+    public String getId() { return id; }
+    // ... other methods
+}
+```
+
+    {{2}}
+
+```java 
+public class Professor {
+    private String name;
+    private String id;
+    private String department;
+    public Professor(String name, String id, String dept) {
+        this.name = name;
+        this.id = id;
+        this.department = dept;
+    }
+    public String getName() { return name; }
+    public String getId() { return id; }
+    // ... other methods
+}
+```
+
+
+
+
+## What is Inheritance?
+
+**Inheritance** is a fundamental principle of Object-Oriented Programming (OOP).
+
+It allows a new class to be based on an existing class. The new class **inherits** the **non-private** properties (fields) and behaviors (methods) of the existing class.
+
+This models a **"is-a" relationship**.
+
+- A `Student` **is-a** `Person`.
+    
+- A `Professor` **is-a** `Person`.
+    
+- A `Car` **is-a** `Vehicle`.
+    
+- A `Dog` **is-a** `Animal`.
+    
+
+This allows us to create a general class first, and then create more specialized classes from it.
+
+
+## Core Terminology
+
+We use specific terms to describe this relationship:
+
+- **Superclass (or Parent Class, Base Class):** The class being inherited from. (e.g., `Person`)
+    
+- **Subclass (or Child Class, Derived Class):** The class that inherits. (e.g., `Student`)
+    
+
+
+## Class Diagrams
+
+![Class Diagram of Student and Professor inheriting from the same parent object](fig/classdiag.svg)
+
+
+
+## The `extends` Keyword 
+
+In Java, we use the `extends` keyword to establish an inheritance relationship. Let's refactor our earlier example. 
+
+First, we create the `Person` superclass with the common attributes. 
+
+
+### The `Person` class
+
+Note the **`protected`** keyword. This is used when we want the fields to be *private to a class AND its subclasses and any other class in the same package*.
+
+```java
+// Person.java (The Superclass) 
+
+public class Person { 
+	protected String name; 
+	protected String id; 
+	public Person(String name, String id) { 
+		this.name = name; this.id = id; 
+	} 
+	public String getName() { 
+		return name; 
+	} 
+	public String getId() { 
+		return id; 
+	} 
+	public void displayInfo() { 
+		System.out.println("Name: " + name + ", ID: " + id); 
+	} 
+} 
+``` 
+
+
+### The `Student` class
+
+Now, `Student` can *extend* `Person`. 
+```java 
+// Student.java (The Subclass) 
+public class Student extends Person { 
+	// name and id are inherited! 
+	private double gpa; // We'll fix this constructor later... 
+} 
+``` 
+
+
+
+## What is Inherited? 
+
+* A subclass inherits the **public** and **protected** and **default** members (fields and methods) of its superclass. 
+* **You DO NOT inherit `private` members.** While they exist in the superclass part of the object, the subclass cannot access them directly. You must use public getters/setters. 
+* **You DO NOT inherit constructors.** A subclass must define its own constructors. 
+```java 
+public class Main { 
+	public static void main(String[] args) { 
+		Student s1 = new Student(...); 
+		// These methods are INHERITED from Person! 
+		s1.getName(); 
+		s1.getId(); 
+		s1.displayInfo(); 
+	} 
+} 
+```
+
+
+
+## Method Overriding 
+
+What if a subclass needs a more specific version of an inherited method? 
+
+**Method Overriding** is when a subclass provides its own implementation for a method that it inherited from its superclass. 
+
+The method signature (name, parameters) in the subclass **must be identical** to the one in the superclass. 
+
+
+Let's override the `displayInfo()` method in `Student`. 
+
+```java 
+// In Student.java 
+public class Student extends Person { 
+	private double gpa; 
+	// ... constructor ... 
+	// Override the displayInfo method 
+	@Override 
+	public void displayInfo() { 
+		System.out.println(
+			"Student Name: " + getName() + 
+			", ID: " + getId() + 
+			", GPA: " + gpa);
+	}
+} 
+``` 
+
+
+## The `super` Keyword: Accessing Superclass Members 
+
+The `super` keyword is a reference to the superclass. It can be used for two main purposes: 
+1. To call a method from the superclass. 
+2. To call a constructor from the superclass. 
+
+
+Let's improve our overridden `displayInfo` method to reuse the code from the `Person` class. 
+```java 
+// In Student.java 
+@Override 
+public void displayInfo() { 
+	super.displayInfo(); // Calls the Person's displayInfo() method 
+	System.out.println("GPA: " + this.gpa); 
+} 
+``` 
+
+**Output would be:**
+```
+Name: Alice, ID: 12345
+GPA: 3.9
+```
+
+This is much better! We avoid duplicating the code for printing the name and ID. 
+
+
+## Inheritance and Constructors 
+
+As we said, constructors are **not inherited**. 
+
+The rule is: **A superclass must be fully constructed before its subclass can be constructed.** 
+
+In practice, this means the first line of any subclass constructor **must** be a call to a superclass constructor, using **`super()`**. 
+
+
+```java 
+// In Student.java 
+public class Student extends Person { 
+	private double gpa; 
+	public Student(String name, String id, double gpa) { 
+		// Must be the VERY FIRST line 
+		super(name, id); // Calls the Person(String, String) constructor 
+		// Now, initialize subclass-specific fields 
+		this.gpa = gpa; 
+	} 
+	// ... other methods ... 
+} 
+```
+
+
+## Putting It All Together 
+
+    {{1}}
+```java
+// Person.java (Superclass) class Person {  
+    private String name;  
+    private String id;  
+  
+    public Person(String name, String id) { /* ... */ }  
+  
+    public String getName() {  
+        return name;  
+    }  
+  
+    public void displayInfo() {  
+        System.out.println("Name: " + name + ", ID: " + id);  
+    }  
+}
+```
+
+    {{2}}
+```java
+// Student.java (Subclass)  
+class Student extends Person {  
+    private double gpa;  
+  
+    public Student(String name, String id, double gpa) {  
+        super(name, id);  
+        this.gpa = gpa;  
+    }  
+  
+    @Override  
+    public void displayInfo() {  
+        super.displayInfo();  
+        System.out.println(" GPA: " + this.gpa);  
+    }  
+}
+```
+
+    {{3}}
+```java
+// Main.java  
+public class Main {  
+    public static void main(String[] args) {  
+        Person p = new Person("Dr. Smith", "p987");  
+        Student s = new Student("Alice", "s123", 3.9);  
+        p.displayInfo(); // Calls Person's method  
+        System.out.println("-----------------");  
+        s.displayInfo(); // Calls Student's OVERRIDDEN method  
+    }  
+}
+```
+
+## Benefits of Inheritance 
+
+Why go through all this trouble? 
+1. **Code Reusability:** Write common code once in a superclass and reuse it in multiple subclasses. (The DRY Principle: Don't Repeat Yourself). 
+2. **Logical Structure:** Creates a natural and logical hierarchy that is easier to understand and manage. 
+3. **Extensibility:** You can create a new class that extends an existing one without modifying the original class's code. 
+4. **Polymorphism (Preview!):** Inheritance is the foundation for polymorphism, one of OOP's most powerful features, which allows us to treat objects of different types in a uniform way. (More on this next lecture!) 
+
+## Summary 
+
+* Inheritance models an **"is-a"** relationship. 
+* Use the `extends` keyword to create a **subclass** from a **superclass**. 
+* Subclasses inherit `public`/`protected` members, but **not** `private` members or **constructors**. 
+* Use **`@Override`** to provide a specialized implementation of an inherited method. 
+* Use the **`super`** keyword to call the superclass's methods (`super.method()`) or constructor (`super()`). 
+* The call to `super()` **must** be the first line in a subclass constructor. 
+
+## Whats next?
+
+**Next Time:** Polymorphism! We'll explore how inheritance allows us to write more flexible and powerful code.
+
+
+## Practice
+
+### Pair 1: Basic Subclass and Constructor
+
+**Concept:** Creating a simple subclass that calls its parent's constructor.
+
+**Problem 1A: `Book` from `Publication`**
+
+Create a `Publication` superclass with fields for `title` (String) and `price` (double). Then, create a `Book` subclass that adds a field for `author` (String). The `Book` constructor should take all three values and use `super()` to initialize the superclass fields.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 1B: `Manager` from `Employee`**
+
+Create an `Employee` superclass with fields for `name` (String) and `employeeId` (int). Then, create a `Manager` subclass that adds a field for `department` (String). The `Manager` constructor should take all three values and use `super()` to initialize the superclass fields.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 2: Method Overriding
+
+**Concept:** Changing the behavior of an inherited method.
+
+**Problem 2A: `Motorcycle` `startEngine()`**
+
+Given a `Vehicle` class with a method `public void startEngine()` that prints "The vehicle's engine starts." Create a `Motorcycle` subclass that overrides this method to print "The motorcycle's engine roars to life."
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 2B: `Dog` `makeSound()`**
+
+Given an `Animal` class with a method `public void makeSound()` that prints "The animal makes a sound." Create a `Dog` subclass that overrides this method to print "The dog barks."
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 3: Using `super.method()`
+
+**Concept:** Reusing the superclass's method implementation inside an overridden method.
+
+**Problem 3A: `AdminUser` `displayProfile()`**
+
+A `User` class has a `displayProfile()` method that prints "`Username: [name]`". Create an `AdminUser` subclass that overrides `displayProfile()` to first call the `User`'s `displayProfile()` method and then, on a new line, print "`Role: Administrator`".
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 3B: `VIP_Ticket` `printDetails()`**
+
+A `Ticket` class has a `printDetails()` method that prints "`Event: [event], Seat: [seat]`". Create a `VIP_Ticket` subclass that overrides `printDetails()` to first call the `Ticket`'s `printDetails()` method and then, on a new line, print "`Perks: Lounge Access`".
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 4: Adding New State and Behavior
+
+**Concept:** A subclass can have its own unique fields and methods.
+
+**Problem 4A: `SavingsAccount`**
+
+Create an `Account` class with a `balance` (double). Create a `SavingsAccount` subclass that adds an `interestRate` (double) field and a new method `public void applyInterest()` which increases the balance by the interest rate.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 4B: `PlayerCharacter`**
+
+Create a `GameCharacter` class with `health` (int). Create a `PlayerCharacter` subclass that adds a `mana` (int) field and a new method `public void castSpell()` which decreases `mana` by 10.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 5: Refactoring to a Superclass
+
+**Concept:** Identifying common code and extracting it into a superclass.
+
+**Problem 5A: `DigitalProduct`**
+
+You are given two classes, `Ebook` and `Software`, which both have `name` (String) and `price` (double) fields. Create a common `DigitalProduct` superclass to hold these fields and make `Ebook` and `Software` extend it.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 5B: `Building`**
+
+You are given two classes, `House` and `Office`, which both have `address` (String) and `squareFootage` (int) fields. Create a common `Building` superclass to hold these fields and make `House` and `Office` extend it.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 6: Constructors with Default Values
+
+**Concept:** A subclass constructor can provide a default value to its superclass constructor.
+
+**Problem 6A: `Pencil`**
+
+A `WritingImplement` class requires a `color` (String) in its constructor. Create a `Pencil` subclass whose constructor only takes a `hardness` (e.g., "HB"). This constructor should always call the superclass constructor with the color "`Gray`".
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 6B: `CoffeeMug`**
+
+A `Container` class requires a `material` (String) in its constructor. Create a `CoffeeMug` subclass whose constructor only takes a `design` (e.g., "Logo"). This constructor should always call the superclass constructor with the material "`Ceramic`".
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 7: Overriding a Calculation Method
+
+**Concept:** Implementing a specific version of a general calculation method.
+
+**Problem 7A: `Square` `getArea()`**
+
+A `Shape` class has a method `public double getArea()` that returns `0.0`. Create a `Square` subclass with a `sideLength` (double) field. Override `getArea()` to return the correct area (`sideLength * sideLength`).
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 7B: `Circle` `getPerimeter()`**
+
+A `Shape` class has a method `public double getPerimeter()` that returns `0.0`. Create a `Circle` subclass with a `radius` (double) field. Override `getPerimeter()` to return the correct perimeter (`2 * Math.PI * radius`).
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 8: Using `protected` Members
+
+**Concept:** Accessing superclass members directly using the `protected` access modifier.
+
+**Problem 8A: `Programmer`**
+
+A `TeamMember` class has a `protected String teamName`. Create a `Programmer` subclass with a method `public void printTeam()` that directly accesses and prints the `teamName` field from the superclass.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 8B: `Essay`**
+
+A `Document` class has a `protected int wordCount`. Create an `Essay` subclass with a method `public boolean isLongEnough()` that directly accesses the `wordCount` field and returns `true` if it's over 500.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 9: Multi-Level Inheritance
+
+**Concept:** A class can inherit from a class that is already a subclass.
+
+**Problem 9A: `ElectricCar`**
+
+Create a `Vehicle` class. Create a `Car` class that extends `Vehicle` and adds a `numDoors` field. Finally, create an `ElectricCar` class that extends `Car` and adds a `batteryCapacity` field.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 9B: `SmartTV`**
+
+Create an `Appliance` class. Create an `Electronics` class that extends `Appliance` and adds a wattage field. `Finally`, create a `SmartTV` class that extends `Electronics` and adds an `operatingSystem` field (e.g., "Android TV").
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Pair 10: Combining Concepts (`toString`)
+
+**Concept:** Combine constructors, `super`, and overriding to create a useful `toString()` method.
+
+**Problem 10A: `Student` `toString()`**
+
+A `Person` class has a `name` field and a `toString()` method that returns "`Person[name=...]`". Create a `Student` subclass that adds a `studentId` field. Override `toString()` to return "`Student[name=..., studentId=...]`". Use `super.toString()` to help build the string. (Hint: You may need to manipulate the string from `super.toString()`).
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+**Problem 10B: `Laptop` `toString()`**
+
+A `Computer` class has a `cpuType` field and a `toString()` that returns "`Computer[cpuType=...]`". Create a `Laptop` subclass that adds a `screenSize` field. Override `toString()` to return "`Laptop[cpuType=..., screenSize=...]`". Use `super.toString()` to help build the string.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
+
+
+### Bonus
+
+If you finish early, pick one of the pairs (e.g., Pair 2 with `Animal` and `Dog`).
+
+1. Create another subclass (e.g., `Cat` that extends `Animal`).
+
+2. In a `main` method, create an `Animal` variable, but assign a `Dog` object to it: `Animal myPet = new Dog();`
+
+3. Call `myPet.makeSound()`. What happens?
+
+4. Now assign a `Cat` object to that same variable: `myPet = new Cat();`
+
+5. Call `myPet.makeSound()` again. What happens? Discuss with your partner why this works. This is a preview of our next topic: **Polymorphism**.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // ...
+    }
+}
+```
+@LIA.java(main)
