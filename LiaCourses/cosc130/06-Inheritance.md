@@ -5,7 +5,7 @@ version:  0.1.0
 language: en
 narrator: US English Female
 
-comment: Inheritance
+comment: Object Oriented Design
 
 link: https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap
 
@@ -363,7 +363,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 1B: `Manager` from `Employee`**
 
@@ -376,7 +376,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 2: Method Overriding
@@ -394,7 +394,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 2B: `Dog` `makeSound()`**
 
@@ -407,7 +407,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 3: Using `super.method()`
@@ -425,7 +425,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 3B: `VIP_Ticket` `printDetails()`**
 
@@ -438,7 +438,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 4: Adding New State and Behavior
@@ -456,7 +456,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 4B: `PlayerCharacter`**
 
@@ -469,7 +469,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 5: Refactoring to a Superclass
@@ -487,7 +487,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 5B: `Building`**
 
@@ -500,7 +500,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 6: Constructors with Default Values
@@ -518,7 +518,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 6B: `CoffeeMug`**
 
@@ -531,7 +531,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 7: Overriding a Calculation Method
@@ -549,7 +549,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 7B: `Circle` `getPerimeter()`**
 
@@ -562,7 +562,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 8: Using `protected` Members
@@ -580,7 +580,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 8B: `Essay`**
 
@@ -593,7 +593,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 9: Multi-Level Inheritance
@@ -611,7 +611,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 9B: `SmartTV`**
 
@@ -624,7 +624,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Pair 10: Combining Concepts (`toString`)
@@ -642,7 +642,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 **Problem 10B: `Laptop` `toString()`**
 
@@ -655,7 +655,7 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
 
 
 ### Bonus
@@ -679,4 +679,4 @@ public class Main {
     }
 }
 ```
-@LIA.java(main)
+@LIA.java(Main)
