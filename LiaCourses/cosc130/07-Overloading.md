@@ -350,4 +350,4 @@ public class Dog {
 
 2. **Problem B:** In the same `ArrayPrinter` class, overload the `printArray` method. This new version should take an array of strings (`String[]`) as its single parameter. The method should iterate through this array and print each element to the console, each on a new line.
 
-?[](https://codecheck.io/files/2602171445alh2mrl6athtc6zwgtvtefx03)
+??[](https://codecheck.io/files/2602171445alh2mrl6athtc6zwgtvtefx03)
