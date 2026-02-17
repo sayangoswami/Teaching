@@ -323,7 +323,7 @@ public class Dog {
 
 1. **Problem A:** In a class named `MathOperations`, create a method named `multiply`. This method should take two `int` parameters and return their product as an `int`.
 
-2. **Problem B:** In the same `MathOperations` class, overload the `multiply` method. This version should take three `double` parameters and return their product as a `double`.
+2. **Problem B:** In the same `MathOperations` class, overload the `multiply` method. This version should take two `double` parameters and return their product as a `double`.
 
 ??[](https://codecheck.io/files/26021714434d1vfcbvro9npyp5adq00z1bb)
     
