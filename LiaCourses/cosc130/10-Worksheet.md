@@ -111,24 +111,26 @@ An animal shelter needs a way to process different types of animals. You will cr
 
 **1. The Base Class: `Animal`**
 
-* **Method:** `makeSound()`: Prints "Generic animal sound".
-* **Method:** `eat()`: Prints "Animal is eating".
+* **Method:** `makeSound()`: returns "Generic animal sound".
+* **Method:** `eat()`: returns "Animal is eating".
 
 **2. The Subclasses:**
 
-* **`Dog`**: Overrides `makeSound()` to print "Bark!", and `eat()` to print "Dog is eating kibble".
-* **`Cat`**: Overrides `makeSound()` to print "Meow!", and adds a method `scratch()` (specific only to cats).
-* **`Bird`**: Overrides `makeSound()` to print "Chirp!".
+* **`Dog`**: Overrides `makeSound()` to return "Bark!", and `eat()` to return "Dog is eating kibble".
+* **`Cat`**: Overrides `makeSound()` to return "Meow!", and adds a method `scratch()` (specific only to cats).
+* **`Bird`**: Overrides `makeSound()` to return "Chirp!".
 
 **3. Dynamic Dispatch Logic:**
-Create a method `performDailyRoutine(Animal a)` that calls `makeSound()` and `eat()` on any animal passed to it.
+Create a method `performDailyRoutine()` in the Animal `class` that calls `makeSound()` and `eat()` and returns the concatenates the results of the function calls separated by a new line.
 
 ### Code
 
 ```java     +Animal.java
 public class Animal {
-    public void makeSound() { System.out.println("Generic sound"); }
-    public void eat() { System.out.println("Animal is eating"); }
+    public String makeSound() { return "Generic sound"; }
+    public String eat() { "Animal is eating"; }
+
+    //TODO: Implement `performDailyRoutine` method.
 }
 
 // TODO: Implement Dog, Cat, and Bird subclasses
@@ -140,6 +142,10 @@ public class ShelterTester {
         int passed = 0;
         
         Animal[] shelter = { new Dog(), new Cat(), new Bird(), new Dog() };
+
+        if (new Dog().performDailyRoutine().equals("Bark!\nDog is eating kibble")) passed++;
+        if (new Cat().performDailyRoutine().equals("Meow!\nAnimal is eating")) passed++;
+        if (new Bird().performDailyRoutine().equals("Chirp!\nAnimal is eating")) passed++;
         
         // 1-4. Test correct sound dispatch
         // We'll use a helper to capture output or just check types
@@ -166,7 +172,7 @@ public class ShelterTester {
         Animal unknown = new Animal();
         if (unknown.makeSoundString().equals("Generic sound")) passed++;
 
-        System.out.println("Shelter System Passed: " + (passed > 8 ? 10 : passed) + "/10");
+        System.out.println("Shelter System Passed: " + (passed > 11 ? 13 : passed) + "/13");
     }
 }
 
