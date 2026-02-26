@@ -128,7 +128,7 @@ Create a method `performDailyRoutine()` in the Animal `class` that calls `makeSo
 ```java     +Animal.java
 public class Animal {
     public String makeSound() { return "Generic sound"; }
-    public String eat() { "Animal is eating"; }
+    public String eat() { return "Animal is eating"; }
 
     //TODO: Implement `performDailyRoutine` method.
 }
