@@ -1,0 +1,1540 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sayangoswami.github.io/Teaching/cosc445/00-Syllabus/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../L01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus - Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible+Next:300,300i,400,400i,700,700i%7CAtkinson+Hyperlegible+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible Next";--md-code-font:"Atkinson Hyperlegible Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cosc-445-designanalysis-of-algorithms-syllabus" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Course Notes" class="md-header__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Class Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cosc130/" class="md-tabs__link">
+          
+  
+  
+  Cosc130
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Cosc445
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Course Notes" class="md-nav__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc130
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc130
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC130: Intro to Computer Science II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher: Loops and Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More on Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc445
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc445
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC445: Design/Analysis of Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#course-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Course Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engaged-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engaged Learning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smcm-code-of-student-conduct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMCM Code of Student Conduct
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#academic-accommodations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Academic Accommodations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#digital-accessibility-of-course-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Digital Accessibility of Course Materials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#office-of-student-success-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Office of Student Success Services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#office-of-title-ix-compliance-and-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Office of Title IX Compliance and Training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wellness-center-health-services-and-counseling-psychological-services-caps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wellness Center: Health Services and Counseling &amp; Psychological Services (CAPS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-of-generative-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use of Generative AI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attendance-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attendance Policy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#late-work-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Late Work Policy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tentative-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tentative Schedule:
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Class Notes
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cosc445
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cosc-445-designanalysis-of-algorithms-syllabus">COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus</h1>
+<ul>
+<li><strong>Section:</strong> 01</li>
+<li><strong>Credit hours:</strong> 4</li>
+<li><strong>Term and year:</strong> Spring 2026</li>
+<li><strong>Delivery Mode</strong> Classroom</li>
+<li><strong>When and Where:</strong> Tuesday, Thursday. 1:45 PM - 3:00 PM. Schaefer Hall, Room 165.</li>
+<li><strong>Instructor:</strong> <a href="https://inside.smcm.edu/directory/sayan-goswami">Sayan Goswami</a></li>
+<li><strong>Office:</strong> Schaefer Hall, Room 152</li>
+<li><strong>Office Hours:</strong> Monday and Wednesday from 3:00 PM to 4:00 PM or <a href="https://calendar.app.google/FBQnPC8GeRv5WuQ49">by appointment.</a></li>
+<li><strong>Phone:</strong> 240-895-2153</li>
+<li><strong>Email:</strong> sgoswami@smcm.edu</li>
+<li><strong>Textbook:</strong> <a href="https://www.algorist.com/">The Algorithm Design Manual, 3rd Edition, by Steven Skiena</a></li>
+<li><strong>Prerequisites:</strong> <em>COSC 201; and MATH 200 or MATH 281</em></li>
+</ul>
+<h2 id="course-goals">Course Goals</h2>
+<p>This course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms.</p>
+<h2 id="learning-outcomes">Learning Outcomes</h2>
+<p>By the end of this course, you will be able to:</p>
+<ul>
+<li>
+<p>Analyze the <em>best-case</em>, <em>average-case</em>, and <em>worst-case asymptotic performance</em> of algorithms using standard notations (Big-O, <span class="arithmatex">\(\Omega\)</span>, <span class="arithmatex">\(\Theta\)</span>).</p>
+</li>
+<li>
+<p>Construct <em>correctness proofs</em> for algorithms using techniques such as <em>loop invariants and mathematical induction</em>.</p>
+</li>
+<li>
+<p>Compare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.</p>
+</li>
+<li>
+<p>Apply key algorithmic design paradigms, including <em>divide-and-conquer</em>, <em>dynamic programming</em>, and <em>greedy</em> strategies, to solve complex problems.</p>
+</li>
+<li>
+<p>Synthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.</p>
+</li>
+<li>
+<p>Categorize computational problems into <em>complexity classes</em> (P, NP, NP-Complete) and identify when a problem is likely to be <em>computationally intractable</em>.</p>
+</li>
+</ul>
+<h2 id="engaged-learning">Engaged Learning</h2>
+<p>The Engaged Learning component will include problem solving and readings.</p>
+<h2 id="smcm-code-of-student-conduct">SMCM Code of Student Conduct</h2>
+<p>I support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”</p>
+<p>Students who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. </p>
+<p>You are responsible for understanding and complying with the <a href="https://www.smcm.edu/tothepoint/">SMCM Code of Student Conduct.</a></p>
+<h2 id="academic-accommodations">Academic Accommodations</h2>
+<p>SMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: <a href="mailto:adasupport@smcm.edu">adasupport@smcm.edu</a></p>
+<h2 id="digital-accessibility-of-course-materials">Digital Accessibility of Course Materials</h2>
+<p>Digital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing <a href="https://cm.maxient.com/reportingform.php?StMarysMD&amp;layout_id=61">Campus Accessibility Issue reporting form</a> for review by our ADA Coordinator.</p>
+<h2 id="office-of-student-success-services">Office of Student Success Services</h2>
+<p>The Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call <a href="tel:240-895-4388">240-895-4388</a>, stop by Glendening 230, or email <a href="mailto:os3@smcm.edu">os3@smcm.edu</a> .</p>
+<h2 id="office-of-title-ix-compliance-and-training">Office of Title IX Compliance and Training</h2>
+<p>St. Mary's College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.  </p>
+<p>The College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.</p>
+<p>If you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center <a href="tel:240-895-4289">240-895-4289</a>. </p>
+<p>For more information about reporting options and resources at St. Mary's College of Maryland and the community, please visit the Office of Title IX Compliance and Training.</p>
+<h2 id="wellness-center-health-services-and-counseling-psychological-services-caps">Wellness Center: Health Services and Counseling &amp; Psychological Services (CAPS)</h2>
+<p>A growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling <a href="tel:240-895-4289">240-895-4289</a> or emailing the Director at <a href="mailto:jljolly@smcm.edu">jljolly@smcm.edu</a>.</p>
+<p>To learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/</p>
+<h2 id="evaluation-components">Evaluation Components</h2>
+<p>Your course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.</p>
+<ul>
+<li>
+<p><strong>Homework Assignments:</strong> Homework is the primary vehicle for learning in this course. These sets will involve:</p>
+<ul>
+<li>Algorithm Design: Developing efficient solutions to complex engineering problems.</li>
+<li>Proofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.</li>
+<li>Complexity Analysis: Determining the asymptotic bounds (e.g., <span class="arithmatex">\(O(n \log n)\)</span>) of your proposed solutions.</li>
+<li><em>Note:</em> Submission must be through pdf files, and <em>must be typed (not hand written)</em>. Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Quizzes</strong> Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on "familiarity" tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.</p>
+</li>
+<li>
+<p><strong>Midterm Exam</strong> and <strong>Final Exam</strong> Exams will test your ability to synthesize the paradigms learned in class under time constraints.</p>
+<ul>
+<li>The Midterm covers foundational analysis, sorting, and divide-and-conquer.</li>
+<li>The Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Important</strong>: All quizzes and exams will be paper-based.</p>
+<h2 id="grading">Grading</h2>
+<p>Your final grade will be based on the following components:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assignments</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Quizzes</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Midterm exam</td>
+<td>30%</td>
+</tr>
+<tr>
+<td>Final exam</td>
+<td>30%</td>
+</tr>
+</tbody>
+</table>
+<p>I will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the <em>minimum</em> grade you will receive based on your overall percentage:</p>
+<p>If adjustments are made to the grading scale, they will only <strong>raise</strong> your final letter grade, never lower it.</p>
+<p>The table below represents the lowest possible letter grade you can earn for a given percentage.</p>
+<table>
+<thead>
+<tr>
+<th>Points</th>
+<th>Letter Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>93 - 100</td>
+<td>A or higher</td>
+</tr>
+<tr>
+<td>86 - 92.9</td>
+<td>A- or higher</td>
+</tr>
+<tr>
+<td>79 - 85.9</td>
+<td>B+ or higher</td>
+</tr>
+<tr>
+<td>72 - 78.9</td>
+<td>B or higher</td>
+</tr>
+<tr>
+<td>65 - 71.9</td>
+<td>B- or higher</td>
+</tr>
+<tr>
+<td>58 - 64.9</td>
+<td>C+ or higher</td>
+</tr>
+<tr>
+<td>51 - 57.9</td>
+<td>C or higher</td>
+</tr>
+<tr>
+<td>44 - 50.9</td>
+<td>C- or higher</td>
+</tr>
+<tr>
+<td>37 - 43.9</td>
+<td>D+ or higher</td>
+</tr>
+<tr>
+<td>30 - 36.9</td>
+<td>D or higher</td>
+</tr>
+<tr>
+<td>0 - 29.9</td>
+<td>F or higher</td>
+</tr>
+</tbody>
+</table>
+<p>The grades would be published on Blackboard.</p>
+<h2 id="use-of-generative-ai">Use of Generative AI</h2>
+<p>Generative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, <em>I encourage you to use the generative AI tools</em> at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as <em>explicitly cite its use within your assignments</em>. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.</p>
+<h2 id="attendance-policy">Attendance Policy</h2>
+<p>Attendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:</p>
+<ul>
+<li>
+<p>Students tend to remember info more when they attend class.</p>
+</li>
+<li>
+<p>Your presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.</p>
+</li>
+<li>
+<p>You/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!</p>
+</li>
+<li>
+<p>Your instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.</p>
+</li>
+<li>
+<p>Going to class helps you build community and relationships with peers and your instructors.</p>
+</li>
+<li>
+<p>By not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.</p>
+</li>
+</ul>
+<h2 id="late-work-policy">Late Work Policy</h2>
+<p>Assignments are due at <strong>11:59 PM Eastern Time (UTC – 4)</strong> on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of <strong>10% of the maximum possible points per additional day</strong> past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.</p>
+<p>Because the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.</p>
+<p>This policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.</p>
+<h2 id="tentative-schedule">Tentative Schedule:</h2>
+<p>The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.</p>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Dates</th>
+<th>Topic</th>
+<th>Book Pages</th>
+<th>Assignment</th>
+<th>Quiz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Jan 20</td>
+<td>Introduction to algorithms</td>
+<td>1-27</td>
+<td>A1 out</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Jan 22</td>
+<td>Asymptotic notation</td>
+<td>31-40</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Jan 27</td>
+<td>Logarithms and more</td>
+<td>41-58</td>
+<td>A2 out</td>
+<td>Q1</td>
+</tr>
+<tr>
+<td></td>
+<td>Jan 29</td>
+<td>Elementary data structures</td>
+<td>65-75</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Feb 3</td>
+<td>Dictionary data structures</td>
+<td>76-92</td>
+<td>A3 out</td>
+<td>Q2</td>
+</tr>
+<tr>
+<td></td>
+<td>Feb 5</td>
+<td>Hashing</td>
+<td>93-102</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Feb 10</td>
+<td>Applications of Sorting</td>
+<td>109-114</td>
+<td>A4 out</td>
+<td>Q3</td>
+</tr>
+<tr>
+<td></td>
+<td>Feb 12</td>
+<td>Heapsort/Priority Queues</td>
+<td>115-126</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Feb 17</td>
+<td>Mergesort/Quicksort/Binsort</td>
+<td>127-151</td>
+<td>A5 out</td>
+<td>Q4</td>
+</tr>
+<tr>
+<td></td>
+<td>Feb 19</td>
+<td>Data structures for graphs</td>
+<td>197-211</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Feb 24</td>
+<td>Breadth-first search</td>
+<td>212-220</td>
+<td>A6 out</td>
+<td>Q5</td>
+</tr>
+<tr>
+<td></td>
+<td>Feb 26</td>
+<td>Topological sort/connectivity</td>
+<td>221-234</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Mar 3</td>
+<td>Minimum spanning trees</td>
+<td>243-256</td>
+<td>A7 out</td>
+<td>Q6</td>
+</tr>
+<tr>
+<td></td>
+<td>Mar 5</td>
+<td>Shortest paths</td>
+<td>257-266</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Mar 10</td>
+<td>Midterm exam review</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Mar 12</td>
+<td><strong>Midterm Exam</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Mar 17</td>
+<td><strong>No class</strong> - Spring Recess</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Mar 19</td>
+<td><strong>No class</strong> - Spring Recess</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Mar 24</td>
+<td><strong>No class</strong> - Advising Day</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Mar 26</td>
+<td>Network flows and <em>bipartite matching</em></td>
+<td>267-275</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Mar 31</td>
+<td>Combinatorial search - backtracking and pruning</td>
+<td>281 - 298</td>
+<td>A8 out</td>
+<td>Q7</td>
+</tr>
+<tr>
+<td></td>
+<td>Apr 2</td>
+<td>Combinatorial search - A* Heuristic</td>
+<td>298 - 303</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Apr 7</td>
+<td>Elements of dynamic programming</td>
+<td>307-325</td>
+<td>A9 out</td>
+<td>Q8</td>
+</tr>
+<tr>
+<td></td>
+<td>Apr 9</td>
+<td>Examples of dynamic programming</td>
+<td>326-336</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Apr 14</td>
+<td>Limitations of dynamic programming<br><br></td>
+<td>337-344</td>
+<td>A10 out</td>
+<td>Q9</td>
+</tr>
+<tr>
+<td></td>
+<td>Apr 16</td>
+<td>Dynamic programming review</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Apr 21</td>
+<td>Reductions</td>
+<td>355-360</td>
+<td></td>
+<td>Q10</td>
+</tr>
+<tr>
+<td></td>
+<td>Apr 23</td>
+<td>Easy reductions</td>
+<td>361-368</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Apr 28</td>
+<td>Harder reductions</td>
+<td>369-372</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Apr 30</td>
+<td>The NP-completeness challenge</td>
+<td>373-382</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td>May 5</td>
+<td>Final Exam review</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>May 6</strong></td>
+<td><strong>Final Exam (2:00 PM – 4:15 PM)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2133 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sayangoswami.github.io/Teaching/cosc130/L01/">
+      
+      
+        <link rel="prev" href="../00-Syllabus/">
+      
+      
+        <link rel="next" href="../L02/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Refresher - Variables, Operators, Branches - Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible+Next:300,300i,400,400i,700,700i%7CAtkinson+Hyperlegible+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible Next";--md-code-font:"Atkinson Hyperlegible Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#refresher-variables-operators-branches" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Course Notes" class="md-header__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Refresher - Variables, Operators, Branches
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Class Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Cosc130
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cosc445/" class="md-tabs__link">
+          
+  
+  
+  Cosc445
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Course Notes" class="md-nav__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc130
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc130
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC130: Intro to Computer Science II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#agenda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agenda
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declaring-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declaring variables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Declaring variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assigning-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assigning values
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assigning values">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arithmetic-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arithmetic operators
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arithmetic operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String operators
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#printing-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Printing variables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Printing variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relational-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relational operators
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relational operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical operators
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logical operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boolean-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean variables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boolean variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conditional-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conditional statements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conditional statements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chaining-conditional-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaining conditional statements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chaining conditional statements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nesting-conditional-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nesting conditional statements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nesting conditional statements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples-contd_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples (contd.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taking-user-input-with-scanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taking user input with Scanner
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asking-questions-and-getting-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asking Questions and Getting Answers
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher: Loops and Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More on Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc445
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc445
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC445: Design/Analysis of Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Class Notes
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cosc130
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="refresher-variables-operators-branches">Refresher - Variables, Operators, Branches</h1>
+<h2 id="agenda">Agenda</h2>
+<ol>
+<li>Variables - declaration, assignment</li>
+<li>Operators - arithmetic, logical, string</li>
+<li>Expressions</li>
+<li>Conditional Statements</li>
+</ol>
+<h2 id="declaring-variables">Declaring variables</h2>
+<p>A <em>variable declaration</em> is a <em>statement</em> that r<em>eserves a named space</em> in memory to <em>store a value</em>. The syntax is to specify the data type followed by the variable name.</p>
+<p><strong>Syntax:</strong> 
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1">dataType variableName;
+</span></code></pre></div></td></tr></table></div></p>
+<h3 id="examples">Examples</h3>
+<ol>
+<li><strong>Integer:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><span class="kt">int</span><span class="w"> </span><span class="n">studentCount</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>String (text):</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><span class="n">String</span><span class="w"> </span><span class="n">welcomeMessage</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Decimal Number:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><span class="kt">double</span><span class="w"> </span><span class="n">averageScore</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Boolean (true/false):</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isComplete</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="assigning-values">Assigning values</h2>
+<p>The <em>assignment statement</em> places a specific piece <em>of data into a variable</em>. The assignment operator (<code>=</code>) is used for this purpose. You can assign a value at the time of declaration or later in your code.</p>
+<p><strong>Syntax:</strong> 
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1">variableName = value;
+</span></code></pre></div></td></tr></table></div></p>
+<h3 id="examples_1">Examples</h3>
+<ol>
+<li><strong>Combined Declaration and Assignment:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><span class="kt">int</span><span class="w"> </span><span class="n">numStudents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Separate Declaration and Assignment:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><span class="n">String</span><span class="w"> </span><span class="n">courseName</span><span class="p">;</span>
+</span><span id="__span-7-2"><span class="n">courseName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Computer Science II&quot;</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Assigning a decimal value:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><span class="kt">double</span><span class="w"> </span><span class="n">courseGrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">94.5</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Assigning a boolean value:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="arithmetic-operators">Arithmetic operators</h2>
+<p>These operators are used to perform mathematical calculations.</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Name</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>Addition</td>
+<td><code>a + b</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Subtraction</td>
+<td><code>a - b</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>Multiplication</td>
+<td><code>a * b</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Division</td>
+<td><code>a / b</code></td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Modulus</td>
+<td><code>a % b</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <em>Modulus</em> operator is used to <em>find the remainder</em>. We will use this often.</p>
+<h3 id="examples_2">Examples</h3>
+<ol>
+<li><strong>Addition and Subtraction:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">      </span><span class="c1">// sum is 15</span>
+</span><span id="__span-10-2"><span class="kt">int</span><span class="w"> </span><span class="n">difference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="c1">// difference is 13</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Multiplication and Division:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><span class="kt">double</span><span class="w"> </span><span class="n">product</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// product is 9.0</span>
+</span><span id="__span-11-2"><span class="kt">double</span><span class="w"> </span><span class="n">quotient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">4.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// quotient is 2.5</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Integer Division:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">    </span><span class="c1">// result is 2 (the decimal part is truncated)</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Modulus (Remainder):</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><span class="kt">int</span><span class="w"> </span><span class="n">remainder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="c1">// remainder is 1</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="expressions">Expressions</h2>
+<p>An <em>expression</em> is a <em>combination of variables, values, and operators</em> that <em>evaluates to a single value</em>. Expressions can be placed on the right-hand side of an assignment statement.</p>
+<p><strong>Syntax:</strong> 
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1">dataType variable = expression;
+</span></code></pre></div></td></tr></table></div></p>
+<h3 id="examples_3">Examples</h3>
+<ol>
+<li><strong>Simple Arithmetic Expression:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><span class="kt">int</span><span class="w"> </span><span class="n">finalScore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">midTermScore</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">finalExamScore</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Expression with multiple operators:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><span class="kt">double</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">item1Price</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">item2Price</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">salesTax</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Expression with a method call:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><span class="kt">double</span><span class="w"> </span><span class="n">circumference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">PI</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">radius</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Boolean expression:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isPassing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">70</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="string-operators">String operators</h2>
+<p>The primary operator for strings is the <code>+</code> operator, which performs concatenation. It combines two or more strings to create a new one.</p>
+<p><strong>Syntax:</strong> 
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><span class="n">String</span><span class="w"> </span><span class="n">newString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">string1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">string2</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div></p>
+<h3 id="examples_4">Examples</h3>
+<ol>
+<li><strong>Combining two string literals:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><span class="n">String</span><span class="w"> </span><span class="n">greeting</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; World!&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// greeting is &quot;Hello World!&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Combining a string variable and a literal:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><span class="n">String</span><span class="w"> </span><span class="n">userName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Jane&quot;</span><span class="p">;</span>
+</span><span id="__span-21-2"><span class="n">String</span><span class="w"> </span><span class="n">welcomeMessage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Welcome, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">userName</span><span class="p">;</span><span class="w"> </span><span class="c1">// welcomeMessage is &quot;Welcome, Jane&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd">Examples (contd.)</h3>
+<ol>
+<li><strong>Concatenating strings with numbers:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><span class="kt">int</span><span class="w"> </span><span class="n">numItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</span><span id="__span-22-2"><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;You have &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">numItems</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; items in your cart.&quot;</span><span class="p">;</span>
+</span><span id="__span-22-3"><span class="c1">// message is &quot;You have 3 items in your cart.&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Building a path:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-23-1"><span class="n">String</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/users/&quot;</span><span class="p">;</span>
+</span><span id="__span-23-2"><span class="n">String</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">userName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/documents&quot;</span><span class="p">;</span>
+</span><span id="__span-23-3"><span class="c1">// path is &quot;/users/Jane/documents&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="printing-variables">Printing variables</h2>
+<p>You can display the value stored in a variable using <code>System.out.println()</code>. The <code>+</code> operator is used to concatenate (combine) strings with variables to create a more readable output.</p>
+<p><strong>Syntax:</strong> 
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-24-1"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">variableName</span><span class="p">);</span>
+</span><span id="__span-24-2"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Text&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">variableName</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div></p>
+<h3 id="examples_5">Examples</h3>
+<ol>
+<li><strong>Printing an integer:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span>
+</span><span id="__span-25-2"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">score</span><span class="p">);</span>
+</span><span id="__span-25-3"><span class="c1">// Output: 85</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Printing with a descriptive string:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><span class="n">String</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Alice&quot;</span><span class="p">;</span>
+</span><span id="__span-26-2"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;The student is: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">student</span><span class="p">);</span>
+</span><span id="__span-26-3"><span class="c1">// Output: The student is: Alice</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_1">Examples (contd.)</h3>
+<ol>
+<li><strong>Printing multiple variables:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-27-2"><span class="n">String</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;books&quot;</span><span class="p">;</span>
+</span><span id="__span-27-3"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You have &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+</span><span id="__span-27-4"><span class="c1">// Output: You have 5 books.</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Printing the result of a calculation:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><span class="kt">double</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">15.75</span><span class="p">;</span>
+</span><span id="__span-28-2"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;The total is $&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">total</span><span class="p">);</span>
+</span><span id="__span-28-3"><span class="c1">// Output: The total is $15.75</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="relational-operators">Relational operators</h2>
+<p>These operators are used to compare two values. The result of a relational operation is always a <code>boolean</code> value (<code>true</code> or <code>false</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Name</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>==</code></td>
+<td>Equal to</td>
+<td><code>a == b</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>Not equal to</td>
+<td><code>a != b</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>Less than</td>
+<td><code>a &lt; b</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>Greater than</td>
+<td><code>a &gt; b</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>Less than or equal to</td>
+<td><code>a &lt;= b</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>Greater than or equal to</td>
+<td><code>a &gt;= b</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples_6">Examples</h3>
+<ol>
+<li><strong>Equality check:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-29-1"><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-29-2"><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-29-3"><span class="kt">boolean</span><span class="w"> </span><span class="n">isEqual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w"> </span><span class="c1">// isEqual is false</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Greater than check:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-30-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isPositive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// isPositive is true</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_2">Examples (contd.)</h3>
+<ol>
+<li><strong>Not equal to check:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-31-1"><span class="n">String</span><span class="w"> </span><span class="n">name1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Bob&quot;</span><span class="p">;</span>
+</span><span id="__span-31-2"><span class="n">String</span><span class="w"> </span><span class="n">name2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bob&quot;</span><span class="p">;</span>
+</span><span id="__span-31-3"><span class="kt">boolean</span><span class="w"> </span><span class="n">notEqual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">name1</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">name2</span><span class="p">);</span><span class="w"> </span><span class="c1">// notEqual is true</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Less than or equal to check:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-32-1"><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+</span><span id="__span-32-2"><span class="kt">boolean</span><span class="w"> </span><span class="n">canDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span><span class="w"> </span><span class="c1">// canDrive is true</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="logical-operators">Logical operators</h2>
+<p>These operators are used to combine <code>boolean</code> expressions.</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>AND</td>
+<td><code>true</code> if both conditions are <code>true</code></td>
+</tr>
+<tr>
+<td><code>\|\|</code></td>
+<td>OR</td>
+<td><code>true</code> if either conditions is <code>true</code></td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>NOT</td>
+<td>Inverts the boolean value</td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples_7">Examples</h3>
+<ol>
+<li><strong>AND (<code>&amp;&amp;</code>):</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-33-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isEligible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">hasLicense</span><span class="p">);</span>
+</span><span id="__span-33-2"><span class="c1">// true only if age is &gt; 18 AND hasLicense is true</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>OR (<code>||</code>):</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-34-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isStudent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">isUndergrad</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">isGradStudent</span><span class="p">);</span>
+</span><span id="__span-34-2"><span class="c1">// true if either isUndergrad or isGradStudent (or both) are true</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>NOT (<code>!</code>):</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-35-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isFinished</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+</span><span id="__span-35-2"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isFinished</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-35-3"><span class="w">    </span><span class="c1">// This code will run</span>
+</span><span id="__span-35-4"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_3">Examples (contd.)</h3>
+<ol>
+<li><strong>Combining operators:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-36-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">canEnter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">hasTicket</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isAdult</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">isVIP</span><span class="p">;</span>
+</span><span id="__span-36-2"><span class="c1">// true if you have a ticket AND are an adult OR if you are a VIP</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="boolean-variables">Boolean variables</h2>
+<p>A <code>boolean</code> variable can only hold one of two values: <code>true</code> or <code>false</code>. They are essential for storing the result of logical and relational expressions and for controlling the flow of a program.</p>
+<h3 id="examples_8">Examples</h3>
+<ol>
+<li><strong>Storing a simple condition:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-37-1"><span class="kt">int</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+</span><span id="__span-37-2"><span class="kt">boolean</span><span class="w"> </span><span class="n">isWarm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"> </span><span class="c1">// isWarm is true</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Storing a complex logical expression:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-38-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">canRentCar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">25</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">hasValidLicense</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_4">Examples (contd.)</h3>
+<ol>
+<li><strong>Used as a flag to track state:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-39-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">hasSaved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+</span><span id="__span-39-2"><span class="c1">// ... code ...</span>
+</span><span id="__span-39-3"><span class="n">hasSaved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="c1">// State is updated</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Directly assigning a value:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-40-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isRunning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="conditional-statements">Conditional statements</h2>
+<p>The <code>if</code> statement allows a program to execute a block of code only if a certain condition is met. The <code>if-else</code> statement provides an alternative block of code to run if the condition is false.</p>
+<p><strong>Syntax:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-41-1"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-41-2"><span class="w">    </span><span class="c1">// code to run if condition is true</span>
+</span><span id="__span-41-3"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-41-4"><span class="w">    </span><span class="c1">// code to run if condition is false</span>
+</span><span id="__span-41-5"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples_9">Examples</h3>
+<ol>
+<li><strong>Simple <code>if</code> statement:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-42-1"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-42-2"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You got an A!&quot;</span><span class="p">);</span>
+</span><span id="__span-42-3"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong><code>if-else</code> statement:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-43-1"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-43-2"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You are an adult.&quot;</span><span class="p">);</span>
+</span><span id="__span-43-3"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-43-4"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You are not an adult yet.&quot;</span><span class="p">);</span>
+</span><span id="__span-43-5"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_5">Examples (contd.)</h3>
+<ol>
+<li><strong>Checking for a specific value:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-44-1"><span class="n">String</span><span class="w"> </span><span class="n">day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Tuesday&quot;</span><span class="p">;</span>
+</span><span id="__span-44-2"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">day</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;Monday&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-44-3"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;It&#39;s the start of the week.&quot;</span><span class="p">);</span>
+</span><span id="__span-44-4"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-44-5"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;It&#39;s not Monday.&quot;</span><span class="p">);</span>
+</span><span id="__span-44-6"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<ol>
+<li><strong>Using a boolean variable:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-45-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isRaining</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-45-2"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isRaining</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-45-3"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Grab an umbrella.&quot;</span><span class="p">);</span>
+</span><span id="__span-45-4"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="practice">Practice</h3>
+<p><strong>Even or Odd:</strong> Write a method that takes an integer as input and returns "Even" or "Odd", based on whether the number is even or odd.</p>
+<!-- ??[](https://codecheck.io/files/26012213495n7fayyosv287n09pfgtj2q99) -->
+
+<h2 id="chaining-conditional-statements">Chaining conditional statements</h2>
+<p>The <code>if-else if-else</code> chain allows you to check for multiple, mutually exclusive conditions. The computer will evaluate each <code>if</code> and <code>else if</code> in order, and will execute the first block of code whose condition is <code>true</code>, then skip the rest.</p>
+<p><strong>Syntax:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-46-1"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-46-2"><span class="w">    </span><span class="c1">// Code if condition1 is true</span>
+</span><span id="__span-46-3"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-46-4"><span class="w">    </span><span class="c1">// Code if condition2 is true</span>
+</span><span id="__span-46-5"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-46-6"><span class="w">    </span><span class="c1">// Code if all conditions are false</span>
+</span><span id="__span-46-7"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples_10">Examples</h3>
+<ol>
+<li><strong>Categorizing numbers:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-47-1"><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-47-2"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-47-3"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Positive&quot;</span><span class="p">);</span>
+</span><span id="__span-47-4"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-47-5"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Negative&quot;</span><span class="p">);</span>
+</span><span id="__span-47-6"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-47-7"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Zero&quot;</span><span class="p">);</span>
+</span><span id="__span-47-8"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_6">Examples (contd.)</h3>
+<ol>
+<li><strong>Time of day:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-48-1"><span class="kt">int</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">;</span><span class="w"> </span><span class="c1">// 2 PM</span>
+</span><span id="__span-48-2"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hour</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">12</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-3"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Morning&quot;</span><span class="p">);</span>
+</span><span id="__span-48-4"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hour</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-5"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Afternoon&quot;</span><span class="p">);</span>
+</span><span id="__span-48-6"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-48-7"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Evening&quot;</span><span class="p">);</span>
+</span><span id="__span-48-8"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_7">Examples (contd.)</h3>
+<ol>
+<li><strong>Traffic light status:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-49-1"><span class="n">String</span><span class="w"> </span><span class="n">light</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;yellow&quot;</span><span class="p">;</span>
+</span><span id="__span-49-2"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-49-3"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Stop&quot;</span><span class="p">);</span>
+</span><span id="__span-49-4"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;yellow&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-49-5"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Slow down&quot;</span><span class="p">);</span>
+</span><span id="__span-49-6"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;green&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-49-7"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Go&quot;</span><span class="p">);</span>
+</span><span id="__span-49-8"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-49-9"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Invalid input&quot;</span><span class="p">);</span>
+</span><span id="__span-49-10"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="practice_1">Practice</h3>
+<p><strong>Grade Calculator:</strong> Write a method that takes a numerical grade (an <code>int</code>) and returns the corresponding letter grade. Use the following scale: 90-100 is "A", 80-89 is "B", 70-79 is "C", 60-69 is "D", and below 60 is "F".</p>
+<!-- ![](https://codecheck.io/files/260122140157mv3vyt3lvrk30lw4yv7d0aw) -->
+
+<h2 id="nesting-conditional-statements">Nesting conditional statements</h2>
+<p>Nesting is the practice of placing one conditional statement inside another. This allows you to check for a second condition only after a primary condition has already been met.</p>
+<p><strong>Syntax:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-50-1"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">outerCondition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-50-2"><span class="w">    </span><span class="c1">// Code that only runs if outerCondition is true</span>
+</span><span id="__span-50-3"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">innerCondition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-50-4"><span class="w">        </span><span class="c1">// Code that only runs if both are true</span>
+</span><span id="__span-50-5"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-50-6"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples_11">Examples</h3>
+<ol>
+<li><strong>Access check:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-51-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isLoggedIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-51-2"><span class="kt">boolean</span><span class="w"> </span><span class="n">isAdmin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-51-3"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isLoggedIn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-51-4"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isAdmin</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-51-5"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Access granted to admin panel.&quot;</span><span class="p">);</span>
+</span><span id="__span-51-6"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-51-7"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_8">Examples (contd.)</h3>
+<ol>
+<li><strong>Combination with <code>else</code>:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-52-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">hasTicket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-52-2"><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">22</span><span class="p">;</span>
+</span><span id="__span-52-3"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hasTicket</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-52-4"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-52-5"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Entry permitted.&quot;</span><span class="p">);</span>
+</span><span id="__span-52-6"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-52-7"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Ticket is valid, but age requirement not met.&quot;</span><span class="p">);</span>
+</span><span id="__span-52-8"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-52-9"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-52-10"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;No ticket found.&quot;</span><span class="p">);</span>
+</span><span id="__span-52-11"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_9">Examples (contd.)</h3>
+<ol>
+<li><strong>Weather conditions:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-53-1"><span class="kt">boolean</span><span class="w"> </span><span class="n">isRaining</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-53-2"><span class="kt">boolean</span><span class="w"> </span><span class="n">isWindy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+</span><span id="__span-53-3"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isRaining</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-53-4"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;It&#39;s raining.&quot;</span><span class="p">);</span>
+</span><span id="__span-53-5"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isWindy</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-53-6"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Bring a heavy coat!&quot;</span><span class="p">);</span>
+</span><span id="__span-53-7"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-53-8"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Just a light rain.&quot;</span><span class="p">);</span>
+</span><span id="__span-53-9"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-53-10"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="examples-contd_10">Examples (contd.)</h3>
+<ol>
+<li><strong>Complex user validation:</strong></li>
+</ol>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-54-1"><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;user123&quot;</span><span class="p">;</span>
+</span><span id="__span-54-2"><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;password123&quot;</span><span class="p">;</span>
+</span><span id="__span-54-3"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">username</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-54-4"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">password</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-54-5"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;User credentials are valid.&quot;</span><span class="p">);</span>
+</span><span id="__span-54-6"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-54-7"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Password is too short.&quot;</span><span class="p">);</span>
+</span><span id="__span-54-8"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-54-9"><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-54-10"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Username is too short.&quot;</span><span class="p">);</span>
+</span><span id="__span-54-11"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="practice_2">Practice</h3>
+<p><strong>Leap Year Calculator:</strong> A year is a leap year if it is divisible by 4, but not by 100, unless it is also divisible by 400. Write a program that takes a year (as an <code>int</code>) and prints "Leap year" or "Not a leap year."</p>
+<h2 id="taking-user-input-with-scanner">Taking user input with <code>Scanner</code></h2>
+<p>In Java, getting user input is like using a special tool called a <strong><code>Scanner</code></strong>. This tool knows how to "scan" what a person types on the keyboard.</p>
+<p>To use this tool, you need to do two things:</p>
+<p>1) <strong>Get the tool ready:</strong> We have to tell our program that we're going to use this <strong><code>Scanner</code></strong> tool. We do this by writing a special line at the very top of our code.
+    <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-55-1"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div></p>
+<p>2) <strong>Turn the tool on:</strong> Inside our main program, we create the tool and tell it to look at the keyboard. We'll always use this exact line for now.
+    <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-56-1"><span class="n">Scanner</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div></p>
+<p>Here, <strong><code>input</code></strong> is a variable that stores the tool. For now, think of <strong><code>input</code></strong> as a name we're giving our tool so we can <em>call</em> it later.</p>
+<h2 id="asking-questions-and-getting-answers">Asking Questions and Getting Answers</h2>
+<p>Once you have your <code>Scanner</code> tool (<code>input</code>), you can use it to ask for different kinds of information. We'll use special commands to tell the <code>Scanner</code> what to look for.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What It Gets</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>input.nextInt()</code></strong></td>
+<td>A whole number (like 10 or 500)</td>
+<td><code>int age = input.nextInt();</code></td>
+</tr>
+<tr>
+<td><strong><code>input.nextDouble()</code></strong></td>
+<td>A number with a decimal (like 3.14)</td>
+<td><code>double price = input.nextDouble();</code></td>
+</tr>
+<tr>
+<td><strong><code>input.nextLine()</code></strong></td>
+<td>A whole line of text (a sentence)</td>
+<td><code>String name = input.nextLine();</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

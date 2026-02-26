@@ -1,0 +1,1211 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sayangoswami.github.io/Teaching/cosc445/L03/">
+      
+      
+        <link rel="prev" href="../L02/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Program analysis - Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible+Next:300,300i,400,400i,700,700i%7CAtkinson+Hyperlegible+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible Next";--md-code-font:"Atkinson Hyperlegible Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#program-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Course Notes" class="md-header__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Program analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Class Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cosc130/" class="md-tabs__link">
+          
+  
+  
+  Cosc130
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Cosc445
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Course Notes" class="md-nav__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc130
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc130
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC130: Intro to Computer Science II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher: Loops and Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More on Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc445
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc445
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC445: Design/Analysis of Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#homework-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Homework problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reasoning-about-efficiency-selection-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasoning about efficiency - Selection Sort
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worst-case-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worst-case analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-careful-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        More careful analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#insertion-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insertion sort
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worst-case-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worst-case analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#substring-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Substring search
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worst-case-analysis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worst-case analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sum-of-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sum of Series
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logarithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logarithms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binary search
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logarithms-and-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logarithms and Trees
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logarithms-and-bits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logarithms and Bits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties-of-logarithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties of logarithms
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Class Notes
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cosc445
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="program-analysis">Program analysis</h1>
+<h2 id="homework-problem">Homework problem</h2>
+<p>For each of the following pairs of functions <span class="arithmatex">\(f(n)\)</span> and <span class="arithmatex">\(g(n)\)</span> state whether <span class="arithmatex">\(f(n) = \mathcal{O}(g(n))\)</span>, <span class="arithmatex">\(f(n) = \mathcal{\Omega}(g(n))\)</span>, or <span class="arithmatex">\(f(n) = \mathcal{\Theta}(g(n))\)</span>, or none of the above.</p>
+<ol>
+<li><span class="arithmatex">\(f(n) = n^{2} + 3n + 4\)</span> and <span class="arithmatex">\(g(n) = 6n + 7\)</span></li>
+<li><span class="arithmatex">\(f(n) = n \sqrt{ n }\)</span> and <span class="arithmatex">\(g(n) = n^{2} - n\)</span></li>
+<li><span class="arithmatex">\(f(n) = 2^{n} - n^{2}\)</span> and <span class="arithmatex">\(g(n) = n^4 + n^{2}\)</span></li>
+</ol>
+<h2 id="reasoning-about-efficiency-selection-sort">Reasoning about efficiency - Selection Sort</h2>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><span class="k">def</span><span class="w"> </span><span class="nf">selection_sort</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span id="__span-0-2">    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>   <span class="c1"># length of s</span>
+</span><span id="__span-0-3">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>  <span class="c1"># loop from 0 to n-1</span>
+</span><span id="__span-0-4">        <span class="n">min_idx</span> <span class="o">=</span> <span class="n">i</span>
+</span><span id="__span-0-5">        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+</span><span id="__span-0-6">            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">[</span><span class="n">min_idx</span><span class="p">]:</span>
+</span><span id="__span-0-7">                <span class="n">min_idx</span> <span class="o">=</span> <span class="n">j</span>
+</span><span id="__span-0-8">        <span class="c1"># swap the values at indices i and min_idx</span>
+</span><span id="__span-0-9">        <span class="n">swap</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">min_idx</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="worst-case-analysis">Worst-case analysis</h2>
+<p>The outer loop goes around <span class="arithmatex">\(n\)</span> times.</p>
+<p>The inner loop goes around at most <span class="arithmatex">\(n\)</span> times for each iteration of the outer loop</p>
+<p>Thus selection sort takes at most <span class="arithmatex">\(n \times n = \mathcal{O}(n^{2})\)</span> time in the worst case.</p>
+<p>In fact, it is <span class="arithmatex">\(\mathcal{\Theta}(n^{2})\)</span>, because at least <span class="arithmatex">\(\frac{n}{2}\)</span> times it scans through at least <span class="arithmatex">\(\frac{n}{2}\)</span> elements, for a total of at least <span class="arithmatex">\(\frac{n^{2}}{4}\)</span> steps.</p>
+<h2 id="more-careful-analysis">More careful analysis</h2>
+<p>The exact number of times the <code>if</code> statement is executed is given by:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+T(n) = \sum_{i=0}^{n-1} n - i - 1 \\
+= (n-1) + (n-2) + (n-3) + \dots + 2 + 1 \\
+= \frac{n(n-1)}{2}
+\end{aligned}
+\]</div>
+<p>Thus, the worst case running time is <span class="arithmatex">\(\mathcal{\Theta}(n^{2})\)</span>.</p>
+<h2 id="insertion-sort">Insertion sort</h2>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><span class="k">def</span><span class="w"> </span><span class="nf">insertion_sort</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span id="__span-1-2">    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-1-3">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span> <span class="c1"># loop from 1 to n-1</span>
+</span><span id="__span-1-4">        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># loop from i to 1</span>
+</span><span id="__span-1-5">            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+</span><span id="__span-1-6">                <span class="n">swap</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-1-7">            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-8">                <span class="k">break</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="worst-case-analysis_1">Worst-case analysis</h2>
+<ul>
+<li>The outer loop runs <span class="arithmatex">\(n-1\)</span> times</li>
+<li>In the <span class="arithmatex">\(i\)</span>-th iteration of the outer loop, the inner loop runs <span class="arithmatex">\(i-1\)</span> times <strong>in the worst case</strong>.</li>
+<li>The total number of times the <code>swap</code> function is called in the worst case is <span class="arithmatex">\(1 + 2 + 3 + \dots + n-1 = \frac{n(n-1)}{2} = \mathcal{\Theta}(n^{2})\)</span></li>
+</ul>
+<h2 id="substring-search">Substring search</h2>
+<p>Here's a function that finds the first position of pattern (<code>p</code>) in text (<code>t</code>):</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+</span><span id="__span-2-2">    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</span><span id="__span-2-3">    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</span><span id="__span-2-4">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="__span-2-5">        <span class="n">matched</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-2-6">        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+</span><span id="__span-2-7">            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">]:</span>
+</span><span id="__span-2-8">                <span class="n">matched</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-2-9">                <span class="k">break</span>
+</span><span id="__span-2-10">        <span class="k">if</span> <span class="n">matched</span><span class="p">:</span>
+</span><span id="__span-2-11">            <span class="k">return</span> <span class="n">i</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="worst-case-analysis_2">Worst-case analysis</h2>
+<ul>
+<li>The outer loop runs <span class="arithmatex">\(n-m+1\)</span> times</li>
+<li>In each iteration of the outer loop, the inner loop runs <span class="arithmatex">\(m\)</span> times in the worst case</li>
+<li>In the worst case, the if block in line 7 runs <span class="arithmatex">\(m(n-m+1)\)</span> times.</li>
+<li>Typically, <span class="arithmatex">\(n \gg m\)</span> so <span class="arithmatex">\(m(n-m+1) = \mathcal{\Theta}(mn)\)</span></li>
+</ul>
+<h2 id="sum-of-series">Sum of Series</h2>
+<ul>
+<li>
+<p>Often arise in algorithm analysis</p>
+</li>
+<li>
+<p>Notation: <span class="arithmatex">\(\sum_{i=1}^{n} f(i) = f(1) + f(2) + f(3) + \dots + f(n)\)</span></p>
+</li>
+<li>
+<p>Some commonly encountered summation classes:</p>
+<ol>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} i = \frac{n(n+1)}{2}\)</span></li>
+<li>In general, <span class="arithmatex">\(\sum_{i=1}^{n} i^{p} = \mathcal{\Theta}(n^{p+1})\)</span></li>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} a^{i} = \frac{a^{n+1} - 1}{a-1}\)</span></li>
+</ol>
+</li>
+</ul>
+<h2 id="logarithms">Logarithms</h2>
+<ul>
+<li>Frequently used in data-structure and algorithm analysis - very important to understand what they are and where they come from.</li>
+<li>A logarithm is simply an <em>inverse exponential function</em>.</li>
+<li>Saying <span class="arithmatex">\(b^x = y\)</span>  is equivalent to saying <span class="arithmatex">\(x = \log_{b}y\)</span>.</li>
+<li>Exponential algorithms grow extremely fast. Hence logarithmic algorithms grow extremely slowly.</li>
+</ul>
+<h2 id="binary-search">Binary search</h2>
+<ul>
+<li>In binary search we throw away half the possible number of keys after each comparison. </li>
+<li>We only need 30 comparisons to search in an array of billion elements.</li>
+<li>How many time can we halve <span class="arithmatex">\(n\)</span> before getting to 1?<ul>
+<li><span class="arithmatex">\(\lceil \lg n \rceil\)</span> (<span class="arithmatex">\({} \lg = \log_{2} {}\)</span>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="logarithms-and-trees">Logarithms and Trees</h2>
+<ul>
+<li>How tall a binary tree do we need until we have <span class="arithmatex">\(n\)</span> leaves?</li>
+<li>The number of potential leaves doubles with each level.</li>
+<li>How many times can we double 1 until we get to n?<ul>
+<li><span class="arithmatex">\(\lceil \lg n \rceil\)</span></li>
+</ul>
+</li>
+</ul>
+<h2 id="logarithms-and-bits">Logarithms and Bits</h2>
+<ul>
+<li>How many bits do you need to represent the numbers from <span class="arithmatex">\(0\)</span> to <span class="arithmatex">\(2^i - 1\)</span>?</li>
+<li>Each bit you add doubles the possible number of bit patterns, so the number of bits equals <span class="arithmatex">\(\lg 2^i = i\)</span></li>
+</ul>
+<h2 id="properties-of-logarithms">Properties of logarithms</h2>
+<ul>
+<li><span class="arithmatex">\(\log_{a} xy = \log_{a}x + \log_{a} y\)</span></li>
+<li><span class="arithmatex">\(\log_{a}b = \frac{\log_{c}b}{\log_{c}a}\)</span></li>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} \frac{1}{i} = \mathcal{\Theta}(\log n)\)</span><ul>
+<li>This series is called the <span class="arithmatex">\(n\)</span>-th harmonic number</li>
+<li>If this result seems incredulous, recall the integral <span class="arithmatex">\(\int \frac{1}{x} dx = \log x + c\)</span></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

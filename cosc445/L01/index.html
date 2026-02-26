@@ -1,0 +1,1391 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sayangoswami.github.io/Teaching/cosc445/L01/">
+      
+      
+        <link rel="prev" href="../00-Syllabus/">
+      
+      
+        <link rel="next" href="../L02/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Introduction to Algorithms - Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible+Next:300,300i,400,400i,700,700i%7CAtkinson+Hyperlegible+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible Next";--md-code-font:"Atkinson Hyperlegible Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction-to-algorithms" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Course Notes" class="md-header__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introduction to Algorithms
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Class Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cosc130/" class="md-tabs__link">
+          
+  
+  
+  Cosc130
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Cosc445
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Course Notes" class="md-nav__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc130
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc130
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC130: Intro to Computer Science II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher: Loops and Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More on Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc445
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc445
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC445: Design/Analysis of Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-an-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is an algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-problem-sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example problem - sorting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correctness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressing-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expressing algorithms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#robot-tour-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Robot tour optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#robot-tour-optimization_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Robot tour optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nearest-neighbor-tour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearest neighbor tour
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nearest-neighbor-tour-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearest neighbor tour is wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closest-pair-tour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closest pair tour
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closest-pair-tour-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closest pair tour is wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exhaustive-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exhaustive search
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exhaustive-search-is-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exhaustive search is correct
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#job-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job Scheduling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#job-scheduling_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job Scheduling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earliest-job-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Earliest Job First
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earliest-job-first-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Earliest Job First is wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shortest-job-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shortest Job First
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shortest-job-first-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shortest Job First is wrong
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earliest-job-to-finish-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Earliest Job to Finish First
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#earliest-job-to-finish-first-is-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Earliest Job to Finish First is correct
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstrating-incorrectness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstrating incorrectness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstrating-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstrating correctness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#induction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Induction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-sum-of-exponents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example - Sum of exponents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proof-by-contradiction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proof by contradiction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-number-of-primes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example - Number of primes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-euclids-gcd-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example - Euclid's GCD algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#euclids-gcd-algorithm-proof-of-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Euclid's GCD algorithm - Proof of correctness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#homework-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Homework Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Class Notes
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cosc445
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="introduction-to-algorithms">Introduction to Algorithms</h1>
+<h2 id="what-is-an-algorithm">What is an algorithm</h2>
+<p>Algorithms are the <em>ideas</em> behind computer programs.</p>
+<p>An algorithm for a program <em>stays the same</em> regardless of the programming language used, or the device its running on.</p>
+<p>To be interesting, an algorithm has to solve a <em>general, well-specified</em> problem.</p>
+<p>An algorithmic problem is specified by describing the <em>complete set of input instances it must work on</em>, and what desired properties the output must have.</p>
+<h2 id="example-problem-sorting">Example problem - sorting</h2>
+<p><strong>Input:</strong> A sequence of <span class="arithmatex">\(N\)</span> numbers <span class="arithmatex">\(a_{1} \dots a_{n}\)</span></p>
+<p><strong>Output:</strong> the permutation (reordering) of the input sequence such as <span class="arithmatex">\(a_{1} \leq a_{2} \leq a_{3} \dots \leq a_{n}\)</span>.</p>
+<p>An instance of sorting might be an array of names, like <code>['Mike', 'Bob', 'Sally', 'Jill', 'Jan']</code>, or a list of numbers like <code>[154, 245, 568, 324, 654, 324]</code>.</p>
+<p>There are many different algorithms that can solve the problem of sorting.</p>
+<p>We seek algorithms which are <em>correct</em> and <em>efficient</em>.</p>
+<p>A faster algorithm running on a slower computer will <em>always</em> win for sufficiently large instances, as we shall see.</p>
+<p>Usually, problems don’t have to get that large before the faster algorithm wins.</p>
+<h2 id="correctness">Correctness</h2>
+<p>For any algorithm, we must prove that it <em>always</em> returns the desired output for all legal instances of the problem.</p>
+<p>For sorting, this means even if (1) the input is already sorted, or (2) it contains repeated elements.</p>
+<p>Algorithm correctness is not obvious in many optimization problems!</p>
+<p>Algorithms <em>problems</em> must be carefully specified to allow a provably correct algorithm to exist.  Say we want to visit a bunch of places. We can find the “shortest tour” but not the “best tour”.</p>
+<h2 id="expressing-algorithms">Expressing algorithms</h2>
+<p>We need some way to express the sequence of steps comprising an algorithm.</p>
+<p>In order of increasing precision, we have English, pseudocode, and real programming languages. Unfortunately, ease of expression moves in the reverse order.</p>
+<p>We start by describing the <em>ideas</em> of an algorithm in English, moving to pseudocode to clarify sufficiently tricky details of the algorithm.</p>
+<h2 id="robot-tour-optimization">Robot tour optimization</h2>
+<p>Suppose you have a <em>robot arm</em> equipped with a tool, say a soldering iron. </p>
+<p>To enable the robot arm to do a soldering job, we must construct <em>an ordering of the contact points</em>, so the robot visits (and solders) the points in order.</p>
+<p>We seek the <em>order which minimizes the time (i.e. travel distance)</em> it takes to assemble the circuit board.</p>
+<h2 id="robot-tour-optimization_1">Robot tour optimization</h2>
+<p><img alt="A bunch of points arranged in a circular fashion" src="../fig/01.01-tour-points.svg" /></p>
+<p>You are given the job to program the robot arm. Give me an algorithm to find the most efficient tour, starting from point <em>A</em>.</p>
+<h2 id="nearest-neighbor-tour">Nearest neighbor tour</h2>
+<p>Lets start at some point <em>A</em> and then walk to its nearest neighbor <em>B</em> first, then repeat from <em>B</em>, etc. until we visit all points.</p>
+<p><img alt="" src="../fig/01.01-tour-points.svg" /></p>
+<h2 id="nearest-neighbor-tour-is-wrong">Nearest neighbor tour is wrong</h2>
+<p><img alt="A bunch of points arranged in a linear fashion" src="../fig/01.02-tour-points-linear.svg" /></p>
+<h2 id="closest-pair-tour">Closest pair tour</h2>
+<p>Another idea is to repeatedly connect the closest pair of points whose connection will not cause a cycle or a three-way branch, until all points are in one tour.</p>
+<p><img alt="" src="../fig/01.02-tour-points-linear.svg" /></p>
+<h2 id="closest-pair-tour-is-wrong">Closest pair tour is wrong</h2>
+<p><img alt="6 points arranged in 2 rows and 3 columns where the rows are slightly closer than the columns" src="../fig/01.03-tour-points-rectangular.svg" /></p>
+<h2 id="exhaustive-search">Exhaustive search</h2>
+<p>We could try all possible orderings of the points, then select the one which minimizes the total length.</p>
+<h2 id="exhaustive-search-is-correct">Exhaustive search is correct</h2>
+<p>Since all possible orderings are considered, we are guaranteed to end up with the shortest possible tour.</p>
+<p>Because it tries all <em>n</em>! permutations, it is much too slow to use when there are more than 10-20 points.</p>
+<p>No   efficient,   correct   algorithm   exists   for   the   <em>traveling salesman problem</em>, as we will see later.</p>
+<h2 id="job-scheduling">Job Scheduling</h2>
+<p>A movie star wants to the select the maximum number of starring roles such that no two jobs require their presence at the same time.</p>
+<p><img alt="" src="../fig/01.04-jobs.svg" /></p>
+<h2 id="job-scheduling_1">Job Scheduling</h2>
+<p><strong>Input:</strong> A set <em>I</em> of <em>n</em> intervals on the line.</p>
+<p><strong>Output:</strong>     What   is   the   largest   subset   of   mutually   non-overlapping intervals which can be selected from <em>I</em>?</p>
+<p>Give an algorithm to solve the problem!</p>
+<h2 id="earliest-job-first">Earliest Job First</h2>
+<p>Start working as soon as there is work available: </p>
+<p>Accept the earliest starting job <em>j</em> from <em>I</em> which does not overlap any previously accepted job, and repeat until no more such jobs remain.</p>
+<p><img alt="" src="../fig/01.04-jobs.svg" /></p>
+<h2 id="earliest-job-first-is-wrong">Earliest Job First is wrong</h2>
+<p>The first job might be so long that it prevents us from taking any other job.</p>
+<h2 id="shortest-job-first">Shortest Job First</h2>
+<p>Always take the shortest possible job, so you spend the least time working (and thus unavailable).</p>
+<p>Once a job is selected, remove all other jobs that intersect with it.</p>
+<p><img alt="" src="../fig/01.04-jobs.svg" /></p>
+<h2 id="shortest-job-first-is-wrong">Shortest Job First is wrong</h2>
+<p>Taking the shortest job can prevent us from taking two longer jobs which barely overlap it.</p>
+<h2 id="earliest-job-to-finish-first">Earliest Job to Finish First</h2>
+<p>Accept job <em>j</em> with the earliest completion date.</p>
+<p>Delete <em>j</em>, and whatever intersects <em>j</em> from <em>I</em>.</p>
+<p><img alt="" src="../fig/01.04-jobs.svg" /></p>
+<h2 id="earliest-job-to-finish-first-is-correct">Earliest Job to Finish First is correct</h2>
+<p><strong>Proof:</strong> Other jobs may well have started before the first to complete (say, <em>x</em>), but all must at least partially overlap both <em>x</em> and each other.</p>
+<p>Thus we can select at most one from the group.</p>
+<p>The first these jobs to complete is <em>x</em>, so selecting any job but <em>x</em> would only block out more opportunities after <em>x</em>.</p>
+<h2 id="demonstrating-incorrectness">Demonstrating incorrectness</h2>
+<p>Searching for counterexamples is the best way to disprove the correctness of a heuristic.</p>
+<ul>
+<li>Think about all small examples.</li>
+<li>Think about examples with ties on your decision criteria (e.g. pick the nearest point).</li>
+<li>Think about examples with extremes of big and small ...</li>
+</ul>
+<h2 id="demonstrating-correctness">Demonstrating correctness</h2>
+<p>Failure to find a counterexample to a given algorithm does not mean “it is obvious” that the algorithm is correct.</p>
+<p><em>Mathematical induction</em> is a very useful method for proving the correctness of recursive algorithms.</p>
+<p>Another common way to prove correctness is <em>by contradiction</em>.</p>
+<h2 id="induction">Induction</h2>
+<p>Recursion and induction are the same basic idea: 
+1. <em>basis case</em> - prove that the algorithm is correct for some basis case like an input of size <span class="arithmatex">\(n = 1\)</span>.
+2. <em>general assumption</em> - assume that the algorithm is correct all the way for <span class="arithmatex">\(n = m - 1\)</span>
+3. <em>general case</em> - prove that if its true for <span class="arithmatex">\(n = m - 1\)</span>, then it is also true for <span class="arithmatex">\(n = m\)</span></p>
+<h2 id="example-sum-of-exponents">Example - Sum of exponents</h2>
+<p>Prove that the following formula is correct:
+$$
+\sum_{i = 0}^{n} a^{i} = \frac{a^{n+1} - 1}{a - 1}
+$$</p>
+<ul>
+<li>Base case: <span class="arithmatex">\(n = 0 \implies a^{0} = 1 = \frac{a^{0+1} - 1}{a-1}\)</span> which is true.</li>
+<li>Inductive hypothesis: Assume that the formula holds for all <span class="arithmatex">\(n\)</span> up to <span class="arithmatex">\(m\)</span>.</li>
+<li>Inductive step: <span class="arithmatex">\(\sum_{i = 0}^{m+1} a^{i}\)</span></li>
+<li><span class="arithmatex">\({} = \sum_{i = 0}^{m} a^{i} + a^{m+1} {}\)</span></li>
+<li><span class="arithmatex">\({} =\frac{a^{m+1} - 1}{a - 1} + a^{m+1} {}\)</span></li>
+<li>= <span class="arithmatex">\(\frac{a^{m+2} - 1}{a - 1}\)</span></li>
+<li>Conclusion: If the formula holds true for <span class="arithmatex">\(n = m\)</span>, it also holds true for <span class="arithmatex">\(n = m+1\)</span>. Therefore, it holds true for all <span class="arithmatex">\(n\)</span>.</li>
+</ul>
+<h2 id="proof-by-contradiction">Proof by contradiction</h2>
+<p>The basic scheme of a contradiction argument is as follows:
+- Assume that the hypothesis (the statement you want to prove) is false. 
+- Develop some logical consequences of this assumption. 
+- Show that one consequence is demonstrably false, thereby showing that the assumption is incorrect and the hypothesis is true.</p>
+<h2 id="example-number-of-primes">Example - Number of primes</h2>
+<p>Prove that there are infinitely many prime numbers.</p>
+<ul>
+<li>Assume that statement above is incorrect. That is there are only a finite number of primes <span class="arithmatex">\(m\)</span>.</li>
+<li>List the primes <span class="arithmatex">\(\{ p_{1}, p_{2}, \dots, p_{m} \}\)</span></li>
+<li>Suppose we construct the integer formed as the product of “all” of the listed primes: <span class="arithmatex">\(N = \prod^m_{i=1} p_{i}\)</span></li>
+<li>This integer N has the property that it is divisible by each and every one of the known primes, because of how it was built.</li>
+<li>Lets consider the integer <span class="arithmatex">\(N+1\)</span>. It is not divisible by any of the primes <span class="arithmatex">\(\{ p_{1}, p_{2}, \dots, p_{m} \}\)</span> because <span class="arithmatex">\(N\)</span> is. Thus <span class="arithmatex">\(N+1\)</span> is a prime itself - <em>contradiction</em>.</li>
+<li>Therefore our assumption must be false.</li>
+</ul>
+<h2 id="example-euclids-gcd-algorithm">Example - Euclid's GCD algorithm</h2>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><span class="c1"># a recursive algorithm to compute GCDs</span>
+</span><span id="__span-0-2"><span class="c1"># input : Non-negative integers a, b such that b ≤ a </span>
+</span><span id="__span-0-3"><span class="c1"># output: gcd(a, b)</span>
+</span><span id="__span-0-4"><span class="k">def</span><span class="w"> </span><span class="nf">euclid</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span><span id="__span-0-5">    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">a</span>
+</span><span id="__span-0-6">    <span class="k">else</span> <span class="k">return</span> <span class="n">euclid</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="euclids-gcd-algorithm-proof-of-correctness">Euclid's GCD algorithm - Proof of correctness</h2>
+<ul>
+<li>We will prove that <span class="arithmatex">\(gcd(a,b)=gcd(b,r)\)</span> where <span class="arithmatex">\(r = a \bmod b\)</span></li>
+<li>Let <span class="arithmatex">\(a = qb + r\)</span> where <span class="arithmatex">\(q\)</span> and <span class="arithmatex">\(b\)</span> are integers and <span class="arithmatex">\({} 0 \leq r &lt; b\)</span>.</li>
+<li>If some integer <span class="arithmatex">\(p\)</span> divides both <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span>, then it must also divide <span class="arithmatex">\(r = a - qb\)</span></li>
+<li>Thus, the set of all integers that divide <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span>, and the set of all integers that divide <span class="arithmatex">\(b\)</span> and <span class="arithmatex">\(r\)</span> are the same.</li>
+<li>Choose the largest number form this set. This is the GCD.</li>
+<li>Therefore <span class="arithmatex">\(gcd(a, b) = gcd(b, r)\)</span></li>
+</ul>
+<h2 id="homework-problems">Homework Problems</h2>
+<p>The knapsack problem is as follows: given a set of integers <span class="arithmatex">\(S = \{ s_{1}, s_{2}, \dots, s_{n} \}\)</span> and a target number T, find a subset of S that adds up exactly to T. </p>
+<p>For example, there exists a subset within <span class="arithmatex">\(S\)</span> = {1, 2, 5, 9, 10} that adds up to <span class="arithmatex">\(T\)</span> = 22 but not <span class="arithmatex">\(T\)</span> = 23.</p>
+<p>Find counterexamples to each of the following algorithms for the knapsack problem. That is, give an S and T where the algorithm does not find a solution that leaves the knapsack completely full, even though a full-knapsack solution exists.</p>
+<p>(a) Put the elements of S in the knapsack in left to right order if they fit, that is, the first-fit algorithm.</p>
+<p>(b) Put the elements of S in the knapsack from smallest to largest, that is, the best-fit algorithm.</p>
+<p>(c) Put the elements of S in the knapsack from largest to smallest.</p>
+<h2 id="practice-problems">Practice problems</h2>
+<p>Prove by induction:</p>
+<ol>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} i = n(n+1) / 2\)</span> for <span class="arithmatex">\(n\geq 0\)</span> </li>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} i^{2} = n(n+1)(2n+1) / 6\)</span> for <span class="arithmatex">\(n\geq 0\)</span> </li>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} i^{3} = n^{2}(n+1)^{2} / 4\)</span> for <span class="arithmatex">\(n\geq 0\)</span> </li>
+<li><span class="arithmatex">\(\sum_{i=1}^{n} i(i+1)(i+2) = n(n+1)(n+2)(n+3) / 4\)</span> for <span class="arithmatex">\(n\geq 0\)</span> </li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

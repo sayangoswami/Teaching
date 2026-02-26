@@ -1,0 +1,1435 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sayangoswami.github.io/Teaching/cosc445/L02/">
+      
+      
+        <link rel="prev" href="../L01/">
+      
+      
+        <link rel="next" href="../L03/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Algorithm analysis - Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible+Next:300,300i,400,400i,700,700i%7CAtkinson+Hyperlegible+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible Next";--md-code-font:"Atkinson Hyperlegible Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#algorithm-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Course Notes" class="md-header__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Algorithm analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Class Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cosc130/" class="md-tabs__link">
+          
+  
+  
+  Cosc130
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Cosc445
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Course Notes" class="md-nav__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc130
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc130
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC130: Intro to Computer Science II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher: Loops and Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More on Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc130/L04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc445
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc445
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC445: Design/Analysis of Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-ram-model-of-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The RAM Model of computation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complexity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-big-oh-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Big-Oh notation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#big-mathcalo-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big \(\mathcal{O}\) examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#big-mathcalomega-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big \(\mathcal{\Omega}\) examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#big-mathcaltheta-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big \(\mathcal{\Theta}\) examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-2n1-mathcaltheta2n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is \(2^{n+1} = \mathcal{\Theta}(2^{n})\)?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-xy2-mathcalox2-y2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is \((x+y)^{2} = \mathcal{O}(x^{2} + y^{2})\)?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#big-mathcalo-addition-and-subtraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big \(\mathcal{O}\) addition and subtraction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#big-mathcalo-multiplication-by-constant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big \(\mathcal{O}\) multiplication by constant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#big-mathcalo-multiplication-by-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big \(\mathcal{O}\) multiplication by function
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asymptotic-dominance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asymptotic dominance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-asymptotic-dominance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Asymptotic Dominance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dominance-rankings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dominance rankings
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Class Notes
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cosc445
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="algorithm-analysis">Algorithm analysis</h1>
+<h2 id="the-ram-model-of-computation">The RAM Model of computation</h2>
+<ul>
+<li>
+<p>Hypothetical computer called the Random Access Machine</p>
+</li>
+<li>
+<p>Each simple operation (<span class="arithmatex">\(+\)</span>, <span class="arithmatex">\(\times\)</span>, <span class="arithmatex">\(-\)</span>, <span class="arithmatex">\(=\)</span>, <code>if</code>, <code>call</code>) takes exactly one time step.</p>
+</li>
+<li>
+<p>Loops and subroutines are not considered simple operations. Instead, they are the composition of many single-step operations.</p>
+</li>
+<li>
+<p>Each memory access takes exactly one time step. Infinite memory. No memory hierarchy</p>
+</li>
+<li>
+<p>Count the number of steps an algorithm takes on a given instance of a problem. That give us the runtime in RAM</p>
+</li>
+</ul>
+<h2 id="complexity">Complexity</h2>
+<ul>
+<li>To understand how good or bad an algorithm is in general, we must know how it works over all possible instances.</li>
+</ul>
+<p><img alt="600" src="../fig/02.01.svg" /></p>
+<ul>
+<li>
+<p>The <em>worst case complexity</em> of an algorithm is the function defined by the maximum number of steps taken on any instance of size <em>n</em>.</p>
+</li>
+<li>
+<p>The <em>best case complexity</em> of an algorithm is the function defined by the minimum number of steps taken on any instance of size <em>n</em>.</p>
+</li>
+<li>
+<p>The <em>average-case complexity</em> of the algorithm is the function defined by an average number of steps taken on any instance of size <em>n</em>.</p>
+</li>
+<li>
+<p>Each of these complexities defines a numerical function: time vs. size!</p>
+</li>
+<li>
+<p>Generally speaking, we will use the <em>worst-case complexity as our preferred measure</em> of algorithm efficiency. </p>
+</li>
+<li>
+<p>Worst-case analysis is generally <em>easy to do, and "usually" reflects the average case</em>.  When we refer to complexity of an algorithm, always assume we are talking about the worst-case, unless otherwise specified!</p>
+</li>
+<li>
+<p><em>Randomized algorithms</em> are of growing importance, and require an average-case type analysis to show off their merits.</p>
+</li>
+</ul>
+<h2 id="the-big-oh-notation">The Big-Oh notation</h2>
+<ul>
+<li>Best, worst, and average case are difficult to deal with because the <em>precise</em> details are very complicated.<ul>
+<li>May have bumps on some inputs.</li>
+<li>Require too much detail to specify precisely, can't be done without actually implementing it.</li>
+</ul>
+</li>
+</ul>
+<p><img alt="500" src="../fig/02.02.svg" /></p>
+<ul>
+<li>
+<p>It easier to talk about <em>upper and lower bounds</em> of the function. Asymptotic notation (<span class="arithmatex">\(\mathcal{O}\)</span>, <span class="arithmatex">\(\mathcal{\Omega}\)</span>, <span class="arithmatex">\({} \mathcal{\Theta}\)</span>) are as well as we can practically deal with complexity functions.</p>
+</li>
+<li>
+<p><span class="arithmatex">\(g(n) = \mathcal{O}(f(n))\)</span> means <span class="arithmatex">\(cf(n)\)</span> is an upper bound on <span class="arithmatex">\(g(n)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(g(n) = \mathcal{\Omega}(f(n))\)</span> means <span class="arithmatex">\(cf(n)\)</span> is a lower bound on <span class="arithmatex">\(g(n)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(g(n) = \mathcal{\Theta}(f(n))\)</span> means <span class="arithmatex">\(c_{1}f(n)\)</span> is an upper bound on <span class="arithmatex">\(g(n)\)</span> and <span class="arithmatex">\(c_{2}f(n)\)</span> is a lower bound on <span class="arithmatex">\(g(n)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(c\)</span>, <span class="arithmatex">\(c_{1}\)</span>, <span class="arithmatex">\(c_{2}\)</span> are all constants independent of <em>n</em>.</p>
+</li>
+<li>
+<p>The Big Oh notation ignores the difference between multiplicative constants.</p>
+<ul>
+<li><span class="arithmatex">\(f(n) = n\)</span> and <span class="arithmatex">\(g(n) = 2n\)</span> are identical in big-oh analysis</li>
+</ul>
+</li>
+<li>
+<p>Furthermore, we arbitrarily choose a constant <span class="arithmatex">\(n_{0}\)</span> beyond which the upper or lower bounds are satisfied. We do not care about small values of <span class="arithmatex">\(n\)</span>.</p>
+</li>
+</ul>
+<p><img alt="" src="../fig/02.03.svg" /></p>
+<ul>
+<li><span class="arithmatex">\(f(n) = \mathcal{O}(g(n))\)</span> if there are positive constants <span class="arithmatex">\(n_{0}\)</span> and <span class="arithmatex">\(c\)</span> such that to the right of <span class="arithmatex">\(n_{0}\)</span>, the value of <span class="arithmatex">\(f(n)\)</span> always lies on or below <span class="arithmatex">\(c.g(n)\)</span></li>
+</ul>
+<p><img alt="" src="../fig/02.04.svg" />
+- <span class="arithmatex">\(f(n) = \mathcal{\Omega}(g(n))\)</span> if there are positive constants <span class="arithmatex">\(n_{0}\)</span> and <span class="arithmatex">\(c\)</span> such that to the right of <span class="arithmatex">\(n_{0}\)</span>, the value of <span class="arithmatex">\(f(n)\)</span> always lies on or above <span class="arithmatex">\(c.g(n)\)</span></p>
+<p><img alt="" src="../fig/02.05.svg" /></p>
+<ul>
+<li><span class="arithmatex">\(f(n) = \mathcal{\Theta}(g(n))\)</span> if there exist positive constants <span class="arithmatex">\(n_{0}, c_{1}, c_{2}\)</span> such that to the right of <span class="arithmatex">\(n_{0}\)</span>, the value of <span class="arithmatex">\(f(n)\)</span> always lies between <span class="arithmatex">\(c_{1}.g(n)\)</span> and <span class="arithmatex">\(c_{2}.g(n)\)</span> inclusive.</li>
+</ul>
+<h2 id="big-mathcalo-examples">Big <span class="arithmatex">\(\mathcal{O}\)</span> examples</h2>
+<ul>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 = \mathcal{O}(n^{2})\)</span></p>
+<ul>
+<li>
+<p><span class="arithmatex">\(c =\)</span> </p>
+</li>
+<li>
+<p><span class="arithmatex">\(n_{0} =\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 = \mathcal{O}(n^{3})\)</span></p>
+<ul>
+<li>
+<p><span class="arithmatex">\(c =\)</span> </p>
+</li>
+<li>
+<p><span class="arithmatex">\(n_{0} =\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 \neq \mathcal{O}(n)\)</span></p>
+</li>
+</ul>
+<p>Think of the equality as meaning <em>in the set of functions</em>.</p>
+<h2 id="big-mathcalomega-examples">Big <span class="arithmatex">\(\mathcal{\Omega}\)</span> examples</h2>
+<ul>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 = \mathcal{\Omega}(n^{2})\)</span></p>
+<ul>
+<li>
+<p><span class="arithmatex">\(c =\)</span> </p>
+</li>
+<li>
+<p><span class="arithmatex">\(n_{0} =\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 = \mathcal{\Omega}(n)\)</span></p>
+<ul>
+<li>
+<p><span class="arithmatex">\(c =\)</span> </p>
+</li>
+<li>
+<p><span class="arithmatex">\(n_{0} =\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 \neq \mathcal{\Omega}(n^{3})\)</span></p>
+</li>
+</ul>
+<h2 id="big-mathcaltheta-examples">Big <span class="arithmatex">\(\mathcal{\Theta}\)</span> examples</h2>
+<ul>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 = \mathcal{\Theta}(n^{2})\)</span></p>
+<ul>
+<li>
+<p><span class="arithmatex">\(c =\)</span> </p>
+</li>
+<li>
+<p><span class="arithmatex">\(n_{0} =\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 \neq \mathcal{\Theta}(n)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) = 3n^{2} - 100n + 6 \neq \mathcal{\Theta}(n^{3})\)</span></p>
+</li>
+</ul>
+<h2 id="is-2n1-mathcaltheta2n">Is <span class="arithmatex">\(2^{n+1} = \mathcal{\Theta}(2^{n})\)</span>?</h2>
+<h2 id="is-xy2-mathcalox2-y2">Is <span class="arithmatex">\((x+y)^{2} = \mathcal{O}(x^{2} + y^{2})\)</span>?</h2>
+<h2 id="big-mathcalo-addition-and-subtraction">Big <span class="arithmatex">\(\mathcal{O}\)</span> addition and subtraction</h2>
+<ul>
+<li>
+<p>Suppose <span class="arithmatex">\(f(n) = \mathcal{O}(n^{2})\)</span> and <span class="arithmatex">\(g(n) = \mathcal{O}(n^{2})\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) + g(n) = \mathcal{O}(\_\_\_\_\_?)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) - |g(n)| = \mathcal{O}(\_\_\_\_\_?)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(f(n) + g(n) = \mathcal{\Theta}(max(f(n), g(n)))\)</span></p>
+</li>
+</ul>
+<h2 id="big-mathcalo-multiplication-by-constant">Big <span class="arithmatex">\(\mathcal{O}\)</span> multiplication by constant</h2>
+<ul>
+<li>
+<p><span class="arithmatex">\(\mathcal{O}(c.f(n)) = \mathcal{O}(f(n))\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(\mathcal{\Omega}(c.f(n)) = \mathcal{O}(f(n))\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(\mathcal{\Theta}(c.f(n)) = \mathcal{O}(f(n))\)</span></p>
+</li>
+</ul>
+<h2 id="big-mathcalo-multiplication-by-function">Big <span class="arithmatex">\(\mathcal{O}\)</span> multiplication by function</h2>
+<ul>
+<li>
+<p><span class="arithmatex">\(\mathcal{O}(f(n)).\mathcal{O}(g(n)) = \mathcal{O}(f(n).g(n))\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(\mathcal{\Omega}(f(n)).\mathcal{\Omega}(g(n)) = \mathcal{\Omega}(f(n).g(n))\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(\mathcal{\Theta}(f(n)).\mathcal{\Theta}(g(n)) = \mathcal{\Theta}(f(n).g(n))\)</span></p>
+</li>
+</ul>
+<h2 id="asymptotic-dominance">Asymptotic dominance</h2>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(\lg n\)</span></th>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(n\lg n\)</span></th>
+<th><span class="arithmatex">\(n^{2}\)</span></th>
+<th><span class="arithmatex">\(2^{n}\)</span></th>
+<th><span class="arithmatex">\(n!\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>0.003 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.01 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.033 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.1 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>3.63 ms</td>
+</tr>
+<tr>
+<td>20</td>
+<td>0.004 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.02 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.086 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.4 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 ms</td>
+<td>77.1 years</td>
+</tr>
+<tr>
+<td>30</td>
+<td>0.005 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.03 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.147 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.9 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 sec</td>
+<td>8.3<span class="arithmatex">\(\times 10^{15}\)</span> years</td>
+</tr>
+<tr>
+<td>40</td>
+<td>0.005 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.04 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.213 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1.6 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>18.3 min</td>
+<td></td>
+</tr>
+<tr>
+<td>50</td>
+<td>0.006 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.05 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.282 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>2.5 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 days</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(\lg n\)</span></th>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(n\lg n\)</span></th>
+<th><span class="arithmatex">\(n^{2}\)</span></th>
+<th><span class="arithmatex">\(2^{n}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>0.007 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.1 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>0.664 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>10 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>4<span class="arithmatex">\(\times 10^{13}\)</span> years</td>
+</tr>
+<tr>
+<td>1,000</td>
+<td>0.010 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>9.966 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 ms</td>
+<td></td>
+</tr>
+<tr>
+<td>10,000</td>
+<td>0.013 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>10 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>130 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>100 ms</td>
+<td></td>
+</tr>
+<tr>
+<td>100,000</td>
+<td>0.017 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>100 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1.67 ms</td>
+<td>10 sec</td>
+<td></td>
+</tr>
+<tr>
+<td>1,000,000</td>
+<td>0.020 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 ms</td>
+<td>19.93 ms</td>
+<td>16.7 min</td>
+<td></td>
+</tr>
+<tr>
+<td>10,000,000</td>
+<td>0.023 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>10 ms</td>
+<td>0.23 sec</td>
+<td>1.16 days</td>
+<td></td>
+</tr>
+<tr>
+<td>100,000,000</td>
+<td>0.027 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>100 ms</td>
+<td>2.66 sec</td>
+<td>115.7 days</td>
+<td></td>
+</tr>
+<tr>
+<td>1,000,000,000</td>
+<td>0.030 <span class="arithmatex">\(\mu\)</span>s</td>
+<td>1 sec</td>
+<td>29.90 sec</td>
+<td>31.7 years</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="testing-asymptotic-dominance">Testing Asymptotic Dominance</h2>
+<p><span class="arithmatex">\(f(n)\)</span> dominates <span class="arithmatex">\(g(n)\)</span> if <span class="arithmatex">\(\lim_{ n \to \infty } \frac{g(n)}{f(n)} = 0\)</span></p>
+<p>This is the same as saying <span class="arithmatex">\(g(n) = \mathcal{O}(f(n))\)</span></p>
+<h2 id="examples">Examples:</h2>
+<ol>
+<li><span class="arithmatex">\(n^{2}\)</span> vs <span class="arithmatex">\(2n^{2}\)</span></li>
+<li><span class="arithmatex">\(n^{2}\)</span> vs <span class="arithmatex">\(n^{3}\)</span></li>
+<li><span class="arithmatex">\(n^{2}\)</span> vs <span class="arithmatex">\(n^{1.9}\)</span></li>
+<li><span class="arithmatex">\(3^{n}\)</span> vs <span class="arithmatex">\(2^{n}\)</span></li>
+</ol>
+<h2 id="dominance-rankings">Dominance rankings</h2>
+<p>Commonly encountered functions:</p>
+<p><span class="arithmatex">\(n! \gg 2^{n} \gg n^{3} \gg n^{2} \gg n\log n \gg n \gg \log n \gg 1\)</span></p>
+<p>Some more esoteric functions:</p>
+<p><span class="arithmatex">\(c^{n} \gg n^{3} \gg n^{2} \gg n^{1+\epsilon} \gg n\log n \gg n \gg \sqrt{ n } \gg \log ^{2}n \gg \log n\)</span></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

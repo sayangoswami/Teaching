@@ -1,0 +1,1701 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sayangoswami.github.io/Teaching/cosc130/L04/">
+      
+      
+        <link rel="prev" href="../L03/">
+      
+      
+        <link rel="next" href="../../cosc445/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Refresher - Methods and Objects - Course Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible+Next:300,300i,400,400i,700,700i%7CAtkinson+Hyperlegible+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible Next";--md-code-font:"Atkinson Hyperlegible Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#refresher-methods-and-objects" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Course Notes" class="md-header__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Course Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Refresher - Methods and Objects
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Class Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Cosc130
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cosc445/" class="md-tabs__link">
+          
+  
+  
+  Cosc445
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Course Notes" class="md-nav__button md-logo" aria-label="Course Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Course Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc130
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc130
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC130: Intro to Computer Science II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Variables, Operators, Branches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher: Loops and Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More on Arrays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refresher - Methods and Objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#welcome-to-the-cs2-refresher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Welcome to the CS2 Refresher!
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reviewing-methods-the-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewing Methods: The Basics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anatomy-of-a-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomy of a Method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-vs-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters vs. Arguments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-main-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The main Method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods-as-black-boxes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods as "Black Boxes"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#method-overloading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method Overloading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-transition-to-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Transition to Objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-an-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is an Object?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes-as-blueprints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes as Blueprints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-a-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining a Class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating an Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-an-objects-fields-and-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing an Object's Fields and Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-creating-a-course-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise - creating a Course class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-creating-a-course-class_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise - creating a Course class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-a-constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using a Constructor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-default-constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Default Constructor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#this-keyword" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        this Keyword
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-methods-vs-instance-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Static Methods vs. Instance Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-tostring-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The toString() Method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-tostring-in-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The toString() in Action
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-creating-a-transaction-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise: Creating a Transaction Class
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise: Creating a Transaction Class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-creating-a-transaction-class_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise: Creating a Transaction Class
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-of-object-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review of Object Concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passing-objects-to-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passing Objects to Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pass-by-value-for-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pass-by-Value (for objects)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Next?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cosc445
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cosc445
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC445: Design/Analysis of Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/00-Syllabus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/L01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/L02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithm analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cosc445/L03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Class Notes
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cosc130
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="refresher-methods-and-objects">Refresher - Methods and Objects</h1>
+<h2 id="welcome-to-the-cs2-refresher">Welcome to the CS2 Refresher!</h2>
+<p>Welcome back! This module is a quick review of two of the most important concepts from CS1: <strong>methods</strong> and <strong>objects</strong>. We'll move quickly, so ask questions if anything is unclear.</p>
+<p><strong>What we'll cover:</strong></p>
+<ul>
+<li>
+<p>A deep dive into methods: parameters, return values, and overloading.</p>
+</li>
+<li>
+<p>What an object is and why we use them.</p>
+</li>
+<li>
+<p>Classes as blueprints for objects.</p>
+</li>
+<li>
+<p>Constructors, fields, and instance methods.</p>
+</li>
+</ul>
+<h2 id="reviewing-methods-the-basics">Reviewing Methods: The Basics</h2>
+<p>A <strong>method</strong> is a named block of code that performs a specific task. You can think of it as a sub-routine that makes your code organized and reusable.</p>
+<p><strong>Why use methods?</strong></p>
+<ul>
+<li>
+<p><strong>Reusability:</strong> Write code once, use it many times.</p>
+</li>
+<li>
+<p><strong>Organization:</strong> Break a big problem into smaller, manageable chunks.</p>
+</li>
+<li>
+<p><strong>Readability:</strong> Give descriptive names to blocks of code (e.g., <code>calculateTaxes()</code>).</p>
+</li>
+</ul>
+<h2 id="anatomy-of-a-method">Anatomy of a Method</h2>
+<p>Let's look at the parts of a method definition.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1">public static int addNumbers(int num1, int num2) {
+</span><span id="__span-0-2">    int sum = num1 + num2;
+</span><span id="__span-0-3">    return sum;
+</span><span id="__span-0-4">}
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li>
+<p><strong><code>public static</code></strong>: Access modifiers. We'll explore these more, but <code>static</code> means it belongs to the class, not an object.</p>
+</li>
+<li>
+<p><strong><code>int</code></strong>: The <strong>return type</strong>. It specifies the type of data the method sends back. Use <code>void</code> if the method doesn't return anything.</p>
+</li>
+</ul>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1">public static int addNumbers(int num1, int num2) {
+</span><span id="__span-1-2">    int sum = num1 + num2;
+</span><span id="__span-1-3">    return sum;
+</span><span id="__span-1-4">}
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li>
+<p><strong><code>addNumbers</code></strong>: The <strong>method name</strong>.</p>
+</li>
+<li>
+<p><strong><code>(int num1, int num2)</code></strong>: The <strong>parameters</strong>. These are variables that act as placeholders for the data the method receives.</p>
+</li>
+<li>
+<p><strong><code>{ ... }</code></strong>: The <strong>method body</strong>. All the code that the method executes goes in here.</p>
+</li>
+<li>
+<p><strong><code>return sum;</code></strong>: The <strong><code>return</code> statement</strong>. It sends the value back to the code that called the method.</p>
+</li>
+</ul>
+<h2 id="parameters-vs-arguments">Parameters vs. Arguments</h2>
+<p>This is a key distinction.</p>
+<ul>
+<li>
+<p><strong>Parameters</strong>: The variable placeholders in a <strong>method definition</strong>.</p>
+</li>
+<li>
+<p><strong>Arguments</strong>: The actual values passed to the method when it is <strong>called</strong>.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><span class="c1">// Definition: num1 and num2 are parameters</span>
+</span><span id="__span-2-2"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">num1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-3">
+</span><span id="__span-2-4"><span class="c1">// Call: 10 and 5 are arguments</span>
+</span><span id="__span-2-5"><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="the-main-method">The <code>main</code> Method</h2>
+<p>The <code>main</code> method is the <strong>entry point</strong> of every Java application. It's the first method that runs when you execute a program.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><span class="w">    </span><span class="c1">// Your program starts here.</span>
+</span><span id="__span-3-3"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li>
+<p>It must be <code>public</code> and <code>static</code>.</p>
+</li>
+<li>
+<p>The return type is always <code>void</code> because it doesn't return a value.</p>
+</li>
+<li>
+<p>It always accepts a <code>String[]</code> (an array of strings) as an argument.</p>
+</li>
+</ul>
+<h2 id="methods-as-black-boxes">Methods as "Black Boxes"</h2>
+<p>Think of a method as a <strong>black box</strong>. You provide it with some input (arguments), and it gives you a predictable output (return value) without you needing to know how it works inside.</p>
+<p><strong>Example:</strong></p>
+<ul>
+<li><code>Math.sqrt(25.0)</code>: You give it <code>25.0</code>, it gives back <code>5.0</code>. You don't need to know the complex algorithm it uses to find the square root.</li>
+</ul>
+<p>This is a core principle of programming called <strong>abstraction</strong>.</p>
+<h2 id="method-overloading">Method Overloading</h2>
+<p><strong>Method overloading</strong> allows you to define multiple methods with the <strong>same name</strong> but different <strong>parameters</strong> in the same class. The compiler determines which method to call based on the arguments' number, type, and order.</p>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-2"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-3"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>When you call <code>add(5, 10)</code>, the <code>int</code> version is used. When you call <code>add(2.5, 3.5)</code>, the <code>double</code> version is used.</p>
+<h2 id="the-transition-to-objects">The Transition to Objects</h2>
+<p>So far, we've focused on <strong>procedural programming</strong>. The program is a set of instructions (<code>main</code> method) that operates on data (variables).</p>
+<p><strong>Problem:</strong> What happens when our programs get bigger? We end up with long lists of methods that all operate on the same data.</p>
+<p><strong>Solution:</strong> <strong>Object-Oriented Programming (OOP)</strong>. We combine data and the methods that operate on that data into a single unit called an <strong>object</strong>.</p>
+<h2 id="what-is-an-object">What is an Object?</h2>
+<p>An <strong>object</strong> is a self-contained unit that has <strong>state</strong> and <strong>behavior</strong>.</p>
+<ul>
+<li>
+<p><strong>State</strong>: The data or properties of the object. These are stored in <strong>fields</strong> (variables).</p>
+</li>
+<li>
+<p><strong>Behavior</strong>: The actions the object can perform. These are defined by <strong>methods</strong>.</p>
+</li>
+</ul>
+<p><strong>Analogy:</strong> A car is an object.</p>
+<ul>
+<li>
+<p><strong>State</strong>: Color, make, model, speed.</p>
+</li>
+<li>
+<p><strong>Behavior</strong>: <code>accelerate()</code>, <code>brake()</code>, <code>turnOn()</code>.</p>
+</li>
+</ul>
+<h2 id="classes-as-blueprints">Classes as Blueprints</h2>
+<p>A <strong>class</strong> is the blueprint or template for creating objects. It defines the fields and methods that all objects of that type will have. You don't interact with the blueprint directly; you use it to build things.</p>
+<p><img alt="500" src="fig/Pasted image 20250915140824.png" />^[Licensed by Google]</p>
+<p><strong>Analogy:</strong></p>
+<ul>
+<li>
+<p><strong>Class:</strong> The blueprint for a car. It specifies that all cars will have a color, a model, and methods like <code>accelerate()</code>.</p>
+</li>
+<li>
+<p><strong>Object:</strong> A specific, physical car created from that blueprint (e.g., a "red Ford Mustang"). You can have many objects from the same class, each with its own unique state.</p>
+</li>
+</ul>
+<h2 id="defining-a-class">Defining a Class</h2>
+<p>To define a class, you use the <code>class</code> keyword. Inside the class, you declare fields and methods.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><span class="w">    </span><span class="c1">// Fields (State)</span>
+</span><span id="__span-5-3"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-5-4"><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+</span><span id="__span-5-5">
+</span><span id="__span-5-6"><span class="w">    </span><span class="c1">// Methods (Behavior)</span>
+</span><span id="__span-5-7"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bark</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-8"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Woof!&quot;</span><span class="p">);</span>
+</span><span id="__span-5-9"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-10"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>This class defines a <code>Dog</code> object. Every <code>Dog</code> object we create from this blueprint will have a <code>name</code>, an <code>age</code>, and the ability to <code>bark()</code>.</p>
+<h2 id="creating-an-object">Creating an Object</h2>
+<p>You create an object from a class using the <code>new</code> keyword. This is also called <strong>instantiating</strong> an object.</p>
+<p><strong>Syntax:</strong> <code>ClassName objectName = new ClassName();</code></p>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">();</span>
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li>
+<p><code>myDog</code> is an <strong>object variable</strong> that holds a reference to a new <code>Dog</code> object.</p>
+</li>
+<li>
+<p>The <code>new Dog()</code> part creates the new object in memory.</p>
+</li>
+</ul>
+<h2 id="accessing-an-objects-fields-and-methods">Accessing an Object's Fields and Methods</h2>
+<p>You use the <strong>dot operator (<code>.</code>)</strong> to access an object's fields and methods.</p>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">();</span>
+</span><span id="__span-7-2">
+</span><span id="__span-7-3"><span class="c1">// Set the state of the object</span>
+</span><span id="__span-7-4"><span class="n">myDog</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Fido&quot;</span><span class="p">;</span>
+</span><span id="__span-7-5"><span class="n">myDog</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</span><span id="__span-7-6">
+</span><span id="__span-7-7"><span class="c1">// Call a method on the object</span>
+</span><span id="__span-7-8"><span class="n">myDog</span><span class="p">.</span><span class="na">bark</span><span class="p">();</span><span class="w"> </span><span class="c1">// Output: &quot;Woof!&quot;</span>
+</span><span id="__span-7-9">
+</span><span id="__span-7-10"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">myDog</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">myDog</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; years old.&quot;</span><span class="p">);</span>
+</span><span id="__span-7-11"><span class="c1">// Output: &quot;Fido is 3 years old.&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="exercise-creating-a-course-class">Exercise - creating a <code>Course</code> class</h2>
+<ul>
+<li>Create a <code>Course</code> class with the <code>string</code> fields <code>code</code> and <code>title</code>. </li>
+<li>Add a method called <code>print()</code> to print these fields.</li>
+<li>Create an object and assign the values <code>"COSC130"</code>, and <code>"INTRO TO COMPUTER SCIENCE II"</code> to the <code>code</code> and title <code>respectively</code>.</li>
+<li>Call the <code>print()</code> method of the object to print these fields.</li>
+</ul>
+<h2 id="exercise-creating-a-course-class_1">Exercise - creating a <code>Course</code> class</h2>
+<h2 id="constructors">Constructors</h2>
+<p>A <strong>constructor</strong> is a special method used to <strong>initialize</strong> a new object. It's called automatically when you use the <code>new</code> keyword.</p>
+<ul>
+<li>
+<p>A constructor has the same name as the class.</p>
+</li>
+<li>
+<p>It has <strong>no return type</strong> (not even <code>void</code>).</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-8-3"><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+</span><span id="__span-8-4">
+</span><span id="__span-8-5"><span class="w">    </span><span class="c1">// Constructor</span>
+</span><span id="__span-8-6"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Dog</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">dogName</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dogAge</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-7"><span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dogName</span><span class="p">;</span>
+</span><span id="__span-8-8"><span class="w">        </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dogAge</span><span class="p">;</span>
+</span><span id="__span-8-9"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-10"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="using-a-constructor">Using a Constructor</h2>
+<p>Now, when we create a <code>Dog</code> object, we can provide the initial values directly.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><span class="c1">// Create a Dog object using the constructor</span>
+</span><span id="__span-9-2"><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">(</span><span class="s">&quot;Fido&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</span><span id="__span-9-3">
+</span><span id="__span-9-4"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">myDog</span><span class="p">.</span><span class="na">name</span><span class="p">);</span><span class="w"> </span><span class="c1">// Output: Fido</span>
+</span></code></pre></div></td></tr></table></div>
+<p>This is a much cleaner way to create and set up an object.</p>
+<h2 id="the-default-constructor">The Default Constructor</h2>
+<p>If you don't provide any constructor, Java creates a <strong>default constructor</strong> for you. It's a constructor with no parameters that doesn't do anything.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><span class="w">    </span><span class="c1">// No constructor defined</span>
+</span><span id="__span-10-3"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-10-4"><span class="p">}</span>
+</span><span id="__span-10-5">
+</span><span id="__span-10-6"><span class="c1">// In main:</span>
+</span><span id="__span-10-7"><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">();</span><span class="w"> </span><span class="c1">// This works!</span>
+</span></code></pre></div></td></tr></table></div>
+<p>But once you create your own constructor, the default constructor is <strong>no longer available</strong>.</p>
+<h2 id="this-keyword"><code>this</code> Keyword</h2>
+<p>Inside a class, the <strong><code>this</code> keyword</strong> refers to the current object. It's often used to distinguish between a parameter and a field that have the same name.</p>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-2"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-11-3"><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+</span><span id="__span-11-4">
+</span><span id="__span-11-5"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Dog</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-6"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"> </span><span class="c1">// refers to the object&#39;s name</span>
+</span><span id="__span-11-7"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">   </span><span class="c1">// refers to the object&#39;s age</span>
+</span><span id="__span-11-8"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-9"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>This makes the code more concise and readable.</p>
+<h2 id="instance-methods">Instance Methods</h2>
+<p>Methods defined inside a class are called <strong>instance methods</strong>. They operate on the specific object they are called on. They can access the object's fields directly.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-2"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-12-3">
+</span><span id="__span-12-4"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bark</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// An instance method</span>
+</span><span id="__span-12-5"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; says woof!&quot;</span><span class="p">);</span>
+</span><span id="__span-12-6"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-12-7"><span class="p">}</span>
+</span><span id="__span-12-8">
+</span><span id="__span-12-9"><span class="c1">// In main:</span>
+</span><span id="__span-12-10"><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">(</span><span class="s">&quot;Fido&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</span><span id="__span-12-11"><span class="n">myDog</span><span class="p">.</span><span class="na">bark</span><span class="p">();</span><span class="w"> </span><span class="c1">// Output: Fido says woof!</span>
+</span></code></pre></div></td></tr></table></div>
+<p>When <code>myDog.bark()</code> is called, the <code>bark()</code> method knows to use <code>myDog</code>'s <code>name</code> field.</p>
+<h2 id="static-methods-vs-instance-methods">Static Methods vs. Instance Methods</h2>
+<p>This is a common point of confusion.</p>
+<ul>
+<li>
+<p><strong>Static Methods (<code>static</code>)</strong>: Belong to the <strong>class</strong>, not a specific object. You call them using the class name (e.g., <code>Math.random()</code>). They <strong>cannot</strong> access instance fields.</p>
+</li>
+<li>
+<p><strong>Instance Methods (no <code>static</code>)</strong>: Belong to a specific <strong>object</strong>. They can access the object's fields and methods. You must have an object to call them (e.g., <code>myDog.bark()</code>).</p>
+</li>
+</ul>
+<h2 id="the-tostring-method">The <code>toString()</code> Method</h2>
+<p>The <code>toString()</code> method is a special instance method that returns a <code>String</code> representation of an object. It's often used for debugging or printing objects.</p>
+<ul>
+<li>
+<p><strong>Default behavior</strong>: It prints a gibberish-looking string (e.g., <code>Dog@765f33f0</code>).</p>
+</li>
+<li>
+<p><strong>Good practice</strong>: <em>Override</em> the <code>toString()</code> method to provide a meaningful string.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><span class="nd">@Override</span><span class="w"> </span><span class="c1">// This annotation is good practice</span>
+</span><span id="__span-13-2"><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">toString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-3"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Dog[name=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, age=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="p">;</span>
+</span><span id="__span-13-4"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="the-tostring-in-action">The <code>toString()</code> in Action</h2>
+<p>Now, when you try to print your object, you get a clean output.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">(</span><span class="s">&quot;Fido&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</span><span id="__span-14-2">
+</span><span id="__span-14-3"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">myDog</span><span class="p">);</span>
+</span><span id="__span-14-4"><span class="c1">// Output: Dog[name=Fido, age=3]</span>
+</span></code></pre></div></td></tr></table></div>
+<p>The <code>println()</code> method automatically calls <code>toString()</code> if you pass it an object.</p>
+<h2 id="exercise-creating-a-transaction-class">Exercise: Creating a <code>Transaction</code> Class</h2>
+<p>Let's do a quick exercise to refresh these concepts.</p>
+<p><strong>Problem:</strong> Create a class called <code>Transaction</code>.</p>
+<ul>
+<li>
+<p>It should have fields for <code>description</code> (String), <code>date</code> (String), and <code>amount</code> (double).</p>
+</li>
+<li>
+<p>It should have a constructor to initialize these fields.</p>
+</li>
+<li>
+<p>override the <code>toString</code> method to display the transaction information in a clear format.</p>
+</li>
+</ul>
+<h3 id="exercise-creating-a-transaction-class_1">Exercise: Creating a <code>Transaction</code> Class</h3>
+<h2 id="review-of-object-concepts">Review of Object Concepts</h2>
+<ul>
+<li>
+<p><strong>Class</strong>: The blueprint.</p>
+</li>
+<li>
+<p><strong>Object</strong>: An instance of a class.</p>
+</li>
+<li>
+<p><strong>Fields</strong>: The data (state) of an object.</p>
+</li>
+<li>
+<p><strong>Methods</strong>: The actions (behavior) of an object.</p>
+</li>
+<li>
+<p><strong>Constructor</strong>: A special method to create and initialize an object.</p>
+</li>
+<li>
+<p><strong><code>new</code></strong>: The keyword used to create an object.</p>
+</li>
+<li>
+<p><strong><code>this</code></strong>: Refers to the current object.</p>
+</li>
+<li>
+<p><strong>Dot operator (<code>.</code>)</strong>: Used to access an object's fields and methods.</p>
+</li>
+</ul>
+<h2 id="passing-objects-to-methods">Passing Objects to Methods</h2>
+<p>You can pass objects to methods as arguments. This is a powerful way to share and manipulate data.</p>
+<p><strong>Example:</strong></p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">giveShot</span><span class="p">(</span><span class="n">Dog</span><span class="w"> </span><span class="n">dog</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+</span><span id="__span-15-2"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">dog</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; got a shot!&quot;</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-15-3"><span class="p">}</span>
+</span><span id="__span-15-4">
+</span><span id="__span-15-5"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-6"><span class="w">    </span><span class="n">Vet</span><span class="w"> </span><span class="n">myVet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Vet</span><span class="p">();</span>
+</span><span id="__span-15-7"><span class="w">    </span><span class="n">Dog</span><span class="w"> </span><span class="n">myDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">(</span><span class="s">&quot;Fido&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</span><span id="__span-15-8"><span class="w">    </span><span class="n">myVet</span><span class="p">.</span><span class="na">giveShot</span><span class="p">(</span><span class="n">myDog</span><span class="p">);</span><span class="w"> </span><span class="c1">// Passing the myDog object</span>
+</span><span id="__span-15-9"><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="pass-by-value-for-objects">Pass-by-Value (for objects)</h2>
+<p>In Java, arguments are always <strong>passed by value</strong>. For primitive types (<code>int</code>, <code>double</code>), the value is copied. For objects, the <strong>reference</strong> to the object is copied.</p>
+<ul>
+<li>
+<p>If you change the object's state inside the method (e.g., <code>dog.age = 4</code>), the change <strong>persists</strong> outside the method.</p>
+</li>
+<li>
+<p>You <strong>cannot</strong> change the object reference itself to point to a new object.</p>
+</li>
+</ul>
+<h2 id="whats-next">What's Next?</h2>
+<p>This review sets the stage for core topics of this course.</p>
+<ul>
+<li>
+<p><strong>Encapsulation</strong>: Using access modifiers (<code>private</code>, <code>public</code>) to hide an object's internal state.</p>
+</li>
+<li>
+<p><strong>Inheritance</strong>: Creating new classes based on existing ones.</p>
+</li>
+<li>
+<p><strong>Polymorphism</strong>: The ability of an object to take on many forms.</p>
+</li>
+<li>
+<p><strong>Interfaces</strong>: Defining a contract for a class.</p>
+</li>
+</ul>
+<p>These topics are the next logical steps in your journey to mastering object-oriented programming.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
