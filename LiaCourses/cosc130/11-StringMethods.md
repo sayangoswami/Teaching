@@ -89,13 +89,13 @@ System.out.println(s1.equals(s2)); // TRUE (Same characters)
 
 To safely process a String, you first need to know its size and whether it actually contains meaningful data.
 
-* **`.length()`**: Returns the total number of characters.
-* **`.charAt(int index)`**: Returns the character at a specific position.
-* *Warning:* If you pass an index $< 0$ or $\ge$ `.length()`, Java throws a `StringIndexOutOfBoundsException`.
+- **`.length()`**: Returns the total number of characters.
+- **`.charAt(int index)`**: Returns the character at a specific position.
+- *Warning:* If you pass an index $< 0$ or $\ge$ `.length()`, Java throws a `StringIndexOutOfBoundsException`.
 
 
-* **`.isEmpty()`**: Returns `true` only if `length` is `0`.
-* **`.isBlank()`**: Returns `true` if the string is empty **OR** contains only whitespace characters (spaces, tabs, newlines).
+- **`.isEmpty()`**: Returns `true` only if `length` is `0`.
+- **`.isBlank()`**: Returns `true` if the string is empty **OR** contains only whitespace characters (spaces, tabs, newlines).
 
 --
 ### **Code Example:**
@@ -158,10 +158,10 @@ You’ll often need to parse data (like a URL or a file path). Java provides sev
 
 **The Search Tools:**
 
-* **`.indexOf(String str)`**: Returns the index of the **first** occurrence. Returns `-1` if not found.
-* **`.lastIndexOf(String str)`**: Returns the index of the **last** occurrence (searches backwards).
-* **`.contains(CharSequence s)`**: Returns a `boolean`. Use this when you don't care *where* the text is, just that it exists.
-* **`.startsWith(String prefix)`** / **`.endsWith(String suffix)`**: Checks the boundaries. Great for file extensions or protocols.
+- **`.indexOf(String str)`**: Returns the index of the **first** occurrence. Returns `-1` if not found.
+- **`.lastIndexOf(String str)`**: Returns the index of the **last** occurrence (searches backwards).
+- **`.contains(CharSequence s)`**: Returns a `boolean`. Use this when you don't care *where* the text is, just that it exists.
+- **`.startsWith(String prefix)`** / **`.endsWith(String suffix)`**: Checks the boundaries. Great for file extensions or protocols.
 
 --
 
@@ -234,10 +234,10 @@ Because Strings are **immutable**, these methods do not change the original Stri
 --
 ### **The Transformation Toolkit:**
 
-* **.toUpperCase() / .toLowerCase()**: Standardizes text (great for case-insensitive input).
-* **.trim()**: Removes leading/trailing "basic" whitespace (spaces, tabs, newlines).
-* **.replace(old, new)**: Swaps all occurrences of a character or substring with something else.
-* **.replaceAll(regex, new)**: Uses Regular Expressions to swap patterns (more advanced).
+- **.toUpperCase() / .toLowerCase()**: Standardizes text (great for case-insensitive input).
+- **.trim()**: Removes leading/trailing "basic" whitespace (spaces, tabs, newlines).
+- **.replace(old, new)**: Swaps all occurrences of a character or substring with something else.
+- **.replaceAll(regex, new)**: Uses Regular Expressions to swap patterns (more advanced).
 
 --
 ### **Code Example: Cleaning User Input**
@@ -285,8 +285,8 @@ In many situations, you will receive a single line of data (like a row from a sp
 --
 ### **The Methods:**
 
-* **`.split(String regex)`**: Breaks a String into an **array of Strings** based on a "separator" (delimiter).
-* **`String.join(delimiter, elements)`**: A **static** method that takes an array or list and stitches them together with a separator in between.
+- **`.split(String regex)`**: Breaks a String into an **array of Strings** based on a "separator" (delimiter).
+- **`String.join(delimiter, elements)`**: A **static** method that takes an array or list and stitches them together with a separator in between.
 
 --
 ### **Code Example: Processing CSV Data**
@@ -325,7 +325,7 @@ Before this method existed, programmers had to use a loop and a "comma check" to
 
 When you use `+` to add text to a String, Java doesn't just "tack it on." Because Strings are immutable, Java creates a **brand new object** and copies every single old character into it.
 
-* If you do this in a loop 1,000 times, you are creating 1,000 objects and copying thousands of characters over and over. This makes your program sluggish.
+- If you do this in a loop 1,000 times, you are creating 1,000 objects and copying thousands of characters over and over. This makes your program sluggish.
 
 --
 ### **The Solution: `StringBuilder`**
@@ -353,8 +353,8 @@ String finalString = sb.toString(); // Convert to String at the very end
 --
 ### **When to use which?**
 
-* **Use `+`** for simple, one-line combinations (e.g., `"Hello " + name`).
-* **Use `StringBuilder`** anytime you are building a string inside a **`for`** or **`while`** loop.
+- **Use `+`** for simple, one-line combinations (e.g., `"Hello " + name`).
+- **Use `StringBuilder`** anytime you are building a string inside a **`for`** or **`while`** loop.
 
 
 ---
@@ -370,10 +370,10 @@ When you need to print complex reports or align columns of data, using `+` to jo
 
 You use **placeholders** (starting with `%`) to tell Java where to put your variables and how they should look.
 
-* **`%s`**: Strings
-* **`%d`**: Integers (Whole numbers)
-* **`%f`**: Floating point numbers (Decimals)
-* **`%.2f`**: Round to exactly 2 decimal places.
+- **`%s`**: Strings
+- **`%d`**: Integers (Whole numbers)
+- **`%f`**: Floating point numbers (Decimals)
+- **`%.2f`**: Round to exactly 2 decimal places.
 
 --
 ### **Code Example: Professional Receipts**
@@ -395,10 +395,98 @@ System.out.println(report);
 ```
 
 --
+
 ### **Why use this?**
 
 1. **Readability:** The template looks like the final sentence.
 2. **Precision:** It’s the easiest way to round numbers for currency or scientific data without using complex Math functions.
 3. **Alignment:** You can even add numbers (like `%10s`) to force columns to align perfectly in the console.
 
+
+
+
+---
+
+## The Character Wrapper Class
+
+**Working with Individual Symbols**
+
+While `String` handles sequences, the `java.lang.Character` class provides static utility methods to inspect and manipulate single `char` values.
+
+- **A "Wrapper" Class:** It wraps the primitive type `char` into an object, but we mostly use its **static methods**.
+- **Common Use Case:** Usually found inside a `for` loop that is iterating through a `String`.
+- **Syntax Pattern:** `Character.methodName(charValue)`
+
+---
+
+## Character Inspection (Boolean Checks)
+
+**Asking Questions About a Symbol**
+
+These methods return `true` or `false` and are essential for data validation and parsing.
+
+- **`Character.isDigit(ch)`**: Is it '0' through '9'?
+- **`Character.isLetter(ch)`**: Is it 'a'-'z' or 'A'-'Z'?
+- **`Character.isWhitespace(ch)`**: Is it a space, tab, or newline?
+- **`Character.isUpperCase(ch)` / `isLowerCase(ch)`**: Checks the casing of the letter.
+
+--
+
+### **Example: Counting Digits in a String**
+
+```java
+String secret = "Agent007";
+int digits = 0;
+
+for (int i = 0; i < secret.length(); i++) {
+    char c = secret.charAt(i);
+    if (Character.isDigit(c)) {
+        digits++;
+    }
+}
+// result: 3
+
+```
+
+---
+
+## Character Transformation
+
+**Changing Case at the Atomic Level**
+
+Unlike String methods (which return a whole new String), these return a single `char`.
+
+- **`Character.toUpperCase(ch)`**: Returns the uppercase version of the character.
+- **`Character.toLowerCase(ch)`**: Returns the lowercase version of the character.
+
+### **Why we need this:**
+
+We use these when we are building a new string from scratch (like in your `capitalizeWords` method) or when we want to compare two characters regardless of their case.
+
+```java
+char input = 'a';
+char fixed = Character.toUpperCase(input); // 'A'
+
+// Useful for Case-Insensitive Char Comparison:
+if (Character.toLowerCase(c1) == Character.toLowerCase(c2)) {
+    // Match!
+}
+
+```
+
+---
+
+## Summary — String vs. Character
+
+**When to Use Which?**
+
+| Task | Use `String` Methods | Use `Character` Methods |
+| --- | --- | --- |
+| **Check length** | `str.length()` | N/A |
+| **Check if a symbol is a number** | N/A | `Character.isDigit(ch)` |
+| **Extract a piece of text** | `str.substring()` | N/A |
+| **Change one specific letter to caps** | N/A | `Character.toUpperCase(ch)` |
+| **Find a word inside a sentence** | `str.indexOf()` | N/A |
+
+---
 
