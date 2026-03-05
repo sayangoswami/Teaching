@@ -77,56 +77,56 @@ When a function calls another, the first one waits for the second one to finish 
 
 If a function calls itself, the same rule applies!
 
-- `countdown(3)` calls `countdown(2)` and waits. 
+- `leapOfFaith(3)` calls `leapOfFaith(2)` and waits. 
 
-  - `countdown(2)` calls `countdown(1)` and waits.  
+  - `leapOfFaith(2)` calls `leapOfFaith(1)` and waits.  
 
-    - `countdown(1)` calls `countdown(0)` and waits.  
+    - `leapOfFaith(1)` calls `leapOfFaith(0)` and waits.  
 
-      - `countdown(0)` hits the base case, prints, and finishes. 
+      - `leapOfFaith(0)` hits the base case, prints, and finishes. 
 
-    - Now `countdown(1)` can stop waiting and finish. 
+    - Now `leapOfFaith(1)` can stop waiting and finish. 
 
-  - Now `countdown(2)` can stop waiting and finish. 
+  - Now `leapOfFaith(2)` can stop waiting and finish. 
 
-- Now `countdown(3)` can stop waiting and finish. 
+- Now `leapOfFaith(3)` can stop waiting and finish. 
 
 
-## Tracing `countdown(3)`
+## Tracing `leapOfFaith(3)`
 
-Let's trace the order of operations for `countdown(3)`:
+Let's trace the order of operations for `leapOfFaith(3)`:
 
-`countdown(3)` is called:
+`leapOfFaith(3)` is called:
 
 - `n=3`. Not base case.
 
 - Prints `"3"`.
 
-- Calls `countdown(2)` (and waits).
+- Calls `leapOfFaith(2)` (and waits).
 
   - `n=2`. Not base case.
 
   - Prints `"2"`.
 
-  - Calls `countdown(1)` (and waits).
+  - Calls `leapOfFaith(1)` (and waits).
 
     - `n=1`. Not base case.
 
     - Prints `"1"`.
 
-    - Calls `countdown(0)` (and waits).
+    - Calls `leapOfFaith(0)` (and waits).
 
       - `n=0`. Base Case!
 
-      - Prints "Blastoff!".
+      - Prints "Stop!".
 
-      - `countdown(0)` finishes.
+      - `leapOfFaith(0)` finishes.
 
-    - `countdown(1)` finishes (it was done after its call).
+    - `leapOfFaith(1)` finishes (it was done after its call).
 
-  - `countdown(2)` finishes (it was done after its call).
+  - `leapOfFaith(2)` finishes (it was done after its call).
 
-- `countdown(3)` finishes (it was done after its call).
+- `leapOfFaith(3)` finishes (it was done after its call).
 
 
 ## The Most Important Error: Infinite Recursion
@@ -134,21 +134,21 @@ Let's trace the order of operations for `countdown(3)`:
 What happens if we forget the base case?
 
 ```java
-public static void countdown(int n) {
+public static void leapOfFaith(int n) {
     // NO BASE CASE!
     System.out.println(n);
-    countdown(n - 1); 
+    leapOfFaith(n - 1); 
 }
 ```
 
 
-Let's trace `countdown(3)`:
+Let's trace `leapOfFaith(3)`:
 
-- `countdown(3)` calls `countdown(2)`...
-- `countdown(2)` calls `countdown(1)`...
-- `countdown(1)` calls `countdown(0)`...
-- `countdown(0)` calls `countdown(-1)`...
-- `countdown(-1)` calls `countdown(-2)`... it never stops!
+- `leapOfFaith(3)` calls `leapOfFaith(2)`...
+- `leapOfFaith(2)` calls `leapOfFaith(1)`...
+- `leapOfFaith(1)` calls `leapOfFaith(0)`...
+- `leapOfFaith(0)` calls `leapOfFaith(-1)`...
+- `leapOfFaith(-1)` calls `leapOfFaith(-2)`... it never stops!
 
 Each new function call uses a little bit of memory to "wait". Eventually, the program runs out of memory for all these waiting calls!
 
