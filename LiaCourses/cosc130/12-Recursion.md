@@ -24,16 +24,6 @@ import: https://raw.githubusercontent.com/liaScript/mermaid_template/master/READ
 
 In programming, recursion is a technique where a **function keeps calling itself**, on smaller and smaller arguments until the problem becomes trivial to solve.
 
-```java
-// A (very simple) recursive function
-void myMethod() {
-    // ... some code ...
-    myMethod(); // The function calls itself!
-    // ... some code ...
-}
-```
-
-This looks like an infinite loop, and it will be... unless we add two key parts.
 
 ## The Two Parts of Any Recursive Function
 
@@ -52,29 +42,29 @@ Every _correct_ recursive function must have two parts:
 
 - **What it does:** It moves the problem _one step closer_ to the base case.
 
+- You take a leap of faith that the smaller problem will solve itself.
 
-## Example 1: `countdown(int n)`
 
-Let's write a function that counts down from `n` to 0 and prints "Blastoff!".
+## Example 1: `leapOfFaith(int n)`
+
+Let's write a function that counts down from `n` to 0 and prints "Stop!".
 
 ```java
 public class Main {
-    public static void countdown(int n) {
+    public static void leapOfFaith(int n) {
         
         // 1. Base Case:
-        if (n == 0) {
-            System.out.println("Blastoff!");
-        } 
+        if (n == 0) System.out.println("Stop!");
         
         // 2. Recursive Step:
         else {
             System.out.println(n);
-            countdown(n - 1); // Solves a *simpler* problem (n-1)
+            leapOfFaith(n - 1); // Solves a *simpler* problem (n-1)
         }
     }
 
     public static void main(String[] args) {
-        countdown(10);
+        leapOfFaith(10);
     }
 }
 ```
