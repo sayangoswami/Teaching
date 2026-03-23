@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Whiteboard</title>
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  background:white;
+}
+svg{
+  width:100vw;
+  height:100vh;
+  touch-action:none;
+  cursor:crosshair;
+}
+#hint{
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  font-family:sans-serif;
+  font-size:12px;
+  opacity:.6;
+}
+</style>
+</head>
+<body>
+
+<svg></svg>
+<div id="hint">
+Draw: Drag mouse | Save: S | Clear: C | Replay with → ←
+</div>
+
+<script>
+    const NS="http://www.w3.org/2000/svg";
+    const svg=document.querySelector("svg");
+    
+    let drawing=false;
+    let path=null;
+    let step=0;
+    let currentColor="black";
+    let mode="draw"; // draw | erase
+    
+    const COLORS={
+      "1":"black",
+      "2":"red",
+      "3":"blue",
+      "4":"green",
+      "5":"orange"
+    };
+    
+    function pt(e){
+      return {x:e.clientX,y:e.clientY};
+    }
+
+    function distance(p1,p2){
+      return Math.sqrt((p1.x-p2.x)**2+(p1.y-p2.y)**2);
+    }
+    
+    svg.addEventListener("pointerdown",e=>{
+      drawing=true;
+      const p=pt(e);
+    
+      path=document.createElementNS(NS,"path");
+      path.setAttribute("fill","none");
+      path.setAttribute("stroke",currentColor);
+      path.setAttribute("stroke-width","3");
+      path.setAttribute("stroke-linecap","round");
+      path.setAttribute("stroke-linejoin","round");
+      path.setAttribute("d",`M ${p.x} ${p.y}`);
+      path.dataset.step=step++;
+    
+      svg.appendChild(path);
+    });
+    
+    svg.addEventListener("pointermove",e=>{
+      const p=pt(e);
+      if (mode === "erase") {
+        // Erase mode: Check if the pointer is close to any existing path
+        const paths = svg.querySelectorAll("path");
+        paths.forEach(pth => {
+          const len = pth.getTotalLength();
+          for (let i = 0; i <= len; i += 5) { // Check points along the path
+            const point = pth.getPointAtLength(i);
+            if (distance(point, p) < 10) { // If close enough, remove the path
+              pth.remove();
+              break;
+            }
+          }
+        });
+      } else {
+        if(!drawing || mode!=="draw") return;
+        path.setAttribute("d",path.getAttribute("d")+` L ${p.x} ${p.y}`);
+      }
+    });
+    
+    window.addEventListener("pointerup",()=>drawing=false);
+    
+    function clearBoard(){
+      svg.innerHTML="";
+      step=0;
+    }
+    
+    function save(){
+    
+      const clone=svg.cloneNode(true);
+      clone.setAttribute("xmlns","http://www.w3.org/2000/svg");
+    
+      const replayScript=`
+      (function(){
+    
+        const filename = location.pathname.split("/").pop() || "";
+        const ENABLED = filename.startsWith("a_");
+        if(!ENABLED) return;
+    
+        const paths=[...document.querySelectorAll("path")]
+          .sort((a,b)=>Number(a.dataset.step)-Number(b.dataset.step));
+    
+        paths.forEach(p=>p.style.visibility="hidden");
+    
+        let cur=-1;
+        let currentAnimation=null;
+        const SPEED=600;
+    
+        function animateStroke(p){
+          const len=p.getTotalLength();
+          p.style.strokeDasharray=len;
+          p.style.strokeDashoffset=len;
+          p.style.visibility="visible";
+    
+          const duration=(len/SPEED)*1000;
+    
+          const anim=p.animate(
+            [{strokeDashoffset:len},{strokeDashoffset:0}],
+            {duration:duration,fill:"forwards",easing:"linear"}
+          );
+    
+          currentAnimation=anim;
+          return anim.finished;
+        }
+    
+        async function show(n){
+          if(currentAnimation){
+            try{currentAnimation.finish();}catch(e){}
+            currentAnimation=null;
+          }
+    
+          paths.forEach(p=>{
+            if(Number(p.dataset.step)>n){
+              p.style.visibility="hidden";
+              p.dataset.drawn="";
+            }
+          });
+    
+          for(const p of paths){
+            const s=Number(p.dataset.step);
+            if(s<=n){
+              if(!p.dataset.drawn){
+                p.dataset.drawn="1";
+                await animateStroke(p);
+              }
+            }
+          }
+        }
+    
+        document.addEventListener("keydown",e=>{
+          if(e.key==="ArrowRight"){cur++;show(cur);}
+          if(e.key==="ArrowLeft"){cur=Math.max(-1,cur-1);show(cur);}
+        });
+    
+      })();
+      `;
+    
+      const script=document.createElement("script");
+      script.textContent=replayScript;
+      clone.appendChild(script);
+    
+      const blob=new Blob(
+        [new XMLSerializer().serializeToString(clone)],
+        {type:"image/svg+xml"}
+      );
+    
+      const a=document.createElement("a");
+      a.download="whiteboard-"+Date.now()+".svg";
+      a.href=URL.createObjectURL(blob);
+      a.click();
+    }
+    
+    document.addEventListener("keydown",e=>{
+    
+      // color switching
+      if(COLORS[e.key]){
+        currentColor=COLORS[e.key];
+        mode="draw";
+      }
+    
+      if(e.key==="e"){
+        mode= (mode==="draw"?"erase":"draw");
+      }
+    
+      if(e.key==="d"){
+        mode="draw";
+      }
+    
+      if(e.key==="c"){
+        clearBoard();
+      }
+    
+      if(e.key==="s"){
+        save();
+      }
+    });
+    </script>
+</body>
+</html>
