@@ -1,0 +1,162 @@
+---
+title: "Introduction to Exceptions"
+format: revealjs
+css: custom.css
+# highlightTheme: atom-one-light
+code-font-size: "1.6em"
+---
+
+## Introduction to Exceptions
+
+::: {.incremental}
+- **What is an Exception?** An event that occurs during the execution of a program that disrupts the normal flow of instructions.
+- **The Philosophy:** In CS1, we assume everything works. In CS2, we assume things **will** break. 
+  - Exceptions allow us to separate "Error-Handling Code" from "Regular Logic."
+- **Terminology:**
+	- **Throwing:** When an error occurs, the JVM creates an Exception Object and "throws" it.
+	    
+    - **Catching:** If you have a handler ready, you "catch" the object and deal with it.
+        
+    - **Crashing:** If no one catches the exception, the program terminates (the "Stack Trace" of death).
+:::
+        
+
+---
+
+## The Exception Hierarchy (Visual Map)
+
+- **Throwable:** The parent of all things that can be thrown.
+    
+    - **Error:** Serious problems that a reasonable application should not try to catch (e.g., `StackOverflowError`, `OutOfMemoryError`). These are system-level failures.
+        
+    - **Exception:** The class we focus on.
+        
+        - **RuntimeException (Unchecked):** Usually caused by programmer logic errors. (e.g., `NullPointerException`, `IndexOutOfBoundsException`).
+            
+        - **IO/Other (Checked):** Caused by external factors. Java forces you to acknowledge these.
+            
+
+---
+
+## Checked vs. Unchecked Exceptions
+
+|**Feature**|**Unchecked (RuntimeException)**|**Checked (Exception)**|
+|---|---|---|
+|**Cause**|Bad logic (e.g., dividing by zero).|External environment (e.g., file missing).|
+|**Compiler**|Does not check. Program runs until it hits the error.|**Mandatory.** The code won't compile unless handled.|
+|**Example**|`NullPointerException`|`IOException`, `SQLException`|
+|**Solution**|Fix your logic (use an `if` statement).|Use a `try-catch` or `throws`.|
+
+---
+
+## The Try-Catch-Finally Mechanism
+
+::: {.incremental}
+- **Try:** Contains the "Risky Code." If an exception occurs here, the JVM stops executing the rest of the `try` block and jumps immediately to the `catch`.
+    
+- **Catch:** Defines the type of exception you are looking for. You can have multiple catch blocks for different errors.
+    
+- **Finally:** Code that **must** run, whether an exception happened or not. Used for "cleanup" (like closing a database connection or a file).
+    
+    - _Note:_ Even if there is a `return` statement in the `try`, the `finally` block still executes before the method finishes!
+        
+
+:::
+
+---
+
+## Code Anatomy - Handling Multiple Errors
+
+
+```{.java code-line-numbers="1-13|1|2-4|5|6|7,8|9,10|11-13|1-13"}
+try {
+    String input = scanner.nextLine();
+    int num = Integer.parseInt(input); // Potential NumberFormatException
+    System.out.println(10 / num);      // Potential ArithmeticException
+} catch (NumberFormatException e) {
+    System.out.println("Error: Please enter a valid integer.");
+} catch (ArithmeticException e) {
+    System.out.println("Error: Cannot divide by zero.");
+} catch (Exception e) {
+    System.out.println("Something else went wrong: " + e.getMessage());
+} finally {
+    System.out.println("Cleanup code can go here.");
+}
+```
+
+::: {.fragment}
+**Pro-Tip:** Always catch specific exceptions first. If you catch the general `Exception` class first, the more specific ones below it will never be reached.
+:::
+    
+
+---
+
+## The "Throws" Keyword (Passing the Hot Potato)
+
+- Sometimes a method shouldn't fix the error; it should just warn the caller that an error might happen.
+    
+- **Syntax:** `public void readFile() throws IOException { ... }`
+    
+- If Method A calls Method B, and Method B `throws` an exception, Method A must either:
+    
+    1. Wrap the call in a `try-catch`.
+        
+    2. Also declare `throws` in its own header, passing the responsibility up the chain to the `main` method.
+        
+
+---
+
+## Defining and Throwing Your Own Exceptions
+
+- You don't have to wait for the JVM to find an error. You can trigger one yourself to enforce rules.
+    
+- **The `throw` Keyword:**
+
+
+```{.java code-line-numbers=""}
+public void setAge(int age) {
+    if (age < 0) {
+        throw new IllegalArgumentException("Age cannot be negative!");
+    }
+    this.age = age;
+}
+```
+
+- This is "Defensive Programming"—stopping bad data before it ruins your program's state.
+    
+
+---
+
+## Best Practices & Common Pitfalls
+
+::: {.incremental}
+1. **Don't Swallow Exceptions:** Avoid `catch(Exception e) {}`. If you do this, your program fails silently, and you'll spend hours debugging a problem you hid from yourself.
+    
+1. **Use `getMessage()`:** Every exception object has a `getMessage()` method. Print it! It tells you exactly what went wrong.
+    
+2. **Don't use Exceptions for Flow Control:** Don't use a `try-catch` to end a loop. Use standard `if` statements and boolean logic for normal behavior. Exceptions are for _exceptional_ (unplanned) events.
+:::
+    
+
+---
+
+## Exam Prep - "What is the Output?"
+
+**Question:** What prints if the user enters "0"?
+
+
+```{.java code-line-numbers=""}
+try {
+    int x = 5 / Integer.parseInt(input);
+    System.out.println("A");
+} catch (ArithmeticException e) {
+    System.out.println("B");
+} finally {
+    System.out.println("C");
+}
+```
+
+::: {.fragment}
+**Answer:** **B** then **C**. "A" is skipped because the error happens on the first line of the `try`.
+:::
+    

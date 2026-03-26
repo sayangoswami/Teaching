@@ -1,0 +1,835 @@
+---
+title: "Java File I/O & Persistence"
+format: revealjs
+css: custom.css
+# highlightTheme: atom-one-light
+code-font-size: "1.6em"
+---
+
+
+---
+
+## What is Persistence?
+
+When your program ends, all variables and objects **disappear from memory**.
+
+**Persistence** means saving data so it survives after the program closes.
+
+```
+Without persistence:          With persistence:
+┌─────────────┐               ┌─────────────┐
+│  ArrayList  │  ← LOST       │  ArrayList  │ ──save──▶ students.csv
+│  [Alice]    │  when         │  [Alice]    │           (lives forever)
+│  [Bob]      │  program      │  [Bob]      │ ◀─load──  (reload anytime)
+└─────────────┘  ends         └─────────────┘
+```
+
+**Common ways to persist data:**
+
+- Text files (`.txt`)
+- CSV files (`.csv`) ← we focus on this
+- Binary files
+- Databases (SQL)
+
+---
+
+## The Console I/O You Already Know
+
+Before diving into files, recall how you handled **console I/O in CS1**:
+
+```{.java code-line-numbers=""}
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		// READING from the keyboard
+		Scanner sc = new Scanner(System.in);
+		String name = sc.nextLine();
+		int age = sc.nextInt();
+		
+		// WRITING to the console
+		System.out.println("Hello, " + name);
+		System.out.printf("Age: %d%n", age);
+	}
+}
+```
+
+---
+
+## The Console I/O You Already Know
+
+The key insight for this whole unit:
+
+> **File I/O works exactly the same way — you just swap the source and destination.**
+
+```
+Console:  Scanner(System.in)      →  read from keyboard
+File:     Scanner(new File(...))  →  read from file
+
+Console:  System.out.println()    →  write to screen
+File:     PrintWriter.println()   →  write to file
+```
+
+Same methods. Different destination. That's it.
+
+---
+
+## The `File` Class
+
+Before reading or writing, it's useful to know about the `File` class. A `File` object **represents a path** — it doesn't open or read the file, it just describes where it is.
+
+```{.java code-line-numbers=""}
+import java.io.File;
+
+// in the main method ..
+File f = new File("students.csv");
+```
+
+Think of it like a sticky note with a file path written on it. It doesn't touch the file — it just holds the address.
+
+---
+
+## Useful `File` Methods
+
+```{.java code-line-numbers=""}
+File f = new File("students.csv");
+```
+
+|Method|Returns|What it does|
+|---|---|---|
+|`f.exists()`|`boolean`|Does the file exist?|
+|`f.getName()`|`String`|Just the filename: `"students.csv"`|
+|`f.getPath()`|`String`|The path you gave it: `"students.csv"`|
+|`f.getAbsolutePath()`|`String`|Full path: `"/home/user/project/students.csv"`|
+|`f.length()`|`long`|File size in bytes|
+|`f.isFile()`|`boolean`|Is it a file (not a directory)?|
+|`f.isDirectory()`|`boolean`|Is it a folder?|
+|`f.delete()`|`boolean`|Deletes the file, returns `true` if successful|
+|`f.createNewFile()`|`boolean`|Creates an empty file if it doesn't exist|
+|`f.listFiles()`|`File[]`|If it's a directory, returns its contents|
+
+---
+
+## `File` in Action — Defensive File Handling
+
+The most practical use of `File` is **checking before you act**:
+
+```{.java code-line-numbers="|1-3|7|9-11||14,15|"}
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+
+public class SafeRead {
+    public static void main(String[] args) {
+        File f = new File("students.csv");
+
+        if (!f.exists()) {
+            System.out.println("File not found: " + f.getAbsolutePath());
+            return;                           // exit early, nothing to read
+        }
+
+        System.out.println("Reading: " + f.getName());
+        System.out.println("Size: " + f.length() + " bytes");
+
+        // Code to read the file
+    }
+}
+```
+
+---
+
+## `File` — Working with Directories
+
+`File` works on folders too, which is handy for listing or organizing files:
+
+```{.java code-line-numbers="|5|7-10|13|14|17|18-22|"}
+import java.io.File;
+
+public class DirectoryExample {
+    public static void main(String[] args) {
+        File dir = new File("data");           // a folder named "data"
+
+        if (!dir.exists()) {
+            dir.mkdir();                       // create the folder
+            System.out.println("Created folder: " + dir.getAbsolutePath());
+        }
+
+        // Create a file inside the folder
+        File f = new File("data/students.csv");
+        System.out.println("Will write to: " + f.getAbsolutePath());
+
+        // List all files in a directory
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                System.out.println(file.getName() + " — " + file.length() + " bytes");
+            }
+        }
+    }
+}
+```
+
+<!-- **Output (example):**
+
+```
+Created folder: /home/user/project/data
+Will write to: /home/user/project/data/students.csv
+students.csv — 64 bytes
+``` -->
+
+---
+
+## Reading a File with Scanner {.scrollable}
+
+You already know `Scanner`. To read a file, just swap `System.in` for a `File` object:
+
+```{.java code-line-numbers="|1-3|7,14-16|9-12|"}
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+public class ReadWithScanner {
+    public static void main(String[] args) {
+        try (Scanner sc = new Scanner(new File("hello.txt"))) {
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                System.out.println(line);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+    }
+}
+```
+
+::: {.fragment}
+
+**The only new things here:**
+
+- `new File("hello.txt")` — points Scanner at a file instead of the keyboard
+- Notice the `try` statement - this is the recommended way for opening files.
+- `FileNotFoundException` — thrown if the file doesn't exist
+- `hasNextLine()` — returns `true` as long as there are more lines (just like checking for more keyboard input)
+:::
+
+---
+
+## Writing a File with PrintWriter {.scrollable}
+
+`PrintWriter` directly opens a file andgives you the exact same `println()` and `printf()` methods as `System.out`:
+
+```{.java code-line-numbers="|1-3|7,13-15|9-11|"}
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class WriteWithPrintWriter {
+    public static void main(String[] args) {
+        try (PrintWriter pw = new PrintWriter("hello.txt")) {
+
+            pw.println("Hello, World!");
+            pw.println("This is line 2.");
+            pw.printf("Pi is approximately %.4f%n", Math.PI);
+
+        } catch (IOException e) {
+            System.out.println("Error writing file: " + e.getMessage());
+        }
+    }
+}
+```
+
+---
+
+## The Symmetry — Console vs. File I/O
+
+This is worth pausing on. The pattern is completely symmetric:
+
+| |Reading|Writing|
+|---|---|---|
+|**Console (CS1)**|`Scanner(System.in)`|`System.out.println()`|
+|**File (CS2)**|`Scanner(new File(...))`|`PrintWriter(...); PrintWriter.println()`|
+|**`nextLine()`**|✅ works the same|—|
+|**`println()`**|—|✅ works the same|
+|**`printf()`**|—|✅ works the same|
+|**`hasNextLine()`**|✅ works the same|—|
+
+You are not learning a new skill. You are **redirecting a skill you already have** toward a file instead of the console.
+
+---
+
+## Append vs. Overwrite
+
+::: {.fragment}
+By default, `PrintWriter` **overwrites** the file every time it opens it.
+
+To **add** to an existing file instead, we need a bit more work. We need to use a `FileWriter` in append mode:
+:::
+
+::: {.fragment}
+```{.java code-line-numbers="1-2|4-5"}
+// OVERWRITE — file starts fresh each time (default)
+PrintWriter pw = new PrintWriter(new FileWriter("log.txt"));
+
+// APPEND — the true flag makes sure new content is added to the end
+PrintWriter pw = new PrintWriter(new FileWriter("log.txt", true));
+```
+:::
+
+::: {.fragment}
+**Example — building a log file:**
+
+```{.java code-line-numbers=""}
+public static void log(String message) throws IOException {
+    try (PrintWriter pw = new PrintWriter(new FileWriter("log.txt", true))) {
+        pw.println(message);
+    }
+}
+```
+
+Call `log("User logged in")` repeatedly and each message is added to the end without erasing previous ones.
+:::
+
+---
+
+## CSV Files
+
+**CSV = Comma-Separated Values**
+
+A plain text file where each line is a record, and fields are separated by commas.
+
+```csv
+name,age,major
+Alice,20,Computer Science
+Bob,22,Mathematics
+Carol,21,Physics
+```
+
+- **Line 1** is usually a header row (column names)
+- **Each subsequent line** is one data record
+- **Commas** separate the fields within each record
+
+CSV is one of the most universal data formats — Excel, Google Sheets, databases, and virtually every programming language can read and write it.
+
+---
+
+## Writing a CSV with PrintWriter {.scrollable}
+
+```{.java code-line-numbers="|1|6-9|11|16-18|12|13=14|"}
+import java.io.*;
+import java.util.ArrayList;
+
+public class WriteCSV {
+    public static void main(String[] args) {
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Carol");
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter("names.csv"))) {
+            pw.println("name"); // header row
+            for (String name : names)
+                pw.println(name);
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("names.csv written!");
+    }
+}
+```
+
+**Result — `names.csv`:**
+
+```
+name
+Alice
+Bob
+Carol
+```
+
+---
+
+## Reading a CSV with Scanner {.scrollable}
+
+```{.java code-line-numbers="|8|10|18-20|11|13-16|14-15|"}
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+public class ReadCSV {
+    public static void main(String[] args) {
+        ArrayList<String> names = new ArrayList<>();
+
+        try (Scanner sc = new Scanner(new File("names.csv"))) {
+            sc.nextLine();                        // skip header row
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                names.add(line.trim());
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+
+        System.out.println("Loaded: " + names);
+    }
+}
+```
+
+**Output:**
+
+```
+Loaded: [Alice, Bob, Carol]
+```
+
+**Key detail:** We call `nextLine()` once **before** the loop to consume and skip the header line, then loop through the rest.
+
+---
+
+## Writing Objects to CSV
+
+Here's a `Student` class we'll use for the next several examples:
+
+```{.java code-line-numbers=""}
+public class Student {
+    private String name;
+    private int age;
+    private double gpa;
+
+    public Student(String name, int age, double gpa) {
+        this.name = name;
+        this.age = age;
+        this.gpa = gpa;
+    }
+
+    public String getName() { return name; }
+    public int getAge()     { return age; }
+    public double getGpa()  { return gpa; }
+
+    // Converts this object to a CSV line: "Alice,20,3.8"
+    public String toCSV() {
+        return name + "," + age + "," + gpa;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (age " + age + ", GPA " + gpa + ")";
+    }
+}
+```
+
+The `toCSV()` method is the key — it converts a `Student` object into a single CSV-formatted line.
+
+---
+
+## Writing an ArrayList of Objects to CSV
+
+```{.java code-line-numbers=""}
+import java.io.*;
+import java.util.ArrayList;
+
+public class WriteStudents {
+    public static void main(String[] args) {
+        ArrayList<Student> students = new ArrayList<>();
+        students.add(new Student("Alice", 20, 3.8));
+        students.add(new Student("Bob",   22, 3.2));
+        students.add(new Student("Carol", 21, 3.9));
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter("students.csv"))) {
+            pw.println("name,age,gpa");           // header
+
+            for (Student s : students) {
+                pw.println(s.toCSV());            // "Alice,20,3.8"
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error writing: " + e.getMessage());
+        }
+
+        System.out.println("students.csv written!");
+    }
+}
+```
+
+**Result — `students.csv`:**
+
+```
+name,age,gpa
+Alice,20,3.8
+Bob,22,3.2
+Carol,21,3.9
+```
+
+---
+
+## Parsing a CSV Line with `split()`
+
+Before reading objects back, we need to understand `split()`:
+
+```{.java code-line-numbers=""}
+String line = "Alice,20,3.8";
+String[] parts = line.split(",");
+
+System.out.println(parts[0]);  // Alice
+System.out.println(parts[1]);  // 20
+System.out.println(parts[2]);  // 3.8
+```
+
+`split(",")` breaks a string into an **array** at every comma.
+
+**Type conversion — everything in a CSV is text, so convert back manually:**
+
+```{.java code-line-numbers=""}
+String name  = parts[0];
+int    age   = Integer.parseInt(parts[1]);    // String → int
+double gpa   = Double.parseDouble(parts[2]);  // String → double
+```
+
+---
+
+## Reading a CSV Back Into an ArrayList of Objects
+
+```{.java code-line-numbers=""}
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+public class ReadStudents {
+    public static void main(String[] args) {
+        ArrayList<Student> students = new ArrayList<>();
+
+        try (Scanner sc = new Scanner(new File("students.csv"))) {
+            sc.nextLine();                        // skip header
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] parts = line.split(",");
+
+                String name = parts[0];
+                int    age  = Integer.parseInt(parts[1]);
+                double gpa  = Double.parseDouble(parts[2]);
+
+                students.add(new Student(name, age, gpa));
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error reading: " + e.getMessage());
+        }
+
+        for (Student s : students) {
+            System.out.println(s);
+        }
+    }
+}
+```
+
+**Output:**
+
+```
+Alice (age 20, GPA 3.8)
+Bob (age 22, GPA 3.2)
+Carol (age 21, GPA 3.9)
+```
+
+---
+
+## Beyond Scanner — Meet `BufferedReader` {visibility="hidden"}
+
+Scanner is great and will serve you well. But as you move into upper-level courses and real-world Java, you'll encounter `BufferedReader` frequently. It's the lower-level, faster alternative for reading files line by line.
+
+The concept is identical — read a line, loop until there's nothing left. Only the syntax differs slightly:
+
+```{.java code-line-numbers=""}
+import java.io.*;
+import java.util.ArrayList;
+
+public class ReadWithBufferedReader {
+    public static void main(String[] args) {
+        ArrayList<Student> students = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("students.csv"))) {
+            reader.readLine();                    // skip header
+
+            String line;
+            while ((line = reader.readLine()) != null) {   // null = end of file
+                String[] parts = line.split(",");
+
+                String name = parts[0];
+                int    age  = Integer.parseInt(parts[1]);
+                double gpa  = Double.parseDouble(parts[2]);
+
+                students.add(new Student(name, age, gpa));
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        for (Student s : students) {
+            System.out.println(s);
+        }
+    }
+}
+```
+
+The output is exactly the same as the Scanner version.
+
+---
+
+## Scanner vs. BufferedReader — Side by Side {visibility="hidden"}
+
+Now that you've seen both, here's how they compare:
+
+| |`Scanner`|`BufferedReader`|
+|---|---|---|
+|**Package**|`java.util`|`java.io`|
+|**Familiar from CS1?**|✅ Yes|❌ New|
+|**Read a line**|`sc.nextLine()`|`reader.readLine()`|
+|**Check for more lines**|`sc.hasNextLine()`|check return `!= null`|
+|**Built-in type parsing**|✅ `nextInt()`, `nextDouble()`|❌ parse manually|
+|**Speed on large files**|Slower|Faster|
+|**Exception type**|`FileNotFoundException`|`IOException`|
+|**Try-with-resources**|✅ Yes|✅ Yes|
+
+For this course, **Scanner is perfectly fine**. If you go on to write programs that process very large files (millions of lines), `BufferedReader` is the professional choice because of its speed advantage.
+
+---
+
+## Putting It All Together — A Rudimentary Database
+
+Here's what we just built:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Your Java Program                    │
+│                                                         │
+│  ArrayList<Student>  ──── write ────▶  students.csv     │
+│                                            │            │
+│  ArrayList<Student>  ◀─── read  ────       │            │
+│       (rebuilt)                       (persisted)       │
+└─────────────────────────────────────────────────────────┘
+```
+
+This is exactly how simple databases work:
+
+- **Save state** → serialize objects to a file
+- **Load state** → deserialize the file back into objects
+- **The file outlives the program** → your data is persistent
+
+Real databases (MySQL, SQLite) do the same thing under the hood — they just do it faster, with more features, and with proper querying support.
+
+---
+
+## Common Errors & How to Fix Them
+
+|Error|Cause|Fix|
+|---|---|---|
+|`FileNotFoundException`|File path doesn't exist when reading|Check the filename; use `f.exists()` first|
+|`IOException`|General I/O failure|Wrap in try-catch, check disk space|
+|`ArrayIndexOutOfBoundsException` in `split()`|Line has fewer commas than expected|Check for blank lines or malformed rows|
+|`NumberFormatException`|`parseInt()` on a non-numeric string|Verify column order; check for spaces with `trim()`|
+|File is empty after writing|Forgot to call `.close()`|Use try-with-resources|
+|New data overwrites old data|Default `FileWriter` overwrites|Pass `true` for append mode|
+
+---
+
+## Quick Reference — File I/O Cheat Sheet {.scrollable}
+
+**The `File` class:**
+
+```{.java code-line-numbers=""}
+File f = new File("students.csv");
+f.exists();           // does it exist?
+f.getName();          // "students.csv"
+f.getAbsolutePath();  // full path on disk
+f.length();           // size in bytes
+f.delete();           // delete the file
+```
+
+**Write to a file (PrintWriter):**
+
+```{.java code-line-numbers=""}
+try (PrintWriter pw = new PrintWriter(new FileWriter("file.csv"))) {
+    pw.println("header1,header2");
+    pw.println("value1,value2");
+}
+```
+
+**Read from a file (Scanner):**
+
+```{.java code-line-numbers=""}
+try (Scanner sc = new Scanner(new File("file.csv"))) {
+    sc.nextLine(); // skip header
+    while (sc.hasNextLine()) {
+        String[] parts = sc.nextLine().split(",");
+        // use parts[0], parts[1], ...
+    }
+}
+```
+
+**Read from a file (BufferedReader):**
+
+```{.java code-line-numbers=""}
+try (BufferedReader reader = new BufferedReader(new FileReader("file.csv"))) {
+    reader.readLine(); // skip header
+    String line;
+    while ((line = reader.readLine()) != null) {
+        String[] parts = line.split(",");
+        // use parts[0], parts[1], ...
+    }
+}
+```
+
+**Convert types from String:**
+
+```{.java code-line-numbers=""}
+int    n = Integer.parseInt("42");
+double d = Double.parseDouble("3.14");
+```
+
+---
+
+## Summary
+
+- **Persistence** means saving data beyond a program's lifetime
+- The **`File` class** represents a file path and lets you check existence, get metadata, and manage files before opening them
+- File I/O is just **console I/O redirected to a file** — the same Scanner and PrintWriter methods apply
+- Use **`PrintWriter` + `FileWriter`** to write — same `println()` and `printf()` you already know
+- Use **`Scanner` + `new File(...)`** to read — same `nextLine()` and `hasNextLine()` you already know
+- Always use **try-with-resources** so files close automatically
+- **CSV** stores objects as comma-separated lines of text — add a `toCSV()` method to your class
+- Use `split(",")` and type conversion to rebuild objects when reading
+- `BufferedReader` is faster for large files and common in professional code — same concept, slightly different syntax
+- This read/write cycle forms a **rudimentary persistent database**
+
+
+
+# 📝 Worksheet — The Student Database
+
+**Goal:** Write an `ArrayList<Student>` to a CSV file, then read it back. By the end, your program is a simple persistent database.
+
+---
+
+## Part 1 — The `Student` Class
+
+Create a `Student` class with the following fields:
+
+|Field|Type|
+|---|---|
+|`name`|`String`|
+|`id`|`int`|
+|`major`|`String`|
+|`gpa`|`double`|
+
+**Tasks:**
+
+1. Write the constructor, getters, and a `toString()` method.
+2. Write a `toCSV()` method that returns a string in the format:
+    
+    ```
+    name,id,major,gpa
+    ```
+    
+    Example output for one student: `Alice,1001,CS,3.85`
+
+---
+
+## Part 2 — Write to CSV
+
+Write a method with this signature:
+
+```{.java code-line-numbers=""}
+public static void saveStudents(ArrayList<Student> students, String filename) throws IOException
+```
+
+This method should:
+
+1. Open `filename` for writing using `PrintWriter` and `FileWriter`
+2. Write a header row: `name,id,major,gpa`
+3. Loop through the ArrayList and write each student using `toCSV()`
+4. Use try-with-resources so the file closes automatically
+
+**Test it** by creating at least 4 students, calling `saveStudents()`, and opening the resulting CSV in a text editor to verify it looks correct.
+
+---
+
+## Part 3 — Read From CSV
+
+Write a method with this signature:
+
+```{.java code-line-numbers=""}
+public static ArrayList<Student> loadStudents(String filename) throws FileNotFoundException
+```
+
+This method should:
+
+1. Create an empty `ArrayList<Student>`
+2. Use `File` and `f.exists()` to check the file exists before opening — print a message and return the empty list if it doesn't
+3. Open the file for reading using `Scanner` and `new File(...)`
+4. Skip the header line with one call to `nextLine()`
+5. Read each remaining line, split by comma, parse each field to the correct type, and construct a `Student` object
+6. Add each `Student` to the ArrayList and return it
+
+---
+
+## Part 4 — Test Your Database
+
+In `main()`:
+
+```{.java code-line-numbers=""}
+// 1. Create your students
+ArrayList<Student> roster = new ArrayList<>();
+// ... add at least 4 students ...
+
+// 2. Save to file
+saveStudents(roster, "students.csv");
+System.out.println("Saved " + roster.size() + " students.");
+
+// 3. Load back into a NEW list (proving the file works)
+ArrayList<Student> loaded = loadStudents("students.csv");
+System.out.println("Loaded " + loaded.size() + " students:");
+
+for (Student s : loaded) {
+    System.out.println(s);
+}
+
+// 4. Verify the round-trip worked
+System.out.println("Round-trip success: " + (roster.size() == loaded.size()));
+```
+
+**Expected output:**
+
+```
+Saved 4 students.
+Loaded 4 students:
+Alice (ID: 1001, Major: CS, GPA: 3.85)
+Bob (ID: 1002, Major: Math, GPA: 3.2)
+Carol (ID: 1003, Major: Physics, GPA: 3.7)
+Dan (ID: 1004, Major: CS, GPA: 2.9)
+Round-trip success: true
+```
+
+---
+
+## Challenge Extensions
+
+1. **Add a student from user input** — use `Scanner(System.in)` to prompt for a new student's details, append them to the CSV using append mode (`new FileWriter("students.csv", true)`), then reload and print the full list.
+    
+2. **Search the database** — after loading, write a method that takes a `String major` and returns an `ArrayList<Student>` of only students in that major.
+    
+3. **Sort before saving** — use `Collections.sort()` with a `Comparator` to sort students by GPA (descending) before writing the CSV.
+    
+4. **Handle bad data** — add a try-catch inside your `loadStudents()` loop so that one malformed line doesn't crash the whole load. Print a warning and skip the bad line instead.
+    
+5. **Use the `File` class** — before saving, use `File` to check if `students.csv` already exists. If it does, print how many bytes the old file was before overwriting it.
+    
+
+---
+
+_Good luck! When you finish Part 4, you have built a working file-backed database in Java._
