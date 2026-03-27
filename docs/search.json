@@ -1,0 +1,499 @@
+[
+  {
+    "objectID": "cosc445/index.html",
+    "href": "cosc445/index.html",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nWhen and Where: Tuesday, Thursday. 1:45 PM - 3:00 PM. Schaefer Hall, Room 165.\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: The Algorithm Design Manual, 3rd Edition, by Steven Skiena\nPrerequisites: COSC 201; and MATH 200 or MATH 281\n\n\n\nThis course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms.\n\n\n\nBy the end of this course, you will be able to:\n\nAnalyze the best-case, average-case, and worst-case asymptotic performance of algorithms using standard notations (Big-O, \\(\\Omega\\), \\(\\Theta\\)).\nConstruct correctness proofs for algorithms using techniques such as loop invariants and mathematical induction.\nCompare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.\nApply key algorithmic design paradigms, including divide-and-conquer, dynamic programming, and greedy strategies, to solve complex problems.\nSynthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.\nCategorize computational problems into complexity classes (P, NP, NP-Complete) and identify when a problem is likely to be computationally intractable.\n\n\n\n\nThe Engaged Learning component will include problem solving and readings.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center 240-895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu.\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.\n\nHomework Assignments: Homework is the primary vehicle for learning in this course. These sets will involve:\n\nAlgorithm Design: Developing efficient solutions to complex engineering problems.\nProofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.\nComplexity Analysis: Determining the asymptotic bounds (e.g., \\(O(n \\log n)\\)) of your proposed solutions.\nNote: Submission must be through pdf files, and must be typed (not hand written). Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.\n\nQuizzes Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on “familiarity” tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.\nMidterm Exam and Final Exam Exams will test your ability to synthesize the paradigms learned in class under time constraints.\n\nThe Midterm covers foundational analysis, sorting, and divide-and-conquer.\nThe Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.\n\n\nImportant: All quizzes and exams will be paper-based.\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n20%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n30%\n\n\nFinal exam\n30%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nThe grades would be published on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
+  },
+  {
+    "objectID": "cosc445/index.html#course-goals",
+    "href": "cosc445/index.html#course-goals",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "This course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms."
+  },
+  {
+    "objectID": "cosc445/index.html#learning-outcomes",
+    "href": "cosc445/index.html#learning-outcomes",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "By the end of this course, you will be able to:\n\nAnalyze the best-case, average-case, and worst-case asymptotic performance of algorithms using standard notations (Big-O, \\(\\Omega\\), \\(\\Theta\\)).\nConstruct correctness proofs for algorithms using techniques such as loop invariants and mathematical induction.\nCompare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.\nApply key algorithmic design paradigms, including divide-and-conquer, dynamic programming, and greedy strategies, to solve complex problems.\nSynthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.\nCategorize computational problems into complexity classes (P, NP, NP-Complete) and identify when a problem is likely to be computationally intractable."
+  },
+  {
+    "objectID": "cosc445/index.html#engaged-learning",
+    "href": "cosc445/index.html#engaged-learning",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "The Engaged Learning component will include problem solving and readings."
+  },
+  {
+    "objectID": "cosc445/index.html#smcm-code-of-student-conduct",
+    "href": "cosc445/index.html#smcm-code-of-student-conduct",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "I support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct."
+  },
+  {
+    "objectID": "cosc445/index.html#academic-accommodations",
+    "href": "cosc445/index.html#academic-accommodations",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "SMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu"
+  },
+  {
+    "objectID": "cosc445/index.html#digital-accessibility-of-course-materials",
+    "href": "cosc445/index.html#digital-accessibility-of-course-materials",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Digital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator."
+  },
+  {
+    "objectID": "cosc445/index.html#office-of-student-success-services",
+    "href": "cosc445/index.html#office-of-student-success-services",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "The Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu ."
+  },
+  {
+    "objectID": "cosc445/index.html#office-of-title-ix-compliance-and-training",
+    "href": "cosc445/index.html#office-of-title-ix-compliance-and-training",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "St. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center 240-895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training."
+  },
+  {
+    "objectID": "cosc445/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
+    "href": "cosc445/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "A growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu.\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/"
+  },
+  {
+    "objectID": "cosc445/index.html#evaluation-components",
+    "href": "cosc445/index.html#evaluation-components",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Your course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.\n\nHomework Assignments: Homework is the primary vehicle for learning in this course. These sets will involve:\n\nAlgorithm Design: Developing efficient solutions to complex engineering problems.\nProofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.\nComplexity Analysis: Determining the asymptotic bounds (e.g., \\(O(n \\log n)\\)) of your proposed solutions.\nNote: Submission must be through pdf files, and must be typed (not hand written). Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.\n\nQuizzes Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on “familiarity” tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.\nMidterm Exam and Final Exam Exams will test your ability to synthesize the paradigms learned in class under time constraints.\n\nThe Midterm covers foundational analysis, sorting, and divide-and-conquer.\nThe Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.\n\n\nImportant: All quizzes and exams will be paper-based."
+  },
+  {
+    "objectID": "cosc445/index.html#grading",
+    "href": "cosc445/index.html#grading",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Your final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n20%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n30%\n\n\nFinal exam\n30%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nThe grades would be published on Blackboard."
+  },
+  {
+    "objectID": "cosc445/index.html#use-of-generative-ai",
+    "href": "cosc445/index.html#use-of-generative-ai",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Generative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies."
+  },
+  {
+    "objectID": "cosc445/index.html#attendance-policy",
+    "href": "cosc445/index.html#attendance-policy",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Attendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade."
+  },
+  {
+    "objectID": "cosc445/index.html#late-work-policy",
+    "href": "cosc445/index.html#late-work-policy",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Assignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date."
+  },
+  {
+    "objectID": "cosc445/index.html#tentative-schedule",
+    "href": "cosc445/index.html#tentative-schedule",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
+  },
+  {
+    "objectID": "cosc130/slides/14.html#introduction-to-exceptions",
+    "href": "cosc130/slides/14.html#introduction-to-exceptions",
+    "title": "Introduction to Exceptions",
+    "section": "Introduction to Exceptions",
+    "text": "Introduction to Exceptions\n\nWhat is an Exception? An event that occurs during the execution of a program that disrupts the normal flow of instructions.\nThe Philosophy: In CS1, we assume everything works. In CS2, we assume things will break.\n\nExceptions allow us to separate “Error-Handling Code” from “Regular Logic.”\n\nTerminology:\n\nThrowing: When an error occurs, the JVM creates an Exception Object and “throws” it.\nCatching: If you have a handler ready, you “catch” the object and deal with it.\nCrashing: If no one catches the exception, the program terminates (the “Stack Trace” of death)."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#the-exception-hierarchy-visual-map",
+    "href": "cosc130/slides/14.html#the-exception-hierarchy-visual-map",
+    "title": "Introduction to Exceptions",
+    "section": "The Exception Hierarchy (Visual Map)",
+    "text": "The Exception Hierarchy (Visual Map)\n\nThrowable: The parent of all things that can be thrown.\n\nError: Serious problems that a reasonable application should not try to catch (e.g., StackOverflowError, OutOfMemoryError). These are system-level failures.\nException: The class we focus on.\n\nRuntimeException (Unchecked): Usually caused by programmer logic errors. (e.g., NullPointerException, IndexOutOfBoundsException).\nIO/Other (Checked): Caused by external factors. Java forces you to acknowledge these."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#checked-vs.-unchecked-exceptions",
+    "href": "cosc130/slides/14.html#checked-vs.-unchecked-exceptions",
+    "title": "Introduction to Exceptions",
+    "section": "Checked vs. Unchecked Exceptions",
+    "text": "Checked vs. Unchecked Exceptions\n\n\n\n\n\n\n\n\nFeature\nUnchecked (RuntimeException)\nChecked (Exception)\n\n\n\n\nCause\nBad logic (e.g., dividing by zero).\nExternal environment (e.g., file missing).\n\n\nCompiler\nDoes not check. Program runs until it hits the error.\nMandatory. The code won’t compile unless handled.\n\n\nExample\nNullPointerException\nIOException, SQLException\n\n\nSolution\nFix your logic (use an if statement).\nUse a try-catch or throws."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#the-try-catch-finally-mechanism",
+    "href": "cosc130/slides/14.html#the-try-catch-finally-mechanism",
+    "title": "Introduction to Exceptions",
+    "section": "The Try-Catch-Finally Mechanism",
+    "text": "The Try-Catch-Finally Mechanism\n\nTry: Contains the “Risky Code.” If an exception occurs here, the JVM stops executing the rest of the try block and jumps immediately to the catch.\nCatch: Defines the type of exception you are looking for. You can have multiple catch blocks for different errors.\nFinally: Code that must run, whether an exception happened or not. Used for “cleanup” (like closing a database connection or a file).\n\nNote: Even if there is a return statement in the try, the finally block still executes before the method finishes!"
+  },
+  {
+    "objectID": "cosc130/slides/14.html#code-anatomy---handling-multiple-errors",
+    "href": "cosc130/slides/14.html#code-anatomy---handling-multiple-errors",
+    "title": "Introduction to Exceptions",
+    "section": "Code Anatomy - Handling Multiple Errors",
+    "text": "Code Anatomy - Handling Multiple Errors\ntry {\n    String input = scanner.nextLine();\n    int num = Integer.parseInt(input); // Potential NumberFormatException\n    System.out.println(10 / num);      // Potential ArithmeticException\n} catch (NumberFormatException e) {\n    System.out.println(\"Error: Please enter a valid integer.\");\n} catch (ArithmeticException e) {\n    System.out.println(\"Error: Cannot divide by zero.\");\n} catch (Exception e) {\n    System.out.println(\"Something else went wrong: \" + e.getMessage());\n} finally {\n    System.out.println(\"Cleanup code can go here.\");\n}\n\nPro-Tip: Always catch specific exceptions first. If you catch the general Exception class first, the more specific ones below it will never be reached."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#the-throws-keyword-passing-the-hot-potato",
+    "href": "cosc130/slides/14.html#the-throws-keyword-passing-the-hot-potato",
+    "title": "Introduction to Exceptions",
+    "section": "The “Throws” Keyword (Passing the Hot Potato)",
+    "text": "The “Throws” Keyword (Passing the Hot Potato)\n\nSometimes a method shouldn’t fix the error; it should just warn the caller that an error might happen.\nSyntax: public void readFile() throws IOException { ... }\nIf Method A calls Method B, and Method B throws an exception, Method A must either:\n\nWrap the call in a try-catch.\nAlso declare throws in its own header, passing the responsibility up the chain to the main method."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#defining-and-throwing-your-own-exceptions",
+    "href": "cosc130/slides/14.html#defining-and-throwing-your-own-exceptions",
+    "title": "Introduction to Exceptions",
+    "section": "Defining and Throwing Your Own Exceptions",
+    "text": "Defining and Throwing Your Own Exceptions\n\nYou don’t have to wait for the JVM to find an error. You can trigger one yourself to enforce rules.\nThe throw Keyword:\n\npublic void setAge(int age) {\n    if (age &lt; 0) {\n        throw new IllegalArgumentException(\"Age cannot be negative!\");\n    }\n    this.age = age;\n}\n\nThis is “Defensive Programming”—stopping bad data before it ruins your program’s state."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#best-practices-common-pitfalls",
+    "href": "cosc130/slides/14.html#best-practices-common-pitfalls",
+    "title": "Introduction to Exceptions",
+    "section": "Best Practices & Common Pitfalls",
+    "text": "Best Practices & Common Pitfalls\n\nDon’t Swallow Exceptions: Avoid catch(Exception e) {}. If you do this, your program fails silently, and you’ll spend hours debugging a problem you hid from yourself.\nUse getMessage(): Every exception object has a getMessage() method. Print it! It tells you exactly what went wrong.\nDon’t use Exceptions for Flow Control: Don’t use a try-catch to end a loop. Use standard if statements and boolean logic for normal behavior. Exceptions are for exceptional (unplanned) events."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#exam-prep---what-is-the-output",
+    "href": "cosc130/slides/14.html#exam-prep---what-is-the-output",
+    "title": "Introduction to Exceptions",
+    "section": "Exam Prep - “What is the Output?”",
+    "text": "Exam Prep - “What is the Output?”\nQuestion: What prints if the user enters “0”?\ntry {\n    int x = 5 / Integer.parseInt(input);\n    System.out.println(\"A\");\n} catch (ArithmeticException e) {\n    System.out.println(\"B\");\n} finally {\n    System.out.println(\"C\");\n}\n\nAnswer: B then C. “A” is skipped because the error happens on the first line of the try."
+  },
+  {
+    "objectID": "cosc130/index.html",
+    "href": "cosc130/index.html",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: None required\nPrerequisites: COSC 120\n\n\nThis course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs.\n\n\nBy the end of this course, you will be able to:\n\nDesign and implement object-oriented programs in Java that integrate encapsulation, inheritance, polymorphism, and interfaces.\nAnalyze and debug Java programs to trace execution, identify errors, and improve correctness.\nEvaluate alternative design choices (e.g., composition vs inheritance, abstract classes vs interfaces) and justify trade-offs.\nCreate a medium-scale Java project that demonstrates sound object-oriented design principles.\n\n\n\n\nThe Engaged Learning component will emphasize teamwork in solving programming problems. Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center (240) 895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, a final exam, and a programming project. Most components will emphasize hands-on programming.\n\nHomework Assignments - Programming requires consistent practice, so you will complete several assignments throughout the semester. These involve coding on a laptop or desktop computer. You may use your own device, borrow a Chromebook from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or work on library desktop computers (Windows) available on the first and second floors. See the SMCM library computing page for details.\nQuizzes - Programming builds on many small concepts that fit together to form larger systems. To help you stay on track, there will be regular quizzes focused on these building blocks.\nMidterm Exam and Final Exam - These exams will assess your cumulative knowledge and problem-solving skills.\nProgramming Project - A larger-scale programming project will give you the opportunity to apply what you’ve learned in a more open-ended context.\n\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n15%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n25%\n\n\nProject\n15%\n\n\nFinal exam\n25%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nI will publish the grades on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+  },
+  {
+    "objectID": "cosc130/index.html#learning-outcomes",
+    "href": "cosc130/index.html#learning-outcomes",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "By the end of this course, you will be able to:\n\nDesign and implement object-oriented programs in Java that integrate encapsulation, inheritance, polymorphism, and interfaces.\nAnalyze and debug Java programs to trace execution, identify errors, and improve correctness.\nEvaluate alternative design choices (e.g., composition vs inheritance, abstract classes vs interfaces) and justify trade-offs.\nCreate a medium-scale Java project that demonstrates sound object-oriented design principles."
+  },
+  {
+    "objectID": "cosc130/index.html#engaged-learning",
+    "href": "cosc130/index.html#engaged-learning",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "The Engaged Learning component will emphasize teamwork in solving programming problems. Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on."
+  },
+  {
+    "objectID": "cosc130/index.html#smcm-code-of-student-conduct",
+    "href": "cosc130/index.html#smcm-code-of-student-conduct",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "I support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct."
+  },
+  {
+    "objectID": "cosc130/index.html#academic-accommodations",
+    "href": "cosc130/index.html#academic-accommodations",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "SMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu"
+  },
+  {
+    "objectID": "cosc130/index.html#digital-accessibility-of-course-materials",
+    "href": "cosc130/index.html#digital-accessibility-of-course-materials",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Digital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator."
+  },
+  {
+    "objectID": "cosc130/index.html#office-of-student-success-services",
+    "href": "cosc130/index.html#office-of-student-success-services",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "The Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu ."
+  },
+  {
+    "objectID": "cosc130/index.html#office-of-title-ix-compliance-and-training",
+    "href": "cosc130/index.html#office-of-title-ix-compliance-and-training",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "St. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center (240) 895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training."
+  },
+  {
+    "objectID": "cosc130/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
+    "href": "cosc130/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "A growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/"
+  },
+  {
+    "objectID": "cosc130/index.html#evaluation-components",
+    "href": "cosc130/index.html#evaluation-components",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Your course grade will be based on homework assignments, quizzes, a midterm exam, a final exam, and a programming project. Most components will emphasize hands-on programming.\n\nHomework Assignments - Programming requires consistent practice, so you will complete several assignments throughout the semester. These involve coding on a laptop or desktop computer. You may use your own device, borrow a Chromebook from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or work on library desktop computers (Windows) available on the first and second floors. See the SMCM library computing page for details.\nQuizzes - Programming builds on many small concepts that fit together to form larger systems. To help you stay on track, there will be regular quizzes focused on these building blocks.\nMidterm Exam and Final Exam - These exams will assess your cumulative knowledge and problem-solving skills.\nProgramming Project - A larger-scale programming project will give you the opportunity to apply what you’ve learned in a more open-ended context."
+  },
+  {
+    "objectID": "cosc130/index.html#grading",
+    "href": "cosc130/index.html#grading",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Your final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n15%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n25%\n\n\nProject\n15%\n\n\nFinal exam\n25%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nI will publish the grades on Blackboard."
+  },
+  {
+    "objectID": "cosc130/index.html#use-of-generative-ai",
+    "href": "cosc130/index.html#use-of-generative-ai",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Generative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies."
+  },
+  {
+    "objectID": "cosc130/index.html#attendance-policy",
+    "href": "cosc130/index.html#attendance-policy",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Attendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade."
+  },
+  {
+    "objectID": "cosc130/index.html#late-work-policy",
+    "href": "cosc130/index.html#late-work-policy",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "Assignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date."
+  },
+  {
+    "objectID": "cosc130/index.html#tentative-schedule",
+    "href": "cosc130/index.html#tentative-schedule",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#what-is-persistence",
+    "href": "cosc130/slides/15.html#what-is-persistence",
+    "title": "Java File I/O & Persistence",
+    "section": "What is Persistence?",
+    "text": "What is Persistence?\nWhen your program ends, all variables and objects disappear from memory.\nPersistence means saving data so it survives after the program closes.\nWithout persistence:          With persistence:\n┌─────────────┐               ┌─────────────┐\n│  ArrayList  │  ← LOST       │  ArrayList  │ ──save──▶ students.csv\n│  [Alice]    │  when         │  [Alice]    │           (lives forever)\n│  [Bob]      │  program      │  [Bob]      │ ◀─load──  (reload anytime)\n└─────────────┘  ends         └─────────────┘\nCommon ways to persist data:\n\nText files (.txt)\nCSV files (.csv) ← we focus on this\nBinary files\nDatabases (SQL)"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#the-console-io-you-already-know",
+    "href": "cosc130/slides/15.html#the-console-io-you-already-know",
+    "title": "Java File I/O & Persistence",
+    "section": "The Console I/O You Already Know",
+    "text": "The Console I/O You Already Know\nBefore diving into files, recall how you handled console I/O in CS1:\nimport java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        // READING from the keyboard\n        Scanner sc = new Scanner(System.in);\n        String name = sc.nextLine();\n        int age = sc.nextInt();\n        \n        // WRITING to the console\n        System.out.println(\"Hello, \" + name);\n        System.out.printf(\"Age: %d%n\", age);\n    }\n}"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#the-console-io-you-already-know-1",
+    "href": "cosc130/slides/15.html#the-console-io-you-already-know-1",
+    "title": "Java File I/O & Persistence",
+    "section": "The Console I/O You Already Know",
+    "text": "The Console I/O You Already Know\nThe key insight for this whole unit:\n\nFile I/O works exactly the same way — you just swap the source and destination.\n\nConsole:  Scanner(System.in)      →  read from keyboard\nFile:     Scanner(new File(...))  →  read from file\n\nConsole:  System.out.println()    →  write to screen\nFile:     PrintWriter.println()   →  write to file\nSame methods. Different destination. That’s it."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#the-file-class",
+    "href": "cosc130/slides/15.html#the-file-class",
+    "title": "Java File I/O & Persistence",
+    "section": "The File Class",
+    "text": "The File Class\nBefore reading or writing, it’s useful to know about the File class. A File object represents a path — it doesn’t open or read the file, it just describes where it is.\nimport java.io.File;\n\n// in the main method ..\nFile f = new File(\"students.csv\");\nThink of it like a sticky note with a file path written on it. It doesn’t touch the file — it just holds the address."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#useful-file-methods",
+    "href": "cosc130/slides/15.html#useful-file-methods",
+    "title": "Java File I/O & Persistence",
+    "section": "Useful File Methods",
+    "text": "Useful File Methods\nFile f = new File(\"students.csv\");\n\n\n\n\n\n\n\n\nMethod\nReturns\nWhat it does\n\n\n\n\nf.exists()\nboolean\nDoes the file exist?\n\n\nf.getName()\nString\nJust the filename: \"students.csv\"\n\n\nf.getPath()\nString\nThe path you gave it: \"students.csv\"\n\n\nf.getAbsolutePath()\nString\nFull path: \"/home/user/project/students.csv\"\n\n\nf.length()\nlong\nFile size in bytes\n\n\nf.isFile()\nboolean\nIs it a file (not a directory)?\n\n\nf.isDirectory()\nboolean\nIs it a folder?\n\n\nf.delete()\nboolean\nDeletes the file, returns true if successful\n\n\nf.createNewFile()\nboolean\nCreates an empty file if it doesn’t exist\n\n\nf.listFiles()\nFile[]\nIf it’s a directory, returns its contents"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#file-in-action-defensive-file-handling",
+    "href": "cosc130/slides/15.html#file-in-action-defensive-file-handling",
+    "title": "Java File I/O & Persistence",
+    "section": "File in Action — Defensive File Handling",
+    "text": "File in Action — Defensive File Handling\nThe most practical use of File is checking before you act:\nimport java.io.File;\nimport java.util.Scanner;\nimport java.io.FileNotFoundException;\n\npublic class SafeRead {\n    public static void main(String[] args) {\n        File f = new File(\"students.csv\");\n\n        if (!f.exists()) {\n            System.out.println(\"File not found: \" + f.getAbsolutePath());\n            return;                           // exit early, nothing to read\n        }\n\n        System.out.println(\"Reading: \" + f.getName());\n        System.out.println(\"Size: \" + f.length() + \" bytes\");\n\n        // Code to read the file\n    }\n}"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#file-working-with-directories",
+    "href": "cosc130/slides/15.html#file-working-with-directories",
+    "title": "Java File I/O & Persistence",
+    "section": "File — Working with Directories",
+    "text": "File — Working with Directories\nFile works on folders too, which is handy for listing or organizing files:\nimport java.io.File;\n\npublic class DirectoryExample {\n    public static void main(String[] args) {\n        File dir = new File(\"data\");           // a folder named \"data\"\n\n        if (!dir.exists()) {\n            dir.mkdir();                       // create the folder\n            System.out.println(\"Created folder: \" + dir.getAbsolutePath());\n        }\n\n        // Create a file inside the folder\n        File f = new File(\"data/students.csv\");\n        System.out.println(\"Will write to: \" + f.getAbsolutePath());\n\n        // List all files in a directory\n        File[] files = dir.listFiles();\n        if (files != null) {\n            for (File file : files) {\n                System.out.println(file.getName() + \" — \" + file.length() + \" bytes\");\n            }\n        }\n    }\n}"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#reading-a-file-with-scanner",
+    "href": "cosc130/slides/15.html#reading-a-file-with-scanner",
+    "title": "Java File I/O & Persistence",
+    "section": "Reading a File with Scanner",
+    "text": "Reading a File with Scanner\nYou already know Scanner. To read a file, just swap System.in for a File object:\nimport java.util.Scanner;\nimport java.io.File;\nimport java.io.FileNotFoundException;\n\npublic class ReadWithScanner {\n    public static void main(String[] args) {\n        try (Scanner sc = new Scanner(new File(\"hello.txt\"))) {\n\n            while (sc.hasNextLine()) {\n                String line = sc.nextLine();\n                System.out.println(line);\n            }\n\n        } catch (FileNotFoundException e) {\n            System.out.println(\"File not found: \" + e.getMessage());\n        }\n    }\n}\n\nThe only new things here:\n\nnew File(\"hello.txt\") — points Scanner at a file instead of the keyboard\nNotice the try statement - this is the recommended way for opening files.\nFileNotFoundException — thrown if the file doesn’t exist\nhasNextLine() — returns true as long as there are more lines (just like checking for more keyboard input)"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#writing-a-file-with-printwriter",
+    "href": "cosc130/slides/15.html#writing-a-file-with-printwriter",
+    "title": "Java File I/O & Persistence",
+    "section": "Writing a File with PrintWriter",
+    "text": "Writing a File with PrintWriter\nPrintWriter directly opens a file andgives you the exact same println() and printf() methods as System.out:\nimport java.io.PrintWriter;\nimport java.io.FileWriter;\nimport java.io.IOException;\n\npublic class WriteWithPrintWriter {\n    public static void main(String[] args) {\n        try (PrintWriter pw = new PrintWriter(\"hello.txt\")) {\n\n            pw.println(\"Hello, World!\");\n            pw.println(\"This is line 2.\");\n            pw.printf(\"Pi is approximately %.4f%n\", Math.PI);\n\n        } catch (IOException e) {\n            System.out.println(\"Error writing file: \" + e.getMessage());\n        }\n    }\n}"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#the-symmetry-console-vs.-file-io",
+    "href": "cosc130/slides/15.html#the-symmetry-console-vs.-file-io",
+    "title": "Java File I/O & Persistence",
+    "section": "The Symmetry — Console vs. File I/O",
+    "text": "The Symmetry — Console vs. File I/O\nThis is worth pausing on. The pattern is completely symmetric:\n\n\n\n\n\n\n\n\n\nReading\nWriting\n\n\n\n\nConsole (CS1)\nScanner(System.in)\nSystem.out.println()\n\n\nFile (CS2)\nScanner(new File(...))\nPrintWriter(...); PrintWriter.println()\n\n\nnextLine()\n✅ works the same\n—\n\n\nprintln()\n—\n✅ works the same\n\n\nprintf()\n—\n✅ works the same\n\n\nhasNextLine()\n✅ works the same\n—\n\n\n\nYou are not learning a new skill. You are redirecting a skill you already have toward a file instead of the console."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#append-vs.-overwrite",
+    "href": "cosc130/slides/15.html#append-vs.-overwrite",
+    "title": "Java File I/O & Persistence",
+    "section": "Append vs. Overwrite",
+    "text": "Append vs. Overwrite\n\nBy default, PrintWriter overwrites the file every time it opens it.\nTo add to an existing file instead, we need a bit more work. We need to use a FileWriter in append mode:\n\n\n// OVERWRITE — file starts fresh each time (default)\nPrintWriter pw = new PrintWriter(new FileWriter(\"log.txt\"));\n\n// APPEND — the true flag makes sure new content is added to the end\nPrintWriter pw = new PrintWriter(new FileWriter(\"log.txt\", true));\n\n\nExample — building a log file:\npublic static void log(String message) throws IOException {\n    try (PrintWriter pw = new PrintWriter(new FileWriter(\"log.txt\", true))) {\n        pw.println(message);\n    }\n}\nCall log(\"User logged in\") repeatedly and each message is added to the end without erasing previous ones."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#csv-files",
+    "href": "cosc130/slides/15.html#csv-files",
+    "title": "Java File I/O & Persistence",
+    "section": "CSV Files",
+    "text": "CSV Files\nCSV = Comma-Separated Values\nA plain text file where each line is a record, and fields are separated by commas.\nname,age,major\nAlice,20,Computer Science\nBob,22,Mathematics\nCarol,21,Physics\n\nLine 1 is usually a header row (column names)\nEach subsequent line is one data record\nCommas separate the fields within each record\n\nCSV is one of the most universal data formats — Excel, Google Sheets, databases, and virtually every programming language can read and write it."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#writing-a-csv-with-printwriter",
+    "href": "cosc130/slides/15.html#writing-a-csv-with-printwriter",
+    "title": "Java File I/O & Persistence",
+    "section": "Writing a CSV with PrintWriter",
+    "text": "Writing a CSV with PrintWriter\nimport java.io.*;\nimport java.util.ArrayList;\n\npublic class WriteCSV {\n    public static void main(String[] args) {\n        ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();\n        names.add(\"Alice\");\n        names.add(\"Bob\");\n        names.add(\"Carol\");\n\n        try (PrintWriter pw = new PrintWriter(new FileWriter(\"names.csv\"))) {\n            pw.println(\"name\"); // header row\n            for (String name : names)\n                pw.println(name);\n\n        } catch (IOException e) {\n            System.out.println(\"Error: \" + e.getMessage());\n        }\n\n        System.out.println(\"names.csv written!\");\n    }\n}\nResult — names.csv:\nname\nAlice\nBob\nCarol"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#reading-a-csv-with-scanner",
+    "href": "cosc130/slides/15.html#reading-a-csv-with-scanner",
+    "title": "Java File I/O & Persistence",
+    "section": "Reading a CSV with Scanner",
+    "text": "Reading a CSV with Scanner\nimport java.util.Scanner;\nimport java.io.File;\nimport java.io.FileNotFoundException;\nimport java.util.ArrayList;\n\npublic class ReadCSV {\n    public static void main(String[] args) {\n        ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();\n\n        try (Scanner sc = new Scanner(new File(\"names.csv\"))) {\n            sc.nextLine();                        // skip header row\n\n            while (sc.hasNextLine()) {\n                String line = sc.nextLine();\n                names.add(line.trim());\n            }\n\n        } catch (FileNotFoundException e) {\n            System.out.println(\"File not found: \" + e.getMessage());\n        }\n\n        System.out.println(\"Loaded: \" + names);\n    }\n}\nOutput:\nLoaded: [Alice, Bob, Carol]\nKey detail: We call nextLine() once before the loop to consume and skip the header line, then loop through the rest."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#writing-objects-to-csv",
+    "href": "cosc130/slides/15.html#writing-objects-to-csv",
+    "title": "Java File I/O & Persistence",
+    "section": "Writing Objects to CSV",
+    "text": "Writing Objects to CSV\nHere’s a Student class we’ll use for the next several examples:\npublic class Student {\n    private String name;\n    private int age;\n    private double gpa;\n\n    public Student(String name, int age, double gpa) {\n        this.name = name;\n        this.age = age;\n        this.gpa = gpa;\n    }\n\n    public String getName() { return name; }\n    public int getAge()     { return age; }\n    public double getGpa()  { return gpa; }\n\n    // Converts this object to a CSV line: \"Alice,20,3.8\"\n    public String toCSV() {\n        return name + \",\" + age + \",\" + gpa;\n    }\n\n    @Override\n    public String toString() {\n        return name + \" (age \" + age + \", GPA \" + gpa + \")\";\n    }\n}\nThe toCSV() method is the key — it converts a Student object into a single CSV-formatted line."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#writing-an-arraylist-of-objects-to-csv",
+    "href": "cosc130/slides/15.html#writing-an-arraylist-of-objects-to-csv",
+    "title": "Java File I/O & Persistence",
+    "section": "Writing an ArrayList of Objects to CSV",
+    "text": "Writing an ArrayList of Objects to CSV\nimport java.io.*;\nimport java.util.ArrayList;\n\npublic class WriteStudents {\n    public static void main(String[] args) {\n        ArrayList&lt;Student&gt; students = new ArrayList&lt;&gt;();\n        students.add(new Student(\"Alice\", 20, 3.8));\n        students.add(new Student(\"Bob\",   22, 3.2));\n        students.add(new Student(\"Carol\", 21, 3.9));\n\n        try (PrintWriter pw = new PrintWriter(new FileWriter(\"students.csv\"))) {\n            pw.println(\"name,age,gpa\");           // header\n\n            for (Student s : students) {\n                pw.println(s.toCSV());            // \"Alice,20,3.8\"\n            }\n\n        } catch (IOException e) {\n            System.out.println(\"Error writing: \" + e.getMessage());\n        }\n\n        System.out.println(\"students.csv written!\");\n    }\n}\nResult — students.csv:\nname,age,gpa\nAlice,20,3.8\nBob,22,3.2\nCarol,21,3.9"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#parsing-a-csv-line-with-split",
+    "href": "cosc130/slides/15.html#parsing-a-csv-line-with-split",
+    "title": "Java File I/O & Persistence",
+    "section": "Parsing a CSV Line with split()",
+    "text": "Parsing a CSV Line with split()\nBefore reading objects back, we need to understand split():\nString line = \"Alice,20,3.8\";\nString[] parts = line.split(\",\");\n\nSystem.out.println(parts[0]);  // Alice\nSystem.out.println(parts[1]);  // 20\nSystem.out.println(parts[2]);  // 3.8\nsplit(\",\") breaks a string into an array at every comma.\nType conversion — everything in a CSV is text, so convert back manually:\nString name  = parts[0];\nint    age   = Integer.parseInt(parts[1]);    // String → int\ndouble gpa   = Double.parseDouble(parts[2]);  // String → double"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#reading-a-csv-back-into-an-arraylist-of-objects",
+    "href": "cosc130/slides/15.html#reading-a-csv-back-into-an-arraylist-of-objects",
+    "title": "Java File I/O & Persistence",
+    "section": "Reading a CSV Back Into an ArrayList of Objects",
+    "text": "Reading a CSV Back Into an ArrayList of Objects\nimport java.util.Scanner;\nimport java.io.File;\nimport java.io.FileNotFoundException;\nimport java.util.ArrayList;\n\npublic class ReadStudents {\n    public static void main(String[] args) {\n        ArrayList&lt;Student&gt; students = new ArrayList&lt;&gt;();\n\n        try (Scanner sc = new Scanner(new File(\"students.csv\"))) {\n            sc.nextLine();                        // skip header\n\n            while (sc.hasNextLine()) {\n                String line = sc.nextLine();\n                String[] parts = line.split(\",\");\n\n                String name = parts[0];\n                int    age  = Integer.parseInt(parts[1]);\n                double gpa  = Double.parseDouble(parts[2]);\n\n                students.add(new Student(name, age, gpa));\n            }\n\n        } catch (FileNotFoundException e) {\n            System.out.println(\"Error reading: \" + e.getMessage());\n        }\n\n        for (Student s : students) {\n            System.out.println(s);\n        }\n    }\n}\nOutput:\nAlice (age 20, GPA 3.8)\nBob (age 22, GPA 3.2)\nCarol (age 21, GPA 3.9)"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#putting-it-all-together-a-rudimentary-database",
+    "href": "cosc130/slides/15.html#putting-it-all-together-a-rudimentary-database",
+    "title": "Java File I/O & Persistence",
+    "section": "Putting It All Together — A Rudimentary Database",
+    "text": "Putting It All Together — A Rudimentary Database\nHere’s what we just built:\n┌─────────────────────────────────────────────────────────┐\n│                    Your Java Program                    │\n│                                                         │\n│  ArrayList&lt;Student&gt;  ──── write ────▶  students.csv     │\n│                                            │            │\n│  ArrayList&lt;Student&gt;  ◀─── read  ────       │            │\n│       (rebuilt)                       (persisted)       │\n└─────────────────────────────────────────────────────────┘\nThis is exactly how simple databases work:\n\nSave state → serialize objects to a file\nLoad state → deserialize the file back into objects\nThe file outlives the program → your data is persistent\n\nReal databases (MySQL, SQLite) do the same thing under the hood — they just do it faster, with more features, and with proper querying support."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#common-errors-how-to-fix-them",
+    "href": "cosc130/slides/15.html#common-errors-how-to-fix-them",
+    "title": "Java File I/O & Persistence",
+    "section": "Common Errors & How to Fix Them",
+    "text": "Common Errors & How to Fix Them\n\n\n\n\n\n\n\n\nError\nCause\nFix\n\n\n\n\nFileNotFoundException\nFile path doesn’t exist when reading\nCheck the filename; use f.exists() first\n\n\nIOException\nGeneral I/O failure\nWrap in try-catch, check disk space\n\n\nArrayIndexOutOfBoundsException in split()\nLine has fewer commas than expected\nCheck for blank lines or malformed rows\n\n\nNumberFormatException\nparseInt() on a non-numeric string\nVerify column order; check for spaces with trim()\n\n\nFile is empty after writing\nForgot to call .close()\nUse try-with-resources\n\n\nNew data overwrites old data\nDefault FileWriter overwrites\nPass true for append mode"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#quick-reference-file-io-cheat-sheet",
+    "href": "cosc130/slides/15.html#quick-reference-file-io-cheat-sheet",
+    "title": "Java File I/O & Persistence",
+    "section": "Quick Reference — File I/O Cheat Sheet",
+    "text": "Quick Reference — File I/O Cheat Sheet\nThe File class:\nFile f = new File(\"students.csv\");\nf.exists();           // does it exist?\nf.getName();          // \"students.csv\"\nf.getAbsolutePath();  // full path on disk\nf.length();           // size in bytes\nf.delete();           // delete the file\nWrite to a file (PrintWriter):\ntry (PrintWriter pw = new PrintWriter(new FileWriter(\"file.csv\"))) {\n    pw.println(\"header1,header2\");\n    pw.println(\"value1,value2\");\n}\nRead from a file (Scanner):\ntry (Scanner sc = new Scanner(new File(\"file.csv\"))) {\n    sc.nextLine(); // skip header\n    while (sc.hasNextLine()) {\n        String[] parts = sc.nextLine().split(\",\");\n        // use parts[0], parts[1], ...\n    }\n}\nRead from a file (BufferedReader):\ntry (BufferedReader reader = new BufferedReader(new FileReader(\"file.csv\"))) {\n    reader.readLine(); // skip header\n    String line;\n    while ((line = reader.readLine()) != null) {\n        String[] parts = line.split(\",\");\n        // use parts[0], parts[1], ...\n    }\n}\nConvert types from String:\nint    n = Integer.parseInt(\"42\");\ndouble d = Double.parseDouble(\"3.14\");"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#summary",
+    "href": "cosc130/slides/15.html#summary",
+    "title": "Java File I/O & Persistence",
+    "section": "Summary",
+    "text": "Summary\n\nPersistence means saving data beyond a program’s lifetime\nThe File class represents a file path and lets you check existence, get metadata, and manage files before opening them\nFile I/O is just console I/O redirected to a file — the same Scanner and PrintWriter methods apply\nUse PrintWriter + FileWriter to write — same println() and printf() you already know\nUse Scanner + new File(...) to read — same nextLine() and hasNextLine() you already know\nAlways use try-with-resources so files close automatically\nCSV stores objects as comma-separated lines of text — add a toCSV() method to your class\nUse split(\",\") and type conversion to rebuild objects when reading\nBufferedReader is faster for large files and common in professional code — same concept, slightly different syntax\nThis read/write cycle forms a rudimentary persistent database"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#part-1-the-student-class",
+    "href": "cosc130/slides/15.html#part-1-the-student-class",
+    "title": "Java File I/O & Persistence",
+    "section": "Part 1 — The Student Class",
+    "text": "Part 1 — The Student Class\nCreate a Student class with the following fields:\n\n\n\nField\nType\n\n\n\n\nname\nString\n\n\nid\nint\n\n\nmajor\nString\n\n\ngpa\ndouble\n\n\n\nTasks:\n\nWrite the constructor, getters, and a toString() method.\nWrite a toCSV() method that returns a string in the format:\nname,id,major,gpa\nExample output for one student: Alice,1001,CS,3.85"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#part-2-write-to-csv",
+    "href": "cosc130/slides/15.html#part-2-write-to-csv",
+    "title": "Java File I/O & Persistence",
+    "section": "Part 2 — Write to CSV",
+    "text": "Part 2 — Write to CSV\nWrite a method with this signature:\npublic static void saveStudents(ArrayList&lt;Student&gt; students, String filename) throws IOException\nThis method should:\n\nOpen filename for writing using PrintWriter and FileWriter\nWrite a header row: name,id,major,gpa\nLoop through the ArrayList and write each student using toCSV()\nUse try-with-resources so the file closes automatically\n\nTest it by creating at least 4 students, calling saveStudents(), and opening the resulting CSV in a text editor to verify it looks correct."
+  },
+  {
+    "objectID": "cosc130/slides/15.html#part-3-read-from-csv",
+    "href": "cosc130/slides/15.html#part-3-read-from-csv",
+    "title": "Java File I/O & Persistence",
+    "section": "Part 3 — Read From CSV",
+    "text": "Part 3 — Read From CSV\nWrite a method with this signature:\npublic static ArrayList&lt;Student&gt; loadStudents(String filename) throws FileNotFoundException\nThis method should:\n\nCreate an empty ArrayList&lt;Student&gt;\nUse File and f.exists() to check the file exists before opening — print a message and return the empty list if it doesn’t\nOpen the file for reading using Scanner and new File(...)\nSkip the header line with one call to nextLine()\nRead each remaining line, split by comma, parse each field to the correct type, and construct a Student object\nAdd each Student to the ArrayList and return it"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#part-4-test-your-database",
+    "href": "cosc130/slides/15.html#part-4-test-your-database",
+    "title": "Java File I/O & Persistence",
+    "section": "Part 4 — Test Your Database",
+    "text": "Part 4 — Test Your Database\nIn main():\n// 1. Create your students\nArrayList&lt;Student&gt; roster = new ArrayList&lt;&gt;();\n// ... add at least 4 students ...\n\n// 2. Save to file\nsaveStudents(roster, \"students.csv\");\nSystem.out.println(\"Saved \" + roster.size() + \" students.\");\n\n// 3. Load back into a NEW list (proving the file works)\nArrayList&lt;Student&gt; loaded = loadStudents(\"students.csv\");\nSystem.out.println(\"Loaded \" + loaded.size() + \" students:\");\n\nfor (Student s : loaded) {\n    System.out.println(s);\n}\n\n// 4. Verify the round-trip worked\nSystem.out.println(\"Round-trip success: \" + (roster.size() == loaded.size()));\nExpected output:\nSaved 4 students.\nLoaded 4 students:\nAlice (ID: 1001, Major: CS, GPA: 3.85)\nBob (ID: 1002, Major: Math, GPA: 3.2)\nCarol (ID: 1003, Major: Physics, GPA: 3.7)\nDan (ID: 1004, Major: CS, GPA: 2.9)\nRound-trip success: true"
+  },
+  {
+    "objectID": "cosc130/slides/15.html#challenge-extensions",
+    "href": "cosc130/slides/15.html#challenge-extensions",
+    "title": "Java File I/O & Persistence",
+    "section": "Challenge Extensions",
+    "text": "Challenge Extensions\n\nAdd a student from user input — use Scanner(System.in) to prompt for a new student’s details, append them to the CSV using append mode (new FileWriter(\"students.csv\", true)), then reload and print the full list.\nSearch the database — after loading, write a method that takes a String major and returns an ArrayList&lt;Student&gt; of only students in that major.\nSort before saving — use Collections.sort() with a Comparator to sort students by GPA (descending) before writing the CSV.\nHandle bad data — add a try-catch inside your loadStudents() loop so that one malformed line doesn’t crash the whole load. Print a warning and skip the bad line instead.\nUse the File class — before saving, use File to check if students.csv already exists. If it does, print how many bytes the old file was before overwriting it."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "Welcome! This site contains all the lecture notes, slides, and resources for my courses.\n\n\nYou can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS\n\n\n\n\nIf you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard.\n\n\n\nThis site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+  },
+  {
+    "objectID": "index.html#how-to-navigate",
+    "href": "index.html#how-to-navigate",
+    "title": "Home",
+    "section": "",
+    "text": "You can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS"
+  },
+  {
+    "objectID": "index.html#searching-for-topics",
+    "href": "index.html#searching-for-topics",
+    "title": "Home",
+    "section": "",
+    "text": "If you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard."
+  },
+  {
+    "objectID": "index.html#accessibility-note",
+    "href": "index.html#accessibility-note",
+    "title": "Home",
+    "section": "",
+    "text": "This site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+  }
+]

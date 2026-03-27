@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code:wght@300..700&display=swap');
+
+:root {
+  /* Core Colors */
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --heading-color: #007a78;
+  --link-color: #003b49;
+  --link-hover: #8b7c69;
+  --primary-accent: #1d4289;   /* Bold */
+  --secondary-accent: #d3273e; /* Italic/Bullets */
+
+  /* Typography */
+  --main-font: 'Atkinson Hyperlegible', sans-serif;
+  --code-font: 'Fira Code', monospace;
+}
+
+/* --- Global Styles (Applies to Webpages AND Slides) --- */
+body, .reveal {
+  font-family: var(--main-font);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+h1, h2, h3, h4, 
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  color: var(--heading-color);
+  font-family: var(--main-font);
+  font-weight: bold;
+  text-transform: none;
+}
+
+a { color: var(--link-color); text-decoration: underline; }
+a:hover { color: var(--link-hover); }
+
+strong, b { color: var(--primary-accent); }
+em, i { color: var(--secondary-accent); }
+
+/* --- List Styling --- */
+ul li::marker { color: var(--secondary-accent); }
+ul ul li::marker { color: var(--primary-accent); content: '\2012\ '; }
+
+/* --- Code Blocks --- */
+code {
+  font-family: var(--code-font) !important;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Specific container for Quarto code blocks */
+div.sourceCode, .reveal div.sourceCode {
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 4px solid var(--heading-color);
+  margin: 1em 0;
+}
+
+/* --- Reveal.js Specific Overrides --- */
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  text-align: left;
+}
+
+/* Ensure the navbar doesn't overlap Reveal slides if using headers */
+.reveal h1 { font-size: 2.5em; }

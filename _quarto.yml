@@ -1,0 +1,27 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Class Notes - Sayan"
+  navbar:
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Courses"
+        menu:
+          - href: cosc130/index.qmd
+            text: "Introduction to Computer Science II"
+          - href: cosc445/index.qmd
+            text: "Design and Analysis of Algorithms"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+  revealjs:
+    theme: simple
+    css: styles.css
+    self-contained: true # Useful if sharing single files
