@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Class Notes - Sayan"
+  title: "Class Notes"
   navbar:
     background: primary
     left:
@@ -23,5 +23,6 @@ format:
     toc: true
   revealjs:
     theme: simple
-    css: styles.css
+    css: custom.css
+    font-size: 1.1em
     self-contained: true # Useful if sharing single files
