@@ -19,7 +19,7 @@ format:
 - **Email:** [sgoswami@smcm.edu](mailto:sgoswami@smcm.edu)
 - **Textbook:** None required
 - **Prerequisites:** *COSC 120*
-- 
+
 ## Course Goals
 
 This course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs. 
