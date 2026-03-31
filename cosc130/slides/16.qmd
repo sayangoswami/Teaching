@@ -218,6 +218,125 @@ public void onCreate() {
 :::
 :::
 
+---
+
+### Components
+
+**What is a Component?**
+
+Every UI element in `ezui`—whether it's a **Button**, a **TextBox**, or an **Icon**—is a **Component**. Think of "Component" as the DNA that all widgets share. 
+
+Because of this shared DNA, you can interact with any widget using the same simple methods.
+
+**The Interaction Superpowers:**
+
+1.  **`onClick(Runnable action)`**: Runs code when the user clicks the component.
+2.  **`onHover(Runnable action)`**: Runs code when the user's mouse moves over the component.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+**Example: Making an Icon Interactive**
+
+Usually, icons are just for decoration. But in `ezui`, because an `Icon` is a **Component**, you can make it act like a button!
+
+```java
+Icon helpIcon = new Icon("question-circle");
+
+// Add a click action to an icon!
+helpIcon.onClick(() -> {
+    System.out.println("User needs help!");
+});
+
+// Add a hover effect
+helpIcon.onHover(() -> {
+    helpIcon.setColor("Primary"); // Change color when mouse is over it
+});
+
+root.add(helpIcon, 0, 1, Alignment.RIGHT);
+```
+:::
+::: {.fragment .fade-in-then-out}
+**Why This Matters:**
+
+* **Consistency**: You don't have to remember if a widget uses an `ActionListener` or a `MouseListener`. You just use `onClick`.
+* **Flexibility**: Want a piece of **Text** to be clickable like a link? Just call `text.onClick(...)`. 
+* **Uniformity**: Every component handles its own margins, padding, and basic styling, so your app always looks "correct" regardless of which widget you use.
+:::
+:::
+
+---
+
+### Slide 6.1 — The `Runnable` Interface: "A Task in a Box"
+
+**What is a Task?**
+
+Usually, when you write `System.out.println("Hello")`, it runs **immediately**. But in a UI, we need to save that code and run it **later**—only when a user clicks a button.
+
+To do this, Java uses the `Runnable` interface. Think of it as a "Contract" that says: *"I promise to provide a `run()` method."*
+
+**The Formal Way (The Class)**
+
+You create a separate class that "implements" the task you want to perform.
+
+```java
+// 1. Define the Task
+public class PrintTask implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("The button was clicked!");
+    }
+}
+
+// 2. Use it in your Page
+PrintTask myTask = new PrintTask();
+myButton.onClick(myTask); // Give the "box" to the button
+```
+
+---
+
+
+### Slide 6.2 — Introducing Lambdas: "The Professional Shortcut"
+
+**Why use a Shortcut?**
+Creating a whole new file/class just to print one line of text is a lot of work. Java created **Lambdas** as a way to write that `run()` method directly inside your `onClick`.
+
+**How the Transformation Happens:**
+The computer is smart. It knows `onClick` needs a `Runnable`. It knows `Runnable` only has one method (`run`). So, we can delete all the "labels" and just keep the "logic."
+
+**From Class to Lambda:**
+1.  **Start:** `public void run() { System.out.println("Hi"); }`
+2.  **Remove the header:** `() -> { System.out.println("Hi"); }`
+
+**The Lambda Syntax:**
+* `()` : The empty parentheses represent the `run()` method's parameters.
+* `->` : The "Arrow" points to the code you want to execute.
+* `{ }` : The "Body" contains your instructions.
+
+```java
+// The ezui way! No extra classes needed.
+myButton.onClick(() -> {
+    System.out.println("This runs inside a Lambda!");
+});
+```
+
+---
+
+### Slide 6.3 — Lambda Rules of Thumb
+
+**When to use which?**
+* **Use a Lambda** for short, simple tasks (like opening a new page or printing a message).
+* **Use a Formal Class** if your task is 50+ lines of code or needs to be reused in 10 different places.
+
+**The "Brace" Rule:**
+* **One line of code?** You can skip the `{ }`.
+    `btn.onClick(() -> System.out.println("Fast!"));`
+* **Multiple lines of code?** You **must** use `{ }`.
+    ```java
+    btn.onClick(() -> {
+        System.out.println("Line 1");
+        System.out.println("Line 2");
+    });
+    ```
 
 
 
@@ -440,3 +559,5 @@ Control your layout precisely.
     
 
 **Happy Coding with `ezui`!**
+
+

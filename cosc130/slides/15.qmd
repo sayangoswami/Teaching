@@ -179,6 +179,8 @@ students.csv — 64 bytes
 
 ## Reading a File with Scanner {.scrollable}
 
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
 You already know `Scanner`. To read a file, just swap `System.in` for a `File` object:
 
 ```{.java code-line-numbers="|1-3|7,14-16|9-12|"}
@@ -201,15 +203,15 @@ public class ReadWithScanner {
     }
 }
 ```
-
-::: {.fragment}
-
+:::
+::: {.fragment .fade-in-then-out}
 **The only new things here:**
 
 - `new File("hello.txt")` — points Scanner at a file instead of the keyboard
 - Notice the `try` statement - this is the recommended way for opening files.
 - `FileNotFoundException` — thrown if the file doesn't exist
 - `hasNextLine()` — returns `true` as long as there are more lines (just like checking for more keyboard input)
+:::
 :::
 
 ---

@@ -390,6 +390,8 @@ students.csv — 64 bytes
 </section>
 <section id="reading-a-file-with-scanner" class="slide level2 scrollable">
 <h2>Reading a File with Scanner</h2>
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
 <p>You already know <code>Scanner</code>. To read a file, just swap <code>System.in</code> for a <code>File</code> object:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="|1-3|7,14-16|9-12|"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb8-1"><a></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Scanner</span><span class="op">;</span></span>
 <span id="cb8-2"><a></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">File</span><span class="op">;</span></span>
@@ -409,7 +411,8 @@ students.csv — 64 bytes
 <span id="cb8-16"><a></a>        <span class="op">}</span></span>
 <span id="cb8-17"><a></a>    <span class="op">}</span></span>
 <span id="cb8-18"><a></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
+</div>
+<div class="fragment fade-in-then-out">
 <p><strong>The only new things here:</strong></p>
 <ul>
 <li><code>new File("hello.txt")</code> — points Scanner at a file instead of the keyboard</li>
@@ -417,6 +420,7 @@ students.csv — 64 bytes
 <li><code>FileNotFoundException</code> — thrown if the file doesn’t exist</li>
 <li><code>hasNextLine()</code> — returns <code>true</code> as long as there are more lines (just like checking for more keyboard input)</li>
 </ul>
+</div>
 </div>
 </section>
 <section id="writing-a-file-with-printwriter" class="slide level2 scrollable">
