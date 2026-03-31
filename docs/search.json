@@ -112,74 +112,18 @@
     "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
   },
   {
-    "objectID": "cosc130/slides/14.html#introduction-to-exceptions",
-    "href": "cosc130/slides/14.html#introduction-to-exceptions",
-    "title": "Introduction to Exceptions",
-    "section": "Introduction to Exceptions",
-    "text": "Introduction to Exceptions\n\nWhat is an Exception? An event that occurs during the execution of a program that disrupts the normal flow of instructions.\nThe Philosophy: In CS1, we assume everything works. In CS2, we assume things will break.\n\nExceptions allow us to separate “Error-Handling Code” from “Regular Logic.”\n\nTerminology:\n\nThrowing: When an error occurs, the JVM creates an Exception Object and “throws” it.\nCatching: If you have a handler ready, you “catch” the object and deal with it.\nCrashing: If no one catches the exception, the program terminates (the “Stack Trace” of death)."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#the-exception-hierarchy-visual-map",
-    "href": "cosc130/slides/14.html#the-exception-hierarchy-visual-map",
-    "title": "Introduction to Exceptions",
-    "section": "The Exception Hierarchy (Visual Map)",
-    "text": "The Exception Hierarchy (Visual Map)\n\nThrowable: The parent of all things that can be thrown.\n\nError: Serious problems that a reasonable application should not try to catch (e.g., StackOverflowError, OutOfMemoryError). These are system-level failures.\nException: The class we focus on.\n\nRuntimeException (Unchecked): Usually caused by programmer logic errors. (e.g., NullPointerException, IndexOutOfBoundsException).\nIO/Other (Checked): Caused by external factors. Java forces you to acknowledge these."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#checked-vs.-unchecked-exceptions",
-    "href": "cosc130/slides/14.html#checked-vs.-unchecked-exceptions",
-    "title": "Introduction to Exceptions",
-    "section": "Checked vs. Unchecked Exceptions",
-    "text": "Checked vs. Unchecked Exceptions\n\n\n\n\n\n\n\n\nFeature\nUnchecked (RuntimeException)\nChecked (Exception)\n\n\n\n\nCause\nBad logic (e.g., dividing by zero).\nExternal environment (e.g., file missing).\n\n\nCompiler\nDoes not check. Program runs until it hits the error.\nMandatory. The code won’t compile unless handled.\n\n\nExample\nNullPointerException\nIOException, SQLException\n\n\nSolution\nFix your logic (use an if statement).\nUse a try-catch or throws."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#the-try-catch-finally-mechanism",
-    "href": "cosc130/slides/14.html#the-try-catch-finally-mechanism",
-    "title": "Introduction to Exceptions",
-    "section": "The Try-Catch-Finally Mechanism",
-    "text": "The Try-Catch-Finally Mechanism\n\nTry: Contains the “Risky Code.” If an exception occurs here, the JVM stops executing the rest of the try block and jumps immediately to the catch.\nCatch: Defines the type of exception you are looking for. You can have multiple catch blocks for different errors.\nFinally: Code that must run, whether an exception happened or not. Used for “cleanup” (like closing a database connection or a file).\n\nNote: Even if there is a return statement in the try, the finally block still executes before the method finishes!"
-  },
-  {
-    "objectID": "cosc130/slides/14.html#code-anatomy---handling-multiple-errors",
-    "href": "cosc130/slides/14.html#code-anatomy---handling-multiple-errors",
-    "title": "Introduction to Exceptions",
-    "section": "Code Anatomy - Handling Multiple Errors",
-    "text": "Code Anatomy - Handling Multiple Errors\ntry {\n    String input = scanner.nextLine();\n    int num = Integer.parseInt(input); // Potential NumberFormatException\n    System.out.println(10 / num);      // Potential ArithmeticException\n} catch (NumberFormatException e) {\n    System.out.println(\"Error: Please enter a valid integer.\");\n} catch (ArithmeticException e) {\n    System.out.println(\"Error: Cannot divide by zero.\");\n} catch (Exception e) {\n    System.out.println(\"Something else went wrong: \" + e.getMessage());\n} finally {\n    System.out.println(\"Cleanup code can go here.\");\n}\n\nPro-Tip: Always catch specific exceptions first. If you catch the general Exception class first, the more specific ones below it will never be reached."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#the-throws-keyword-passing-the-hot-potato",
-    "href": "cosc130/slides/14.html#the-throws-keyword-passing-the-hot-potato",
-    "title": "Introduction to Exceptions",
-    "section": "The “Throws” Keyword (Passing the Hot Potato)",
-    "text": "The “Throws” Keyword (Passing the Hot Potato)\n\nSometimes a method shouldn’t fix the error; it should just warn the caller that an error might happen.\nSyntax: public void readFile() throws IOException { ... }\nIf Method A calls Method B, and Method B throws an exception, Method A must either:\n\nWrap the call in a try-catch.\nAlso declare throws in its own header, passing the responsibility up the chain to the main method."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#defining-and-throwing-your-own-exceptions",
-    "href": "cosc130/slides/14.html#defining-and-throwing-your-own-exceptions",
-    "title": "Introduction to Exceptions",
-    "section": "Defining and Throwing Your Own Exceptions",
-    "text": "Defining and Throwing Your Own Exceptions\n\nYou don’t have to wait for the JVM to find an error. You can trigger one yourself to enforce rules.\nThe throw Keyword:\n\npublic void setAge(int age) {\n    if (age &lt; 0) {\n        throw new IllegalArgumentException(\"Age cannot be negative!\");\n    }\n    this.age = age;\n}\n\nThis is “Defensive Programming”—stopping bad data before it ruins your program’s state."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#best-practices-common-pitfalls",
-    "href": "cosc130/slides/14.html#best-practices-common-pitfalls",
-    "title": "Introduction to Exceptions",
-    "section": "Best Practices & Common Pitfalls",
-    "text": "Best Practices & Common Pitfalls\n\nDon’t Swallow Exceptions: Avoid catch(Exception e) {}. If you do this, your program fails silently, and you’ll spend hours debugging a problem you hid from yourself.\nUse getMessage(): Every exception object has a getMessage() method. Print it! It tells you exactly what went wrong.\nDon’t use Exceptions for Flow Control: Don’t use a try-catch to end a loop. Use standard if statements and boolean logic for normal behavior. Exceptions are for exceptional (unplanned) events."
-  },
-  {
-    "objectID": "cosc130/slides/14.html#exam-prep---what-is-the-output",
-    "href": "cosc130/slides/14.html#exam-prep---what-is-the-output",
-    "title": "Introduction to Exceptions",
-    "section": "Exam Prep - “What is the Output?”",
-    "text": "Exam Prep - “What is the Output?”\nQuestion: What prints if the user enters “0”?\ntry {\n    int x = 5 / Integer.parseInt(input);\n    System.out.println(\"A\");\n} catch (ArithmeticException e) {\n    System.out.println(\"B\");\n} finally {\n    System.out.println(\"C\");\n}\n\nAnswer: B then C. “A” is skipped because the error happens on the first line of the try."
-  },
-  {
     "objectID": "cosc130/index.html",
     "href": "cosc130/index.html",
     "title": "COSC130 - Introduction to Computer Science II",
     "section": "",
-    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: None required\nPrerequisites: COSC 120\n\n\nThis course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs.\n\n\nBy the end of this course, you will be able to:\n\nDesign and implement object-oriented programs in Java that integrate encapsulation, inheritance, polymorphism, and interfaces.\nAnalyze and debug Java programs to trace execution, identify errors, and improve correctness.\nEvaluate alternative design choices (e.g., composition vs inheritance, abstract classes vs interfaces) and justify trade-offs.\nCreate a medium-scale Java project that demonstrates sound object-oriented design principles.\n\n\n\n\nThe Engaged Learning component will emphasize teamwork in solving programming problems. Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center (240) 895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, a final exam, and a programming project. Most components will emphasize hands-on programming.\n\nHomework Assignments - Programming requires consistent practice, so you will complete several assignments throughout the semester. These involve coding on a laptop or desktop computer. You may use your own device, borrow a Chromebook from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or work on library desktop computers (Windows) available on the first and second floors. See the SMCM library computing page for details.\nQuizzes - Programming builds on many small concepts that fit together to form larger systems. To help you stay on track, there will be regular quizzes focused on these building blocks.\nMidterm Exam and Final Exam - These exams will assess your cumulative knowledge and problem-solving skills.\nProgramming Project - A larger-scale programming project will give you the opportunity to apply what you’ve learned in a more open-ended context.\n\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n15%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n25%\n\n\nProject\n15%\n\n\nFinal exam\n25%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nI will publish the grades on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: None required\nPrerequisites: COSC 120\n\n\n\nThis course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs.\n\n\n\nBy the end of this course, you will be able to:\n\nDesign and implement object-oriented programs in Java that integrate encapsulation, inheritance, polymorphism, and interfaces.\nAnalyze and debug Java programs to trace execution, identify errors, and improve correctness.\nEvaluate alternative design choices (e.g., composition vs inheritance, abstract classes vs interfaces) and justify trade-offs.\nCreate a medium-scale Java project that demonstrates sound object-oriented design principles.\n\n\n\n\nThe Engaged Learning component will emphasize teamwork in solving programming problems. Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center (240) 895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, a final exam, and a programming project. Most components will emphasize hands-on programming.\n\nHomework Assignments - Programming requires consistent practice, so you will complete several assignments throughout the semester. These involve coding on a laptop or desktop computer. You may use your own device, borrow a Chromebook from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or work on library desktop computers (Windows) available on the first and second floors. See the SMCM library computing page for details.\nQuizzes - Programming builds on many small concepts that fit together to form larger systems. To help you stay on track, there will be regular quizzes focused on these building blocks.\nMidterm Exam and Final Exam - These exams will assess your cumulative knowledge and problem-solving skills.\nProgramming Project - A larger-scale programming project will give you the opportunity to apply what you’ve learned in a more open-ended context.\n\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n15%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n25%\n\n\nProject\n15%\n\n\nFinal exam\n25%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nI will publish the grades on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+  },
+  {
+    "objectID": "cosc130/index.html#course-goals",
+    "href": "cosc130/index.html#course-goals",
+    "title": "COSC130 - Introduction to Computer Science II",
+    "section": "",
+    "text": "This course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs."
   },
   {
     "objectID": "cosc130/index.html#learning-outcomes",
@@ -278,6 +222,69 @@
     "title": "COSC130 - Introduction to Computer Science II",
     "section": "",
     "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+  },
+  {
+    "objectID": "cosc130/slides/16.html#section-1-the-structure",
+    "href": "cosc130/slides/16.html#section-1-the-structure",
+    "title": "ezui: The Modern Java UI Toolkit",
+    "section": "🟦 SECTION 1: THE STRUCTURE",
+    "text": "🟦 SECTION 1: THE STRUCTURE"
+  },
+  {
+    "objectID": "cosc130/slides/16.html#section-2-basic-inputs-widgets",
+    "href": "cosc130/slides/16.html#section-2-basic-inputs-widgets",
+    "title": "ezui: The Modern Java UI Toolkit",
+    "section": "🟧 SECTION 2: BASIC INPUTS & WIDGETS",
+    "text": "🟧 SECTION 2: BASIC INPUTS & WIDGETS"
+  },
+  {
+    "objectID": "cosc130/slides/16.html#section-3-selection-menus",
+    "href": "cosc130/slides/16.html#section-3-selection-menus",
+    "title": "ezui: The Modern Java UI Toolkit",
+    "section": "🟪 SECTION 3: SELECTION & MENUS",
+    "text": "🟪 SECTION 3: SELECTION & MENUS"
+  },
+  {
+    "objectID": "cosc130/slides/16.html#section-4-data-advanced",
+    "href": "cosc130/slides/16.html#section-4-data-advanced",
+    "title": "ezui: The Modern Java UI Toolkit",
+    "section": "🟩 SECTION 4: DATA & ADVANCED",
+    "text": "🟩 SECTION 4: DATA & ADVANCED"
+  },
+  {
+    "objectID": "cosc130/slides/16.html#final-summary",
+    "href": "cosc130/slides/16.html#final-summary",
+    "title": "ezui: The Modern Java UI Toolkit",
+    "section": "🏁 FINAL SUMMARY",
+    "text": "🏁 FINAL SUMMARY"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "Welcome! This site contains all the lecture notes, slides, and resources for my courses.\n\n\nYou can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS\n\n\n\n\nIf you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard.\n\n\n\nThis site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+  },
+  {
+    "objectID": "index.html#how-to-navigate",
+    "href": "index.html#how-to-navigate",
+    "title": "Home",
+    "section": "",
+    "text": "You can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS"
+  },
+  {
+    "objectID": "index.html#searching-for-topics",
+    "href": "index.html#searching-for-topics",
+    "title": "Home",
+    "section": "",
+    "text": "If you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard."
+  },
+  {
+    "objectID": "index.html#accessibility-note",
+    "href": "index.html#accessibility-note",
+    "title": "Home",
+    "section": "",
+    "text": "This site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
   },
   {
     "objectID": "cosc130/slides/15.html#what-is-persistence",
@@ -469,32 +476,74 @@
     "text": "Challenge Extensions\n\nAdd a student from user input — use Scanner(System.in) to prompt for a new student’s details, append them to the CSV using append mode (new FileWriter(\"students.csv\", true)), then reload and print the full list.\nSearch the database — after loading, write a method that takes a String major and returns an ArrayList&lt;Student&gt; of only students in that major.\nSort before saving — use Collections.sort() with a Comparator to sort students by GPA (descending) before writing the CSV.\nHandle bad data — add a try-catch inside your loadStudents() loop so that one malformed line doesn’t crash the whole load. Print a warning and skip the bad line instead.\nUse the File class — before saving, use File to check if students.csv already exists. If it does, print how many bytes the old file was before overwriting it."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Home",
-    "section": "",
-    "text": "Welcome! This site contains all the lecture notes, slides, and resources for my courses.\n\n\nYou can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS\n\n\n\n\nIf you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard.\n\n\n\nThis site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+    "objectID": "cosc130/slides/14.html#introduction-to-exceptions",
+    "href": "cosc130/slides/14.html#introduction-to-exceptions",
+    "title": "Introduction to Exceptions",
+    "section": "Introduction to Exceptions",
+    "text": "Introduction to Exceptions\n\nWhat is an Exception? An event that occurs during the execution of a program that disrupts the normal flow of instructions.\nThe Philosophy: In CS1, we assume everything works. In CS2, we assume things will break.\n\nExceptions allow us to separate “Error-Handling Code” from “Regular Logic.”\n\nTerminology:\n\nThrowing: When an error occurs, the JVM creates an Exception Object and “throws” it.\nCatching: If you have a handler ready, you “catch” the object and deal with it.\nCrashing: If no one catches the exception, the program terminates (the “Stack Trace” of death)."
   },
   {
-    "objectID": "index.html#how-to-navigate",
-    "href": "index.html#how-to-navigate",
-    "title": "Home",
-    "section": "",
-    "text": "You can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS"
+    "objectID": "cosc130/slides/14.html#the-exception-hierarchy-visual-map",
+    "href": "cosc130/slides/14.html#the-exception-hierarchy-visual-map",
+    "title": "Introduction to Exceptions",
+    "section": "The Exception Hierarchy (Visual Map)",
+    "text": "The Exception Hierarchy (Visual Map)\n\nThrowable: The parent of all things that can be thrown.\n\nError: Serious problems that a reasonable application should not try to catch (e.g., StackOverflowError, OutOfMemoryError). These are system-level failures.\nException: The class we focus on.\n\nRuntimeException (Unchecked): Usually caused by programmer logic errors. (e.g., NullPointerException, IndexOutOfBoundsException).\nIO/Other (Checked): Caused by external factors. Java forces you to acknowledge these."
   },
   {
-    "objectID": "index.html#searching-for-topics",
-    "href": "index.html#searching-for-topics",
-    "title": "Home",
-    "section": "",
-    "text": "If you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard."
+    "objectID": "cosc130/slides/14.html#checked-vs.-unchecked-exceptions",
+    "href": "cosc130/slides/14.html#checked-vs.-unchecked-exceptions",
+    "title": "Introduction to Exceptions",
+    "section": "Checked vs. Unchecked Exceptions",
+    "text": "Checked vs. Unchecked Exceptions\n\n\n\n\n\n\n\n\nFeature\nUnchecked (RuntimeException)\nChecked (Exception)\n\n\n\n\nCause\nBad logic (e.g., dividing by zero).\nExternal environment (e.g., file missing).\n\n\nCompiler\nDoes not check. Program runs until it hits the error.\nMandatory. The code won’t compile unless handled.\n\n\nExample\nNullPointerException\nIOException, SQLException\n\n\nSolution\nFix your logic (use an if statement).\nUse a try-catch or throws."
   },
   {
-    "objectID": "index.html#accessibility-note",
-    "href": "index.html#accessibility-note",
-    "title": "Home",
-    "section": "",
-    "text": "This site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+    "objectID": "cosc130/slides/14.html#the-try-catch-finally-mechanism",
+    "href": "cosc130/slides/14.html#the-try-catch-finally-mechanism",
+    "title": "Introduction to Exceptions",
+    "section": "The Try-Catch-Finally Mechanism",
+    "text": "The Try-Catch-Finally Mechanism\n\nTry: Contains the “Risky Code.” If an exception occurs here, the JVM stops executing the rest of the try block and jumps immediately to the catch.\nCatch: Defines the type of exception you are looking for. You can have multiple catch blocks for different errors.\nFinally: Code that must run, whether an exception happened or not. Used for “cleanup” (like closing a database connection or a file).\n\nNote: Even if there is a return statement in the try, the finally block still executes before the method finishes!"
+  },
+  {
+    "objectID": "cosc130/slides/14.html#code-anatomy---handling-multiple-errors",
+    "href": "cosc130/slides/14.html#code-anatomy---handling-multiple-errors",
+    "title": "Introduction to Exceptions",
+    "section": "Code Anatomy - Handling Multiple Errors",
+    "text": "Code Anatomy - Handling Multiple Errors\ntry {\n    String input = scanner.nextLine();\n    int num = Integer.parseInt(input); // Potential NumberFormatException\n    System.out.println(10 / num);      // Potential ArithmeticException\n} catch (NumberFormatException e) {\n    System.out.println(\"Error: Please enter a valid integer.\");\n} catch (ArithmeticException e) {\n    System.out.println(\"Error: Cannot divide by zero.\");\n} catch (Exception e) {\n    System.out.println(\"Something else went wrong: \" + e.getMessage());\n} finally {\n    System.out.println(\"Cleanup code can go here.\");\n}\n\nPro-Tip: Always catch specific exceptions first. If you catch the general Exception class first, the more specific ones below it will never be reached."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#the-throws-keyword-passing-the-hot-potato",
+    "href": "cosc130/slides/14.html#the-throws-keyword-passing-the-hot-potato",
+    "title": "Introduction to Exceptions",
+    "section": "The “Throws” Keyword (Passing the Hot Potato)",
+    "text": "The “Throws” Keyword (Passing the Hot Potato)\n\nSometimes a method shouldn’t fix the error; it should just warn the caller that an error might happen.\nSyntax: public void readFile() throws IOException { ... }\nIf Method A calls Method B, and Method B throws an exception, Method A must either:\n\nWrap the call in a try-catch.\nAlso declare throws in its own header, passing the responsibility up the chain to the main method."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#defining-and-throwing-your-own-exceptions",
+    "href": "cosc130/slides/14.html#defining-and-throwing-your-own-exceptions",
+    "title": "Introduction to Exceptions",
+    "section": "Defining and Throwing Your Own Exceptions",
+    "text": "Defining and Throwing Your Own Exceptions\n\nYou don’t have to wait for the JVM to find an error. You can trigger one yourself to enforce rules.\nThe throw Keyword:\n\npublic void setAge(int age) {\n    if (age &lt; 0) {\n        throw new IllegalArgumentException(\"Age cannot be negative!\");\n    }\n    this.age = age;\n}\n\nThis is “Defensive Programming”—stopping bad data before it ruins your program’s state."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#best-practices-common-pitfalls",
+    "href": "cosc130/slides/14.html#best-practices-common-pitfalls",
+    "title": "Introduction to Exceptions",
+    "section": "Best Practices & Common Pitfalls",
+    "text": "Best Practices & Common Pitfalls\n\nDon’t Swallow Exceptions: Avoid catch(Exception e) {}. If you do this, your program fails silently, and you’ll spend hours debugging a problem you hid from yourself.\nUse getMessage(): Every exception object has a getMessage() method. Print it! It tells you exactly what went wrong.\nDon’t use Exceptions for Flow Control: Don’t use a try-catch to end a loop. Use standard if statements and boolean logic for normal behavior. Exceptions are for exceptional (unplanned) events."
+  },
+  {
+    "objectID": "cosc130/slides/14.html#exam-prep---what-is-the-output",
+    "href": "cosc130/slides/14.html#exam-prep---what-is-the-output",
+    "title": "Introduction to Exceptions",
+    "section": "Exam Prep - “What is the Output?”",
+    "text": "Exam Prep - “What is the Output?”\nQuestion: What prints if the user enters “0”?\ntry {\n    int x = 5 / Integer.parseInt(input);\n    System.out.println(\"A\");\n} catch (ArithmeticException e) {\n    System.out.println(\"B\");\n} finally {\n    System.out.println(\"C\");\n}\n\nAnswer: B then C. “A” is skipped because the error happens on the first line of the try."
+  },
+  {
+    "objectID": "cosc445/slides/backtracking_pruning.html#maze",
+    "href": "cosc445/slides/backtracking_pruning.html#maze",
+    "title": "Combinatorial Search",
+    "section": "Maze",
+    "text": "Maze\n _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n|S   #       #                  |\n|#   #   #   #   # # # # # # #  |\n|        #       #              |\n|  # # # # # # # #   # # # # # #|\n|                    #          |\n|# # # #   # # # # # #   # # #  |\n|                        #      |\n|  # # # # # # # # # # # #   # #|\n|  #                            |\n|  #   # # # # # # # # # # # #  |\n|  #   #                     #  |\n|  #   #   # # # # # # # #   #  |\n|      #   #             #   #  |\n|# # # #   #   # # # #   #   #  |\n|          #         #       #  |\n|  # # # # # # # #   # # # # # E|\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#what-is-combinatorial-search",
@@ -508,7 +557,7 @@
     "href": "cosc445/slides/backtracking_pruning.html#why-brute-force-fails",
     "title": "Combinatorial Search",
     "section": "Why Brute Force Fails",
-    "text": "Why Brute Force Fails\nFor n-Queens (placing n non-attacking queens):\n\n\n\nn\nArrangements to check\n\n\n\n\n8\n4,426,165,368\n\n\n10\n~3.6 billion\n\n\n15\n~1.3 trillion\n\n\n20\n~6 × 10¹⁷\n\n\n\n\nEven at 10⁹ checks/second, n=20 would take ~20 years. 😱\n\nWe need a smarter strategy."
+    "text": "Why Brute Force Fails\nFor n-Queens (placing n non-attacking queens):\n\n\n\nn\nArrangements to check\n\n\n\n\n8\n4,426,165,368\n\n\n10\n~3.6 billion\n\n\n15\n~1.3 trillion\n\n\n20\n~6 × 10¹⁷\n\n\n\n\nEven at 10⁹ checks/second, n=20 would take ~20 years.\n\nWe need a smarter strategy."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#the-core-insight-build-incrementally",
@@ -522,49 +571,56 @@
     "href": "cosc445/slides/backtracking_pruning.html#the-backtracking-template",
     "title": "Combinatorial Search",
     "section": "The Backtracking Template",
-    "text": "The Backtracking Template\ndef backtrack(partial_solution):\n    if is_complete(partial_solution):\n        record(partial_solution)          # 🎉 found a solution!\n        return\n\n    for choice in get_choices(partial_solution):\n        if is_valid(partial_solution, choice):\n            partial_solution.add(choice)  # make the choice\n            backtrack(partial_solution)   # explore further\n            partial_solution.remove(choice)  # undo (backtrack)\n\nThe “undo” step is what makes backtracking work. We explore, retreat, and try something else."
+    "text": "The Backtracking Template\ndef backtrack(partial_solution):\n    if is_complete(partial_solution):\n        record(partial_solution)          # found a solution!\n        return\n\n    for choice in get_choices(partial_solution):\n        if is_valid(partial_solution, choice):\n            partial_solution.add(choice)  # make the choice\n            backtrack(partial_solution)   # explore further\n            partial_solution.remove(choice)  # undo (backtrack)\n\nThe “undo” step is what makes backtracking work. We explore, retreat, and try something else."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-1-the-maze",
     "href": "cosc445/slides/backtracking_pruning.html#example-1-the-maze",
     "title": "Combinatorial Search",
-    "section": "Example 1: The Maze 🧩",
-    "text": "Example 1: The Maze 🧩\nProblem: Find a path from Start (S) to End (E) in a grid.\nS . . #\n# # . #\n. . . .\n# # # E\nChoices at each step: move Up, Down, Left, or Right\nConstraint: stay in bounds, don’t hit #, don’t revisit cells\nBacktrack when: we hit a dead end with no valid moves"
+    "section": "Example 1: The Maze",
+    "text": "Example 1: The Maze\nProblem: Find a path from Start (S) to End (E) in a grid.\nS . . #\n# # . #\n. . . .\n# # # E\nChoices at each step: move Up, Down, Left, or Right\nConstraint: stay in bounds, don’t hit #, don’t revisit cells\nBacktrack when: we hit a dead end with no valid moves"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#maze-step-by-step-trace",
     "href": "cosc445/slides/backtracking_pruning.html#maze-step-by-step-trace",
     "title": "Combinatorial Search",
     "section": "Maze — Step-by-Step Trace",
-    "text": "Maze — Step-by-Step Trace\nS . . #\n# # . #\n. . . .\n# # # E\nPath so far: [(0,0)]\n\n→ Try Right: (0,1) ✓  →  Path: [(0,0),(0,1)]\n  → Try Right: (0,2) ✓  →  Path: [(0,0),(0,1),(0,2)]\n    → Try Right: (0,3) = '#'  ✗\n    → Try Down: (1,2) ✓  →  Path: [...,(1,2)]\n      → Try Down: (2,2) ✓  →  Path: [...,(2,2)]\n        → Try Right: (2,3) ✓  →  Path: [...,(2,3)]\n          → Try Down: (3,3) = 'E' ✓  🎉 DONE!\nSimple idea, powerful result. The key is the undo on dead ends."
+    "text": "Maze — Step-by-Step Trace\nS . . #\n# # . #\n. . . .\n# # # E\nStart: [(0,0)]\n\n→ Try Right: (0,1) ✓  →  Path: [(0,0),(0,1)]\n  → Try Right: (0,2) ✓  →  Path: [(0,0),(0,1),(0,2)]\n    → Try Right: (0,3) = '#'  ✗\n    → Try Down: (1,2) ✓  →  Path: [...,(1,2)]\n      → Try Down: (2,2) ✓  →  Path: [...,(2,2)]\n        → Try Right: (2,3) ✓  →  Path: [...,(2,3)]\n          → Try Down: (3,3) = 'E' ✓  DONE!\nSimple idea, powerful result. The key is the undo on dead ends."
+  },
+  {
+    "objectID": "cosc445/slides/backtracking_pruning.html#python-maze",
+    "href": "cosc445/slides/backtracking_pruning.html#python-maze",
+    "title": "Combinatorial Search",
+    "section": "Python Maze",
+    "text": "Python Maze\nmaze = \\\n[['S', ' ', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],\n ['X', ' ', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' '],\n [' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' '],\n [' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X'],\n [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' '],\n ['X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' '],\n [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' '],\n [' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X'],\n [' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],\n [' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' '],\n [' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' '],\n [' ', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' '],\n [' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' '],\n ['X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' '],\n [' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' '],\n [' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'E']]"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#maze-python-code",
     "href": "cosc445/slides/backtracking_pruning.html#maze-python-code",
     "title": "Combinatorial Search",
     "section": "Maze — Python Code",
-    "text": "Maze — Python Code\ndef solve_maze(grid, row, col, path, visited):\n    R, C = len(grid), len(grid[0])\n\n    # Base case: reached the end\n    if grid[row][col] == 'E':\n        return path + [(row, col)]\n\n    visited.add((row, col))\n\n    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:  # up/down/left/right\n        nr, nc = row + dr, col + dc\n        if (0 &lt;= nr &lt; R and 0 &lt;= nc &lt; C\n                and grid[nr][nc] != '#'\n                and (nr, nc) not in visited):\n            result = solve_maze(grid, nr, nc,\n                                path + [(row, col)], visited)\n            if result:\n                return result   # propagate success\n\n    visited.remove((row, col))  # ← backtrack: un-visit this cell\n    return None"
+    "text": "Maze — Python Code\ndef solve(r, c, path):\n  if not (0 &lt;= r &lt; 16 and 0 &lt;= c &lt; 16) or maze[r][c] == 'X' or (r, c) in path:\n   return False\n\n  path.append((r, c))\n\n  # Base Case: Found the Exit\n  if maze[r][c] == 'E':\n   return True\n\n  # Explore: Up, Down, Left, Right\n  for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:\n   if solve(r + dr, c + dc, path):\n    return True\n\n  # Backtrack\n  path.pop()\n  return False\n\nsolution_path = []\nrc = solve(0, 0, solution_path)\nif rc: print(\"Path to exit:\", solution_path)\nelse: print(\"No path found.\")"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-2-subsets-that-sum-to-a-target",
     "href": "cosc445/slides/backtracking_pruning.html#example-2-subsets-that-sum-to-a-target",
     "title": "Combinatorial Search",
-    "section": "Example 2: Subsets That Sum to a Target 🎯",
-    "text": "Example 2: Subsets That Sum to a Target 🎯\nProblem: Given [3, 1, 4, 2, 5], find all subsets that sum to 6.\nApproach: At each position, decide include or skip the element.\nbacktrack(index=0, current_sum=0, chosen=[])\n├── include 3  → sum=3\n│   ├── include 1  → sum=4\n│   │   ├── include 4  → sum=8  ✗ (over target)\n│   │   ├── skip    4\n│   │   │   ├── include 2  → sum=6  ✓ [3,1,2]\n│   │   │   └── skip 2\n│   │   │       └── include 5 → sum=9 ✗\n│   │   └── ...\n│   └── skip 1\n│       ├── include 4  → sum=7  ✗\n│       └── skip 4\n│           ├── include 2  → sum=5\n│           │   └── include 5 → sum=10 ✗\n│           └── skip 2\n│               └── include 5 → sum=8 ✗\n└── skip 3  → ...  (finds [1,5])"
+    "section": "Example 2: Subsets That Sum to a Target",
+    "text": "Example 2: Subsets That Sum to a Target\nProblem: Given [3, 1, 4, 2, 5], find all subsets that sum to 6.\nApproach: At each position, decide include or skip the element.\n\nbacktrack(index=0, current_sum=0, chosen=[])\n├── include 3  → sum=3\n│   ├── include 1  → sum=4\n│   │   ├── include 4  → sum=8  ✗ (over target)\n│   │   ├── skip    4\n│   │   │   ├── include 2  → sum=6  ✓ [3,1,2]\n│   │   │   └── skip 2\n│   │   │       └── include 5 → sum=9 ✗\n│   │   └── ...\n│   └── skip 1\n│       ├── include 4  → sum=7  ✗\n│       └── skip 4\n│           ├── include 2  → sum=5\n│           │   └── include 5 → sum=10 ✗\n│           └── skip 2\n│               └── include 5 → sum=8 ✗\n└── skip 3  → ...  (finds [1,5])"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#subset-sum-code",
     "href": "cosc445/slides/backtracking_pruning.html#subset-sum-code",
     "title": "Combinatorial Search",
     "section": "Subset Sum — Code",
-    "text": "Subset Sum — Code\ndef subset_sum(nums, target):\n    results = []\n\n    def backtrack(index, current_sum, chosen):\n        if current_sum == target:\n            results.append(chosen[:])  # found a valid subset!\n            return\n        if index == len(nums) or current_sum &gt; target:\n            return                     # dead end\n\n        # Choice 1: include nums[index]\n        chosen.append(nums[index])\n        backtrack(index + 1, current_sum + nums[index], chosen)\n        chosen.pop()  # ← undo\n\n        # Choice 2: skip nums[index]\n        backtrack(index + 1, current_sum, chosen)\n\n    backtrack(0, 0, [])\n    return results\n\nprint(subset_sum([3, 1, 4, 2, 5], 6))\n# → [[3, 1, 2], [1, 5]]"
+    "text": "Subset Sum — Code\ndef subset_sum(nums, target):\n    results = []\n\n    def backtrack(index, current_sum, chosen):\n        if current_sum == target:\n            results.append(chosen[:])  # found a valid subset!\n            return\n        if index == len(nums) or current_sum &gt; target:\n            return                     # dead end\n\n        # Choice 1: include nums[index]\n        chosen.append(nums[index])\n        backtrack(index + 1, current_sum + nums[index], chosen)\n        chosen.pop()  # ← undo\n\n        # Choice 2: skip nums[index]\n        backtrack(index + 1, current_sum, chosen)\n\n    backtrack(0, 0, [])\n    return results\n\nprint(subset_sum([3, 1, 4, 2, 5], 6))\n# → [[3, 1, 2], [1, 5], [4, 2]]"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-3-n-queens",
     "href": "cosc445/slides/backtracking_pruning.html#example-3-n-queens",
     "title": "Combinatorial Search",
-    "section": "Example 3: N-Queens ♛",
-    "text": "Example 3: N-Queens ♛\nProblem: Place n queens on an n×n board so no two queens share a row, column, or diagonal.\nKey observations:\n\nPlace one queen per row (so row index = recursion depth)\nTrack which columns and diagonals are taken\n\nRow 0:  Q . . .    Q placed in col 0\nRow 1:  . . Q .    col 0 and diagonals blocked → col 2 is free\nRow 2:  . . . .    cols 0,2 and diagonals blocked → ...\nRow 3:  . Q . .    eventually col 1 works!"
+    "section": "Example 3: N-Queens",
+    "text": "Example 3: N-Queens\nProblem: Place n queens on an n×n board so no two queens share a row, column, or diagonal.\nKey observations:\n\nPlace one queen per row (so row index = recursion depth)\nTrack which columns and diagonals are taken\n\nRow 0:  Q . . .    Q placed in col 0\nRow 1:  . . Q .    col 0 and diagonals blocked → col 2 is free\nRow 2:  . . . .    cols 0,2 and diagonals blocked → ...\nRow 3:  . Q . .    eventually col 1 works!"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#n-queens-code",

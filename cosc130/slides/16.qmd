@@ -1,0 +1,442 @@
+---
+title: "ezui: The Modern Java UI Toolkit"
+format: revealjs
+# highlightTheme: atom-one-light
+---
+
+
+---
+
+## 🟦 SECTION 1: THE STRUCTURE
+
+---
+
+
+###  What is ezui?
+
+`ezui` is a beginner-friendly Java library designed to bridge the gap between "Learning Java" and "Building Apps."
+
+- **Why use it?** No messy LayoutManagers, built-in navigation, and modern styling out of the box.
+    
+- **The Package:** Always start with `import ezui.*;`
+    
+---
+
+
+###  Big-Picture Architecture
+
+- **Window**: The "House" (Main Frame + Sidebar).
+    
+- **Page**: A "Room" (One specific screen).
+    
+- **Grid**: The "Furniture Layout" (Rows and Columns).
+    
+- **Component**: The "Furniture" (Buttons, Text, etc.).
+    
+---
+
+
+###  Window: The App Shell
+
+**The House for Your Pages**
+
+The `Window` is the "Master Container." It creates a modern, split-pane interface with a **Navigation Sidebar** on the left and a **Scrollable Content Area** on the right.
+
+::: {.r-stack}
+
+::: {.fragment .fade-in-then-out}
+**The 4-Step Setup**
+
+To launch your application, follow this exact sequence in your `Main.java`:
+```java
+// 1. Set the Style (Do this FIRST!)
+Theme.initialize("Light", "Modern");
+
+// 2. Create the Window (Title, Width, Height)
+Window app = new Window("Student Portal", 1000, 700);
+
+// 3. Register your Pages 
+// NOTE: The FIRST page you add will be the one displayed at startup!
+app.addPage(new LoginPage()); 
+app.addPage(new DashboardPage());
+
+// 4. Launch!
+app.show();
+```
+:::
+
+::: {.fragment .fade-in-then-out}
+<!-- **Pro-Tips for Students:** -->
+**Tips:**
+
+* **Sidebar Magic:** Every time you call `addPage()`, a button with that Page’s name is automatically created in the sidebar. Clicking it switches the screen instantly.
+* **Smart Sizing:** Use `1000x700` as a safe default. It fits perfectly on most laptops without hiding the taskbar.
+* **The "Show" Rule:** Always call `app.show()` or `app.setVisible(true)` at the very end of your `main` method to ensure all your components are properly sized and ready to view.
+:::
+:::
+
+
+
+
+
+---
+
+
+###  Page — Building Your Screen
+
+**The Blueprint of a Screen**
+
+Every screen in your app (like `Login`, `Dashboard`, or `Settings`) must extend a **Page**. Think of a Page as a named container that holds a **Grid**.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+
+**The Page Constructor**
+
+When you create a Page, you must tell `ezui` three things: its **Name**, how many **Rows** it has, and how many **Columns** it has.
+
+```java
+public class DashboardPage extends Page {
+    public DashboardPage() {
+        // super(Name, Rows, Columns, ColumnStyles...)
+        super("Dashboard", 3, 2, ColumnStyle.FIXED(), ColumnStyle.GROW());
+    }
+
+    @Override
+    public void onCreate() {
+        // This is where you add your components!
+    }
+}
+```
+
+:::
+::: {.fragment .fade-in-then-out}
+
+**Understanding the Arguments:**
+
+1.  **Name (`"Dashboard"`)**: This is the text that will appear on the button in the Sidebar.
+2.  **Rows (`3`)**: How many horizontal "slots" your page has from top to bottom.
+3.  **Columns (`2`)**: How many vertical "slots" your page has from left to right.
+4.  **ColumnStyles**: These tell the columns how to behave.
+    * `ColumnStyle.FIXED()`: Stays as small as possible (good for labels/icons).
+    * `ColumnStyle.GROW()`: Stretches to fill all remaining screen space (good for Tables/Charts).
+
+:::
+::: {.fragment .fade-in-then-out}
+**Tips:**
+
+* **The Grid is Your Canvas**: You can't add a component to a Page without a Grid slot. If you need more space, increase the Row/Column numbers in the constructor.
+* **Infinite Height**: Don't worry about making the page too long! `ezui` automatically adds a **Scrollbar** if your content exceeds the window height.
+* **The `onCreate` Rule**: Always put your `root.add()` code inside `onCreate`. If you put it in the constructor, the Window might not be ready to display it yet!
+:::
+:::
+
+
+---
+
+
+###  Grid: The Layout Engine
+
+Everything inside a `Page` lives in a `Grid`.
+
+**The "Map" of Your Screen**
+
+Think of a Grid as a spreadsheet. Every "cell" has a unique address: `(row, column)`. In programming, we always start counting at **0**.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+**How to Add Components**
+You use the `root.add()` method inside your Page's `onCreate()` function. 
+
+```java
+// 1. Simple placement (Fills the column, aligns to top)
+root.add(new Text("Header"), 0, 0);
+
+// 2. Precise placement (Choose your alignment)
+root.add(new Button("Save"), 1, 1, Alignment.RIGHT);
+```
+:::
+
+::: {.fragment .fade-in-then-out}
+**The Alignment Rulebook:**
+
+* **`Alignment.LEFT`**: Sticks the component to the left side of the cell.
+* **`Alignment.CENTER`**: Places the component right in the middle.
+* **`Alignment.RIGHT`**: Sticks the component to the right side.
+* **`Alignment.FILL`**: Stretches the component to be as wide as the entire column (Perfect for **TextBoxes** and **Buttons**!).
+:::
+
+::: {.fragment .fade-in-then-out}
+**Tips:**
+
+* **Overlapping**: You cannot put two components in the same `(row, column)` address. The second one will simply replace the first! 
+* **Empty Spaces**: You don't have to fill every cell. If you leave `(0, 1)` empty, it will just show as a blank space in your layout.
+* **Pro-Tip**: Use `Alignment.FILL` for your input fields (TextBox) so they look consistent and professional across the page.
+:::
+:::
+
+
+---
+
+
+### The `onCreate` Master Example
+
+**Putting the Grid to Work**
+
+Inside your `Page` class, the `onCreate()` method is your construction site. Here is how you would build a simple "Profile" layout using the Grid coordinates we just learned.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+```java
+@Override
+public void onCreate() {
+    // Row 0: A big heading that spans the top
+    root.add(new Text("User Profile", "H1"), 0, 0, Alignment.LEFT);
+
+    // Row 1: A label and an input field
+    root.add(new Text("Full Name:", "Label"), 1, 0, Alignment.LEFT);
+    root.add(new TextBox(), 1, 1, Alignment.FILL); // Fills the whole column!
+
+    // Row 2: An icon and some body text
+    root.add(new Icon("user-circle"), 2, 0, Alignment.CENTER);
+    root.add(new Text("Standard Account", "Body"), 2, 1, Alignment.LEFT);
+
+    // Row 3: A button aligned to the right
+    Button saveBtn = new Button("Save Changes");
+    root.add(saveBtn, 3, 1, Alignment.RIGHT);
+}
+```
+:::
+::: {.fragment .fade-in-then-out}
+**What’s happening here?**
+
+* **Coordinate (1, 1)**: The `TextBox` is using `Alignment.FILL`, making it look like a professional, wide input field.
+* **Coordinate (3, 1)**: Even though the button is in the same column as the textbox, `Alignment.RIGHT` keeps it tucked neatly in the corner.
+* **The "Invisible" Grid**: Notice how we align labels to the **LEFT** and inputs to the **FILL**. This creates a clean, vertical "spine" down the middle of your page.
+
+
+:::
+:::
+
+
+
+
+---
+
+## 🟧 SECTION 2: BASIC INPUTS & WIDGETS
+
+---
+
+
+###  Component: The Base Class
+
+Every widget in `ezui` is a `Component`.
+
+- Supports `onClick(() -> { ... })`
+    
+- Supports `onHover(() -> { ... })`
+    
+- Ensures a consistent look across the whole app.
+    
+---
+
+
+###  Button: The Action Tool
+
+Simple, clickable, and supports icons.
+
+
+```{.java code-line-numbers=""}
+Button btn = new Button("Login", "sign-in"); // Text + FontAwesome icon
+btn.onClick(() -> System.out.println("Clicked!"));
+```
+---
+
+
+###  Text: Labels & Headings
+
+Use `Text` for any non-editable labels.
+
+- Styles: `"H1"`, `"H2"`, `"Label"`, `"Body"`.
+    
+
+
+```{.java code-line-numbers=""}
+Text title = new Text("Welcome Back", "H1");
+```
+---
+
+
+###  TextBox: Single-Line Input
+
+Standard input field. Now supports password masking!
+
+
+```{.java code-line-numbers=""}
+TextBox userField = new TextBox();
+TextBox passField = new TextBox();
+passField.setMasked(true); // Turns input into dots/stars
+
+String input = userField.getText();
+```
+
+---
+
+
+###  TextArea: Multi-Line Input
+
+For longer content like notes or descriptions.
+
+
+```{.java code-line-numbers=""}
+TextArea bio = new TextArea();
+bio.setText("Line 1\nLine 2");
+```
+
+---
+
+
+###  Icon: Visual Symbols
+
+Uses the **FontAwesomeSolid** set.
+
+- Case-insensitive codes (e.g., `"home"`, `"user-circle"`, `"arrow-left"`).
+    
+- Invalid codes automatically default to a `?` icon.
+    
+
+
+```{.java code-line-numbers=""}
+Icon gear = new Icon("cog");
+gear.setSize(32);
+gear.setColor("Primary");
+```
+
+---
+
+## 🟪 SECTION 3: SELECTION & MENUS
+
+---
+
+
+###  DropDownButton
+
+A button that reveals a menu of options when clicked.
+
+
+```{.java code-line-numbers=""}
+DropDownButton menu = new DropDownButton("Actions");
+menu.addOption("Edit", () -> openEdit());
+menu.addOption("Delete", () -> deleteItem());
+```
+
+---
+
+
+###  ComboBox & ListBox
+
+- **ComboBox**: A dropdown where you pick one item.
+    
+- **ListBox**: A visible list where you pick one item.
+    
+- **MultiListBox**: A list where you can select many items at once.
+    
+
+
+```{.java code-line-numbers=""}
+ComboBox choice = new ComboBox(List.of("Option A", "Option B"));
+```
+
+---
+
+## 🟩 SECTION 4: DATA & ADVANCED
+
+---
+
+
+###  ITable: The Data Contract
+
+To show objects in a Table, your class **must** implement `ITable`.
+
+
+```{.java code-line-numbers=""}
+public class Student implements ITable {
+    private String name;
+    private double gpa;
+
+    public String[] getHeaders() { return new String[]{"Name", "GPA"}; }
+    public Object[] getValues() { return new Object[]{name, gpa}; }
+}
+```
+
+---
+
+
+###  Table: Dynamic Data Display
+
+The `Table` stays in sync with a `List`.
+
+- Call `refresh()` after modifying the list to update the UI.
+    
+- Displays "No Data Available" if the list is empty.
+    
+
+
+```{.java code-line-numbers=""}
+List<Student> students = new ArrayList<>();
+Table<Student> table = new Table<>(students);
+
+students.add(new Student("Alice", 4.0));
+table.refresh(); // Table now builds its columns and rows
+```
+
+---
+
+
+###  Chart: Visual Data
+
+Turn `Map` data into Bar or Pie charts instantly.
+
+
+```{.java code-line-numbers=""}
+Map<String, Double> data = Map.of("Passing", 85.0, "Failing", 15.0);
+Chart pie = Chart.createPieChart("Class Stats", data);
+```
+
+---
+
+
+###  Alignment & ColumnStyle
+
+Control your layout precisely.
+
+- **Alignment**: `LEFT`, `CENTER`, `RIGHT`, `FILL`.
+    
+- **ColumnStyle**:
+    
+    - `ColumnStyle.GROW()`: Takes up all extra space.
+        
+    - `ColumnStyle.FIXED()`: Only takes what it needs.
+        
+    - `ColumnStyle.WIDTH(px)`: Forces a specific width.
+        
+
+---
+
+## 🏁 FINAL SUMMARY
+
+---
+
+
+###  Putting it all together
+
+1. **Initialize Theme**: `Theme.initialize("Light", "Modern");`
+    
+2. **Setup Window**: Create your `Window`.
+    
+3. **Build Pages**: Create your `Page` classes and use `root.add`.
+    
+4. **Logic**: Use `onClick` to change data and `table.refresh()` to show it.
+    
+
+**Happy Coding with `ezui`!**
