@@ -187,7 +187,7 @@ The schedule below outlines our plan for the semester. As we move through the co
 |      | Mar 19    | **No class** - Spring Recess                    |            |            |      |
 | 10   | Mar 24    | **No class** - Advising Day                     |            |            |      |
 |      | Mar 26    | Network flows and *bipartite matching*          | 267-275    |            |      |
-| 11   | Mar 31    | Combinatorial search - backtracking and pruning | 281 - 298  | A8 out     | Q7   |
+| 11   | Mar 31    | [Combinatorial search - backtracking and pruning](slides/backtracking_pruning.qmd) | 281 - 298  | A8 out     | Q7   |
 |      | Apr 2     | Combinatorial search - A* Heuristic             | 298 - 303  |            |      |
 | 12   | Apr 7     | Elements of dynamic programming                 | 307-325    | A9 out     | Q8   |
 |      | Apr 9     | Examples of dynamic programming                 | 326-336    |            |      |
