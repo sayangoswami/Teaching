@@ -537,7 +537,7 @@ print(solve_graph_coloring(graph, 3), colors)
 
 # Part 5 — Comparing & Analysing
 
-## Visualising the Search Tree
+## Visualising the Search Tree {visibility="hidden"}
 
 For **n=4 queens**, the search tree looks like this:
 
@@ -595,7 +595,7 @@ When implementing backtracking + pruning, ask yourself:
 5. **Can I order choices to fail fast?**  
    → Try the most constrained variables first (MRV heuristic)
 
----
+<!-- ---
 
 # Part 6 — Summary & Practice
 
@@ -695,4 +695,4 @@ def backtrack(state):
 :::
 ::::
 
-> *"The art of backtracking is knowing when to give up."*
+> *"The art of backtracking is knowing when to give up."* -->

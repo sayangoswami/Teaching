@@ -705,24 +705,7 @@ Row 3:  . Q . .    eventually col 1 works!</code></pre>
 <h1>Part 5 — Comparing &amp; Analysing</h1>
 
 </section>
-<section id="visualising-the-search-tree" class="slide level2">
-<h2>Visualising the Search Tree</h2>
-<p>For <strong>n=4 queens</strong>, the search tree looks like this:</p>
-<pre><code>                      (start)
-           col0      col1      col2      col3
-           ────      ────      ────      ────
-          [Q...]    [.Q..]    [..Q.]    [...Q]
-          / | \      ...
-    [Q..] [..Q.] [...Q]       ← row 1 placements
-      ✗     |      ✗          ← col0,diag conflict
-          [..Q.]
-          / | \
-       ✗    |    ✗
-          [...Q]
-            |
-          [.Q..]  ✓  →  solution: [1, 3, 0, 2]</code></pre>
-<p>Pruned branches are shown as ✗ — we never recurse into them.</p>
-</section>
+
 <section id="complexity-analysis" class="slide level2">
 <h2>Complexity Analysis</h2>
 <p>Backtracking doesn’t change the <strong>worst case</strong> (still exponential), but it dramatically improves <strong>average case</strong>.</p>
@@ -771,139 +754,107 @@ Row 3:  . Q . .    eventually col 1 works!</code></pre>
 <li><p><strong>Can I order choices to fail fast?</strong><br>
 → Try the most constrained variables first (MRV heuristic)</p></li>
 </ol>
-</section>
-<section class="slide level2">
+<!-- ---
 
-</section></section>
-<section>
-<section id="part-6-summary-practice" class="title-slide slide level1 center">
-<h1>Part 6 — Summary &amp; Practice</h1>
+# Part 6 — Summary & Practice
 
-</section>
-<section id="what-we-covered-today" class="slide level2">
-<h2>What We Covered Today</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Backtracking</strong></p>
-<ul>
-<li>Build solutions incrementally</li>
-<li>Abandon invalid partial solutions immediately</li>
-<li>Template: choose → recurse → undo</li>
-<li>Examples: Maze, Subset Sum, N-Queens, Sudoku, Graph Colouring</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Pruning</strong></p>
-<ul>
-<li>Look ahead before recursing</li>
-<li>Abandon <em>hopeless</em> (not just invalid) branches</li>
-<li>Strategies: feasibility, bounds, forward checking, symmetry</li>
-<li>Can reduce explored nodes by orders of magnitude</li>
-</ul>
-</div></div>
-<blockquote>
-<p><strong>Rule of thumb:</strong> backtracking is the engine, pruning is the fuel.</p>
-</blockquote>
-</section>
-<section id="practice-problems" class="slide level2">
-<h2>Practice Problems</h2>
-<p>Try these in order of difficulty:</p>
-<ol type="1">
-<li><strong>Permutations</strong> — generate all permutations of <code>[1,2,3]</code></li>
-<li><strong>Phone keypad</strong> — given <code>"23"</code>, list all letter combinations (<code>2→abc, 3→def</code>)</li>
-<li><strong>Combination sum</strong> — find all subsets of <code>[2,3,6,7]</code> summing to <code>7</code> (elements reusable)</li>
-<li><strong>Word search</strong> — find if word <code>"ABCCED"</code> exists in a letter grid</li>
-<li><strong>Sudoku solver</strong> — solve an arbitrary 9×9 board</li>
-<li><strong>N-Queens count</strong> — how many solutions for n=12? (add symmetry-breaking pruning)</li>
-</ol>
-</section>
-<section id="leetcode-connections" class="slide level2">
-<h2>LeetCode Connections</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 45%">
-<col style="width: 55%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Problem</th>
-<th>Technique</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>LC 46 — Permutations</td>
-<td>Backtracking</td>
-</tr>
-<tr class="even">
-<td>LC 78 — Subsets</td>
-<td>Backtracking</td>
-</tr>
-<tr class="odd">
-<td>LC 39 — Combination Sum</td>
-<td>Backtracking + bound pruning</td>
-</tr>
-<tr class="even">
-<td>LC 79 — Word Search</td>
-<td>Backtracking on grid</td>
-</tr>
-<tr class="odd">
-<td>LC 51 — N-Queens</td>
-<td>Backtracking + feasibility pruning</td>
-</tr>
-<tr class="even">
-<td>LC 37 — Sudoku Solver</td>
-<td>Backtracking + forward checking</td>
-</tr>
-<tr class="odd">
-<td>LC 698 — Partition to K Equal Subsets</td>
-<td>Backtracking + symmetry pruning</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="one-slide-cheat-sheet" class="slide level2">
-<h2>One-Slide Cheat Sheet</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">def</span> backtrack(state):</span>
-<span id="cb19-2"><a></a>    <span class="co"># 1. Prune: is there any hope?</span></span>
-<span id="cb19-3"><a></a>    <span class="cf">if</span> <span class="kw">not</span> is_promising(state):</span>
-<span id="cb19-4"><a></a>        <span class="cf">return</span></span>
-<span id="cb19-5"><a></a></span>
-<span id="cb19-6"><a></a>    <span class="co"># 2. Base case: is state a complete solution?</span></span>
-<span id="cb19-7"><a></a>    <span class="cf">if</span> is_complete(state):</span>
-<span id="cb19-8"><a></a>        record(state)</span>
-<span id="cb19-9"><a></a>        <span class="cf">return</span></span>
-<span id="cb19-10"><a></a></span>
-<span id="cb19-11"><a></a>    <span class="co"># 3. Recurse: try every valid next choice</span></span>
-<span id="cb19-12"><a></a>    <span class="cf">for</span> choice <span class="kw">in</span> get_choices(state):</span>
-<span id="cb19-13"><a></a>        make(state, choice)       <span class="co"># commit</span></span>
-<span id="cb19-14"><a></a>        backtrack(state)          <span class="co"># explore</span></span>
-<span id="cb19-15"><a></a>        undo(state, choice)       <span class="co"># retreat ← the heart of backtracking</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<blockquote>
-<p>Memorise this template. Every problem in this class follows it.</p>
-</blockquote>
-</section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p><strong>Key takeaways:</strong></p>
-<ul>
-<li>Backtracking = depth-first search + undo</li>
-<li>Pruning = domain-aware early termination</li>
-<li>The combination turns intractable problems practical</li>
-<li>Same template applies across all examples</li>
-</ul>
-</div><div class="column" style="width:40%;">
-<p><strong>Next class:</strong></p>
-<ul>
-<li>Branch and Bound (optimisation variant)</li>
-<li>Memoisation &amp; Dynamic Programming</li>
-<li>When backtracking meets memoisation</li>
-</ul>
-</div></div>
-<blockquote>
-<p><em>“The art of backtracking is knowing when to give up.”</em></p>
-</blockquote>
+## What We Covered Today
+
+:::: {.columns}
+::: {.column width="50%"}
+**Backtracking**
+
+- Build solutions incrementally
+- Abandon invalid partial solutions immediately
+- Template: choose → recurse → undo
+- Examples: Maze, Subset Sum, N-Queens, Sudoku, Graph Colouring
+:::
+::: {.column width="50%"}
+**Pruning**
+
+- Look ahead before recursing
+- Abandon *hopeless* (not just invalid) branches
+- Strategies: feasibility, bounds, forward checking, symmetry
+- Can reduce explored nodes by orders of magnitude
+:::
+::::
+
+> **Rule of thumb:** backtracking is the engine, pruning is the fuel.
+
+---
+
+## Practice Problems
+
+Try these in order of difficulty:
+
+1. **Permutations** — generate all permutations of `[1,2,3]`
+2. **Phone keypad** — given `"23"`, list all letter combinations (`2→abc, 3→def`)
+3. **Combination sum** — find all subsets of `[2,3,6,7]` summing to `7` (elements reusable)
+4. **Word search** — find if word `"ABCCED"` exists in a letter grid
+5. **Sudoku solver** — solve an arbitrary 9×9 board
+6. **N-Queens count** — how many solutions for n=12? (add symmetry-breaking pruning)
+
+---
+
+## LeetCode Connections
+
+| Problem | Technique |
+|---------|-----------|
+| LC 46 — Permutations | Backtracking |
+| LC 78 — Subsets | Backtracking |
+| LC 39 — Combination Sum | Backtracking + bound pruning |
+| LC 79 — Word Search | Backtracking on grid |
+| LC 51 — N-Queens | Backtracking + feasibility pruning |
+| LC 37 — Sudoku Solver | Backtracking + forward checking |
+| LC 698 — Partition to K Equal Subsets | Backtracking + symmetry pruning |
+
+---
+
+## One-Slide Cheat Sheet
+
+```python
+def backtrack(state):
+    # 1. Prune: is there any hope?
+    if not is_promising(state):
+        return
+
+    # 2. Base case: is state a complete solution?
+    if is_complete(state):
+        record(state)
+        return
+
+    # 3. Recurse: try every valid next choice
+    for choice in get_choices(state):
+        make(state, choice)       # commit
+        backtrack(state)          # explore
+        undo(state, choice)       # retreat ← the heart of backtracking
+```
+
+> Memorise this template. Every problem in this class follows it.
+
+---
+
+## Summary
+
+:::: {.columns}
+::: {.column width="60%"}
+**Key takeaways:**
+
+- Backtracking = depth-first search + undo
+- Pruning = domain-aware early termination
+- The combination turns intractable problems practical
+- Same template applies across all examples
+:::
+::: {.column width="40%"}
+**Next class:**
+
+- Branch and Bound (optimisation variant)
+- Memoisation & Dynamic Programming
+- When backtracking meets memoisation
+:::
+::::
+
+> *"The art of backtracking is knowing when to give up."* -->
 
 
 </section></section>

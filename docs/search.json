@@ -133,13 +133,6 @@
     "text": "Sudoku — Simplified Code\ndef solve_sudoku(board):\n    empty = find_empty(board)\n    if not empty:\n        return True   # all cells filled → solution!\n\n    row, col = empty\n\n    for digit in range(1, 10):\n        if is_valid_placement(board, row, col, digit):\n            board[row][col] = digit\n\n            # PRUNING: check if any cell now has 0 options\n            if not any_cell_has_no_options(board):\n                if solve_sudoku(board):   # recurse\n                    return True\n\n            board[row][col] = 0   # ← backtrack\n\n    return False\n\nany_cell_has_no_options is the pruning check — it looks ahead without committing."
   },
   {
-    "objectID": "cosc445/slides/backtracking_pruning.html#pruning-strategies-a-taxonomy",
-    "href": "cosc445/slides/backtracking_pruning.html#pruning-strategies-a-taxonomy",
-    "title": "Combinatorial Search",
-    "section": "Pruning Strategies: A Taxonomy",
-    "text": "Pruning Strategies: A Taxonomy\n\n\n\n\n\n\n\n\nStrategy\nIdea\nExample\n\n\n\n\nFeasibility pruning\nCurrent state already violates a constraint\nN-Queens column check\n\n\nBound pruning\nCan’t possibly reach target\nSubset sum with sorted array\n\n\nForward checking\nFuture cells/variables have no valid options\nSudoku candidate elimination\n\n\nSymmetry breaking\nMany solutions are equivalent; explore only one\nN-Queens: only left half of row 0\n\n\nConstraint propagation\nPropagate constraints to eliminate future choices\nArc consistency in CSPs"
-  },
-  {
     "objectID": "cosc445/slides/backtracking_pruning.html#graph-colouring-a-classic-application",
     "href": "cosc445/slides/backtracking_pruning.html#graph-colouring-a-classic-application",
     "title": "Combinatorial Search",
@@ -154,13 +147,6 @@
     "text": "Graph Colouring — Code\ndef is_safe(v, graph, c):\n    for neighbor in graph[v]:\n        if colors[neighbor] == c:\n            return False\n    return True\n\n\ndef solve_graph_coloring(graph, k, v=0):\n    # Base Case: All vertices are colored\n    if v == len(graph):\n        return True\n\n    # Try different colors for vertex v\n    for c in range(1, k + 1):\n        if is_safe(v, graph, c):\n            colors[v] = c  # Choose\n\n            if solve_graph_coloring(graph, k, v + 1):  # Explore\n                return True\n\n            colors[v] = 0  # Backtrack (Un-choose)\n\n    return False\n\ngraph = [[2], [3, 4], [0, 5], [1, 4], [1, 3], [2]]\ncolors = [0] * len(graph)\nprint(solve_graph_coloring(graph, 2), colors)\ncolors = [0] * len(graph)\nprint(solve_graph_coloring(graph, 3), colors)"
   },
   {
-    "objectID": "cosc445/slides/backtracking_pruning.html#visualising-the-search-tree",
-    "href": "cosc445/slides/backtracking_pruning.html#visualising-the-search-tree",
-    "title": "Combinatorial Search",
-    "section": "Visualising the Search Tree",
-    "text": "Visualising the Search Tree\nFor n=4 queens, the search tree looks like this:\n                      (start)\n           col0      col1      col2      col3\n           ────      ────      ────      ────\n          [Q...]    [.Q..]    [..Q.]    [...Q]\n          / | \\      ...\n    [Q..] [..Q.] [...Q]       ← row 1 placements\n      ✗     |      ✗          ← col0,diag conflict\n          [..Q.]\n          / | \\\n       ✗    |    ✗\n          [...Q]\n            |\n          [.Q..]  ✓  →  solution: [1, 3, 0, 2]\nPruned branches are shown as ✗ — we never recurse into them."
-  },
-  {
     "objectID": "cosc445/slides/backtracking_pruning.html#complexity-analysis",
     "href": "cosc445/slides/backtracking_pruning.html#complexity-analysis",
     "title": "Combinatorial Search",
@@ -173,41 +159,6 @@
     "title": "Combinatorial Search",
     "section": "Key Design Decisions",
     "text": "Key Design Decisions\nWhen implementing backtracking + pruning, ask yourself:\n\nWhat is a “partial solution”?\n→ What state do I need to track?\nWhat are the choices at each step?\n→ What’s the branching factor?\nWhat makes a partial solution invalid? (backtracking)\n→ Implement this check cheaply\nWhat makes a partial solution hopeless? (pruning)\n→ This is where domain knowledge pays off\nCan I order choices to fail fast?\n→ Try the most constrained variables first (MRV heuristic)"
-  },
-  {
-    "objectID": "cosc445/slides/backtracking_pruning.html#what-we-covered-today",
-    "href": "cosc445/slides/backtracking_pruning.html#what-we-covered-today",
-    "title": "Combinatorial Search",
-    "section": "What We Covered Today",
-    "text": "What We Covered Today\n\n\nBacktracking\n\nBuild solutions incrementally\nAbandon invalid partial solutions immediately\nTemplate: choose → recurse → undo\nExamples: Maze, Subset Sum, N-Queens, Sudoku, Graph Colouring\n\n\nPruning\n\nLook ahead before recursing\nAbandon hopeless (not just invalid) branches\nStrategies: feasibility, bounds, forward checking, symmetry\nCan reduce explored nodes by orders of magnitude\n\n\n\nRule of thumb: backtracking is the engine, pruning is the fuel."
-  },
-  {
-    "objectID": "cosc445/slides/backtracking_pruning.html#practice-problems",
-    "href": "cosc445/slides/backtracking_pruning.html#practice-problems",
-    "title": "Combinatorial Search",
-    "section": "Practice Problems",
-    "text": "Practice Problems\nTry these in order of difficulty:\n\nPermutations — generate all permutations of [1,2,3]\nPhone keypad — given \"23\", list all letter combinations (2→abc, 3→def)\nCombination sum — find all subsets of [2,3,6,7] summing to 7 (elements reusable)\nWord search — find if word \"ABCCED\" exists in a letter grid\nSudoku solver — solve an arbitrary 9×9 board\nN-Queens count — how many solutions for n=12? (add symmetry-breaking pruning)"
-  },
-  {
-    "objectID": "cosc445/slides/backtracking_pruning.html#leetcode-connections",
-    "href": "cosc445/slides/backtracking_pruning.html#leetcode-connections",
-    "title": "Combinatorial Search",
-    "section": "LeetCode Connections",
-    "text": "LeetCode Connections\n\n\n\n\n\n\n\nProblem\nTechnique\n\n\n\n\nLC 46 — Permutations\nBacktracking\n\n\nLC 78 — Subsets\nBacktracking\n\n\nLC 39 — Combination Sum\nBacktracking + bound pruning\n\n\nLC 79 — Word Search\nBacktracking on grid\n\n\nLC 51 — N-Queens\nBacktracking + feasibility pruning\n\n\nLC 37 — Sudoku Solver\nBacktracking + forward checking\n\n\nLC 698 — Partition to K Equal Subsets\nBacktracking + symmetry pruning"
-  },
-  {
-    "objectID": "cosc445/slides/backtracking_pruning.html#one-slide-cheat-sheet",
-    "href": "cosc445/slides/backtracking_pruning.html#one-slide-cheat-sheet",
-    "title": "Combinatorial Search",
-    "section": "One-Slide Cheat Sheet",
-    "text": "One-Slide Cheat Sheet\ndef backtrack(state):\n    # 1. Prune: is there any hope?\n    if not is_promising(state):\n        return\n\n    # 2. Base case: is state a complete solution?\n    if is_complete(state):\n        record(state)\n        return\n\n    # 3. Recurse: try every valid next choice\n    for choice in get_choices(state):\n        make(state, choice)       # commit\n        backtrack(state)          # explore\n        undo(state, choice)       # retreat ← the heart of backtracking\n\nMemorise this template. Every problem in this class follows it."
-  },
-  {
-    "objectID": "cosc445/slides/backtracking_pruning.html#questions",
-    "href": "cosc445/slides/backtracking_pruning.html#questions",
-    "title": "Combinatorial Search",
-    "section": "Questions?",
-    "text": "Questions?\n\n\nKey takeaways:\n\nBacktracking = depth-first search + undo\nPruning = domain-aware early termination\nThe combination turns intractable problems practical\nSame template applies across all examples\n\n\nNext class:\n\nBranch and Bound (optimisation variant)\nMemoisation & Dynamic Programming\nWhen backtracking meets memoisation\n\n\n\n“The art of backtracking is knowing when to give up.”"
   },
   {
     "objectID": "index.html",
@@ -747,12 +698,5 @@
     "title": "COSC445 - Design and Analysis of Algorithms",
     "section": "",
     "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
-  },
-  {
-    "objectID": "cosc445/slides/backtracking_pruning.html#summary",
-    "href": "cosc445/slides/backtracking_pruning.html#summary",
-    "title": "Combinatorial Search",
-    "section": "Summary",
-    "text": "Summary\n\n\nKey takeaways:\n\nBacktracking = depth-first search + undo\nPruning = domain-aware early termination\nThe combination turns intractable problems practical\nSame template applies across all examples\n\n\nNext class:\n\nBranch and Bound (optimisation variant)\nMemoisation & Dynamic Programming\nWhen backtracking meets memoisation\n\n\n\n“The art of backtracking is knowing when to give up.”"
   }
 ]
