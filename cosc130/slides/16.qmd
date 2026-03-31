@@ -266,7 +266,7 @@ root.add(helpIcon, 0, 1, Alignment.RIGHT);
 
 ---
 
-### Slide 6.1 — The `Runnable` Interface: "A Task in a Box"
+### The `Runnable` Interface: "A Task in a Box"
 
 **What is a Task?**
 
@@ -295,19 +295,23 @@ myButton.onClick(myTask); // Give the "box" to the button
 ---
 
 
-### Slide 6.2 — Introducing Lambdas: "The Professional Shortcut"
+### Introducing Lambdas: "The Professional Shortcut"
 
 **Why use a Shortcut?**
+
 Creating a whole new file/class just to print one line of text is a lot of work. Java created **Lambdas** as a way to write that `run()` method directly inside your `onClick`.
 
 **How the Transformation Happens:**
+
 The computer is smart. It knows `onClick` needs a `Runnable`. It knows `Runnable` only has one method (`run`). So, we can delete all the "labels" and just keep the "logic."
 
 **From Class to Lambda:**
-1.  **Start:** `public void run() { System.out.println("Hi"); }`
+
+1.  **Start:** `public class MyTask implements Runnable { public void run() { System.out.println("Hi"); }}`
 2.  **Remove the header:** `() -> { System.out.println("Hi"); }`
 
 **The Lambda Syntax:**
+
 * `()` : The empty parentheses represent the `run()` method's parameters.
 * `->` : The "Arrow" points to the code you want to execute.
 * `{ }` : The "Body" contains your instructions.
@@ -321,15 +325,18 @@ myButton.onClick(() -> {
 
 ---
 
-### Slide 6.3 — Lambda Rules of Thumb
+### Lambda Rules of Thumb
 
 **When to use which?**
+
 * **Use a Lambda** for short, simple tasks (like opening a new page or printing a message).
 * **Use a Formal Class** if your task is 50+ lines of code or needs to be reused in 10 different places.
 
 **The "Brace" Rule:**
+
 * **One line of code?** You can skip the `{ }`.
     `btn.onClick(() -> System.out.println("Fast!"));`
+
 * **Multiple lines of code?** You **must** use `{ }`.
     ```java
     btn.onClick(() -> {
@@ -338,24 +345,9 @@ myButton.onClick(() -> {
     });
     ```
 
-
-
 ---
 
 ## 🟧 SECTION 2: BASIC INPUTS & WIDGETS
-
----
-
-
-###  Component: The Base Class
-
-Every widget in `ezui` is a `Component`.
-
-- Supports `onClick(() -> { ... })`
-    
-- Supports `onHover(() -> { ... })`
-    
-- Ensures a consistent look across the whole app.
     
 ---
 

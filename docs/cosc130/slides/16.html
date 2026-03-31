@@ -412,7 +412,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="slide-6.1-the-runnable-interface-a-task-in-a-box">Slide 6.1 — The <code>Runnable</code> Interface: “A Task in a Box”</h3>
+<h3 id="the-runnable-interface-a-task-in-a-box">The <code>Runnable</code> Interface: “A Task in a Box”</h3>
 <p><strong>What is a Task?</strong></p>
 <p>Usually, when you write <code>System.out.println("Hello")</code>, it runs <strong>immediately</strong>. But in a UI, we need to save that code and run it <strong>later</strong>—only when a user clicks a button.</p>
 <p>To do this, Java uses the <code>Runnable</code> interface. Think of it as a “Contract” that says: <em>“I promise to provide a <code>run()</code> method.”</em></p>
@@ -432,11 +432,22 @@
 </section>
 <section class="slide level2">
 
-<h3 id="slide-6.2-introducing-lambdas-the-professional-shortcut">Slide 6.2 — Introducing Lambdas: “The Professional Shortcut”</h3>
-<p><strong>Why use a Shortcut?</strong> Creating a whole new file/class just to print one line of text is a lot of work. Java created <strong>Lambdas</strong> as a way to write that <code>run()</code> method directly inside your <code>onClick</code>.</p>
-<p><strong>How the Transformation Happens:</strong> The computer is smart. It knows <code>onClick</code> needs a <code>Runnable</code>. It knows <code>Runnable</code> only has one method (<code>run</code>). So, we can delete all the “labels” and just keep the “logic.”</p>
-<p><strong>From Class to Lambda:</strong> 1. <strong>Start:</strong> <code>public void run() { System.out.println("Hi"); }</code> 2. <strong>Remove the header:</strong> <code>() -&gt; { System.out.println("Hi"); }</code></p>
-<p><strong>The Lambda Syntax:</strong> * <code>()</code> : The empty parentheses represent the <code>run()</code> method’s parameters. * <code>-&gt;</code> : The “Arrow” points to the code you want to execute. * <code>{ }</code> : The “Body” contains your instructions.</p>
+<h3 id="introducing-lambdas-the-professional-shortcut">Introducing Lambdas: “The Professional Shortcut”</h3>
+<p><strong>Why use a Shortcut?</strong></p>
+<p>Creating a whole new file/class just to print one line of text is a lot of work. Java created <strong>Lambdas</strong> as a way to write that <code>run()</code> method directly inside your <code>onClick</code>.</p>
+<p><strong>How the Transformation Happens:</strong></p>
+<p>The computer is smart. It knows <code>onClick</code> needs a <code>Runnable</code>. It knows <code>Runnable</code> only has one method (<code>run</code>). So, we can delete all the “labels” and just keep the “logic.”</p>
+<p><strong>From Class to Lambda:</strong></p>
+<ol type="1">
+<li><strong>Start:</strong> <code>public class MyTask implements Runnable { public void run() { System.out.println("Hi"); }}</code></li>
+<li><strong>Remove the header:</strong> <code>() -&gt; { System.out.println("Hi"); }</code></li>
+</ol>
+<p><strong>The Lambda Syntax:</strong></p>
+<ul>
+<li><code>()</code> : The empty parentheses represent the <code>run()</code> method’s parameters.</li>
+<li><code>-&gt;</code> : The “Arrow” points to the code you want to execute.</li>
+<li><code>{ }</code> : The “Body” contains your instructions.</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb7-1"><a></a><span class="co">// The ezui way! No extra classes needed.</span></span>
 <span id="cb7-2"><a></a>myButton<span class="op">.</span><span class="fu">onClick</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
 <span id="cb7-3"><a></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"This runs inside a Lambda!"</span><span class="op">);</span></span>
@@ -444,22 +455,20 @@
 </section>
 <section class="slide level2">
 
-<h3 id="slide-6.3-lambda-rules-of-thumb">Slide 6.3 — Lambda Rules of Thumb</h3>
-<p><strong>When to use which?</strong> * <strong>Use a Lambda</strong> for short, simple tasks (like opening a new page or printing a message). * <strong>Use a Formal Class</strong> if your task is 50+ lines of code or needs to be reused in 10 different places.</p>
-<p><strong>The “Brace” Rule:</strong> * <strong>One line of code?</strong> You can skip the <code>{ }</code>. <code>btn.onClick(() -&gt; System.out.println("Fast!"));</code> * <strong>Multiple lines of code?</strong> You <strong>must</strong> use <code>{ }</code>. <code>java     btn.onClick(() -&gt; {         System.out.println("Line 1");         System.out.println("Line 2");     });</code></p>
+<h3 id="lambda-rules-of-thumb">Lambda Rules of Thumb</h3>
+<p><strong>When to use which?</strong></p>
+<ul>
+<li><strong>Use a Lambda</strong> for short, simple tasks (like opening a new page or printing a message).</li>
+<li><strong>Use a Formal Class</strong> if your task is 50+ lines of code or needs to be reused in 10 different places.</li>
+</ul>
+<p><strong>The “Brace” Rule:</strong></p>
+<ul>
+<li><p><strong>One line of code?</strong> You can skip the <code>{ }</code>. <code>btn.onClick(() -&gt; System.out.println("Fast!"));</code></p></li>
+<li><p><strong>Multiple lines of code?</strong> You <strong>must</strong> use <code>{ }</code>. <code>java   btn.onClick(() -&gt; {       System.out.println("Line 1");       System.out.println("Line 2");   });</code></p></li>
+</ul>
 </section>
 <section id="section-2-basic-inputs-widgets" class="slide level2">
 <h2>🟧 SECTION 2: BASIC INPUTS &amp; WIDGETS</h2>
-</section>
-<section class="slide level2">
-
-<h3 id="component-the-base-class">Component: The Base Class</h3>
-<p>Every widget in <code>ezui</code> is a <code>Component</code>.</p>
-<ul>
-<li><p>Supports <code>onClick(() -&gt; { ... })</code></p></li>
-<li><p>Supports <code>onHover(() -&gt; { ... })</code></p></li>
-<li><p>Ensures a consistent look across the whole app.</p></li>
-</ul>
 </section>
 <section class="slide level2">
 
