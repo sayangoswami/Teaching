@@ -32,7 +32,7 @@
     "href": "cosc445/slides/backtracking_pruning.html#the-backtracking-template",
     "title": "Combinatorial Search",
     "section": "The Backtracking Template",
-    "text": "The Backtracking Template\ndef backtrack(partial_solution):\n    if is_complete(partial_solution):\n        record(partial_solution)          # found a solution!\n        return\n\n    for choice in get_choices(partial_solution):\n        if is_valid(partial_solution, choice):\n            partial_solution.add(choice)  # make the choice\n            backtrack(partial_solution)   # explore further\n            partial_solution.remove(choice)  # undo (backtrack)\n\nThe “undo” step is what makes backtracking work. We explore, retreat, and try something else."
+    "text": "The Backtracking Template\ndef explore(partial_solution):\n    if is_complete(partial_solution):\n        record(partial_solution)          # found a solution!\n        return\n\n    for choice in get_choices(partial_solution):\n        if is_valid(partial_solution, choice):\n            partial_solution.add(choice)    # make the choice\n            explore(partial_solution)       # explore further\n            partial_solution.remove(choice) # undo (backtrack)\n\nThe “undo” step is what makes backtracking work. We explore, retreat, and try something else."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-1-the-maze",
@@ -60,7 +60,7 @@
     "href": "cosc445/slides/backtracking_pruning.html#maze-python-code",
     "title": "Combinatorial Search",
     "section": "Maze — Python Code",
-    "text": "Maze — Python Code\ndef solve(r, c, path):\n  if not (0 &lt;= r &lt; 16 and 0 &lt;= c &lt; 16) or maze[r][c] == 'X' or (r, c) in path:\n   return False\n\n  path.append((r, c))\n\n  # Base Case: Found the Exit\n  if maze[r][c] == 'E':\n   return True\n\n  # Explore: Up, Down, Left, Right\n  for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:\n   if solve(r + dr, c + dc, path):\n    return True\n\n  # Backtrack\n  path.pop()\n  return False\n\nsolution_path = []\nrc = solve(0, 0, solution_path)\nif rc: print(\"Path to exit:\", solution_path)\nelse: print(\"No path found.\")"
+    "text": "Maze — Python Code\ndef solve(r, c, path):\n  if not (0 &lt;= r &lt; 16 and 0 &lt;= c &lt; 16) \n    or maze[r][c] == 'X' or (r, c) in path:\n   return False\n\n  path.append((r, c))\n\n  # Base Case: Found the Exit\n  if maze[r][c] == 'E':\n   return True\n\n  # Explore: Up, Down, Left, Right\n  for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:\n   if solve(r + dr, c + dc, path):\n    return True\n\n  # Backtrack\n  path.pop()\n  return False\n\nsolution_path = []\nrc = solve(0, 0, solution_path)\nif rc: print(\"Path to exit:\", solution_path)\nelse: print(\"No path found.\")"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-2-subsets-that-sum-to-a-target",
@@ -74,7 +74,7 @@
     "href": "cosc445/slides/backtracking_pruning.html#subset-sum-code",
     "title": "Combinatorial Search",
     "section": "Subset Sum — Code",
-    "text": "Subset Sum — Code\ndef subset_sum(nums, target):\n    results = []\n\n    def backtrack(index, current_sum, chosen):\n        if current_sum == target:\n            results.append(chosen[:])  # found a valid subset!\n            return\n        if index == len(nums) or current_sum &gt; target:\n            return                     # dead end\n\n        # Choice 1: include nums[index]\n        chosen.append(nums[index])\n        backtrack(index + 1, current_sum + nums[index], chosen)\n        chosen.pop()  # ← undo\n\n        # Choice 2: skip nums[index]\n        backtrack(index + 1, current_sum, chosen)\n\n    backtrack(0, 0, [])\n    return results\n\nprint(subset_sum([3, 1, 4, 2, 5], 6))\n# → [[3, 1, 2], [1, 5], [4, 2]]"
+    "text": "Subset Sum — Code\ndef subset_sum(nums, target):\n    results = []\n\n    def explore(index, current_sum, chosen):\n        if current_sum == target:\n            results.append(chosen[:])  # found a valid subset!\n            return\n        if index == len(nums) or current_sum &gt; target:\n            return                     # dead end\n\n        # Choice 1: include nums[index]\n        chosen.append(nums[index])\n        explore(index + 1, current_sum + nums[index], chosen)\n        chosen.pop()  # ← undo\n\n        # Choice 2: skip nums[index]\n        explore(index + 1, current_sum, chosen)\n    explore(0, 0, [])\n    return results\n\nprint(subset_sum([3, 1, 4, 2, 5], 6))\n# → [[3, 1, 2], [1, 5], [4, 2]]"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-3-n-queens",
@@ -88,7 +88,7 @@
     "href": "cosc445/slides/backtracking_pruning.html#n-queens-code",
     "title": "Combinatorial Search",
     "section": "N-Queens — Code",
-    "text": "N-Queens — Code\ndef n_queens(n):\n    solutions = []\n    cols = set()\n    diag1 = set()   # row - col (top-left to bottom-right)\n    diag2 = set()   # row + col (top-right to bottom-left)\n\n    def backtrack(row, placement):\n        if row == n:\n            solutions.append(placement[:])\n            return\n\n        for col in range(n):\n            if col in cols or (row-col) in diag1 or (row+col) in diag2:\n                continue   # ← this column/diagonal is attacked\n\n            cols.add(col); diag1.add(row-col); diag2.add(row+col)\n            placement.append(col)\n\n            backtrack(row + 1, placement)   # try next row\n\n            placement.pop()                 # ← backtrack\n            cols.remove(col); diag1.remove(row-col); diag2.remove(row+col)\n\n    backtrack(0, [])\n    return solutions"
+    "text": "N-Queens — Code\ndef n_queens(n):\n    solutions = []\n    cols = set()\n    diag1 = set()   # row - col (top-left to bottom-right)\n    diag2 = set()   # row + col (top-right to bottom-left)\n\n    def explore(row, placement):\n        if row == n:\n            solutions.append(placement[:])\n            return\n\n        for col in range(n):\n            if col in cols or (row-col) in diag1 or (row+col) in diag2:\n                continue   # ← this column/diagonal is attacked\n\n            cols.add(col); diag1.add(row-col); diag2.add(row+col)\n            placement.append(col)\n\n            explore(row + 1, placement)   # try next row\n\n            placement.pop()                 # ← backtrack\n            cols.remove(col); diag1.remove(row-col); diag2.remove(row+col)\n\n    explore(0, [])\n    return solutions"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#n-queens-how-many-solutions",
@@ -102,28 +102,28 @@
     "href": "cosc445/slides/backtracking_pruning.html#what-is-pruning",
     "title": "Combinatorial Search",
     "section": "What Is Pruning?",
-    "text": "What Is Pruning?\nBacktracking abandons paths that are already invalid.\nPruning goes further: abandon paths that cannot possibly lead to a valid solution — even if the partial solution is still technically valid.\n\n\nBacktracking check: &gt; “Is what I’ve done so far broken?”\n\nPruning check: &gt; “Even if I keep going, can I possibly succeed?”\n\nPruning is about look-ahead: reasoning about the future before you explore it."
+    "text": "What Is Pruning?\nBacktracking abandons paths that are already invalid.\nPruning goes further: abandon paths that cannot possibly lead to a valid solution — even if the partial solution is still technically valid.\nBacktracking check:\n\n“Is what I’ve done so far broken?”\n\nPruning check:\n\n“Even if I keep going, can I possibly succeed?”\n\nPruning is about look-ahead: reasoning about the future before you explore it."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#pruning-in-subset-sum",
     "href": "cosc445/slides/backtracking_pruning.html#pruning-in-subset-sum",
     "title": "Combinatorial Search",
     "section": "Pruning in Subset Sum",
-    "text": "Pruning in Subset Sum\nRecall subset_sum([3, 1, 4, 2, 5], target=6).\nSort the array first: [1, 2, 3, 4, 5]\nNow we can prune aggressively:\ndef backtrack(index, current_sum, chosen):\n    if current_sum == target:\n        results.append(chosen[:])\n        return\n\n    for i in range(index, len(nums)):\n        # PRUNING: if even the smallest remaining element\n        # pushes us over the target, stop immediately\n        if current_sum + nums[i] &gt; target:\n            break   # ← all subsequent are even larger (sorted!)\n\n        chosen.append(nums[i])\n        backtrack(i + 1, current_sum + nums[i], chosen)\n        chosen.pop()\nOne extra line. Huge reduction in explored nodes."
+    "text": "Pruning in Subset Sum\nRecall subset_sum([3, 1, 4, 2, 5], target=6).\nSort the array first: [1, 2, 3, 4, 5]\nNow we can prune aggressively:\ndef explore(index, current_sum, chosen):\n    if current_sum == target:\n        results.append(chosen[:])\n        return\n\n    for i in range(index, len(nums)):\n        # PRUNING: if even the smallest remaining element\n        # pushes us over the target, stop immediately\n        if current_sum + nums[i] &gt; target:\n            break   # ← all subsequent are even larger (sorted!)\n\n        chosen.append(nums[i])\n        explore(i + 1, current_sum + nums[i], chosen)\n        chosen.pop()\nOne extra line. Huge reduction in explored nodes."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#pruning-the-promising-check",
     "href": "cosc445/slides/backtracking_pruning.html#pruning-the-promising-check",
     "title": "Combinatorial Search",
     "section": "Pruning: The “Promising” Check",
-    "text": "Pruning: The “Promising” Check\nA standard pattern is to add a is_promising() check before recursing:\ndef backtrack(partial_solution):\n    if not is_promising(partial_solution):  # ← prune here\n        return\n\n    if is_complete(partial_solution):\n        record(partial_solution)\n        return\n\n    for choice in get_choices(partial_solution):\n        partial_solution.add(choice)\n        backtrack(partial_solution)\n        partial_solution.remove(choice)\nis_promising() encodes domain knowledge:\n“Given what I’ve committed to, is there any way to finish successfully?”"
+    "text": "Pruning: The “Promising” Check\nA standard pattern is to add a is_promising() check before recursing:\ndef explore(partial_solution):\n    if not is_promising(partial_solution):  # ← prune here\n        return\n\n    if is_complete(partial_solution):\n        record(partial_solution)\n        return\n\n    for choice in get_choices(partial_solution):\n        partial_solution.add(choice)\n        explore(partial_solution)\n        partial_solution.remove(choice)\nis_promising() encodes domain knowledge:\n“Given what I’ve committed to, is there any way to finish successfully?”"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#example-sudoku-with-constraint-propagation",
     "href": "cosc445/slides/backtracking_pruning.html#example-sudoku-with-constraint-propagation",
     "title": "Combinatorial Search",
-    "section": "Example: Sudoku with Constraint Propagation 🔢",
-    "text": "Example: Sudoku with Constraint Propagation 🔢\nProblem: Fill a 9×9 grid so each row, column, and 3×3 box contains digits 1–9.\nBacktracking alone: pick an empty cell, try digits 1–9.\nPruning idea: before placing a digit, compute the set of still-possible values for every empty cell. If any cell has zero possibilities → prune!\n. 5 . | . . . | . 7 .\n. . 8 | . . . | 4 . .\n. . . | 9 . 3 | . . .\n------+-------+------\n...   (81 cells total)\nAfter placing one digit, you can immediately eliminate many candidates in the same row/column/box."
+    "section": "Example: Sudoku with Constraint Propagation",
+    "text": "Example: Sudoku with Constraint Propagation\nProblem: Fill a 9×9 grid so each row, column, and 3×3 box contains digits 1–9.\n. 5 . | . . . | . 7 .\n. . 8 | . . . | 4 . .\n. . . | 9 . 3 | . . .\n------+-------+------\n...   (81 cells total)\nBacktracking alone: pick an empty cell, try digits 1–9.\nPruning idea: before placing a digit, compute the set of still-possible values for every empty cell.\nAfter placing one digit, you can immediately eliminate many candidates in the same row/column/box.\nIf any cell’s candidate set becomes empty → prune immediately, no need to recurse."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#sudoku-simplified-code",
@@ -143,15 +143,15 @@
     "objectID": "cosc445/slides/backtracking_pruning.html#graph-colouring-a-classic-application",
     "href": "cosc445/slides/backtracking_pruning.html#graph-colouring-a-classic-application",
     "title": "Combinatorial Search",
-    "section": "Graph Colouring: A Classic Application 🎨",
-    "text": "Graph Colouring: A Classic Application 🎨\nProblem: Colour a graph’s vertices with at most k colours so no two adjacent vertices share a colour.\nApplication: map colouring, register allocation, scheduling.\n    A\n   / \\\n  B   C\n   \\ /\n    D\nWith k=3: can we colour A, B, C, D so neighbours differ?"
+    "section": "Graph Colouring: A Classic Application",
+    "text": "Graph Colouring: A Classic Application\nProblem: Colour a graph’s vertices with at most k colours so no two adjacent vertices share a colour.\nApplication: map colouring, register allocation, scheduling.\n\n\n\n\n\nGraph Example\n\n\nWith k=3: can we colour nodes 0, 1, 2, 3, 4, 5 so neighbours differ?\n\n\n\n\n\nGraph Example\n\n\nWith k=3: can we colour nodes 0, 1, 2, 3, 4, 5 so neighbours differ?"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#graph-colouring-code",
     "href": "cosc445/slides/backtracking_pruning.html#graph-colouring-code",
     "title": "Combinatorial Search",
     "section": "Graph Colouring — Code",
-    "text": "Graph Colouring — Code\ndef graph_coloring(graph, k):\n    n = len(graph)\n    color = [-1] * n\n\n    def is_valid(node, c):\n        return all(color[nbr] != c for nbr in graph[node])\n\n    def backtrack(node):\n        if node == n:\n            return True   # all nodes coloured\n\n        for c in range(k):\n            if is_valid(node, c):   # ← feasibility pruning built-in\n                color[node] = c\n                if backtrack(node + 1):\n                    return True\n                color[node] = -1    # ← backtrack\n\n        return False   # no valid colour found → prune this branch\n\n    return color if backtrack(0) else None\nTry it: graph = [[1,2],[0,3],[0,3],[1,2]], k=2 → [0,1,1,0] ✓"
+    "text": "Graph Colouring — Code\ndef is_safe(v, graph, c):\n    for neighbor in graph[v]:\n        if colors[neighbor] == c:\n            return False\n    return True\n\n\ndef solve_graph_coloring(graph, k, v=0):\n    # Base Case: All vertices are colored\n    if v == len(graph):\n        return True\n\n    # Try different colors for vertex v\n    for c in range(1, k + 1):\n        if is_safe(v, graph, c):\n            colors[v] = c  # Choose\n\n            if solve_graph_coloring(graph, k, v + 1):  # Explore\n                return True\n\n            colors[v] = 0  # Backtrack (Un-choose)\n\n    return False\n\ngraph = [[2], [3, 4], [0, 5], [1, 4], [1, 3], [2]]\ncolors = [0] * len(graph)\nprint(solve_graph_coloring(graph, 2), colors)\ncolors = [0] * len(graph)\nprint(solve_graph_coloring(graph, 3), colors)"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#visualising-the-search-tree",
@@ -185,8 +185,8 @@
     "objectID": "cosc445/slides/backtracking_pruning.html#practice-problems",
     "href": "cosc445/slides/backtracking_pruning.html#practice-problems",
     "title": "Combinatorial Search",
-    "section": "Practice Problems 🏋️",
-    "text": "Practice Problems 🏋️\nTry these in order of difficulty:\n\nPermutations — generate all permutations of [1,2,3]\nPhone keypad — given \"23\", list all letter combinations (2→abc, 3→def)\nCombination sum — find all subsets of [2,3,6,7] summing to 7 (elements reusable)\nWord search — find if word \"ABCCED\" exists in a letter grid\nSudoku solver — solve an arbitrary 9×9 board\nN-Queens count — how many solutions for n=12? (add symmetry-breaking pruning)"
+    "section": "Practice Problems",
+    "text": "Practice Problems\nTry these in order of difficulty:\n\nPermutations — generate all permutations of [1,2,3]\nPhone keypad — given \"23\", list all letter combinations (2→abc, 3→def)\nCombination sum — find all subsets of [2,3,6,7] summing to 7 (elements reusable)\nWord search — find if word \"ABCCED\" exists in a letter grid\nSudoku solver — solve an arbitrary 9×9 board\nN-Queens count — how many solutions for n=12? (add symmetry-breaking pruning)"
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#leetcode-connections",
@@ -747,5 +747,12 @@
     "title": "COSC445 - Design and Analysis of Algorithms",
     "section": "",
     "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
+  },
+  {
+    "objectID": "cosc445/slides/backtracking_pruning.html#summary",
+    "href": "cosc445/slides/backtracking_pruning.html#summary",
+    "title": "Combinatorial Search",
+    "section": "Summary",
+    "text": "Summary\n\n\nKey takeaways:\n\nBacktracking = depth-first search + undo\nPruning = domain-aware early termination\nThe combination turns intractable problems practical\nSame template applies across all examples\n\n\nNext class:\n\nBranch and Bound (optimisation variant)\nMemoisation & Dynamic Programming\nWhen backtracking meets memoisation\n\n\n\n“The art of backtracking is knowing when to give up.”"
   }
 ]

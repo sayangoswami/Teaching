@@ -1,7 +1,7 @@
 ---
 title: "Combinatorial Search"
-subtitle: "Backtracking & Pruning"
-author: "Algorithm Design"
+# subtitle: "Backtracking & Pruning"
+# author: "Algorithm Design"
 format:
   revealjs:
     slide-number: true
@@ -102,17 +102,17 @@ This is **backtracking**: systematic exploration with early abandonment.
 
 ## The Backtracking Template
 
-```python
-def backtrack(partial_solution):
+```{.python code-line-numbers=""}
+def explore(partial_solution):
     if is_complete(partial_solution):
         record(partial_solution)          # found a solution!
         return
 
     for choice in get_choices(partial_solution):
         if is_valid(partial_solution, choice):
-            partial_solution.add(choice)  # make the choice
-            backtrack(partial_solution)   # explore further
-            partial_solution.remove(choice)  # undo (backtrack)
+            partial_solution.add(choice)    # make the choice
+            explore(partial_solution)       # explore further
+            partial_solution.remove(choice) # undo (backtrack)
 ```
 
 > The "undo" step is what makes backtracking work.
@@ -189,9 +189,10 @@ maze = \
 
 ##  Maze — Python Code
 
-```{.python code-line-numbers="|2-3||"}
+```{.python code-line-numbers="|2-4|6|8-10|12-15|17-19|"}
 def solve(r, c, path):
-  if not (0 <= r < 16 and 0 <= c < 16) or maze[r][c] == 'X' or (r, c) in path:
+  if not (0 <= r < 16 and 0 <= c < 16) 
+    or maze[r][c] == 'X' or (r, c) in path:
    return False
 
   path.append((r, c))
@@ -224,7 +225,7 @@ else: print("No path found.")
 **Approach:** At each position, decide **include** or **skip** the element.
 
 ::: {.fragment}
-```
+```{.txt}
 backtrack(index=0, current_sum=0, chosen=[])
 ├── include 3  → sum=3
 │   ├── include 1  → sum=4
@@ -249,11 +250,11 @@ backtrack(index=0, current_sum=0, chosen=[])
 
 ## Subset Sum — Code
 
-```python
+```{.python code-line-numbers="|5-9|11-14|16-17|"}
 def subset_sum(nums, target):
     results = []
 
-    def backtrack(index, current_sum, chosen):
+    def explore(index, current_sum, chosen):
         if current_sum == target:
             results.append(chosen[:])  # found a valid subset!
             return
@@ -262,13 +263,12 @@ def subset_sum(nums, target):
 
         # Choice 1: include nums[index]
         chosen.append(nums[index])
-        backtrack(index + 1, current_sum + nums[index], chosen)
+        explore(index + 1, current_sum + nums[index], chosen)
         chosen.pop()  # ← undo
 
         # Choice 2: skip nums[index]
-        backtrack(index + 1, current_sum, chosen)
-
-    backtrack(0, 0, [])
+        explore(index + 1, current_sum, chosen)
+    explore(0, 0, [])
     return results
 
 print(subset_sum([3, 1, 4, 2, 5], 6))
@@ -304,7 +304,7 @@ def n_queens(n):
     diag1 = set()   # row - col (top-left to bottom-right)
     diag2 = set()   # row + col (top-right to bottom-left)
 
-    def backtrack(row, placement):
+    def explore(row, placement):
         if row == n:
             solutions.append(placement[:])
             return
@@ -316,12 +316,12 @@ def n_queens(n):
             cols.add(col); diag1.add(row-col); diag2.add(row+col)
             placement.append(col)
 
-            backtrack(row + 1, placement)   # try next row
+            explore(row + 1, placement)   # try next row
 
             placement.pop()                 # ← backtrack
             cols.remove(col); diag1.remove(row-col); diag2.remove(row+col)
 
-    backtrack(0, [])
+    explore(0, [])
     return solutions
 ```
 
@@ -348,16 +348,14 @@ def n_queens(n):
 
 **Pruning** goes further: abandon paths that *cannot possibly* lead to a valid solution — even if the partial solution is still technically valid.
 
-:::: {.columns}
-::: {.column width="50%"}
+
 **Backtracking check:**
+
 > "Is what I've done so far *broken*?"
-:::
-::: {.column width="50%"}
+
 **Pruning check:**
+
 > "Even if I keep going, *can I possibly succeed*?"
-:::
-::::
 
 Pruning is about **look-ahead**: reasoning about the future before you explore it.
 
@@ -372,7 +370,7 @@ Recall `subset_sum([3, 1, 4, 2, 5], target=6)`.
 Now we can prune aggressively:
 
 ```python
-def backtrack(index, current_sum, chosen):
+def explore(index, current_sum, chosen):
     if current_sum == target:
         results.append(chosen[:])
         return
@@ -384,7 +382,7 @@ def backtrack(index, current_sum, chosen):
             break   # ← all subsequent are even larger (sorted!)
 
         chosen.append(nums[i])
-        backtrack(i + 1, current_sum + nums[i], chosen)
+        explore(i + 1, current_sum + nums[i], chosen)
         chosen.pop()
 ```
 
@@ -397,7 +395,7 @@ One extra line. **Huge** reduction in explored nodes.
 A standard pattern is to add a `is_promising()` check before recursing:
 
 ```python
-def backtrack(partial_solution):
+def explore(partial_solution):
     if not is_promising(partial_solution):  # ← prune here
         return
 
@@ -407,7 +405,7 @@ def backtrack(partial_solution):
 
     for choice in get_choices(partial_solution):
         partial_solution.add(choice)
-        backtrack(partial_solution)
+        explore(partial_solution)
         partial_solution.remove(choice)
 ```
 
@@ -416,13 +414,9 @@ def backtrack(partial_solution):
 
 ---
 
-## Example: Sudoku with Constraint Propagation 🔢
+## Example: Sudoku with Constraint Propagation
 
 **Problem:** Fill a 9×9 grid so each row, column, and 3×3 box contains digits 1–9.
-
-**Backtracking alone:** pick an empty cell, try digits 1–9.
-
-**Pruning idea:** before placing a digit, compute the set of *still-possible* values for every empty cell. If any cell has **zero** possibilities → prune!
 
 ```
 . 5 . | . . . | . 7 .
@@ -432,7 +426,13 @@ def backtrack(partial_solution):
 ...   (81 cells total)
 ```
 
-After placing one digit, you can immediately eliminate many candidates in the same row/column/box.
+**Backtracking alone:** pick an empty cell, try digits 1–9.
+
+**Pruning idea:** before placing a digit, compute the set of *still-possible* values for every empty cell.
+
+After placing one digit, you can immediately *eliminate* many candidates in the same row/column/box.
+
+If any cell's *candidate set becomes empty* → prune immediately, no need to recurse.
 
 ---
 
@@ -464,7 +464,7 @@ def solve_sudoku(board):
 
 ---
 
-## Pruning Strategies: A Taxonomy
+## Pruning Strategies: A Taxonomy {visibility="hidden"}
 
 | Strategy | Idea | Example |
 |----------|------|---------|
@@ -478,51 +478,60 @@ def solve_sudoku(board):
 
 # Part 4 — Graph Colouring
 
-## Graph Colouring: A Classic Application 🎨
+## Graph Colouring: A Classic Application
 
 **Problem:** Colour a graph's vertices with at most k colours so no two adjacent vertices share a colour.
 
 **Application:** map colouring, register allocation, scheduling.
 
-```
-    A
-   / \
-  B   C
-   \ /
-    D
-```
+::: {.r-stack}
+::: {.fragment}
+![Graph Example](images/graph1.excalidraw.png){width=45%}
 
-With k=3: can we colour A, B, C, D so neighbours differ?
+With k=3: can we colour nodes 0, 1, 2, 3, 4, 5 so neighbours differ?
+:::
+::: {.fragment}
+![Graph Example](images/graph2.excalidraw.png){width=45%}
+
+With k=3: can we colour nodes 0, 1, 2, 3, 4, 5 so neighbours differ?
+:::
+:::
 
 ---
 
 ## Graph Colouring — Code
 
 ```python
-def graph_coloring(graph, k):
-    n = len(graph)
-    color = [-1] * n
+def is_safe(v, graph, c):
+    for neighbor in graph[v]:
+        if colors[neighbor] == c:
+            return False
+    return True
 
-    def is_valid(node, c):
-        return all(color[nbr] != c for nbr in graph[node])
 
-    def backtrack(node):
-        if node == n:
-            return True   # all nodes coloured
+def solve_graph_coloring(graph, k, v=0):
+    # Base Case: All vertices are colored
+    if v == len(graph):
+        return True
 
-        for c in range(k):
-            if is_valid(node, c):   # ← feasibility pruning built-in
-                color[node] = c
-                if backtrack(node + 1):
-                    return True
-                color[node] = -1    # ← backtrack
+    # Try different colors for vertex v
+    for c in range(1, k + 1):
+        if is_safe(v, graph, c):
+            colors[v] = c  # Choose
 
-        return False   # no valid colour found → prune this branch
+            if solve_graph_coloring(graph, k, v + 1):  # Explore
+                return True
 
-    return color if backtrack(0) else None
+            colors[v] = 0  # Backtrack (Un-choose)
+
+    return False
+
+graph = [[2], [3, 4], [0, 5], [1, 4], [1, 3], [2]]
+colors = [0] * len(graph)
+print(solve_graph_coloring(graph, 2), colors)
+colors = [0] * len(graph)
+print(solve_graph_coloring(graph, 3), colors)
 ```
-
-Try it: `graph = [[1,2],[0,3],[0,3],[1,2]]`, `k=2` → `[0,1,1,0]` ✓
 
 ---
 
@@ -615,7 +624,7 @@ When implementing backtracking + pruning, ask yourself:
 
 ---
 
-## Practice Problems 🏋️
+## Practice Problems
 
 Try these in order of difficulty:
 
@@ -666,9 +675,7 @@ def backtrack(state):
 
 ---
 
-# Thank You!
-
-## Questions?
+## Summary
 
 :::: {.columns}
 ::: {.column width="60%"}
