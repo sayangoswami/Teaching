@@ -56,16 +56,24 @@ You're in a city. You want to go from **A** to **B**.
 Expand every reachable node equally.  
 Eventually you'll find B... maybe.
 
-![A broad, wasteful search frontier spreading in all directions](https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif){width=80%}
+![A broad, wasteful search frontier spreading in all directions](images/a_grid1.svg){width=60%}
 :::
 ::: {.column}
 **Option 2 — Guided search:**  
 Prefer nodes that are *closer to B* and *cheaply reached*.
+
+![A more focussed elliptical search frontier growing towards the destination](images/a_grid2.svg){width=60%}
 :::
 :::
 <!-- end columns -->
 
-**Question:** In backtracking, when you have multiple branches to try — which one do you try first?
+. . .
+
+**Recap:** In backtracking, when you have multiple branches to try — which one do you try first?
+
+. . . 
+
+*Its arbitrary*. A\* gives us a principled way to rank our choices and always pick the best one first.
 
 ---
 
@@ -196,55 +204,75 @@ def search(graph):
 **Question:** What does this remind you of from earlier in the course?
 
 
+<!-- ---
+
+## Worked Example: Romania Road Map
+
+From A (Arad) to B (Bucharest).
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+![Romania map with cities and road distances](images/roadmap.excalidraw.svg){width=60%}
+:::
+::: {.fragment .fade-in-then-out}
+![Romania map with cities, road distances, and straight-line distances](images/roadmap_wd.excalidraw.svg){width=60%}
+:::
+::: -->
+
+---
+
+## Worked Example: Romania Road Map {auto-animate="true"}
+
+From A (Arad) to B (Bucharest).
+
+![Romania map with cities and road distances](images/roadmap.excalidraw.svg){width=60%}
+
+---
+
+## Worked Example: Romania Road Map {auto-animate="true"}
+
+From A (Arad) to B (Bucharest).
+
+![Romania map with cities, road distances, and straight-line distances](images/roadmap_wd.excalidraw.svg){width=60%}
+
 ---
 
 ## Worked Example: Romania Road Map
 
-From Arad to Bucharest.
-
 ::: {.columns}
 ::: {.column}
-**Straight-line distances to Bucharest (h):**
-
-| City | h (km) |
-|------|--------|
-| Arad | 366 |
-| Sibiu | 253 |
-| Zerind | 374 |
-| Fagaras | 176 |
-| Rimnicu | 193 |
-| **Bucharest** | **0** |
+![Romania map with cities, road distances, and straight-line distances](images/roadmap_wd1.excalidraw.svg){width=110%}
 :::
 ::: {.column}
 ::: {.r-stack}
 ::: {.fragment .fade-in-then-out}
-**Start: Arad**
+**Start: A**
 
-Step 1: Expand Arad.  
-Neighbors: Zerind (75), Sibiu (140), Timisoara (118)
+Step 1: Expand A.  
+Neighbors: Z (75), S (140), T (118)
 
 Compute $f$ for each:
 
-- Zerind: $f = 75 + 374 = 449$
-- Sibiu: $f = 140 + 253 = 393$
-- Timisoara: $f = 118 + 329 = 447$
+- Z: $f = 75 + 374 = 449$
+- S: $f = 140 + 253 = 393$
+- T: $f = 118 + 329 = 447$
 
-**Best: Sibiu** ← expand next
+**Best: S** ← expand next
 
 :::
 ::: {.fragment .fade-in-then-out}
-**Expanding Sibiu** ($g = 140$):
+**Expanding S** ($g = 140$):
 
-Neighbors: Fagaras (99), Rimnicu (80), Oradea (151), Arad (already visited better)
+Neighbors: F (99), R (80), O (151), A (already visited better)
 
 | Node | $g$ | $h$ | $f$ |
 |------|-----|-----|-----|
-| Fagaras | 140+99=239 | 176 | **415** |
-| Rimnicu | 140+80=220 | 193 | **413** |
-| Zerind (old) | — | — | 449 |
-| Timisoara (old) | — | — | 447 |
+| F | 140+99=239 | 176 | **415** |
+| R | 140+80=220 | 193 | **413** |
+| Z (old) | — | — | 449 |
+| T (old) | — | — | 447 |
 
-**Best next: Rimnicu Vilcea** ($f = 413$)
+**Best next: R** ($f = 413$)
 
 :::
 :::
@@ -255,7 +283,7 @@ Neighbors: Fagaras (99), Rimnicu (80), Oradea (151), Arad (already visited bette
 
 . . .
 
-**Question:** We're skipping Zerind and Timisoara for now, even though they're *direct* neighbors of the start.  
+**Question:** We're skipping Z and T for now, even though they're *direct* neighbors of the start.  
 Is this a problem? Could we be missing the optimal path?
 
 
@@ -278,7 +306,7 @@ Is this a problem? Could we be missing the optimal path?
 . . .
 
 ::: {.callout-question}
-🤔 What would happen if we used $h = 0$ for everything?  
+**Question:** What would happen if we used $h = 0$ for everything?  
 *(i.e., we pretend there's no remaining cost)*
 :::
 
@@ -294,7 +322,7 @@ All admissible heuristics give correct answers.
 But *better* heuristics give faster answers.
 
 ::: {.callout-question}
-🤔 Which heuristic explores fewer nodes — a good one or a weak one?
+**Question:** Which heuristic explores fewer nodes — a good one or a weak one?
 :::
 
 . . .
@@ -311,6 +339,29 @@ A **stronger** $h$ (closer to the true cost) → fewer nodes expanded → faster
 
 ::: {.callout-insight}
 The sweet spot: *as close to $h^*$ as possible without going over.*
+:::
+
+---
+
+## Aside: 8-Puzzle tree
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+```
+START               GOAL
+
++---+---+---+       +---+---+---+
+| 7 | 2 | 4 |       | 1 | 2 | 3 |
++---+---+---+       +---+---+---+
+| 5 |   | 6 |       | 4 | 5 | 6 |
++---+---+---+       +---+---+---+
+| 8 | 3 | 1 |       | 7 | 8 |   |
++---+---+---+       +---+---+---+
+```
+:::
+::: {.fragment .fade-in-then-out}
+![A tree depicting the configurations of the 8-puzzle](https://upload.wikimedia.org/wikipedia/commons/f/f4/8-puzzle.jpg){width=70%}
+:::
 :::
 
 ---
@@ -354,7 +405,7 @@ Possible heuristics:
 . . .
 
 ::: {.callout-question}
-🤔 Which is stronger, $h_1$ or $h_2$?  
+**Question:** Which is stronger, $h_1$ or $h_2$?  
 Can you give an example where they differ?
 :::
 
@@ -376,7 +427,7 @@ Manhattan distance dominates misplaced tiles for the 8-puzzle.
 . . .
 
 ::: {.callout-question}
-🤔 If you have two admissible heuristics $h_1$ and $h_2$, can you combine them?  
+**Question:** If you have two admissible heuristics $h_1$ and $h_2$, can you combine them?  
 How?
 :::
 
@@ -395,7 +446,7 @@ Admissibility: $h(n) \leq$ true cost from $n$ to goal.
 $$h(n) \leq \text{cost}(n \to m) + h(m)$$
 
 ::: {.callout-question}
-🤔 What does this inequality look like geometrically?  
+**Question:** What does this inequality look like geometrically?  
 *(Hint: think triangle)*
 :::
 
@@ -432,7 +483,7 @@ Focuses exploration where it *matters*.
 . . .
 
 ::: {.callout-question}
-🤔 When would A\* and Dijkstra's expand the *same* set of nodes?
+**Question:** When would A\* and Dijkstra's expand the *same* set of nodes?
 :::
 
 . . .
@@ -441,7 +492,7 @@ When the goal is the closest node — or when $h$ gives no useful information ab
 
 ---
 
-## Memory: The Elephant in the Room
+## Memory: The Elephant in the Room {visibility="hidden"}
 
 ::: {.callout-warning}
 A\* keeps *all* discovered nodes in memory (the open set).  
@@ -449,7 +500,7 @@ In large state spaces, this can be a problem.
 :::
 
 ::: {.callout-question}
-🤔 In the worst case, how many nodes might A\* store?  
+**Question:** In the worst case, how many nodes might A\* store?  
 *(Think about a grid map with millions of cells)*
 :::
 
@@ -467,7 +518,7 @@ Exponential in path length — A\* can run out of memory before time.
 
 ---
 
-## IDA\*: A\* Meets Iterative Deepening
+## IDA\*: A\* Meets Iterative Deepening {visibility="hidden"}
 
 Remember iterative deepening DFS? Apply it to A\*:
 
@@ -490,12 +541,12 @@ but may re-expand nodes many times.
 :::
 
 ::: {.callout-question}
-🤔 When is re-expansion expensive? When is it cheap?
+**Question:** When is re-expansion expensive? When is it cheap?
 :::
 
 ---
 
-## Practical Example: Grid Pathfinding
+## Practical Example: Grid Pathfinding {visibility="hidden"}
 
 A\* is everywhere in games and robotics. 
 
@@ -510,7 +561,7 @@ A\* is everywhere in games and robotics.
 . . .
 
 ::: {.callout-question}
-🤔 You're on a grid where you can only move up/down/left/right.  
+**Question:** You're on a grid where you can only move up/down/left/right.  
 Is Euclidean distance admissible? Is Manhattan distance admissible?
 :::
 
@@ -521,7 +572,7 @@ Manhattan ✅ and *stronger* for 4-directional movement — dominates Euclidean 
 
 ---
 
-## When A\* Struggles 
+## When A\* Struggles {visibility="hidden"}
 
 A\* isn't always the answer. Think critically:
 
@@ -543,7 +594,7 @@ A\* shines with consistent costs. Extreme variation can cause many re-expansions
 . . .
 
 ::: {.callout-question}
-🤔 Can you think of a real problem where designing an admissible heuristic is very hard?
+**Question:** Can you think of a real problem where designing an admissible heuristic is very hard?
 :::
 
 . . .
@@ -552,10 +603,10 @@ Examples: chess (how do you bound remaining moves?), protein folding, general pl
 
 ---
 
-## Connection to Pruning
+## Connection to Pruning {visibility="hidden"}
 
 ::: {.callout-question}
-🤔 How does A\* relate to the pruning ideas we've discussed?
+**Question:** How does A\* relate to the pruning ideas we've discussed?
 :::
 
 . . .
@@ -573,7 +624,7 @@ Branch-and-bound (which you saw with backtracking) is A\*'s close cousin.
 
 ---
 
-## Summary: The A\* Family
+## Summary: The A\* Family {visibility="hidden"}
 
 ```
          Uninformed                     Informed
@@ -592,7 +643,7 @@ Branch-and-bound (which you saw with backtracking) is A\*'s close cousin.
 
 ---
 
-## Key Takeaways
+## Key Takeaways {visibility="hidden"}
 
 ::: {.three-col}
 ::: {}
@@ -622,7 +673,7 @@ The heuristic is where domain insight lives.
 
 ---
 
-## Discussion Questions 
+## Discussion Questions {visibility="hidden"}
 
 Work through these — some have surprising answers:
 
@@ -638,7 +689,7 @@ Work through these — some have surprising answers:
 
 ---
 
-## Further Exploration
+## Further Exploration {visibility="hidden"}
 
 **Deepen your understanding:**
 
@@ -653,12 +704,12 @@ Work through these — some have surprising answers:
 - **Weighted A\*** — trade optimality for speed: $f = g + w \cdot h$, $w > 1$
 
 ::: {.callout-question}
-🤔 Final thought: In what ways is A\* "intelligent" and in what ways is it still just mechanical?
+**Final thought:** In what ways is A\* "intelligent" and in what ways is it still just mechanical?
 :::
 
 ---
 
-## Appendix: Proof Sketch — A\* Optimality 
+## Appendix: Proof Sketch — A\* Optimality {visibility="hidden"}
 
 *(For the curious — not required)*
 

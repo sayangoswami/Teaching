@@ -239,16 +239,27 @@ Expand every reachable node equally.<br>
 Eventually you’ll find B… maybe.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif" style="width:80.0%"></p>
+<p><img data-src="images/a_grid1.svg" style="width:60.0%"></p>
 <figcaption>A broad, wasteful search frontier spreading in all directions</figcaption>
 </figure>
 </div>
 </div><div class="column">
 <p><strong>Option 2 — Guided search:</strong><br>
 Prefer nodes that are <em>closer to B</em> and <em>cheaply reached</em>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/a_grid2.svg" style="width:60.0%"></p>
+<figcaption>A more focussed elliptical search frontier growing towards the destination</figcaption>
+</figure>
+</div>
 </div></div>
 <!-- end columns -->
-<p><strong>Question:</strong> In backtracking, when you have multiple branches to try — which one do you try first?</p>
+<div class="fragment">
+<p><strong>Recap:</strong> In backtracking, when you have multiple branches to try — which one do you try first?</p>
+</div>
+<div class="fragment">
+<p><em>Its arbitrary</em>. A* gives us a principled way to rank our choices and always pick the best one first.</p>
+</div>
 </section>
 <section id="two-algorithms-to-know-first" class="slide level2">
 <h2>Two Algorithms to Know First</h2>
@@ -361,65 +372,59 @@ If the answer is no, you’re admissible.</p>
 <div class="fragment">
 <p><strong>Notice:</strong> we only update a node if we found a <em>better</em> path to it.</p>
 <p><strong>Question:</strong> What does this remind you of from earlier in the course?</p>
+<!-- ---
+
+## Worked Example: Romania Road Map
+
+From A (Arad) to B (Bucharest).
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+![Romania map with cities and road distances](images/roadmap.excalidraw.svg){width=60%}
+:::
+::: {.fragment .fade-in-then-out}
+![Romania map with cities, road distances, and straight-line distances](images/roadmap_wd.excalidraw.svg){width=60%}
+:::
+::: -->
 </div>
 </section>
-<section id="worked-example-romania-road-map" class="slide level2">
+<section id="worked-example-romania-road-map" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Worked Example: Romania Road Map</h2>
+<p>From A (Arad) to B (Bucharest).</p>
+
+<img data-src="images/roadmap.excalidraw.svg" style="width:60.0%" class="r-stretch quarto-figure-center"><p class="caption">Romania map with cities and road distances</p></section>
+<section id="worked-example-romania-road-map-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Worked Example: Romania Road Map</h2>
+<p>From A (Arad) to B (Bucharest).</p>
+
+<img data-src="images/roadmap_wd.excalidraw.svg" style="width:60.0%" class="r-stretch quarto-figure-center"><p class="caption">Romania map with cities, road distances, and straight-line distances</p></section>
+<section id="worked-example-romania-road-map-2" class="slide level2">
 <h2>Worked Example: Romania Road Map</h2>
-<p>From Arad to Bucharest.</p>
 <div class="columns">
 <div class="column">
-<p><strong>Straight-line distances to Bucharest (h):</strong></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>City</th>
-<th>h (km)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Arad</td>
-<td>366</td>
-</tr>
-<tr class="even">
-<td>Sibiu</td>
-<td>253</td>
-</tr>
-<tr class="odd">
-<td>Zerind</td>
-<td>374</td>
-</tr>
-<tr class="even">
-<td>Fagaras</td>
-<td>176</td>
-</tr>
-<tr class="odd">
-<td>Rimnicu</td>
-<td>193</td>
-</tr>
-<tr class="even">
-<td><strong>Bucharest</strong></td>
-<td><strong>0</strong></td>
-</tr>
-</tbody>
-</table>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/roadmap_wd1.excalidraw.svg" style="width:110.0%"></p>
+<figcaption>Romania map with cities, road distances, and straight-line distances</figcaption>
+</figure>
+</div>
 </div><div class="column">
 <div class="r-stack">
 <div class="fragment fade-in-then-out">
-<p><strong>Start: Arad</strong></p>
-<p>Step 1: Expand Arad.<br>
-Neighbors: Zerind (75), Sibiu (140), Timisoara (118)</p>
+<p><strong>Start: A</strong></p>
+<p>Step 1: Expand A.<br>
+Neighbors: Z (75), S (140), T (118)</p>
 <p>Compute <span class="math inline">\(f\)</span> for each:</p>
 <ul>
-<li>Zerind: <span class="math inline">\(f = 75 + 374 = 449\)</span></li>
-<li>Sibiu: <span class="math inline">\(f = 140 + 253 = 393\)</span></li>
-<li>Timisoara: <span class="math inline">\(f = 118 + 329 = 447\)</span></li>
+<li>Z: <span class="math inline">\(f = 75 + 374 = 449\)</span></li>
+<li>S: <span class="math inline">\(f = 140 + 253 = 393\)</span></li>
+<li>T: <span class="math inline">\(f = 118 + 329 = 447\)</span></li>
 </ul>
-<p><strong>Best: Sibiu</strong> ← expand next</p>
+<p><strong>Best: S</strong> ← expand next</p>
 </div>
 <div class="fragment fade-in-then-out">
-<p><strong>Expanding Sibiu</strong> (<span class="math inline">\(g = 140\)</span>):</p>
-<p>Neighbors: Fagaras (99), Rimnicu (80), Oradea (151), Arad (already visited better)</p>
+<p><strong>Expanding S</strong> (<span class="math inline">\(g = 140\)</span>):</p>
+<p>Neighbors: F (99), R (80), O (151), A (already visited better)</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -431,38 +436,38 @@ Neighbors: Zerind (75), Sibiu (140), Timisoara (118)</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Fagaras</td>
+<td>F</td>
 <td>140+99=239</td>
 <td>176</td>
 <td><strong>415</strong></td>
 </tr>
 <tr class="even">
-<td>Rimnicu</td>
+<td>R</td>
 <td>140+80=220</td>
 <td>193</td>
 <td><strong>413</strong></td>
 </tr>
 <tr class="odd">
-<td>Zerind (old)</td>
+<td>Z (old)</td>
 <td>—</td>
 <td>—</td>
 <td>449</td>
 </tr>
 <tr class="even">
-<td>Timisoara (old)</td>
+<td>T (old)</td>
 <td>—</td>
 <td>—</td>
 <td>447</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Best next: Rimnicu Vilcea</strong> (<span class="math inline">\(f = 413\)</span>)</p>
+<p><strong>Best next: R</strong> (<span class="math inline">\(f = 413\)</span>)</p>
 </div>
 </div>
 </div></div>
 <!-- end columns -->
 <div class="fragment">
-<p><strong>Question:</strong> We’re skipping Zerind and Timisoara for now, even though they’re <em>direct</em> neighbors of the start.<br>
+<p><strong>Question:</strong> We’re skipping Z and T for now, even though they’re <em>direct</em> neighbors of the start.<br>
 Is this a problem? Could we be missing the optimal path?</p>
 </div>
 </section>
@@ -481,7 +486,7 @@ Is this a problem? Could we be missing the optimal path?</p>
 </ul>
 <div class="fragment">
 <div class="callout-question">
-<p>🤔 What would happen if we used <span class="math inline">\(h = 0\)</span> for everything?<br>
+<p><strong>Question:</strong> What would happen if we used <span class="math inline">\(h = 0\)</span> for everything?<br>
 <em>(i.e., we pretend there’s no remaining cost)</em></p>
 </div>
 </div>
@@ -494,7 +499,7 @@ Is this a problem? Could we be missing the optimal path?</p>
 <p>All admissible heuristics give correct answers.<br>
 But <em>better</em> heuristics give faster answers.</p>
 <div class="callout-question">
-<p>🤔 Which heuristic explores fewer nodes — a good one or a weak one?</p>
+<p><strong>Question:</strong> Which heuristic explores fewer nodes — a good one or a weak one?</p>
 </div>
 <div class="fragment">
 <p>A <strong>stronger</strong> <span class="math inline">\(h\)</span> (closer to the true cost) → fewer nodes expanded → faster.</p>
@@ -524,6 +529,30 @@ But <em>better</em> heuristics give faster answers.</p>
 <div class="fragment">
 <div class="callout-insight">
 <p>The sweet spot: <em>as close to <span class="math inline">\(h^*\)</span> as possible without going over.</em></p>
+</div>
+</div>
+</section>
+<section id="aside-8-puzzle-tree" class="slide level2">
+<h2>Aside: 8-Puzzle tree</h2>
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
+<pre><code>START               GOAL
+
++---+---+---+       +---+---+---+
+| 7 | 2 | 4 |       | 1 | 2 | 3 |
++---+---+---+       +---+---+---+
+| 5 |   | 6 |       | 4 | 5 | 6 |
++---+---+---+       +---+---+---+
+| 8 | 3 | 1 |       | 7 | 8 |   |
++---+---+---+       +---+---+---+</code></pre>
+</div>
+<div class="fragment fade-in-then-out">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/f/f4/8-puzzle.jpg" style="width:70.0%"></p>
+<figcaption>A tree depicting the configurations of the 8-puzzle</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -559,7 +588,7 @@ But <em>better</em> heuristics give faster answers.</p>
 </div>
 <div class="fragment">
 <div class="callout-question">
-<p>🤔 Which is stronger, <span class="math inline">\(h_1\)</span> or <span class="math inline">\(h_2\)</span>?<br>
+<p><strong>Question:</strong> Which is stronger, <span class="math inline">\(h_1\)</span> or <span class="math inline">\(h_2\)</span>?<br>
 Can you give an example where they differ?</p>
 </div>
 </div>
@@ -575,7 +604,7 @@ Manhattan distance dominates misplaced tiles for the 8-puzzle.</p>
 </div>
 <div class="fragment">
 <div class="callout-question">
-<p>🤔 If you have two admissible heuristics <span class="math inline">\(h_1\)</span> and <span class="math inline">\(h_2\)</span>, can you combine them?<br>
+<p><strong>Question:</strong> If you have two admissible heuristics <span class="math inline">\(h_1\)</span> and <span class="math inline">\(h_2\)</span>, can you combine them?<br>
 How?</p>
 </div>
 </div>
@@ -589,7 +618,7 @@ How?</p>
 <p><strong>Consistency</strong> (also called <em>monotonicity</em>): for every edge <span class="math inline">\(n \to m\)</span>:</p>
 <p><span class="math display">\[h(n) \leq \text{cost}(n \to m) + h(m)\]</span></p>
 <div class="callout-question">
-<p>🤔 What does this inequality look like geometrically?<br>
+<p><strong>Question:</strong> What does this inequality look like geometrically?<br>
 <em>(Hint: think triangle)</em></p>
 </div>
 <div class="fragment">
@@ -616,229 +645,23 @@ With a consistent heuristic, every node is expanded <em>at most once</em> — no
 </div>
 <div class="fragment">
 <div class="callout-question">
-<p>🤔 When would A* and Dijkstra’s expand the <em>same</em> set of nodes?</p>
+<p><strong>Question:</strong> When would A* and Dijkstra’s expand the <em>same</em> set of nodes?</p>
 </div>
 </div>
 <div class="fragment">
 <p>When the goal is the closest node — or when <span class="math inline">\(h\)</span> gives no useful information about direction.</p>
 </div>
 </section>
-<section id="memory-the-elephant-in-the-room" class="slide level2">
-<h2>Memory: The Elephant in the Room</h2>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Warning</strong></p>
-</div>
-<div class="callout-content">
-<p>A* keeps <em>all</em> discovered nodes in memory (the open set).<br>
-In large state spaces, this can be a problem.</p>
-</div>
-</div>
-</div>
-<div class="callout-question">
-<p>🤔 In the worst case, how many nodes might A* store?<br>
-<em>(Think about a grid map with millions of cells)</em></p>
-</div>
-<div class="fragment">
-<p>Exponential in path length — A* can run out of memory before time.</p>
-<p><strong>Variants that trade memory for time:</strong></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Algorithm</th>
-<th>Memory</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A*</td>
-<td>Exponential</td>
-<td>Optimal, complete</td>
-</tr>
-<tr class="even">
-<td>IDA*</td>
-<td>Linear (<span class="math inline">\(O(d)\)</span>)</td>
-<td>Uses iterative deepening on <span class="math inline">\(f\)</span></td>
-</tr>
-<tr class="odd">
-<td>SMA*</td>
-<td>Fixed budget</td>
-<td>Drops worst nodes when full</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="ida-a-meets-iterative-deepening" class="slide level2">
-<h2>IDA*: A* Meets Iterative Deepening</h2>
-<p>Remember iterative deepening DFS? Apply it to A*:</p>
-<p><strong>IDA* idea:</strong> instead of depth limit, use an <strong><span class="math inline">\(f\)</span>-cost limit</strong>.</p>
-<pre><code>threshold = h(start)
-repeat:
-    result = depth_first_search(start, threshold)
-    if result == GOAL: return it
-    threshold = minimum f exceeded in last search</code></pre>
-<div class="fragment">
-<div class="callout-insight">
-<p>IDA* is complete and optimal (with admissible <span class="math inline">\(h\)</span>),<br>
-uses only <span class="math inline">\(O(d)\)</span> memory,<br>
-but may re-expand nodes many times.</p>
-</div>
-<div class="callout-question">
-<p>🤔 When is re-expansion expensive? When is it cheap?</p>
-</div>
-</div>
-</section>
-<section id="practical-example-grid-pathfinding" class="slide level2">
-<h2>Practical Example: Grid Pathfinding</h2>
-<p>A* is everywhere in games and robotics.</p>
-<p><strong>Setup:</strong> 2D grid, some cells blocked. Find shortest path.</p>
-<p><strong>Heuristics to consider:</strong></p>
-<ul>
-<li>Manhattan distance (no diagonals): <span class="math inline">\(|x_1-x_2| + |y_1-y_2|\)</span></li>
-<li>Euclidean distance (with diagonals): <span class="math inline">\(\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}\)</span></li>
-<li>Chebyshev distance (8-directional): <span class="math inline">\(\max(|x_1-x_2|, |y_1-y_2|)\)</span></li>
-</ul>
-<div class="fragment">
-<div class="callout-question">
-<p>🤔 You’re on a grid where you can only move up/down/left/right.<br>
-Is Euclidean distance admissible? Is Manhattan distance admissible?</p>
-</div>
-</div>
-<div class="fragment">
-<p>Euclidean ✅ (straight line ≤ any path).<br>
-Manhattan ✅ and <em>stronger</em> for 4-directional movement — dominates Euclidean here!</p>
-</div>
-</section>
-<section id="when-a-struggles" class="slide level2">
-<h2>When A* Struggles</h2>
-<p>A* isn’t always the answer. Think critically:</p>
-<div class="three-col">
-<h3 id="state-space-is-huge">State space is huge</h3>
-<p>Millions/billions of states → memory explodes. Consider IDA* or beam search.</p>
-<h3 id="no-good-heuristic">No good heuristic</h3>
-<p>If <span class="math inline">\(h\)</span> is weak (near 0), A* is barely better than Dijkstra’s.</p>
-<h3 id="edge-costs-vary-wildly">Edge costs vary wildly</h3>
-<p>A* shines with consistent costs. Extreme variation can cause many re-expansions.</p>
-</div>
-<div class="fragment">
-<div class="callout-question">
-<p>🤔 Can you think of a real problem where designing an admissible heuristic is very hard?</p>
-</div>
-</div>
-<div class="fragment">
-<p>Examples: chess (how do you bound remaining moves?), protein folding, general planning.</p>
-</div>
-</section>
-<section id="connection-to-pruning" class="slide level2">
-<h2>Connection to Pruning</h2>
-<div class="callout-question">
-<p>🤔 How does A* relate to the pruning ideas we’ve discussed?</p>
-</div>
-<div class="fragment">
-<p>A* <strong>prunes implicitly</strong>:</p>
-<ul>
-<li>Nodes with high <span class="math inline">\(f\)</span> values are pushed to the back of the queue</li>
-<li>If a better path to a node is found, the old (expensive) path entry is effectively pruned</li>
-<li>IDA* uses <span class="math inline">\(f\)</span>-threshold as an <em>explicit</em> pruning bound — very similar to branch-and-bound!</li>
-</ul>
-<div class="callout-insight">
-<p>A* is a form of <strong>best-first search with informed pruning</strong>.<br>
-Branch-and-bound (which you saw with backtracking) is A*’s close cousin.</p>
-</div>
-</div>
-</section>
-<section id="summary-the-a-family" class="slide level2">
-<h2>Summary: The A* Family</h2>
-<pre><code>         Uninformed                     Informed
-             │                              │
-      ┌──────┴──────┐              ┌────────┴────────┐
-      │             │              │                 │
-    BFS         Dijkstra's       Greedy          A* Search
-  (fewest       (cheapest       (smallest        f = g + h
-   edges)        g cost)         h only)        [optimal ✓]
-                                                     │
-                                           ┌─────────┴──────────┐
-                                           │                     │
-                                         IDA*                  SMA*
-                                      (low memory)         (fixed memory)</code></pre>
-</section>
-<section id="key-takeaways" class="slide level2">
-<h2>Key Takeaways</h2>
-<div class="three-col">
-<h3 id="the-formula">The formula</h3>
-<p><span class="math inline">\(f(n) = g(n) + h(n)\)</span><br>
-Past cost + estimated future cost.<br>
-Simple, powerful.</p>
-<h3 id="the-constraint">The constraint</h3>
-<p><span class="math inline">\(h\)</span> must be <strong>admissible</strong> (never overestimate).<br>
-This guarantees optimality.</p>
-<h3 id="the-tradeoff">The tradeoff</h3>
-<p>Better <span class="math inline">\(h\)</span> → faster search.<br>
-But memory grows. IDA* saves memory at cost of re-expansion.</p>
-</div>
-<div class="fragment">
-<div class="callout-insight">
-<p>A* shows a deep idea in CS: <strong>good algorithms encode knowledge about the problem.</strong><br>
-The heuristic is where domain insight lives.</p>
-</div>
-</div>
-</section>
-<section id="discussion-questions" class="slide level2">
-<h2>Discussion Questions</h2>
-<p>Work through these — some have surprising answers:</p>
-<ol type="1">
-<li><p>If the graph has no edge costs (all edges cost 1), does A* still offer an advantage over BFS?</p></li>
-<li><p>You have two admissible heuristics. Is their <em>average</em> admissible? Is their <em>max</em>? Their <em>sum</em>?</p></li>
-<li><p>A friend says: “I’ll use <span class="math inline">\(h(n) = h^*(n)\)</span> — the true remaining cost. A* will be perfect!” What’s the catch?</p></li>
-<li><p>For the 15-puzzle (4×4 tile sliding), would you prefer Manhattan distance or a pattern database heuristic? Why?</p></li>
-<li><p>Imagine A* on a graph where the goal is <em>anywhere in a set</em> of nodes. How do you adapt it?</p></li>
-</ol>
-</section>
-<section id="further-exploration" class="slide level2">
-<h2>Further Exploration</h2>
-<p><strong>Deepen your understanding:</strong></p>
-<ul>
-<li>Implement A* on a grid and visualize which cells get expanded (very instructive!)</li>
-<li>Try the 8-puzzle with <span class="math inline">\(h_1\)</span> (misplaced) vs <span class="math inline">\(h_2\)</span> (Manhattan) — count expanded nodes</li>
-<li>Read about <strong>pattern databases</strong> — precomputed heuristics for combinatorial puzzles</li>
-</ul>
-<p><strong>Related algorithms worth knowing:</strong></p>
-<ul>
-<li><strong>Theta*</strong> — A* with any-angle paths (great for robotics)</li>
-<li><strong>D*</strong> / <strong>D* Lite</strong> — A* for dynamic environments where costs change</li>
-<li><strong>Weighted A*</strong> — trade optimality for speed: <span class="math inline">\(f = g + w \cdot h\)</span>, <span class="math inline">\(w &gt; 1\)</span></li>
-</ul>
-<div class="callout-question">
-<p>🤔 Final thought: In what ways is A* “intelligent” and in what ways is it still just mechanical?</p>
-</div>
-</section>
-<section id="appendix-proof-sketch-a-optimality" class="slide level2">
-<h2>Appendix: Proof Sketch — A* Optimality</h2>
-<p><em>(For the curious — not required)</em></p>
-<p><strong>Claim:</strong> If <span class="math inline">\(h\)</span> is admissible, A* returns an optimal path.</p>
-<p><strong>Sketch:</strong></p>
-<ol type="1">
-<li>Let <span class="math inline">\(C^*\)</span> = optimal path cost. Let <span class="math inline">\(G\)</span> = goal node found by A*.</li>
-<li>Suppose A* returns a suboptimal path, so <span class="math inline">\(g(G) &gt; C^*\)</span>.</li>
-<li>There must exist a node <span class="math inline">\(n'\)</span> on the <em>optimal</em> path that’s still in the open set.</li>
-<li>Since <span class="math inline">\(h\)</span> is admissible: <span class="math inline">\(f(n') = g(n') + h(n') \leq C^*\)</span></li>
-<li>But A* chose <span class="math inline">\(G\)</span> over <span class="math inline">\(n'\)</span>, so <span class="math inline">\(f(G) \leq f(n') \leq C^*\)</span></li>
-<li>Since <span class="math inline">\(G\)</span> is a goal node, <span class="math inline">\(h(G) = 0\)</span>, so <span class="math inline">\(f(G) = g(G) &gt; C^*\)</span>. Contradiction! ∎</li>
-</ol>
-<div class="fragment">
-<div class="callout-insight">
-<p>The proof is a contradiction: if A* missed the optimal path, it would have had to prefer a worse node over a node on the optimal path — but admissibility prevents that.</p>
-</div>
 
 
-</div>
-</section></section>
+
+
+
+
+
+
+
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

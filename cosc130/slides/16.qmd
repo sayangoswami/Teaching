@@ -47,8 +47,12 @@ The `Window` is the "Master Container." It creates a modern, split-pane interfac
 ::: {.fragment .fade-in-then-out}
 **The 4-Step Setup**
 
-To launch your application, follow this exact sequence in your `Main.java`:
+To launch your application, follow this exact sequence in your `Main.java`::: {.fragment}
+The program wont compile yet, because we haven't defined the Login and Dashboard pages, but this is the skeleton you will build on top of.
+
+:::
 ```java
+
 // 1. Set the Style (Do this FIRST!)
 Theme.initialize("Light", "Modern");
 
