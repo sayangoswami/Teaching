@@ -1,0 +1,680 @@
+---
+title: "A* Search"
+# subtitle: "Finding the Best Path — Smartly"
+# author: "Algorithms Course"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true    
+---
+
+# A\* Search 
+
+**From "explore everything" to "explore smart"**
+
+::: {.callout-insight}
+We've seen how backtracking avoids dead ends.  
+Today: how to *choose* which paths to explore first.
+:::
+
+---
+
+## Where We've Been
+
+You already know:
+
+- **Backtracking** — explore, undo, try another way
+- **Pruning** — skip branches that can't possibly work
+
+. . .
+
+**Question:** In backtracking, when you have multiple branches to try — which one do you try first?
+
+
+. . .
+
+Usually... whichever comes first. **Arbitrary order.**
+
+. . .
+
+What if we could *rank* our choices and always try the most promising one?  
+That's the core idea behind A\*.
+
+---
+
+## Motivating Example: Navigation 
+
+You're in a city. You want to go from **A** to **B**.
+
+::: {.columns}
+::: {.column}
+**Option 1 — Blind search:**  
+Expand every reachable node equally.  
+Eventually you'll find B... maybe.
+
+![A broad, wasteful search frontier spreading in all directions](https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif){width=80%}
+:::
+::: {.column}
+**Option 2 — Guided search:**  
+Prefer nodes that are *closer to B* and *cheaply reached*.
+:::
+:::
+<!-- end columns -->
+
+**Question:** In backtracking, when you have multiple branches to try — which one do you try first?
+
+---
+
+## Two Algorithms to Know First
+
+Before A\*, let's name two simpler cousins:
+
+| Algorithm | Strategy | Blind to... |
+|-----------|----------|-------------|
+| **BFS** | Expand shallowest node first | Cost of edges |
+| **Dijkstra's** | Expand cheapest-cost node first | Direction to goal |
+| **A\*** | Expand best *estimated total cost* | Nothing — uses both! |
+
+. . .
+
+::: {.callout-insight}
+A\* = Dijkstra's + a compass pointing toward the goal.
+:::
+
+---
+
+## The Key Insight: Two Costs
+
+For every node $n$ we're considering, A\* tracks:
+
+$$f(n) = g(n) + h(n)$$
+
+::: {.columns}
+::: {.column width="33%"}
+### $g(n)$
+**Cost so far**  
+How much did it cost to *reach* this node from the start?  
+*(exact — we know this)*
+:::
+::: {.column width="33%"}
+### $h(n)$
+**Estimated cost ahead**  
+How far are we *still* from the goal?  
+*(a guess — a heuristic)*
+:::
+::: {.column width="33%"}
+### $f(n)$
+**Total estimated cost**  
+Our best estimate of the *whole* path cost through $n$.  
+*(what A\* uses to decide)*
+:::
+:::
+<!-- end columns -->
+
+. . .
+
+**Question:** $g$ is exact. $h$ is a guess. Why not just use $g$ and be precise?
+
+---
+
+## The Heuristic $h(n)$: A Guess With Rules
+
+$h(n)$ is an estimate of the cost from $n$ to the goal.
+
+**You get to design it** — but it must follow one key rule.
+
+
+**Admissibility rule:** $h(n)$ must *never overestimate* the true cost.
+
+$$h(n) \leq h^*(n) \quad \text{(true cost to goal)}$$
+
+
+. . .
+
+
+**Question:**  Why would overestimating be a problem?  
+Think: if $h$ overestimates, what might A\* skip?
+
+. . .
+
+It might skip the *optimal path* — mistakenly thinking it's too expensive.
+
+---
+
+## Classic Heuristic: Straight-Line Distance
+
+For navigation on a map, a natural heuristic is:
+
+$$h(n) = \text{straight-line distance from } n \text{ to goal}$$
+
+
+**Question:** Is straight-line distance admissible? Can the real road ever be *shorter* than a straight line?
+
+. . .
+
+No! Roads can only be *at least as long* as the straight line.  
+So straight-line distance **never overestimates**. ✅ Admissible.
+
+. . .
+
+Admissibility is easy to reason about intuitively:  
+*"Could the real cost ever be less than my guess?"*  
+If the answer is no, you're admissible.
+
+---
+
+## How A\* Works: The Algorithm
+
+```{.python code-line-numbers=""}
+def search(graph):
+  open_set = priority_queue()  # ordered by f(n)
+  start = graph.start_node
+  f[start] = g[start] + h[start]
+  open_set.add(start, f[start])  # add the start node with priority value f
+
+  while open_set is not empty:
+    node = open_set.pop()  # get the node with lowest f(n)
+    if node == goal:
+      return reconstruct_path(node) # found goal! reconstruct path back to source
+    for neighbor in graph.neighbors(node):
+      if neighbor not in open_set:
+        g[neighbor] = g[node] + cost(node, neighbor)
+        f[neighbor] = g[neighbor] + h[neighbor]
+        open_set.add(neighbor, f[neighbor])
+  return FAILURE
+```
+
+. . .
+
+
+**Notice:** we only update a node if we found a *better* path to it.  
+
+**Question:** What does this remind you of from earlier in the course?
+
+
+---
+
+## Worked Example: Romania Road Map
+
+From Arad to Bucharest.
+
+::: {.columns}
+::: {.column}
+**Straight-line distances to Bucharest (h):**
+
+| City | h (km) |
+|------|--------|
+| Arad | 366 |
+| Sibiu | 253 |
+| Zerind | 374 |
+| Fagaras | 176 |
+| Rimnicu | 193 |
+| **Bucharest** | **0** |
+:::
+::: {.column}
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+**Start: Arad**
+
+Step 1: Expand Arad.  
+Neighbors: Zerind (75), Sibiu (140), Timisoara (118)
+
+Compute $f$ for each:
+
+- Zerind: $f = 75 + 374 = 449$
+- Sibiu: $f = 140 + 253 = 393$
+- Timisoara: $f = 118 + 329 = 447$
+
+**Best: Sibiu** ← expand next
+
+:::
+::: {.fragment .fade-in-then-out}
+**Expanding Sibiu** ($g = 140$):
+
+Neighbors: Fagaras (99), Rimnicu (80), Oradea (151), Arad (already visited better)
+
+| Node | $g$ | $h$ | $f$ |
+|------|-----|-----|-----|
+| Fagaras | 140+99=239 | 176 | **415** |
+| Rimnicu | 140+80=220 | 193 | **413** |
+| Zerind (old) | — | — | 449 |
+| Timisoara (old) | — | — | 447 |
+
+**Best next: Rimnicu Vilcea** ($f = 413$)
+
+:::
+:::
+
+:::
+:::
+<!-- end columns -->
+
+. . .
+
+**Question:** We're skipping Zerind and Timisoara for now, even though they're *direct* neighbors of the start.  
+Is this a problem? Could we be missing the optimal path?
+
+
+---
+
+## Why A\* Doesn't Miss the Optimal Path
+
+::: {.callout-insight}
+**Key guarantee:** If $h$ is admissible, A\* will find the optimal path.
+:::
+
+**Intuition:**
+
+- The optimal path has some true cost $C^*$
+- Any unexplored node on the optimal path has $f \leq C^*$  
+  (because $h$ never overestimates what remains)
+- A\* only stops when it *pops* the goal from the queue
+- When the goal is popped, its $g$ value *is* the optimal cost
+
+. . .
+
+::: {.callout-question}
+🤔 What would happen if we used $h = 0$ for everything?  
+*(i.e., we pretend there's no remaining cost)*
+:::
+
+. . .
+
+$h = 0$ → $f = g$ → A\* becomes Dijkstra's! Still correct, just slower.
+
+---
+
+## Heuristic Quality Matters 
+
+All admissible heuristics give correct answers.  
+But *better* heuristics give faster answers.
+
+::: {.callout-question}
+🤔 Which heuristic explores fewer nodes — a good one or a weak one?
+:::
+
+. . .
+
+A **stronger** $h$ (closer to the true cost) → fewer nodes expanded → faster.
+
+| Heuristic | Behavior |
+|-----------|----------|
+| $h = 0$ | Dijkstra's — explores many nodes |
+| $h = h^*$ (perfect) | Only explores nodes on the optimal path |
+| $h > h^*$ (inadmissible) | Fast, but **may miss optimal** |
+
+. . .
+
+::: {.callout-insight}
+The sweet spot: *as close to $h^*$ as possible without going over.*
+:::
+
+---
+
+## Designing Heuristics: Relaxed Problems
+
+A powerful technique: **solve an easier version of the problem**.
+
+> "What if some constraints didn't exist?"
+
+. . .
+
+**8-Puzzle example:** move tiles to reach goal configuration.
+
+::: {.columns}
+::: {.column}
+```
+START               GOAL
+
++---+---+---+       +---+---+---+
+| 7 | 2 | 4 |       | 1 | 2 | 3 |
++---+---+---+       +---+---+---+
+| 5 |   | 6 |       | 4 | 5 | 6 |
++---+---+---+       +---+---+---+
+| 8 | 3 | 1 |       | 7 | 8 |   |
++---+---+---+       +---+---+---+
+```
+:::
+::: {.column}
+Possible heuristics:
+
+- **$h_1$: Misplaced tiles** — count tiles not in their goal position  
+  *(Relaxation: tiles can teleport anywhere)*
+
+- **$h_2$: Manhattan distance** — sum of how far each tile needs to move  
+  *(Relaxation: tiles can pass through each other)*
+:::
+:::
+<!-- end columns -->
+
+. . .
+
+::: {.callout-question}
+🤔 Which is stronger, $h_1$ or $h_2$?  
+Can you give an example where they differ?
+:::
+
+---
+
+## Dominance: Comparing Heuristics
+
+We say $h_2$ **dominates** $h_1$ if:
+
+$$h_2(n) \geq h_1(n) \quad \text{for all } n$$
+
+(and both are admissible)
+
+::: {.callout-insight}
+A dominating heuristic always expands **no more nodes** than the dominated one.  
+Manhattan distance dominates misplaced tiles for the 8-puzzle.
+:::
+
+. . .
+
+::: {.callout-question}
+🤔 If you have two admissible heuristics $h_1$ and $h_2$, can you combine them?  
+How?
+:::
+
+. . .
+
+Yes! $h(n) = \max(h_1(n), h_2(n))$ is admissible and dominates both.
+
+---
+
+## Consistency (a Stronger Property) 
+
+Admissibility: $h(n) \leq$ true cost from $n$ to goal.
+
+**Consistency** (also called *monotonicity*): for every edge $n \to m$:
+
+$$h(n) \leq \text{cost}(n \to m) + h(m)$$
+
+::: {.callout-question}
+🤔 What does this inequality look like geometrically?  
+*(Hint: think triangle)*
+:::
+
+. . .
+
+It's the **triangle inequality** — the heuristic can't drop faster than the actual edge cost.
+
+::: {.callout-insight}
+Consistency → Admissibility (but not vice versa).  
+With a consistent heuristic, every node is expanded *at most once* — no re-expansion!
+:::
+
+---
+
+## A\* vs. Dijkstra's: Visualized
+
+::: {.two-col}
+::: {}
+**Dijkstra's** ($h = 0$)
+
+Expands in uniform rings of equal cost — like ripples in a pond.
+
+Explores in *all* directions equally.
+:::
+::: {}
+**A\*** (good $h$)
+
+Expands in an ellipse stretching toward the goal.
+
+Focuses exploration where it *matters*.
+:::
+:::
+
+. . .
+
+::: {.callout-question}
+🤔 When would A\* and Dijkstra's expand the *same* set of nodes?
+:::
+
+. . .
+
+When the goal is the closest node — or when $h$ gives no useful information about direction.
+
+---
+
+## Memory: The Elephant in the Room
+
+::: {.callout-warning}
+A\* keeps *all* discovered nodes in memory (the open set).  
+In large state spaces, this can be a problem.
+:::
+
+::: {.callout-question}
+🤔 In the worst case, how many nodes might A\* store?  
+*(Think about a grid map with millions of cells)*
+:::
+
+. . .
+
+Exponential in path length — A\* can run out of memory before time.
+
+**Variants that trade memory for time:**
+
+| Algorithm | Memory | Notes |
+|-----------|--------|-------|
+| A\* | Exponential | Optimal, complete |
+| IDA\* | Linear ($O(d)$) | Uses iterative deepening on $f$ |
+| SMA\* | Fixed budget | Drops worst nodes when full |
+
+---
+
+## IDA\*: A\* Meets Iterative Deepening
+
+Remember iterative deepening DFS? Apply it to A\*:
+
+**IDA\* idea:** instead of depth limit, use an **$f$-cost limit**.
+
+```
+threshold = h(start)
+repeat:
+    result = depth_first_search(start, threshold)
+    if result == GOAL: return it
+    threshold = minimum f exceeded in last search
+```
+
+. . .
+
+::: {.callout-insight}
+IDA\* is complete and optimal (with admissible $h$),  
+uses only $O(d)$ memory,  
+but may re-expand nodes many times.
+:::
+
+::: {.callout-question}
+🤔 When is re-expansion expensive? When is it cheap?
+:::
+
+---
+
+## Practical Example: Grid Pathfinding
+
+A\* is everywhere in games and robotics. 
+
+**Setup:** 2D grid, some cells blocked. Find shortest path.
+
+**Heuristics to consider:**
+
+- Manhattan distance (no diagonals): $|x_1-x_2| + |y_1-y_2|$
+- Euclidean distance (with diagonals): $\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}$
+- Chebyshev distance (8-directional): $\max(|x_1-x_2|, |y_1-y_2|)$
+
+. . .
+
+::: {.callout-question}
+🤔 You're on a grid where you can only move up/down/left/right.  
+Is Euclidean distance admissible? Is Manhattan distance admissible?
+:::
+
+. . .
+
+Euclidean ✅ (straight line ≤ any path).  
+Manhattan ✅ and *stronger* for 4-directional movement — dominates Euclidean here!
+
+---
+
+## When A\* Struggles 
+
+A\* isn't always the answer. Think critically:
+
+::: {.three-col}
+::: {}
+### State space is huge
+Millions/billions of states → memory explodes. Consider IDA\* or beam search.
+:::
+::: {}
+### No good heuristic
+If $h$ is weak (near 0), A\* is barely better than Dijkstra's.
+:::
+::: {}
+### Edge costs vary wildly
+A\* shines with consistent costs. Extreme variation can cause many re-expansions.
+:::
+:::
+
+. . .
+
+::: {.callout-question}
+🤔 Can you think of a real problem where designing an admissible heuristic is very hard?
+:::
+
+. . .
+
+Examples: chess (how do you bound remaining moves?), protein folding, general planning.
+
+---
+
+## Connection to Pruning
+
+::: {.callout-question}
+🤔 How does A\* relate to the pruning ideas we've discussed?
+:::
+
+. . .
+
+A\* **prunes implicitly**:
+
+- Nodes with high $f$ values are pushed to the back of the queue
+- If a better path to a node is found, the old (expensive) path entry is effectively pruned
+- IDA\* uses $f$-threshold as an *explicit* pruning bound — very similar to branch-and-bound!
+
+::: {.callout-insight}
+A\* is a form of **best-first search with informed pruning**.  
+Branch-and-bound (which you saw with backtracking) is A\*'s close cousin.
+:::
+
+---
+
+## Summary: The A\* Family
+
+```
+         Uninformed                     Informed
+             │                              │
+      ┌──────┴──────┐              ┌────────┴────────┐
+      │             │              │                 │
+    BFS         Dijkstra's       Greedy          A* Search
+  (fewest       (cheapest       (smallest        f = g + h
+   edges)        g cost)         h only)        [optimal ✓]
+                                                     │
+                                           ┌─────────┴──────────┐
+                                           │                     │
+                                         IDA*                  SMA*
+                                      (low memory)         (fixed memory)
+```
+
+---
+
+## Key Takeaways
+
+::: {.three-col}
+::: {}
+### The formula
+$f(n) = g(n) + h(n)$  
+Past cost + estimated future cost.  
+Simple, powerful.
+:::
+::: {}
+### The constraint
+$h$ must be **admissible** (never overestimate).  
+This guarantees optimality.
+:::
+::: {}
+### The tradeoff
+Better $h$ → faster search.  
+But memory grows. IDA\* saves memory at cost of re-expansion.
+:::
+:::
+
+. . .
+
+::: {.callout-insight}
+A\* shows a deep idea in CS: **good algorithms encode knowledge about the problem.**  
+The heuristic is where domain insight lives.
+:::
+
+---
+
+## Discussion Questions 
+
+Work through these — some have surprising answers:
+
+1. If the graph has no edge costs (all edges cost 1), does A\* still offer an advantage over BFS?
+
+2. You have two admissible heuristics. Is their *average* admissible? Is their *max*? Their *sum*?
+
+3. A friend says: "I'll use $h(n) = h^*(n)$ — the true remaining cost. A\* will be perfect!" What's the catch?
+
+4. For the 15-puzzle (4×4 tile sliding), would you prefer Manhattan distance or a pattern database heuristic? Why?
+
+5. Imagine A\* on a graph where the goal is *anywhere in a set* of nodes. How do you adapt it?
+
+---
+
+## Further Exploration
+
+**Deepen your understanding:**
+
+- Implement A\* on a grid and visualize which cells get expanded (very instructive!)
+- Try the 8-puzzle with $h_1$ (misplaced) vs $h_2$ (Manhattan) — count expanded nodes
+- Read about **pattern databases** — precomputed heuristics for combinatorial puzzles
+
+**Related algorithms worth knowing:**
+
+- **Theta\*** — A\* with any-angle paths (great for robotics)
+- **D\*** / **D\* Lite** — A\* for dynamic environments where costs change
+- **Weighted A\*** — trade optimality for speed: $f = g + w \cdot h$, $w > 1$
+
+::: {.callout-question}
+🤔 Final thought: In what ways is A\* "intelligent" and in what ways is it still just mechanical?
+:::
+
+---
+
+## Appendix: Proof Sketch — A\* Optimality 
+
+*(For the curious — not required)*
+
+**Claim:** If $h$ is admissible, A\* returns an optimal path.
+
+**Sketch:**
+
+1. Let $C^*$ = optimal path cost. Let $G$ = goal node found by A\*.
+2. Suppose A\* returns a suboptimal path, so $g(G) > C^*$.
+3. There must exist a node $n'$ on the *optimal* path that's still in the open set.
+4. Since $h$ is admissible: $f(n') = g(n') + h(n') \leq C^*$
+5. But A\* chose $G$ over $n'$, so $f(G) \leq f(n') \leq C^*$
+6. Since $G$ is a goal node, $h(G) = 0$, so $f(G) = g(G) > C^*$. Contradiction! ∎
+
+. . .
+
+::: {.callout-insight}
+The proof is a contradiction: if A\* missed the optimal path, it would have had to prefer a worse node over a node on the optimal path — but admissibility prevents that.
+:::

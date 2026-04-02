@@ -1,0 +1,91 @@
+---
+title: "COSC130 - Project Setup"
+format: 
+  html:
+    toc: true
+---
+
+---
+
+# EZUI Project: Setup Guide
+
+Welcome to your CS2 project! We will be using the **EZUI** library to build our Java GUI applications. Follow these steps to set up your computer.
+
+## Step 1: Install the Tools
+
+You need two main things installed on your computer:
+
+1.  **Java JDK (Version 17 or higher):** [Download here](https://www.oracle.com/java/technologies/downloads/). (Make sure to pick the installer for your OS: Windows, macOS, or Linux).
+2.  **Git:** 
+    * **Windows:** Download and run the [Git for Windows installer](https://git-scm.com/download/win). Just click "Next" on all defaults.
+    * **macOS:** Open your terminal and type `git --version`. If it’s not there, it will ask you to install "Xcode Command Line Tools." Say yes.
+3.  **VS Code:** [Download here](https://code.visualstudio.com/).
+
+
+---
+
+## Step 2: Get the Code
+
+We aren't going to download a ZIP file. Instead, we are going to "Clone" the project so you can receive updates from me later.
+
+1.  Open **VS Code**.
+2.  Press `Ctrl + Shift + P` (Windows) or `Cmd + Shift + P` (Mac) to open the Command Palette.
+3.  Type **Git: Clone** and press Enter.
+4.  Paste this URL: `https://github.com/sayangoswami/ezui.git`
+5.  Select a folder on your computer to save the project.
+6.  When prompted, click **Open** in the bottom right corner.
+
+---
+
+## Step 3: Setup Java in VS Code
+
+Once the project is open, VS Code will likely show a pop-up in the bottom right saying: *"The 'Extension Pack for Java' is recommended for this repository."*
+
+* **Click Install.** This gives you the "Play" button to run your code easily.
+
+If it doesn't pop up, you might already have it. Go to the Extensions view (`Ctrl + Shift + X` or `Cmd + Shift + X`) and search for "Extension Pack for Java".
+
+---
+
+## Step 4: How to write your code
+
+To keep things simple and ensure your project doesn't break when I send updates:
+
+* **Your Code:** Create your new Java files inside the `src/` folder.
+
+* **The Library:** Do **not** modify any files inside the `lib/` or `src/ezui/` folders. 
+
+---
+
+## Step 5: Getting Updates from me
+
+Sometimes I will fix a bug or add a new feature to the EZUI library. To get these changes without losing your work, follow these three steps in the **VS Code Terminal** (shortcut: `` Ctrl + ` ``).
+
+1.  **Save your current spot:** `git stash`  *(This "hides" your current changes temporarily so they don't get in the way of the update.)*
+2.  **Download the update:** `git pull origin main`
+3.  **Bring your work back:** `git stash pop` *(This puts your code back exactly where it was, now with my updates included!)*
+
+In **VS Code**, the shortcut to toggle (open/hide) the terminal is:
+
+### **Windows & Linux**
+
+`Ctrl` + `` ` `` (Backtick)
+
+### **macOS**
+`⌃` (Control) + `` ` `` (Backtick)
+
+> **Note:** The "Backtick" key is usually located in the top-left corner of the keyboard, right below the `Esc` key and above the `Tab` key.
+
+## Pro-Tip: Use VS Code "Timeline"
+
+Since you are using VS Code, you will have access to the **Timeline View** (usually at the bottom of the File Explorer).
+- VS Code keeps a "Local History" of every save.
+- If you mess up a git pull or delete a file accidentally, you can restore it from the Timeline without knowing advanced Git commands.
+
+---
+
+### ⚠️ Common Troubleshooting
+
+* **"Permission Denied" when pushing:** This is normal! You are allowed to *take* code from my repo, but you cannot *change* my master copy. You only save your work on your own computer.
+* **Red squiggly lines:** Ensure you installed the "Java Extension Pack" and that you have opened the **entire folder** (ezui) in VS Code, not just a single file.
+

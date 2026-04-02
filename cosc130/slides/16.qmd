@@ -222,6 +222,9 @@ public void onCreate() {
 
 ### Components
 
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+
 **What is a Component?**
 
 Every UI element in `ezui`—whether it's a **Button**, a **TextBox**, or an **Icon**—is a **Component**. Think of "Component" as the DNA that all widgets share. 
@@ -233,7 +236,7 @@ Because of this shared DNA, you can interact with any widget using the same simp
 1.  **`onClick(Runnable action)`**: Runs code when the user clicks the component.
 2.  **`onHover(Runnable action)`**: Runs code when the user's mouse moves over the component.
 
-::: {.r-stack}
+::: 
 ::: {.fragment .fade-in-then-out}
 **Example: Making an Icon Interactive**
 
@@ -268,11 +271,19 @@ root.add(helpIcon, 0, 1, Alignment.RIGHT);
 
 ### The `Runnable` Interface: "A Task in a Box"
 
+:::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+
 **What is a Task?**
 
-Usually, when you write `System.out.println("Hello")`, it runs **immediately**. But in a UI, we need to save that code and run it **later**—only when a user clicks a button.
+Usually, when you write `System.out.println("Hello")`, it runs **immediately**. But in a UI, we need to save that code and run it **later** — only when a user clicks a button.
+
+In other words, we need a way to package that code into a "task" that can be executed on demand.
 
 To do this, Java uses the `Runnable` interface. Think of it as a "Contract" that says: *"I promise to provide a `run()` method."*
+
+:::
+::: {.fragment .fade-in-then-out}
 
 **The Formal Way (The Class)**
 
@@ -289,14 +300,18 @@ public class PrintTask implements Runnable {
 
 // 2. Use it in your Page
 PrintTask myTask = new PrintTask();
-myButton.onClick(myTask); // Give the "box" to the button
+myButton.onClick(myTask); // Give the "task" to the button
 ```
+:::
+::::
 
 ---
 
 
 ### Introducing Lambdas: "The Professional Shortcut"
 
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
 **Why use a Shortcut?**
 
 Creating a whole new file/class just to print one line of text is a lot of work. Java created **Lambdas** as a way to write that `run()` method directly inside your `onClick`.
@@ -304,6 +319,9 @@ Creating a whole new file/class just to print one line of text is a lot of work.
 **How the Transformation Happens:**
 
 The computer is smart. It knows `onClick` needs a `Runnable`. It knows `Runnable` only has one method (`run`). So, we can delete all the "labels" and just keep the "logic."
+
+:::
+::: {.fragment .fade-in-then-out}
 
 **From Class to Lambda:**
 
@@ -323,6 +341,9 @@ myButton.onClick(() -> {
 });
 ```
 
+:::
+:::
+
 ---
 
 ### Lambda Rules of Thumb
@@ -335,32 +356,119 @@ myButton.onClick(() -> {
 **The "Brace" Rule:**
 
 * **One line of code?** You can skip the `{ }`.
-    `btn.onClick(() -> System.out.println("Fast!"));`
+```java
+btn.onClick(() -> System.out.println("Fast!"));
+````
 
 * **Multiple lines of code?** You **must** use `{ }`.
-    ```java
-    btn.onClick(() -> {
-        System.out.println("Line 1");
-        System.out.println("Line 2");
-    });
-    ```
+```java
+btn.onClick(() -> {
+    System.out.println("Line 1");
+    System.out.println("Line 2");
+});
+```
 
 ---
 
 ## 🟧 SECTION 2: BASIC INPUTS & WIDGETS
     
+
 ---
 
+### Button: The Main Action Tool
 
-###  Button: The Action Tool
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+**What is a Button?**
 
-Simple, clickable, and supports icons.
+A `Button` is the primary way users trigger events in your application. In `ezui`, buttons are designed to look modern and professional by default.
 
+**The Three Constructors**
 
-```{.java code-line-numbers=""}
-Button btn = new Button("Login", "sign-in"); // Text + FontAwesome icon
-btn.onClick(() -> System.out.println("Clicked!"));
+You can create a button in three different ways depending on your UI needs:
+
+1.  **Text Only**: `new Button("Submit")`
+2.  **Icon Only**: `new Button("play")` (Uses FontAwesome)
+3.  **Text + Icon**: `new Button("Delete", "trash")`
+:::
+::: {.fragment .fade-in-then-out}
+```java
+// Example: A professional "Save" button
+Button saveBtn = new Button("Save Changes", "save");
+
+// Add the logic using a Lambda!
+saveBtn.onClick(() -> {
+    System.out.println("Saving to database...");
+    // You could also call a method here: saveUserData();
+});
+
+root.add(saveBtn, 2, 1, Alignment.RIGHT);
 ```
+
+**Pro-Tips:**
+
+* **Icon Search**: You can find all the valid icon strings (like `"user"`, `"check"`, `"envelope"`) by searching the [FontAwesomeSolid library](https://fontawesome.com/v5/search?s=solid).
+* **Consistency**: Use `Alignment.FILL` if you want a column of buttons to all be the same width (like a vertical menu).
+* **Feedback**: Always provide feedback in your `onClick`. If the button doesn't print something or change the screen, the user might think the app is frozen!
+:::
+:::
+
+
+---
+
+### DropDownButton: The "Action Menu"
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+**What is a DropDownButton?**
+
+Think of this as a **Folder for Actions**. When the user clicks it, a menu pops down with a list of choices. Each choice has its own **Lambda** (task) attached to it.
+
+**How to Build a Menu:**
+
+1.  **Create the Button**: Give it a main label (e.g., "Actions" or "Settings").
+2.  **Add Options**: Use the `.addOption()` method for every choice you want to provide.
+:::
+
+::: {.fragment .fade-in-then-out}
+```{.java code-line-numbers=""}
+// 1. Create the base button
+DropDownButton menuBtn = new DropDownButton("File Options", "folder-open");
+
+// 2. Add options with their own Lambdas
+menuBtn.addOption("Download PDF", () -> {
+    System.out.println("Generating PDF...");
+});
+
+menuBtn.addOption("Export to CSV", () -> {
+    System.out.println("Exporting data...");
+});
+
+// 3. Add a "Danger" action
+menuBtn.addOption("Delete Record", () -> {
+    System.out.println("Deleting...");
+});
+
+root.add(menuBtn, 0, 1, Alignment.RIGHT);
+```
+:::
+
+::: {.fragment .fade-in-then-out}
+
+**When to use a DropDownButton:**
+
+* **Toolbar Actions**: When you have "File", "Edit", or "View" menus.
+* **Filtering**: "Sort by Name", "Sort by Date", "Sort by Grade".
+* **Space Saving**: If you have 4 buttons but only 1 grid cell left, use a DropDownButton!
+
+**Tip:**
+
+> "A regular `Button` is for **one** main action. A `DropDownButton` is for a **list** of related actions. It keeps your app looking organized instead of crowded."
+
+
+:::
+:::
+
 ---
 
 

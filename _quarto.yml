@@ -25,4 +25,5 @@ format:
     theme: simple
     css: custom.css
     font-size: 1.1em
+    syntax-highlighting: gruvbox
     # self-contained: true # Useful if sharing single files
