@@ -357,25 +357,11 @@
     "text": "🟧 SECTION 2: BASIC INPUTS & WIDGETS"
   },
   {
-    "objectID": "cosc130/slides/16.html#section-3-selection-menus",
-    "href": "cosc130/slides/16.html#section-3-selection-menus",
+    "objectID": "cosc130/slides/16.html#section-3-data-advanced",
+    "href": "cosc130/slides/16.html#section-3-data-advanced",
     "title": "ezui: The Modern Java UI Toolkit",
-    "section": "🟪 SECTION 3: SELECTION & MENUS",
-    "text": "🟪 SECTION 3: SELECTION & MENUS"
-  },
-  {
-    "objectID": "cosc130/slides/16.html#section-4-data-advanced",
-    "href": "cosc130/slides/16.html#section-4-data-advanced",
-    "title": "ezui: The Modern Java UI Toolkit",
-    "section": "🟩 SECTION 4: DATA & ADVANCED",
-    "text": "🟩 SECTION 4: DATA & ADVANCED"
-  },
-  {
-    "objectID": "cosc130/slides/16.html#final-summary",
-    "href": "cosc130/slides/16.html#final-summary",
-    "title": "ezui: The Modern Java UI Toolkit",
-    "section": "🏁 FINAL SUMMARY",
-    "text": "🏁 FINAL SUMMARY"
+    "section": "🟩 SECTION 3: DATA & ADVANCED",
+    "text": "🟩 SECTION 3: DATA & ADVANCED"
   },
   {
     "objectID": "cosc130/slides/15.html#what-is-persistence",
@@ -875,39 +861,11 @@
     "text": "Common DP Patterns\n\n\n\n\n\n\n\n\nPattern\nSignature\nExamples\n\n\n\n\nLinear\ndp[i] depends on dp[i-1], dp[i-2]\nFibonacci, Stairs, Max Subarray\n\n\nPrefix\ndp[i] = best answer for first i elements\nCoin Change, Jump Game\n\n\nInterval\ndp[i][j] = answer for subarray [i..j]\nMatrix Chain, Burst Balloons\n\n\nTwo-sequence\ndp[i][j] = answer for s1[0..i], s2[0..j]\nLCS, Edit Distance\n\n\nKnapsack\ndp[i][w] = best using i items, budget w\n0/1 Knapsack, Subset Sum\n\n\n\nRecognising the pattern is half the battle."
   },
   {
-    "objectID": "cosc445/slides/dynamic_programming.html#space-optimisation-rolling-arrays",
-    "href": "cosc445/slides/dynamic_programming.html#space-optimisation-rolling-arrays",
-    "title": "Introduction to Dynamic Programming",
-    "section": "Space Optimisation: Rolling Arrays",
-    "text": "Space Optimisation: Rolling Arrays\nMany DP tables only look at the previous row (or 1-2 previous values). You can often reduce O(n²) space to O(n) or even O(1).\nFibonacci: O(n) → O(1)\n# Instead of storing all dp[0..n]\na, b = 0, 1\nfor _ in range(n - 1):\n    a, b = b, a + b\nreturn b\nLCS / Knapsack: O(m×n) → O(n)\n# Keep only the previous row\nprev = [0] * (n + 1)\nfor i in range(1, m + 1):\n    curr = [0] * (n + 1)\n    for j in range(1, n + 1):\n        # ... fill curr[j] using prev[j] and prev[j-1]\n    prev = curr"
-  },
-  {
     "objectID": "cosc445/slides/dynamic_programming.html#all-four-examples-side-by-side",
     "href": "cosc445/slides/dynamic_programming.html#all-four-examples-side-by-side",
     "title": "Introduction to Dynamic Programming",
     "section": "All Four Examples Side by Side",
     "text": "All Four Examples Side by Side\n\n\n\nProblem\nDimensions\nRecurrence idea\nComplexity\n\n\n\n\nFibonacci\n1D\ndp[i] = dp[i-1] + dp[i-2]\nO(n) time\n\n\nCoin Change\n1D\ndp[i] = 1 + min(dp[i-c])\nO(n·k) time\n\n\nLCS\n2D\nmatch → extend; mismatch → max of skip\nO(mn) time\n\n\nKnapsack\n2D\nskip or take each item\nO(nW) time"
-  },
-  {
-    "objectID": "cosc445/slides/dynamic_programming.html#the-dp-cheat-sheet",
-    "href": "cosc445/slides/dynamic_programming.html#the-dp-cheat-sheet",
-    "title": "Introduction to Dynamic Programming",
-    "section": "The DP Cheat Sheet",
-    "text": "The DP Cheat Sheet\n┌─────────────────────────────────────────────────────────┐\n│  DYNAMIC PROGRAMMING IN 4 STEPS                         │\n│                                                         │\n│  1. STATE     dp[i] or dp[i][j] = subproblem answer     │\n│  2. BASE      fill in the smallest/simplest cases       │\n│  3. RECUR     express dp[i] in terms of smaller dp      │\n│  4. ORDER     fill table so dependencies come first     │\n│                                                         │\n│  Optimise later: rolling arrays, space reduction        │\n└─────────────────────────────────────────────────────────┘"
-  },
-  {
-    "objectID": "cosc445/slides/dynamic_programming.html#practice-problems",
-    "href": "cosc445/slides/dynamic_programming.html#practice-problems",
-    "title": "Introduction to Dynamic Programming",
-    "section": "Practice Problems",
-    "text": "Practice Problems\nIn order of difficulty:\n\nHouse Robber — max sum with no two adjacent elements (LC 198)\nMin Cost Climbing Stairs — stair problem with costs (LC 746)\nLongest Increasing Subsequence — LIS in an array (LC 300)\nEdit Distance — min insertions/deletions/replacements to transform s1→s2 (LC 72)\nPartition Equal Subset Sum — can array be split into two equal-sum halves? (LC 416)\nUnique Paths — count paths in m×n grid moving only right/down (LC 62)"
-  },
-  {
-    "objectID": "cosc445/slides/dynamic_programming.html#leetcode-map",
-    "href": "cosc445/slides/dynamic_programming.html#leetcode-map",
-    "title": "Introduction to Dynamic Programming",
-    "section": "LeetCode Map",
-    "text": "LeetCode Map\n\n\n\nProblem\nPattern\nDifficulty\n\n\n\n\nLC 70 — Climbing Stairs\nLinear\nEasy\n\n\nLC 198 — House Robber\nLinear\nEasy\n\n\nLC 322 — Coin Change\nPrefix / Knapsack\nMedium\n\n\nLC 300 — Longest Increasing Subsequence\nLinear\nMedium\n\n\nLC 1143 — LCS\nTwo-sequence\nMedium\n\n\nLC 72 — Edit Distance\nTwo-sequence\nMedium\n\n\nLC 416 — Partition Equal Subset\nKnapsack\nMedium\n\n\nLC 312 — Burst Balloons\nInterval\nHard"
   },
   {
     "objectID": "cosc445/slides/dynamic_programming.html#backtracking-vs-dp-when-to-use-which",
@@ -1083,19 +1041,5 @@
     "title": "Combinatorial Search",
     "section": "Key Design Decisions",
     "text": "Key Design Decisions\nWhen implementing backtracking + pruning, ask yourself:\n\nWhat is a “partial solution”?\n→ What state do I need to track?\nWhat are the choices at each step?\n→ What’s the branching factor?\nWhat makes a partial solution invalid? (backtracking)\n→ Implement this check cheaply\nWhat makes a partial solution hopeless? (pruning)\n→ This is where domain knowledge pays off\nCan I order choices to fail fast?\n→ Try the most constrained variables first (MRV heuristic)"
-  },
-  {
-    "objectID": "cosc130/slides/16.html#section",
-    "href": "cosc130/slides/16.html#section",
-    "title": "ezui: The Modern Java UI Toolkit",
-    "section": ":::",
-    "text": ":::\nPage — Building Your Screen\nThe Blueprint of a Screen\nEvery screen in your app (like Login, Dashboard, or Settings) must extend a Page. Think of a Page as a named container that holds a Grid.\n\n\nThe Page Constructor\nWhen you create a Page, you must tell ezui three things: its Name, how many Rows it has, and how many Columns it has.\npublic class DashboardPage extends Page {\n    public DashboardPage() {\n        // super(Name, Rows, Columns, ColumnStyles...)\n        super(\"Dashboard\", 3, 2, ColumnStyle.FIXED(), ColumnStyle.GROW());\n    }\n\n    @Override\n    public void onCreate() {\n        // This is where you add your components!\n    }\n}\n\n\nUnderstanding the Arguments:\n\nName (\"Dashboard\"): This is the text that will appear on the button in the Sidebar.\nRows (3): How many horizontal “slots” your page has from top to bottom.\nColumns (2): How many vertical “slots” your page has from left to right.\nColumnStyles: These tell the columns how to behave.\n\nColumnStyle.FIXED(): Stays as small as possible (good for labels/icons).\nColumnStyle.GROW(): Stretches to fill all remaining screen space (good for Tables/Charts).\n\n\n\n\nTips:\n\nThe Grid is Your Canvas: You can’t add a component to a Page without a Grid slot. If you need more space, increase the Row/Column numbers in the constructor.\nInfinite Height: Don’t worry about making the page too long! ezui automatically adds a Scrollbar if your content exceeds the window height.\nThe onCreate Rule: Always put your root.add() code inside onCreate. If you put it in the constructor, the Window might not be ready to display it yet!"
-  },
-  {
-    "objectID": "cosc130/slides/16.html#section-3-data-advanced",
-    "href": "cosc130/slides/16.html#section-3-data-advanced",
-    "title": "ezui: The Modern Java UI Toolkit",
-    "section": "🟩 SECTION 3: DATA & ADVANCED",
-    "text": "🟩 SECTION 3: DATA & ADVANCED"
   }
 ]
