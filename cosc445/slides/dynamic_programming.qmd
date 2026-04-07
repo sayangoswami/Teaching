@@ -22,20 +22,27 @@ execute:
 
 :::: {.columns}
 ::: {.column width="50%"}
+::: {.fragment}
 **DP is NOT:**
 
 - A data structure
 - A specific algorithm
 - Only for hard problems
 :::
+:::
 ::: {.column width="50%"}
+
+::: {.fragment}
 **DP IS:**
 
 - A *way of thinking* about recursion
 - An optimisation of repeated work
 - Recursion + memory
 :::
+:::
 ::::
+
+. . . 
 
 > **One-liner:** *"Remember what you've already solved."*
 
@@ -47,18 +54,26 @@ Every DP problem requires exactly two things:
 
 :::: {.columns}
 ::: {.column width="50%"}
-### 1. Optimal Substructure
+::: {.fragment}
+**1. Optimal Substructure**
+
 The optimal solution to the problem *contains* optimal solutions to its subproblems.
 
 > "I can build the best answer from the best answers to smaller versions."
 :::
+:::
 ::: {.column width="50%"}
-### 2. Overlapping Subproblems
+::: {.fragment}
+**2. Overlapping Subproblems**
+
 The same subproblems appear *again and again* during recursion.
 
 > "I keep solving the same smaller problems repeatedly — let me cache them."
 :::
+:::
 ::::
+
+. . .
 
 If both conditions hold → **DP will help you**.
 
@@ -73,7 +88,10 @@ If both conditions hold → **DP will help you**.
 | Examples | Merge Sort, Binary Search | Fibonacci, Knapsack |
 | Overhead | Recursion only | Recursion + memory |
 
-> Merge Sort splits [1..n] into [1..n/2] and [n/2+1..n]. Those halves never overlap.  
+. . . 
+
+> Merge Sort splits [1..n] into [1..n/2] and [n/2+1..n]. Those halves never overlap.
+> 
 > Fibonacci needs fib(4) to compute both fib(5) and fib(6). They *do* overlap.
 
 
@@ -90,9 +108,13 @@ def fib(n):
     return fib(n-1) + fib(n-2)
 ```
 
-Simple and correct. But let's trace `fib(5)`:
+Simple and correct. But let's trace `fib(6)`:
 
-```
+. . . 
+
+![fib(6) call tree](images/fibonacci_tree.excalidraw.svg){width="50%"}
+
+<!-- ```
 fib(5)
 ├── fib(4)
 │   ├── fib(3)
@@ -102,7 +124,9 @@ fib(5)
 └── fib(3)          ← computed AGAIN
     ├── fib(2)      ← computed AGAIN (3rd time!)
     └── fib(1)
-```
+``` -->
+
+. . . 
 
 **Time complexity: O(2ⁿ)**  — doubles with every step. Terrible!
 
@@ -112,14 +136,7 @@ fib(5)
 
 The call tree for `fib(6)` has **25 nodes**, even though there are only **7 distinct subproblems** (fib(0)…fib(6)).
 
-```
-         fib(6)
-        /      \
-    fib(5)     fib(4)
-    /    \     /    \
- fib(4) fib(3) fib(3) fib(2)
-  ...    ...    ...    ...
-```
+![fib(6) call tree](images/fibonacci_tree.excalidraw.svg){width="50%"}
 
 `fib(3)` alone is called **3 times**, `fib(2)` is called **5 times**.
 
@@ -133,13 +150,14 @@ The call tree for `fib(6)` has **25 nodes**, even though there are only **7 dist
 Add a cache. If we've seen it before, return the stored answer.
 
 ```python
-def fib_memo(n, memo={}):
+memo = {}
+def fib_memo(n):
     if n in memo:
         return memo[n]          # ← cache hit!
     if n <= 1:
         return n
 
-    memo[n] = fib_memo(n-1, memo) + fib_memo(n-2, memo)
+    memo[n] = fib_memo(n-1) + fib_memo(n-2)  # ← store result in cache
     return memo[n]
 ```
 
@@ -206,6 +224,8 @@ def fib_dp(n):
 > Each move you can climb **1 or 2** steps.  
 > How many distinct ways can you reach the top?
 
+. . . 
+
 **Examples:**
 
 - n = 1: `[1]` → **1 way**
@@ -213,7 +233,11 @@ def fib_dp(n):
 - n = 3: `[1+1+1]`, `[1+2]`, `[2+1]` → **3 ways**
 - n = 4: `[1+1+1+1]`, `[1+1+2]`, `[1+2+1]`, `[2+1+1]`, `[2+2]` → **5 ways**
 
-Notice anything? `1, 2, 3, 5, 8, 13, ...` — it's Fibonacci!
+Notice anything? 
+
+. . . 
+
+`1, 2, 3, 5, 8, 13, ...` — it's Fibonacci!
 
 ---
 
@@ -225,6 +249,8 @@ Notice anything? `1, 2, 3, 5, 8, 13, ...` — it's Fibonacci!
 - step `n-2` (took a 2-step)
 
 So: `ways(n) = ways(n-1) + ways(n-2)`
+
+. . .
 
 ```python
 def climb_stairs(n):
@@ -241,8 +267,9 @@ def climb_stairs(n):
     return dp[n]
 ```
 
-**This problem teaches the core DP pattern:**  
-define `dp[i]` = answer for subproblem of size `i`, build up from base cases.
+. . . 
+
+**This problem teaches the core DP pattern:**  define `dp[i]` = answer for subproblem of size `i`, build up from base cases.
 
 
 # Part 4 — Coin Change {background-color="#0d1b2a"}
@@ -307,7 +334,7 @@ def coin_change(coins, amount):
     return dp[amount] if dp[amount] != INF else -1
 
 print(coin_change([1, 5, 6, 9], 11))  # → 2
-print(coin_change([2], 3))             # → -1 (impossible)
+print(coin_change([2], 3))            # → -1 (impossible)
 ```
 
 **Time: O(amount × |coins|)**  
@@ -342,7 +369,7 @@ Define `dp[i][j]` = LCS length of `s1[0..i-1]` and `s2[0..j-1]`.
 
 **Recurrence:**
 
-$$dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 & \text{if } s1[i-1] = s2[j-1] \\ \max(dp[i-1][j],\ dp[i][j-1]) & \text{otherwise} \end{cases}$$
+$dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 & \text{if } s1[i-1] = s2[j-1] \\ \max(dp[i-1][j],\ dp[i][j-1]) & \text{otherwise} \end{cases}$
 
 **Intuition:**
 
@@ -355,19 +382,25 @@ $$dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 & \text{if } s1[i-1] = s2[j-1] \\ \m
 
 ## LCS — Filling the Table
 
-`s1 = "ABCB"`, `s2 = "BCB"`
+$dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 & \text{if } s1[i-1] = s2[j-1] \\ \max(dp[i-1][j],\ dp[i][j-1]) & \text{otherwise} \end{cases}$
 
-|   |   | B | C | B |
-|---|---|---|---|---|
-|   | 0 | 0 | 0 | 0 |
-| **A** | 0 | 0 | 0 | 0 |
-| **B** | 0 | **1** | 1 | **1** |
-| **C** | 0 | 1 | **2** | 2 |
-| **B** | 0 | 1 | 2 | **3** |
+::: {.columns}
+::: {.column width="35%"}
 
-LCS length = **3** (the subsequence `"BCB"`)
+Sequence 1: `C T A G T C A`
+Sequence 2: `A G C T A C G`
 
-Each cell only looks at its left, top, and diagonal neighbour.
+- Each cell only looks at its left, top, and diagonal neighbour.
+- `dp[0][j] = 0`, `dp[i][0] = 0`
+
+:::
+::: {.column width="65%"}
+![dp table for LCS](images/lcs.excalidraw.svg){width="70%"}
+:::
+:::
+<!-- end columns -->
+
+
 
 ---
 
@@ -424,7 +457,9 @@ Define `dp[i][w]` = max value using the first `i` items with capacity `w`.
 
 **For each item `i`, two choices:**
 
-$$dp[i][w] = \begin{cases} dp[i-1][w] & \text{skip item } i \\ dp[i-1][w - wt_i] + val_i & \text{take item } i \quad (\text{if } wt_i \leq w) \end{cases}$$
+$$
+dp[i][w] = \begin{cases} dp[i-1][w] & \text{skip item } i \\ dp[i-1][w - wt_i] + val_i & \text{take item } i \quad (\text{if } wt_i \leq w) \end{cases}
+$$
 
 Take the **maximum** of the two options.
 
@@ -434,17 +469,36 @@ Take the **maximum** of the two options.
 
 ## Knapsack — Filling the Table
 
-Items: A(1,1), B(3,4), C(4,5), D(5,7) — capacity W=7
+$$
+dp[i][w] = \begin{cases} dp[i-1][w] & \text{skip item } i \\ dp[i-1][w - wt_i] + val_i & \text{take item } i \quad (\text{if } wt_i \leq w) \end{cases}
+$$
 
-|   | w=0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+::: {.columns}
+::: {.column width="35%"}
+| Item | Weight | Value |
+|------|--------|-------|
+| A | 1 | 1 |
+| B | 3 | 4 |
+| C | 4 | 5 |
+| D | 5 | 7 |
+
+Capacity = 7
+:::
+::: {.column width="65%"}
+![dp table for Knapsack](images/knapsack.excalidraw.svg){width="100%"}
+:::
+:::
+<!-- end columns -->
+
+
+
+<!-- |   | w=0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|-----|---|---|---|---|---|---|---|
 | (none) | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | A(1,1) | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 | B(3,4) | 0 | 1 | 1 | 4 | 5 | 5 | 5 | 5 |
 | C(4,5) | 0 | 1 | 1 | 4 | 5 | 6 | 6 | 9 |
-| D(5,7) | 0 | 1 | 1 | 4 | 5 | 7 | 8 | 9 |
-
-Answer: **dp[4][7] = 9**
+| D(5,7) | 0 | 1 | 1 | 4 | 5 | 7 | 8 | 9 | -->
 
 ---
 
@@ -481,6 +535,7 @@ print(knapsack(weights, values, 7))   # → 9
 
 When you see a new problem, ask these questions **in order**:
 
+::: {.incremental}
 
 1. Can I define the problem recursively?
 
@@ -490,13 +545,13 @@ When you see a new problem, ask these questions **in order**:
 
    → Draw the recursion tree. Are the same calls repeated?
 
-3. What is my dp[...] state?
+3. What is my `dp[...]` state?
 
    → What information fully describes a subproblem?
 
 4. What is the recurrence?
 
-   → How does dp[i] (or dp[i][j]) depend on smaller states?
+   → How does `dp[i]` (or `dp[i][j]`) depend on smaller states?
 
 5. What are the base cases?
 
@@ -506,6 +561,7 @@ When you see a new problem, ask these questions **in order**:
 
    → Each cell must be computed after the cells it depends on.
 
+:::
 
 ---
 
@@ -515,11 +571,11 @@ The **state** is the hardest part. It must capture *everything* you need to solv
 
 | Problem | State | Meaning |
 |---------|-------|---------|
-| Fibonacci | `dp[i]` | F(i) |
-| Climbing Stairs | `dp[i]` | ways to reach step i |
-| Coin Change | `dp[i]` | min coins for amount i |
-| LCS | `dp[i][j]` | LCS of s1[0..i-1] and s2[0..j-1] |
-| Knapsack | `dp[i][w]` | max value using first i items, capacity w |
+| Fibonacci | `dp[i]` | `F(i)` |
+| Climbing Stairs | `dp[i]` | ways to reach step `i` |
+| Coin Change | `dp[i]` | min coins for amount `i` |
+| LCS | `dp[i][j]` | LCS of `s1[0..i-1]` and `s2[0..j-1]` |
+| Knapsack | `dp[i][w]` | max value using first `i` items, capacity `w` |
 
 > **Rule of thumb:** if the problem has one "variable dimension" → 1D table.  
 > If it has two → 2D table. Three → 3D. (Rare beyond 3D.)
@@ -657,7 +713,7 @@ In order of difficulty:
 
 - More example of Dynamic Programming
 - Limitations of DP
-- *Quiz on Dynamic Programming*
+- *Next Tuesday: Quiz on Dynamic Programming*
 :::
 ::::
 
