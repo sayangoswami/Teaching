@@ -189,7 +189,7 @@ The schedule below outlines our plan for the semester. As we move through the co
 |      | Mar 26    | Network flows and *bipartite matching*          | 267-275    |            |      |
 | 11   | Mar 31    | [Combinatorial search - backtracking and pruning](slides/backtracking_pruning.qmd) | 281 - 298  | A8 out     | Q7   |
 |      | Apr 2     | [Combinatorial search - A* Heuristic](slides/astar.qmd)             | 298 - 303  |            |      |
-| 12   | Apr 7     | Elements of dynamic programming                 | 307-325    | A9 out     | Q8   |
+| 12   | Apr 7     | [Elements of dynamic programming](slides/dynamic_programming.qmd)                 | 307-325    | A9 out     | Q8   |
 |      | Apr 9     | Examples of dynamic programming                 | 326-336    |            |      |
 | 13   | Apr 14    | Limitations of dynamic programming<br><br>      | 337-344    | A10 out    | Q9   |
 |      | Apr 16    | Dynamic programming review                      |            |            |      |
