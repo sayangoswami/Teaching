@@ -859,5 +859,12 @@
     "title": "Combinatorial Search",
     "section": "Key Design Decisions",
     "text": "Key Design Decisions\nWhen implementing backtracking + pruning, ask yourself:\n\nWhat is a “partial solution”?\n→ What state do I need to track?\nWhat are the choices at each step?\n→ What’s the branching factor?\nWhat makes a partial solution invalid? (backtracking)\n→ Implement this check cheaply\nWhat makes a partial solution hopeless? (pruning)\n→ This is where domain knowledge pays off\nCan I order choices to fail fast?\n→ Try the most constrained variables first (MRV heuristic)"
+  },
+  {
+    "objectID": "cosc130/slides/16.html#section",
+    "href": "cosc130/slides/16.html#section",
+    "title": "ezui: The Modern Java UI Toolkit",
+    "section": ":::",
+    "text": ":::\nPage — Building Your Screen\nThe Blueprint of a Screen\nEvery screen in your app (like Login, Dashboard, or Settings) must extend a Page. Think of a Page as a named container that holds a Grid.\n\n\nThe Page Constructor\nWhen you create a Page, you must tell ezui three things: its Name, how many Rows it has, and how many Columns it has.\npublic class DashboardPage extends Page {\n    public DashboardPage() {\n        // super(Name, Rows, Columns, ColumnStyles...)\n        super(\"Dashboard\", 3, 2, ColumnStyle.FIXED(), ColumnStyle.GROW());\n    }\n\n    @Override\n    public void onCreate() {\n        // This is where you add your components!\n    }\n}\n\n\nUnderstanding the Arguments:\n\nName (\"Dashboard\"): This is the text that will appear on the button in the Sidebar.\nRows (3): How many horizontal “slots” your page has from top to bottom.\nColumns (2): How many vertical “slots” your page has from left to right.\nColumnStyles: These tell the columns how to behave.\n\nColumnStyle.FIXED(): Stays as small as possible (good for labels/icons).\nColumnStyle.GROW(): Stretches to fill all remaining screen space (good for Tables/Charts).\n\n\n\n\nTips:\n\nThe Grid is Your Canvas: You can’t add a component to a Page without a Grid slot. If you need more space, increase the Row/Column numbers in the constructor.\nInfinite Height: Don’t worry about making the page too long! ezui automatically adds a Scrollbar if your content exceeds the window height.\nThe onCreate Rule: Always put your root.add() code inside onCreate. If you put it in the constructor, the Window might not be ready to display it yet!"
   }
 ]

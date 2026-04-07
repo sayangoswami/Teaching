@@ -38,19 +38,24 @@ format: revealjs
 
 ###  Window: The App Shell
 
+::: {.r-stack}
+
+::: {.fragment .fade-in-then-out}
 **The House for Your Pages**
 
 The `Window` is the "Master Container." It creates a modern, split-pane interface with a **Navigation Sidebar** on the left and a **Scrollable Content Area** on the right.
+:::
 
-::: {.r-stack}
+
+
 
 ::: {.fragment .fade-in-then-out}
 **The 4-Step Setup**
 
-To launch your application, follow this exact sequence in your `Main.java`::: {.fragment}
-The program wont compile yet, because we haven't defined the Login and Dashboard pages, but this is the skeleton you will build on top of.
+To launch your application, follow this exact sequence in your `Main.java`
+*The program wont compile yet*, because we haven't defined the Login and Dashboard pages, but this is the skeleton you will build on top of.
 
-:::
+
 ```java
 
 // 1. Set the Style (Do this FIRST!)
@@ -78,11 +83,6 @@ app.show();
 * **The "Show" Rule:** Always call `app.show()` or `app.setVisible(true)` at the very end of your `main` method to ensure all your components are properly sized and ready to view.
 :::
 :::
-
-
-
-
-
 ---
 
 
@@ -90,7 +90,7 @@ app.show();
 
 **The Blueprint of a Screen**
 
-Every screen in your app (like `Login`, `Dashboard`, or `Settings`) must extend a **Page**. Think of a Page as a named container that holds a **Grid**.
+Every screen in your app (like `Login`, `Dashboard`, or `Settings`) must extend a **Page**. Think of a Page as a named container that holds a **Grid**. We will talk about Grids in the next slide.
 
 ::: {.r-stack}
 ::: {.fragment .fade-in-then-out}
@@ -148,6 +148,17 @@ Everything inside a `Page` lives in a `Grid`.
 Think of a Grid as a spreadsheet. Every "cell" has a unique address: `(row, column)`. In programming, we always start counting at **0**.
 
 ::: {.r-stack}
+
+::: {.fragment .fade-in-then-out}
+
+|       | Column 0<br>ColumnStyle.FIXED   | Column 1<br>ColumnStyle.GROW      | Column 2<br>ColumnStyle.FIXED      |
+|-------|---------------------------------|-----------------------------------|------------------------------------|
+| Row 0 | [ Text: "Title" ]<br>Align.LEFT | <-- EMPTY CELL -->                | [ Icon: "user" ]<br>Align.CENTER   |
+| Row 1 | [ Text: "Name" ]<br>Align.LEFT  | [ TextBox: "" ]<br>Align.FILL     | <-- EMPTY CELL -->                 |
+| Row 2 | [ Text: "Email" ]<br>Align.LEFT | [ TextBox: "" ]<br>Align.FILL     | <-- EMPTY CELL -->                 |
+| Row 3 | <-- EMPTY CELL -->              | [ Button: "Save" ]<br>Align.RIGHT | [ Button: "Cancel" ]<br>Align.LEFT |
+:::
+
 ::: {.fragment .fade-in-then-out}
 **How to Add Components**
 You use the `root.add()` method inside your Page's `onCreate()` function. 
@@ -329,23 +340,39 @@ The computer is smart. It knows `onClick` needs a `Runnable`. It knows `Runnable
 
 **From Class to Lambda:**
 
-1.  **Start:** `public class MyTask implements Runnable { public void run() { System.out.println("Hi"); }}`
-2.  **Remove the header:** `() -> { System.out.println("Hi"); }`
+1.  **Class:**
+```java
+public class MyTask implements Runnable {
+    public void run() {
+        System.out.println("Button clicked!");
+    }
+}
+// in your button setup
+myButton.onClick(new MyTask());
+```
+1.  **Lambda:**
+```java
+myButton.onClick(() -> {
+    System.out.println("Button clicked!");
+});
+```
+:::
 
+::: {.fragment .fade-in-then-out}
 **The Lambda Syntax:**
 
-* `()` : The empty parentheses represent the `run()` method's parameters.
-* `->` : The "Arrow" points to the code you want to execute.
-* `{ }` : The "Body" contains your instructions.
-
 ```java
-// The ezui way! No extra classes needed.
 myButton.onClick(() -> {
     System.out.println("This runs inside a Lambda!");
 });
 ```
 
+* `()` : The empty parentheses represent the `run()` method's parameters.
+* `->` : The "Arrow" points to the code you want to execute.
+* `{ }` : The "Body" contains your instructions.
+
 :::
+
 :::
 
 ---
@@ -371,6 +398,62 @@ btn.onClick(() -> {
     System.out.println("Line 2");
 });
 ```
+
+---
+
+### Lambda Scope: The "Look, But Don't Touch" Rule
+
+**The Concept of Capture**
+
+When you write a Lambda, it "captures" the variables in the code surrounding it. However, Java has a strict rule: a Lambda can only use variables that are **Effectively Final**.
+
+**What is "Effectively Final"?**
+
+It means a variable whose value **never changes** after it is initialized. You don't have to type the word `final`, but you must treat it as if it were constant.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+
+**The Mistake (Variable Changes)**
+
+```java
+int counter = 0;
+Button btn = new Button("Click Me");
+
+btn.onClick(() -> {
+    // ERROR: Local variable counter defined in an enclosing scope must be final
+    // or effectively final
+    counter++; 
+});
+
+counter = 5; // Changing this later also breaks the Lambda above!
+```
+
+:::
+::: {.fragment .fade-in-then-out}
+**The Correct Way (Using Objects)**
+If you need to update a value, you should update a **Component** or an **Object**, not a primitive `int` or `String`.
+
+```java
+Text status = new Text("Count: 0", "Body");
+int[] counter = {0}; // Arrays are objects, so the reference stays final!
+
+btn.onClick(() -> {
+    counter[0]++; // This works! We are changing the content, not the array itself.
+    status.setText("Count: " + counter[0]);
+});
+```
+:::
+::: {.fragment .fade-in-then-out}
+**Tips:**
+
+* **Think of it as a Snapshot:** When the Lambda is created, it takes a "picture" of the variables around it. If you move or change those variables later, the "picture" becomes invalid.
+* **The `ezui` Solution:** Usually, you don't need to change variables. You just want to change the UI. Use `setText()`, `setColor()`, or `refresh()` inside your Lambdas—those methods are always safe to call!
+:::
+:::
+
+
+
 
 ---
 
@@ -476,32 +559,120 @@ root.add(menuBtn, 0, 1, Alignment.RIGHT);
 ---
 
 
-###  Text: Labels & Headings
+### Text: Typography & Styles
 
-Use `Text` for any non-editable labels.
+**What is the Text Component?**
+In `ezui`, you don't just "draw strings." You use the `Text` component to create labels, headings, and descriptions. Each `Text` object follows the rules of your chosen **Theme**.
 
-- Styles: `"H1"`, `"H2"`, `"Label"`, `"Body"`.
-    
+**The Style Cheat Sheet**
 
+When you create a `Text` object, you can pass a **Style String** as the second argument. This tells `ezui` exactly how to format the font size, weight, and spacing.
 
-```{.java code-line-numbers=""}
-Text title = new Text("Welcome Back", "H1");
-```
+| Style Name | Purpose | Visual Look |
+| :--- | :--- | :--- |
+| **`"H1"`** | Main Page Titles | Large, Bold, High Contrast |
+| **`"H2"`** | Section Headers | Medium-Large, Bold |
+| **`"Label"`** | Input Descriptions | Small, Bold (Perfect for "Name:", etc.) |
+| **`"Body"`** | General Paragraphs | Standard Size, Normal Weight |
+
 ---
 
 
-###  TextBox: Single-Line Input
+### Text: Typography & Styles
 
-Standard input field. Now supports password masking!
+**Code Example:**
 
+```java
+// Create a big title
+Text title = new Text("Student Dashboard", "H1");
+root.add(title, 0, 0, Alignment.LEFT);
 
-```{.java code-line-numbers=""}
-TextBox userField = new TextBox();
-TextBox passField = new TextBox();
-passField.setMasked(true); // Turns input into dots/stars
-
-String input = userField.getText();
+// Create a small label for a field
+Text nameLabel = new Text("Full Name:", "Label");
+root.add(nameLabel, 1, 0, Alignment.LEFT);
 ```
+
+---
+
+
+### Text: Typography & Styles
+
+**Changing Content Dynamically**
+
+Since `Text` is a **Component**, you can change what it says inside a Lambda!
+
+```java
+Text status = new Text("System Ready", "Body");
+
+myBtn.onClick(() -> {
+    status.setText("Processing...");
+    status.setColor("Warning"); // If your theme supports color keys
+});
+```
+
+**Tips:**
+
+* **Consistency is Key**: Don't use `"H1"` for everything. Use one `"H1"` per page, and use `"Label"` for all your form inputs so they line up perfectly.
+* **The "Alignment" Pair**: Usually, you want to pair a `Text` (Alignment.LEFT) with a `TextBox` (Alignment.FILL) in the same row to create a clean form layout.
+
+
+---
+
+### TextBox: Capturing User Input
+
+**What is a TextBox?**
+A `TextBox` is a single-line input field. Unlike `Text`, which is for display only, a `TextBox` allows the user to type.
+
+**The "Get and Set" Pattern**
+To interact with a `TextBox`, you will primarily use two methods:
+1.  **`getText()`**: Pulls the current string out of the box (usually inside an `onClick` Lambda).
+2.  **`setText(String)`**: Replaces the text inside the box programmatically.
+
+---
+
+### TextBox: Capturing User Input
+
+**Code Example: A Simple Greeting**
+
+```java
+TextBox nameField = new TextBox();
+Button greetBtn = new Button("Say Hello");
+
+greetBtn.onClick(() -> {
+    // 1. Grab the input
+    String input = nameField.getText();
+    
+    // 2. Use it!
+    System.out.println("Hello, " + input + "!");
+    
+    // 3. Optional: Clear the box for the next entry
+    nameField.setText(""); 
+});
+
+root.add(nameField, 0, 0, Alignment.FILL);
+root.add(greetBtn, 0, 1, Alignment.RIGHT);
+```
+
+---
+
+### TextBox: Capturing User Input
+
+**Feature: Masking Passwords**
+
+If you are building a login screen, you don't want the password visible. Use `setMasked(true)` to turn the characters into dots.
+```java
+TextBox passField = new TextBox();
+passField.setMasked(true); // Secure input!
+```
+
+
+
+**Tips:**
+
+* **`Alignment.FILL` is your friend**: TextBoxes look best when they stretch to fill their column.
+* **Empty Inputs**: Always check if `getText().isEmpty()` before processing data. If the user clicks "Submit" without typing, your code might crash or behave strangely!
+* **Scope Reminder**: Remember to define your `TextBox` **outside** the Lambda (as a variable in `onCreate`) so the Lambda can "see" it and call `getText()`.
+
 
 ---
 
