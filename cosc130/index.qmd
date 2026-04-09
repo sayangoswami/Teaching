@@ -171,7 +171,7 @@ The schedule below outlines our plan for the semester. As we move through the co
 | 12   | Apr 7     | Generics                                                              | A9 out      | Q8   |
 |      | Apr 9     | Generics                                                              |             |      |
 | 13   | Apr 14    | Project Kickoff                                                       | A10 out     | Q9   |
-|      | Apr 16    | Thanksgiving: No Class                                                |             |      |
+|      | Apr 16    | Continuation of Project                                               |             |      |
 | 14   | Apr 21    | Continuation of Project                                               |             | Q10  |
 |      | Apr 23    | Continuation of Project                                               |             |      |
 | 15   | Apr 28    | Project Completion and Presentation.                                  |             |      |
