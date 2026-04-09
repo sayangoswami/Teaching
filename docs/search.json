@@ -914,7 +914,28 @@
     "href": "cosc445/slides/dynamic_programming.html#key-takeaways",
     "title": "Introduction to Dynamic Programming",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\n\nWhat DP gives you:\n\nPolynomial solutions to seemingly exponential problems\nA systematic, repeatable design process\nThe ability to prove optimality via the recurrence\n\nWhat you need to practice:\n\nIdentifying overlapping subproblems\nDefining the right state\nWriting the recurrence before the code\n\n\nNext class:\n\nMore example of Dynamic Programming\nLimitations of DP\nNext Tuesday: Quiz on Dynamic Programming\n\n\n\n“DP is just recursion that remembers its past.”"
+    "text": "Key Takeaways\n\n\nWhat DP gives you:\n\nPolynomial solutions to seemingly exponential problems\nA systematic, repeatable design process\nThe ability to prove optimality via the recurrence\n\nWhat you need to practice:\n\nIdentifying overlapping subproblems\nDefining the right state\nWriting the recurrence before the code\n\n\nNext class:\n\nMore example of Dynamic Programming\nLimitations of DP\n\n\n\n“DP is just recursion that remembers its past.”"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#thieving-in-the-street",
+    "href": "cosc445/slides/dynamic_programming.html#thieving-in-the-street",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Thieving in the Street",
+    "text": "Thieving in the Street\nA professional thief is planning to steal from houses along a street. Each house has a certain amount of money stashed.\nConstraint: Adjacent houses have a security system — one cannot steal from two directly adjacent houses.\nGoal: Return the maximum amount of money you can steal tonight."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#longest-increasing-subsequence",
+    "href": "cosc445/slides/dynamic_programming.html#longest-increasing-subsequence",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Longest Increasing Subsequence",
+    "text": "Longest Increasing Subsequence\nGiven an integer array nums, return the length of the longest strictly increasing subsequence.\n\nA subsequence does not need to be contiguous."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#edit-distance",
+    "href": "cosc445/slides/dynamic_programming.html#edit-distance",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Edit Distance",
+    "text": "Edit Distance\nGiven two strings word1 and word2, return the minimum number of operations to convert word1 to word2.\nAllowed operations (each counts as 1 step):\n\nInsert a character\nDelete a character\nReplace a character\n\nAlso known as the Levenshtein distance."
   },
   {
     "objectID": "cosc445/slides/backtracking_pruning.html#maze",

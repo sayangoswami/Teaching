@@ -1042,14 +1042,141 @@ If it has two → 2D table. Three → 3D. (Rare beyond 3D.)</p>
 <ul>
 <li>More example of Dynamic Programming</li>
 <li>Limitations of DP</li>
-<li><em>Next Tuesday: Quiz on Dynamic Programming</em></li>
 </ul>
 </div></div>
 <blockquote>
 <p><em>“DP is just recursion that remembers its past.”</em></p>
 </blockquote>
+</section></section>
+<section>
+<section id="part-8-more-examples" class="title-slide slide level1 center" data-background-color="#0d1b2a">
+<h1>Part 8 — More Examples</h1>
+
+</section>
+<section id="thieving-in-the-street" class="slide level2">
+<h2>Thieving in the Street</h2>
+<p><strong>A professional thief</strong> is planning to steal from houses along a street. Each house has a certain amount of money stashed.</p>
+<p><strong>Constraint:</strong> Adjacent houses have a security system — one <strong>cannot steal from two directly adjacent houses</strong>.</p>
+<p><strong>Goal:</strong> Return the maximum amount of money you can steal tonight.</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Example:</strong></p>
+<pre><code>Input:  nums = [2, 7, 9, 3, 1]
+Output: 12
+Explanation: Steal from house 1 (2) + house 3 (9) + house 5 (1) = 12</code></pre>
+<pre><code>Input:  nums = [1, 2, 3, 1]
+Output: 4
+Explanation: Steal from house 1 (1) + house 3 (3) = 4</code></pre>
+<div class="fragment">
+<div title="Hints">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Hints</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li class="fragment">What are the two choices at each house?</li>
+<li class="fragment">Can you define <code>dp[i]</code> as “max money robbing up to house <code>i</code>”?</li>
+<li class="fragment">What is the recurrence? Think about whether you rob house <code>i</code> or skip it.</li>
+<li class="fragment">Base cases: What is <code>dp[0]</code>? What is <code>dp[1]</code>?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="longest-increasing-subsequence" class="slide level2">
+<h2>Longest Increasing Subsequence</h2>
+<p>Given an integer array <code>nums</code>, return the length of the <strong>longest strictly increasing subsequence</strong>.</p>
+<blockquote>
+<p>A <strong>subsequence</strong> does not need to be contiguous.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p><strong>Examples:</strong></p>
+<pre><code>Input:  nums = [10, 9, 2, 5, 3, 7, 101, 18]
+Output: 4
+Explanation: [2, 3, 7, 101] is the longest increasing subsequence</code></pre>
+<pre><code>Input:  nums = [0, 1, 0, 3, 2, 3]
+Output: 4</code></pre>
+<pre><code>Input:  nums = [7, 7, 7, 7]
+Output: 1</code></pre>
+<div class="fragment">
+<div title="Hints">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Hints</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li class="fragment">Try defining <code>dp[i]</code> as the length of the LIS <strong>ending at index <code>i</code></strong>.</li>
+<li class="fragment">For each <code>i</code>, which earlier indices <code>j</code> are useful?</li>
+<li class="fragment">Every element is an LIS of length at least 1.</li>
+<li class="fragment">Can you build from smaller subproblems to larger ones?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="edit-distance" class="slide level2">
+<h2>Edit Distance</h2>
+<p>Given two strings <code>word1</code> and <code>word2</code>, return the <strong>minimum number of operations</strong> to convert <code>word1</code> to <code>word2</code>.</p>
+<p><strong>Allowed operations</strong> (each counts as 1 step):</p>
+<ul>
+<li><strong>Insert</strong> a character</li>
+<li><strong>Delete</strong> a character</li>
+<li><strong>Replace</strong> a character</li>
+</ul>
+<p>Also known as the <strong>Levenshtein distance</strong>.</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Examples:</strong></p>
+<pre><code>Input:  word1 = "horse", word2 = "ros"
+Output: 3
+Explanation:
+  horse → rorse (replace 'h' with 'r')
+  rorse → rose  (delete 'r')
+  rose  → ros   (delete 'e')</code></pre>
+<pre><code>Input:  word1 = "intention", word2 = "execution"
+Output: 5</code></pre>
+<div class="fragment">
+<div title="Hints">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Hints</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li class="fragment">Think of a 2D table where <code>dp[i][j]</code> = edit distance between the first <code>i</code> chars of <code>word1</code> and first <code>j</code> chars of <code>word2</code>.</li>
+<li class="fragment">What happens when <code>word1[i-1] == word2[j-1]</code>?</li>
+<li class="fragment">When they differ, which of the three operations maps to which table cell?</li>
+<li class="fragment">Base cases: what does converting to/from an empty string cost?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 
 
+</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

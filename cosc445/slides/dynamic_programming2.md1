@@ -1,0 +1,596 @@
+---
+title: "Dynamic Programming: More Problems"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+# Overview {background-color="#1a1a2e"}
+
+## Problems We'll Cover Today
+
+| Problem | Pattern | Difficulty |
+|---------|---------|------------|
+| LC 198 — House Robber | Linear DP | 🟡 Easy |
+| LC 300 — Longest Increasing Subsequence | Linear DP | 🟠 Medium |
+| LC 72 — Edit Distance | Two-sequence | 🟠 Medium |
+| LC 416 — Partition Equal Subset | 0/1 Knapsack | 🟠 Medium |
+| LC 312 — Burst Balloons | Interval DP | 🔴 Hard |
+
+::: {.callout-tip}
+For each problem: try it yourself first before looking at the solution slides!
+:::
+
+---
+
+# LC 198 — House Robber {background-color="#16213e"}
+
+## 🏠 House Robber — Problem
+
+**You are a professional robber** planning to rob houses along a street. Each house has a certain amount of money stashed.
+
+**Constraint:** Adjacent houses have a security system — you **cannot rob two directly adjacent houses**.
+
+**Goal:** Return the maximum amount of money you can rob tonight.
+
+---
+
+**Example:**
+
+```
+Input:  nums = [2, 7, 9, 3, 1]
+Output: 12
+Explanation: Rob house 1 (2) + house 3 (9) + house 5 (1) = 12
+```
+
+```
+Input:  nums = [1, 2, 3, 1]
+Output: 4
+Explanation: Rob house 1 (1) + house 3 (3) = 4
+```
+
+::: {.callout-note title="Hints"}
+- What are the two choices at each house?
+- Can you define `dp[i]` as "max money robbing up to house `i`"?
+- What is the recurrence? Think about whether you rob house `i` or skip it.
+- Base cases: What is `dp[0]`? What is `dp[1]`?
+:::
+
+---
+
+## 🏠 House Robber — Solution {background-color="#0f3460"}
+
+**State:** `dp[i]` = maximum money robbed considering houses `0..i`
+
+**Recurrence:**
+
+$$dp[i] = \max(\underbrace{dp[i-1]}_{\text{skip house } i},\ \underbrace{nums[i] + dp[i-2]}_{\text{rob house } i})$$
+
+**Base cases:** `dp[0] = nums[0]`,  `dp[1] = max(nums[0], nums[1])`
+
+---
+
+```python
+def rob(nums: list[int]) -> int:
+    n = len(nums)
+    if n == 1:
+        return nums[0]
+
+    dp = [0] * n
+    dp[0] = nums[0]
+    dp[1] = max(nums[0], nums[1])
+
+    for i in range(2, n):
+        dp[i] = max(dp[i-1],          # skip house i
+                    nums[i] + dp[i-2]) # rob house i
+
+    return dp[-1]
+```
+
+**Space optimisation** — only last two values needed:
+
+```python
+def rob(nums: list[int]) -> int:
+    prev2, prev1 = 0, 0
+    for num in nums:
+        prev2, prev1 = prev1, max(prev1, num + prev2)
+    return prev1
+```
+
+**Time:** O(n) &nbsp;|&nbsp; **Space:** O(1) (optimised)
+
+---
+
+## 🏠 House Robber — Trace Through
+
+```
+nums = [2, 7, 9, 3, 1]
+         0  1  2  3  4
+
+dp[0] = 2
+dp[1] = max(2, 7) = 7
+dp[2] = max(dp[1], nums[2] + dp[0]) = max(7, 9+2) = 11
+dp[3] = max(dp[2], nums[3] + dp[1]) = max(11, 3+7) = 11
+dp[4] = max(dp[3], nums[4] + dp[2]) = max(11, 1+11) = 12
+
+Answer: 12  ✓
+```
+
+::: {.callout-tip title="Pattern Insight"}
+House Robber is the canonical **"skip or take"** linear DP. The same recurrence structure appears in many problems — once you see `dp[i] = max(dp[i-1], val + dp[i-2])`, you've seen House Robber.
+:::
+
+---
+
+# LC 300 — Longest Increasing Subsequence {background-color="#16213e"}
+
+## 📈 LIS — Problem
+
+Given an integer array `nums`, return the length of the **longest strictly increasing subsequence**.
+
+> A **subsequence** does not need to be contiguous.
+
+---
+
+**Examples:**
+
+```
+Input:  nums = [10, 9, 2, 5, 3, 7, 101, 18]
+Output: 4
+Explanation: [2, 3, 7, 101] is the longest increasing subsequence
+```
+
+```
+Input:  nums = [0, 1, 0, 3, 2, 3]
+Output: 4
+```
+
+```
+Input:  nums = [7, 7, 7, 7]
+Output: 1
+```
+
+::: {.callout-note title="Hints"}
+- Try defining `dp[i]` as the length of the LIS **ending at index `i`**.
+- For each `i`, which earlier indices `j` are useful?
+- Every element is an LIS of length at least 1.
+- Can you build from smaller subproblems to larger ones?
+:::
+
+---
+
+## 📈 LIS — Solution {background-color="#0f3460"}
+
+**State:** `dp[i]` = length of the longest increasing subsequence ending at index `i`
+
+**Recurrence:**
+
+$$dp[i] = 1 + \max_{j < i,\ nums[j] < nums[i]} dp[j]$$
+
+(If no such `j` exists, `dp[i] = 1`)
+
+**Answer:** `max(dp)`
+
+---
+
+```python
+def lengthOfLIS(nums: list[int]) -> int:
+    n = len(nums)
+    dp = [1] * n  # every element is an LIS of length 1
+
+    for i in range(1, n):
+        for j in range(i):
+            if nums[j] < nums[i]:           # can extend
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+```
+
+**Time:** O(n²) &nbsp;|&nbsp; **Space:** O(n)
+
+::: {.callout-note title="Bonus: O(n log n) with patience sorting"}
+Use binary search to maintain a `tails` array where `tails[k]` is the smallest tail element of all increasing subsequences of length `k+1`. This gives O(n log n) but is trickier to derive.
+:::
+
+---
+
+## 📈 LIS — Trace Through
+
+```
+nums = [10, 9, 2, 5, 3, 7, 101, 18]
+idx      0  1  2  3  4  5   6   7
+
+dp init: [1,  1,  1,  1,  1,  1,  1,  1]
+
+i=1: nums[1]=9  — no j<1 with nums[j]<9 strictly? nums[0]=10 ✗
+     dp[1] = 1
+
+i=2: nums[2]=2  — no j with nums[j]<2
+     dp[2] = 1
+
+i=3: nums[3]=5  — j=2: nums[2]=2<5 → dp[3]=max(1,dp[2]+1)=2
+     dp[3] = 2
+
+i=4: nums[4]=3  — j=2: nums[2]=2<3 → dp[4]=max(1,dp[2]+1)=2
+     dp[4] = 2
+
+i=5: nums[5]=7  — j=2:dp=1, j=3:dp=2, j=4:dp=2 → dp[5]=3
+     dp[5] = 3
+
+i=6: nums[6]=101 — all j qualify → best is dp[5]=3 → dp[6]=4
+i=7: nums[7]=18  — best is dp[5]=3 → dp[7]=4
+
+dp = [1, 1, 1, 2, 2, 3, 4, 4]
+max(dp) = 4  ✓
+```
+
+---
+
+# LC 72 — Edit Distance {background-color="#16213e"}
+
+## ✏️ Edit Distance — Problem
+
+Given two strings `word1` and `word2`, return the **minimum number of operations** to convert `word1` to `word2`.
+
+**Allowed operations** (each counts as 1 step):
+
+- **Insert** a character
+- **Delete** a character
+- **Replace** a character
+
+Also known as the **Levenshtein distance**.
+
+---
+
+**Examples:**
+
+```
+Input:  word1 = "horse", word2 = "ros"
+Output: 3
+Explanation:
+  horse → rorse (replace 'h' with 'r')
+  rorse → rose  (delete 'r')
+  rose  → ros   (delete 'e')
+```
+
+```
+Input:  word1 = "intention", word2 = "execution"
+Output: 5
+```
+
+::: {.callout-note title="Hints"}
+- Think of a 2D table where `dp[i][j]` = edit distance between the first `i` chars of `word1` and first `j` chars of `word2`.
+- What happens when `word1[i-1] == word2[j-1]`?
+- When they differ, which of the three operations maps to which table cell?
+- Base cases: what does converting to/from an empty string cost?
+:::
+
+---
+
+## ✏️ Edit Distance — Solution {background-color="#0f3460"}
+
+**State:** `dp[i][j]` = min edits to convert `word1[0..i-1]` → `word2[0..j-1]`
+
+**Base cases:**
+- `dp[i][0] = i` (delete all `i` chars)
+- `dp[0][j] = j` (insert all `j` chars)
+
+**Recurrence:**
+
+$$dp[i][j] = \begin{cases} dp[i-1][j-1] & \text{if } word1[i-1] = word2[j-1] \\ 1 + \min\begin{cases} dp[i-1][j] & \text{(delete)} \\ dp[i][j-1] & \text{(insert)} \\ dp[i-1][j-1] & \text{(replace)} \end{cases} & \text{otherwise} \end{cases}$$
+
+---
+
+```python
+def minDistance(word1: str, word2: str) -> int:
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # base cases
+    for i in range(m + 1):
+        dp[i][0] = i
+    for j in range(n + 1):
+        dp[0][j] = j
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if word1[i-1] == word2[j-1]:
+                dp[i][j] = dp[i-1][j-1]       # characters match — free
+            else:
+                dp[i][j] = 1 + min(
+                    dp[i-1][j],    # delete from word1
+                    dp[i][j-1],    # insert into word1
+                    dp[i-1][j-1]   # replace
+                )
+
+    return dp[m][n]
+```
+
+**Time:** O(m·n) &nbsp;|&nbsp; **Space:** O(m·n) — reducible to O(min(m,n))
+
+---
+
+## ✏️ Edit Distance — DP Table
+
+`word1 = "horse"`, `word2 = "ros"`
+
+```
+      ""  r   o   s
+  ""  [0,  1,  2,  3]
+  h   [1,  1,  2,  3]
+  o   [2,  2,  1,  2]
+  r   [3,  2,  2,  2]
+  s   [4,  3,  3,  2]
+  e   [5,  4,  4,  3]
+
+Answer: dp[5][3] = 3  ✓
+```
+
+::: {.callout-tip title="How to read the table"}
+- Moving **left→right** = insert
+- Moving **top→bottom** = delete
+- Moving **diagonal** = match (free) or replace (+1)
+:::
+
+---
+
+# LC 416 — Partition Equal Subset Sum {background-color="#16213e"}
+
+## ⚖️ Partition Equal Subset — Problem
+
+Given an integer array `nums`, return `true` if you can partition it into **two subsets with equal sum**, and `false` otherwise.
+
+---
+
+**Examples:**
+
+```
+Input:  nums = [1, 5, 11, 5]
+Output: true
+Explanation: [1, 5, 5] and [11]
+```
+
+```
+Input:  nums = [1, 2, 3, 5]
+Output: false
+```
+
+::: {.callout-note title="Hints"}
+- If the total sum is odd, what can you immediately conclude?
+- The target for each partition is `total // 2`.
+- Reduce to: **"Can we pick a subset that sums to `target`?"**
+- This is exactly 0/1 Knapsack! `dp[j]` = can we achieve sum `j`?
+- Process each number and update the DP table.
+:::
+
+---
+
+## ⚖️ Partition Equal Subset — Solution {background-color="#0f3460"}
+
+**Key insight:** Partition into two equal subsets ⟺ find a subset summing to `total // 2`.
+
+**State:** `dp[j]` = `True` if subset sum `j` is achievable
+
+**Recurrence (for each `num` in `nums`):**
+
+$$dp[j] = dp[j] \;\text{ OR }\; dp[j - num] \quad \text{(iterate } j \text{ from target down to } num\text{)}$$
+
+Iterate `j` **backwards** to avoid using the same element twice (0/1 constraint).
+
+---
+
+```python
+def canPartition(nums: list[int]) -> bool:
+    total = sum(nums)
+    if total % 2 != 0:
+        return False          # odd total → impossible
+
+    target = total // 2
+    dp = [False] * (target + 1)
+    dp[0] = True              # empty subset sums to 0
+
+    for num in nums:
+        # iterate backwards to enforce 0/1 (each num used at most once)
+        for j in range(target, num - 1, -1):
+            dp[j] = dp[j] or dp[j - num]
+
+    return dp[target]
+```
+
+**Time:** O(n · target) = O(n · sum/2) &nbsp;|&nbsp; **Space:** O(target)
+
+---
+
+## ⚖️ Partition Equal Subset — Trace Through
+
+```
+nums = [1, 5, 11, 5],  total = 22,  target = 11
+
+dp = [T, F, F, F, F, F, F, F, F, F, F, F]
+       0  1  2  3  4  5  6  7  8  9 10 11
+
+Process num=1:
+  dp = [T, T, F, F, F, F, F, F, F, F, F, F]
+
+Process num=5:
+  j=11..5: dp[6]=dp[1]=T, dp[5]=dp[0]=T
+  dp = [T, T, F, F, F, T, T, F, F, F, F, F]
+
+Process num=11:
+  j=11: dp[11]=dp[0]=T  ← found it!
+  dp = [T, T, F, F, F, T, T, F, F, F, F, T]
+
+return dp[11] = True  ✓
+```
+
+---
+
+# LC 312 — Burst Balloons {background-color="#16213e"}
+
+## 🎈 Burst Balloons — Problem
+
+You are given `n` balloons, indexed `0` to `n-1`. Each balloon has a number `nums[i]`.
+
+If you **burst balloon `i`**, you gain `nums[i-1] * nums[i] * nums[i+1]` coins.
+
+Balloons at the boundary: treat out-of-bounds as `1`.
+
+**Goal:** Burst all balloons to collect the **maximum coins**.
+
+---
+
+**Example:**
+
+```
+Input:  nums = [3, 1, 5, 8]
+Output: 167
+
+Explanation:
+  Burst 1 → 3*1*5 = 15,  remaining: [3, 5, 8]
+  Burst 5 → 3*5*8 = 120, remaining: [3, 8]
+  Burst 3 → 1*3*8 = 24,  remaining: [8]
+  Burst 8 → 1*8*1 = 8,   remaining: []
+  Total: 15 + 120 + 24 + 8 = 167
+```
+
+::: {.callout-note title="Hints"}
+- Forward thinking (which to burst first) is hard — neighbours change!
+- Try **reverse thinking**: instead of "which to burst first", think "which to burst **last**" in a range.
+- Pad `nums` with `1`s on both ends.
+- Define `dp[l][r]` = max coins from bursting all balloons strictly between `l` and `r`.
+- If `k` is the **last** balloon burst in `(l, r)`, its neighbours at that moment are `l` and `r`.
+:::
+
+---
+
+## 🎈 Burst Balloons — Solution {background-color="#0f3460"}
+
+**Key insight:** Think of `k` as the **last** balloon burst in the open interval `(l, r)`.
+
+When `k` is burst last, its left neighbour is `nums[l]` and right neighbour is `nums[r]` (all others in the range are already gone).
+
+**State:** `dp[l][r]` = max coins bursting all balloons strictly between indices `l` and `r`
+
+**Recurrence:**
+
+$$dp[l][r] = \max_{l < k < r}\Big( dp[l][k] + nums[l]\cdot nums[k]\cdot nums[r] + dp[k][r] \Big)$$
+
+---
+
+```python
+def maxCoins(nums: list[int]) -> int:
+    # pad with boundary 1s
+    nums = [1] + nums + [1]
+    n = len(nums)
+    dp = [[0] * n for _ in range(n)]
+
+    # length of open interval (l, r): iterate by increasing gap size
+    for length in range(2, n):          # gap between l and r
+        for l in range(0, n - length):
+            r = l + length
+            for k in range(l + 1, r):   # k is last burst in (l, r)
+                dp[l][r] = max(
+                    dp[l][r],
+                    dp[l][k] + nums[l] * nums[k] * nums[r] + dp[k][r]
+                )
+
+    return dp[0][n - 1]
+```
+
+**Time:** O(n³) &nbsp;|&nbsp; **Space:** O(n²)
+
+---
+
+## 🎈 Burst Balloons — Why Reverse Thinking?
+
+**Forward thinking** (which to burst first):
+
+- Bursting balloon `i` merges its neighbours — the subproblem changes shape unpredictably.
+- Hard to define clean recurrences because the array "collapses".
+
+**Reverse thinking** (which to burst last):
+
+- The last balloon `k` in range `(l,r)` has **fixed** neighbours `l` and `r` at the moment it's burst.
+- Left and right subproblems `(l,k)` and `(k,r)` are **independent** — they share no balloons.
+- This gives a clean, separable recurrence. ✓
+
+::: {.callout-tip title="Interval DP Pattern"}
+Whenever a "last operation" or "last element chosen" gives **independent subproblems**, think Interval DP.  
+Other classics: Matrix Chain Multiplication, Optimal BST, Strange Printer.
+:::
+
+---
+
+## 🎈 Burst Balloons — Trace Through
+
+```
+nums = [3, 1, 5, 8]  →  padded: [1, 3, 1, 5, 8, 1]
+indices:                          0  1  2  3  4  5
+
+Fill dp for all intervals of increasing length:
+
+length=2 (adjacent indices — no room for k):
+  All dp[l][r] = 0 for r = l+2... (no balloon strictly inside)
+
+length=3:
+  dp[0][2]: k=1 → nums[0]*nums[1]*nums[2] = 1*3*1 = 3
+  dp[1][3]: k=2 → 3*1*5 = 15
+  dp[2][4]: k=3 → 1*5*8 = 40
+  dp[3][5]: k=4 → 5*8*1 = 40
+
+length=4:
+  dp[0][3]: k=1: 0 + 1*3*5 + 15=30; k=2: 3 + 1*1*5 + 0=8 → 30
+  dp[1][4]: k=2: 15+3*1*8+40=79; k=3: 0+3*5*8+40=160 → 160
+  dp[2][5]: k=3: 40+1*5*1+0=45; k=4: 0+1*8*1+40=48 → 48
+
+length=5:
+  dp[0][4]: best k → 167
+  ...
+
+dp[0][5] = 167  ✓
+```
+
+---
+
+# Summary {background-color="#1a1a2e"}
+
+## DP Patterns Recap
+
+| Problem | Key Idea | Recurrence Shape |
+|---------|----------|-----------------|
+| House Robber | Skip or take | `dp[i] = max(dp[i-1], val+dp[i-2])` |
+| LIS | LIS ending at `i` | `dp[i] = 1 + max(dp[j])` for valid `j<i` |
+| Edit Distance | 2D prefix on two strings | `dp[i][j]` from diagonal/left/above |
+| Partition Subset | 0/1 knapsack to target | Boolean DP, iterate `j` backwards |
+| Burst Balloons | Last balloon in interval | `dp[l][r]` over all `k` in `(l,r)` |
+
+---
+
+## General DP Recipe
+
+1. **Define the state** — what does `dp[...]` represent?
+2. **Write the recurrence** — how does a bigger state depend on smaller ones?
+3. **Identify base cases** — smallest subproblems with known answers
+4. **Choose iteration order** — ensure subproblems are solved before they're needed
+5. **Extract the answer** — which cell (or max/min over cells)?
+
+::: {.callout-tip}
+When stuck: try both **forward** ("what do I do at step `i`?") and **backward** ("what was the last operation?") thinking. Interval DP almost always requires backward thinking.
+:::
+
+---
+
+## Suggested Practice Order
+
+1. **LC 198** — House Robber *(warm up, linear DP)*
+2. **LC 300** — LIS *(O(n²) first, then try O(n log n))*
+3. **LC 416** — Partition Equal Subset *(0/1 knapsack variant)*
+4. **LC 72** — Edit Distance *(2D DP, builds on LCS)*
+5. **LC 312** — Burst Balloons *(interval DP — challenge problem!)*
+
+Good luck! 🚀
