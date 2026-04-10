@@ -17,22 +17,22 @@ format: revealjs
 `ezui` is a beginner-friendly Java library designed to bridge the gap between "Learning Java" and "Building Apps."
 
 - **Why use it?** No messy LayoutManagers, built-in navigation, and modern styling out of the box.
-    
+
 - **The Package:** Always start with `import ezui.*;`
-    
+
 ---
 
 
 ###  Big-Picture Architecture
 
 - **Window**: The "House" (Main Frame + Sidebar).
-    
+
 - **Page**: A "Room" (One specific screen).
-    
+
 - **Grid**: The "Furniture Layout" (Rows and Columns).
-    
+
 - **Component**: The "Furniture" (Buttons, Text, etc.).
-    
+
 ---
 
 
@@ -58,19 +58,19 @@ To launch your application, follow this exact sequence in your `Main.java`
 
 ```java
 
-// 1. Set the Style (Do this FIRST!)
-Theme.initialize("Light", "Modern");
+// 1. Set the Style (Do this FIRST!) - Can be "Light"/"Dark" + "Default"/"Compact"
+Theme.initialize("Light", "Default");
 
 // 2. Create the Window (Title, Width, Height)
 Window app = new Window("Student Portal", 1000, 700);
 
-// 3. Register your Pages 
+// 3. Register your Pages
 // NOTE: The FIRST page you add will be the one displayed at startup!
-app.addPage(new LoginPage()); 
+app.addPage(new LoginPage());
 app.addPage(new DashboardPage());
 
 // 4. Launch!
-app.show();
+app.setVisible(true);
 ```
 :::
 
@@ -78,9 +78,9 @@ app.show();
 <!-- **Pro-Tips for Students:** -->
 **Tips:**
 
-* **Sidebar Magic:** Every time you call `addPage()`, a button with that Page’s name is automatically created in the sidebar. Clicking it switches the screen instantly.
+* **Sidebar Magic:** Every time you call `addPage()`, a button with that Page's name is automatically created in the sidebar. Clicking it switches the screen instantly.
 * **Smart Sizing:** Use `1000x700` as a safe default. It fits perfectly on most laptops without hiding the taskbar.
-* **The "Show" Rule:** Always call `app.show()` or `app.setVisible(true)` at the very end of your `main` method to ensure all your components are properly sized and ready to view.
+* **The "Show" Rule:** Always call `app.setVisible(true)` at the very end of your `main` method to ensure all your components are properly sized and ready to view.
 :::
 :::
 ---
@@ -97,7 +97,7 @@ Every screen in your app (like `Login`, `Dashboard`, or `Settings`) must extend 
 
 **The Page Constructor**
 
-When you create a Page, you must tell `ezui` three things: its **Name**, how many **Rows** it has, and how many **Columns** it has.
+When you create a Page, you must tell `ezui` three things: its **Name**, how many **Rows** it has, and how many **Columns** it has. Optionally, you can also specify how each column behaves when the window is resized - does it GROW (or shrink) or does it remain FIXED. The default behavior is to GROW.
 
 ```java
 public class DashboardPage extends Page {
@@ -121,9 +121,10 @@ public class DashboardPage extends Page {
 1.  **Name (`"Dashboard"`)**: This is the text that will appear on the button in the Sidebar.
 2.  **Rows (`3`)**: How many horizontal "slots" your page has from top to bottom.
 3.  **Columns (`2`)**: How many vertical "slots" your page has from left to right.
-4.  **ColumnStyles**: These tell the columns how to behave.
+4.  **ColumnStyles**: These tell the columns how to behave. These are optional.
     * `ColumnStyle.FIXED()`: Stays as small as possible (good for labels/icons).
     * `ColumnStyle.GROW()`: Stretches to fill all remaining screen space (good for Tables/Charts).
+    * `ColumnSryle.WIDTH(px)`: Forces an exact pixel width (good for sidebars or panels that need to be a specific size).
 
 :::
 ::: {.fragment .fade-in-then-out}
@@ -132,6 +133,61 @@ public class DashboardPage extends Page {
 * **The Grid is Your Canvas**: You can't add a component to a Page without a Grid slot. If you need more space, increase the Row/Column numbers in the constructor.
 * **Infinite Height**: Don't worry about making the page too long! `ezui` automatically adds a **Scrollbar** if your content exceeds the window height.
 * **The `onCreate` Rule**: Always put your `root.add()` code inside `onCreate`. If you put it in the constructor, the Window might not be ready to display it yet!
+:::
+:::
+
+
+---
+
+
+### Page: Navigating Between Screens
+
+**Moving Between Pages**
+
+A `Page` knows which `Window` it belongs to. Use `navigateTo(String)` from inside any Lambda to switch the visible page programmatically — without touching the sidebar at all.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+
+```java
+public class LoginPage extends Page {
+    public LoginPage() {
+        super("Login", 4, 2, ColumnStyle.FIXED(), ColumnStyle.GROW());
+    }
+
+    @Override
+    public void onCreate() {
+        TextBox userField = new TextBox();
+        TextBox passField = new TextBox();
+        passField.setMasked(true);
+
+        Button loginBtn = new Button("Log In", "sign-in-alt");
+
+        loginBtn.onClick(() -> {
+            String user = userField.getText();
+            // ... validate credentials ...
+
+            // Switch to the Dashboard page when login succeeds
+            navigateTo("Dashboard");
+        });
+
+        root.add(new Text("Username:", "Label"), 0, 0);
+        root.add(userField, 0, 1, Alignment.FILL);
+        root.add(new Text("Password:", "Label"), 1, 0);
+        root.add(passField, 1, 1, Alignment.FILL);
+        root.add(loginBtn, 2, 1, Alignment.RIGHT);
+    }
+}
+```
+
+:::
+::: {.fragment .fade-in-then-out}
+
+**Why use `navigateTo` instead of clicking the sidebar?**
+
+* **Control Flow**: You can navigate only *after* validating input (e.g., only switch to Dashboard if login succeeds).
+* **The Argument**: Pass the **exact name** you used in the `super(...)` constructor of the target page.
+
 :::
 :::
 
@@ -161,7 +217,7 @@ Think of a Grid as a spreadsheet. Every "cell" has a unique address: `(row, colu
 
 ::: {.fragment .fade-in-then-out}
 **How to Add Components**
-You use the `root.add()` method inside your Page's `onCreate()` function. 
+You use the `root.add()` method inside your Page's `onCreate()` function.
 
 ```java
 // 1. Simple placement (Fills the column, aligns to top)
@@ -184,7 +240,7 @@ root.add(new Button("Save"), 1, 1, Alignment.RIGHT);
 ::: {.fragment .fade-in-then-out}
 **Tips:**
 
-* **Overlapping**: You cannot put two components in the same `(row, column)` address. The second one will simply replace the first! 
+* **Overlapping**: You cannot put two components in the same `(row, column)` address. The second one will simply replace the first!
 * **Empty Spaces**: You don't have to fill every cell. If you leave `(0, 1)` empty, it will just show as a blank space in your layout.
 * **Pro-Tip**: Use `Alignment.FILL` for your input fields (TextBox) so they look consistent and professional across the page.
 :::
@@ -223,7 +279,7 @@ public void onCreate() {
 ```
 :::
 ::: {.fragment .fade-in-then-out}
-**What’s happening here?**
+**What's happening here?**
 
 * **Coordinate (1, 1)**: The `TextBox` is using `Alignment.FILL`, making it look like a professional, wide input field.
 * **Coordinate (3, 1)**: Even though the button is in the same column as the textbox, `Alignment.RIGHT` keeps it tucked neatly in the corner.
@@ -242,43 +298,54 @@ public void onCreate() {
 
 **What is a Component?**
 
-Every UI element in `ezui`—whether it's a **Button**, a **TextBox**, or an **Icon**—is a **Component**. Think of "Component" as the DNA that all widgets share. 
+Every UI element in `ezui`—whether it's a **Button**, a **TextBox**, or an **Icon**—is a **Component**. Think of "Component" as the DNA that all widgets share.
 
 Because of this shared DNA, you can interact with any widget using the same simple methods.
 
 **The Interaction Superpowers:**
 
 1.  **`onClick(Runnable action)`**: Runs code when the user clicks the component.
-2.  **`onHover(Runnable action)`**: Runs code when the user's mouse moves over the component.
+2.  **`onHover(Runnable action)`**: Runs code when the mouse *enters* the component.
+3.  **`onHoverExit(Runnable action)`**: Runs code when the mouse *leaves* the component.
+4.  **`setColor(String key)`**: Changes the component's primary color using a palette key.
 
-::: 
+:::
 ::: {.fragment .fade-in-then-out}
 **Example: Making an Icon Interactive**
 
-Usually, icons are just for decoration. But in `ezui`, because an `Icon` is a **Component**, you can make it act like a button!
+Usually, icons are just for decoration. But in `ezui`, because an `Icon` is a **Component**, you can make it act like a button — and even change color on hover!
 
 ```java
 Icon helpIcon = new Icon("question-circle");
 
-// Add a click action to an icon!
-helpIcon.onClick(() -> {
-    System.out.println("User needs help!");
-});
+// Click action
+helpIcon.onClick(() -> System.out.println("User needs help!"));
 
-// Add a hover effect
-helpIcon.onHover(() -> {
-    helpIcon.setColor("Primary"); // Change color when mouse is over it
-});
+// Reversible hover effect: change color on enter, restore on exit
+helpIcon.onHover(()    -> helpIcon.setColor("Warning"));
+helpIcon.onHoverExit(() -> helpIcon.setColor("Primary"));
 
 root.add(helpIcon, 0, 1, Alignment.RIGHT);
 ```
 :::
 ::: {.fragment .fade-in-then-out}
-**Why This Matters:**
+
+**`setColor()` works on Text and Buttons too:**
+
+```java
+Text status = new Text("All good", "Body");
+Button deleteBtn = new Button("Delete", "trash");
+
+// Text: changes the text foreground color
+status.setColor("Success");
+
+// Button: changes the button background color
+deleteBtn.setColor("Danger");
+```
 
 * **Consistency**: You don't have to remember if a widget uses an `ActionListener` or a `MouseListener`. You just use `onClick`.
-* **Flexibility**: Want a piece of **Text** to be clickable like a link? Just call `text.onClick(...)`. 
-* **Uniformity**: Every component handles its own margins, padding, and basic styling, so your app always looks "correct" regardless of which widget you use.
+* **Flexibility**: Want a piece of **Text** to be clickable like a link? Just call `text.onClick(...)`.
+* **Uniformity**: Every component handles its own margins, padding, and basic styling.
 :::
 :::
 
@@ -333,7 +400,7 @@ Creating a whole new file/class just to print one line of text is a lot of work.
 
 **How the Transformation Happens:**
 
-The computer is smart. It knows `onClick` needs a `Runnable`. It knows `Runnable` only has one method (`run`). So, we can delete all the "labels" and just keep the "logic."
+Java is smart. It knows `onClick` needs a `Runnable`. It knows `Runnable` only has one method (`run`). So, we can delete all the "labels" and just keep the "logic."
 
 :::
 ::: {.fragment .fade-in-then-out}
@@ -423,7 +490,7 @@ Button btn = new Button("Click Me");
 btn.onClick(() -> {
     // ERROR: Local variable counter defined in an enclosing scope must be final
     // or effectively final
-    counter++; 
+    counter++;
 });
 
 counter = 5; // Changing this later also breaks the Lambda above!
@@ -432,6 +499,7 @@ counter = 5; // Changing this later also breaks the Lambda above!
 :::
 ::: {.fragment .fade-in-then-out}
 **The Correct Way (Using Objects)**
+
 If you need to update a value, you should update a **Component** or an **Object**, not a primitive `int` or `String`.
 
 ```java
@@ -458,7 +526,7 @@ btn.onClick(() -> {
 ---
 
 ## 🟧 SECTION 2: BASIC INPUTS & WIDGETS
-    
+
 
 ---
 
@@ -470,33 +538,35 @@ btn.onClick(() -> {
 
 A `Button` is the primary way users trigger events in your application. In `ezui`, buttons are designed to look modern and professional by default.
 
-**The Three Constructors**
+**The Two Constructors**
 
-You can create a button in three different ways depending on your UI needs:
+You can create a button in two different ways:
 
 1.  **Text Only**: `new Button("Submit")`
-2.  **Icon Only**: `new Button("play")` (Uses FontAwesome)
-3.  **Text + Icon**: `new Button("Delete", "trash")`
+2.  **Text + Icon**: `new Button("Delete", "trash")` — icon name from [FontAwesome v5 Solid](https://fontawesome.com/v5/search?s=solid)
+
 :::
 ::: {.fragment .fade-in-then-out}
 ```java
-// Example: A professional "Save" button
+// A "Save" button with an icon
 Button saveBtn = new Button("Save Changes", "save");
 
-// Add the logic using a Lambda!
 saveBtn.onClick(() -> {
     System.out.println("Saving to database...");
-    // You could also call a method here: saveUserData();
 });
 
 root.add(saveBtn, 2, 1, Alignment.RIGHT);
 ```
 
-**Pro-Tips:**
+**Changing the Color:**
 
-* **Icon Search**: You can find all the valid icon strings (like `"user"`, `"check"`, `"envelope"`) by searching the [FontAwesomeSolid library](https://fontawesome.com/v5/search?s=solid).
-* **Consistency**: Use `Alignment.FILL` if you want a column of buttons to all be the same width (like a vertical menu).
-* **Feedback**: Always provide feedback in your `onClick`. If the button doesn't print something or change the screen, the user might think the app is frozen!
+```java
+Button deleteBtn = new Button("Delete", "trash");
+deleteBtn.setColor("Danger"); // Red background — signals a destructive action
+root.add(deleteBtn, 3, 1, Alignment.RIGHT);
+```
+
+**Pro-Tip**: Use `Alignment.FILL` if you want a column of buttons to all be the same width (like a vertical menu).
 :::
 :::
 
@@ -519,22 +589,16 @@ Think of this as a **Folder for Actions**. When the user clicks it, a menu pops 
 
 ::: {.fragment .fade-in-then-out}
 ```{.java code-line-numbers=""}
-// 1. Create the base button
+// Text-only dropdown
+DropDownButton menuBtn = new DropDownButton("File Options");
+
+// Or with an icon:
 DropDownButton menuBtn = new DropDownButton("File Options", "folder-open");
 
-// 2. Add options with their own Lambdas
-menuBtn.addOption("Download PDF", () -> {
-    System.out.println("Generating PDF...");
-});
-
-menuBtn.addOption("Export to CSV", () -> {
-    System.out.println("Exporting data...");
-});
-
-// 3. Add a "Danger" action
-menuBtn.addOption("Delete Record", () -> {
-    System.out.println("Deleting...");
-});
+// Add options with their own Lambdas
+menuBtn.addOption("Download PDF", () -> System.out.println("Generating PDF..."));
+menuBtn.addOption("Export to CSV", () -> System.out.println("Exporting data..."));
+menuBtn.addOption("Delete Record", () -> System.out.println("Deleting..."));
 
 root.add(menuBtn, 0, 1, Alignment.RIGHT);
 ```
@@ -562,18 +626,22 @@ root.add(menuBtn, 0, 1, Alignment.RIGHT);
 ### Text: Typography & Styles
 
 **What is the Text Component?**
+
 In `ezui`, you don't just "draw strings." You use the `Text` component to create labels, headings, and descriptions. Each `Text` object follows the rules of your chosen **Theme**.
 
 **The Style Cheat Sheet**
 
-When you create a `Text` object, you can pass a **Style String** as the second argument. This tells `ezui` exactly how to format the font size, weight, and spacing.
+When you create a `Text` object, you can pass a **Style String** as the second argument.
 
 | Style Name | Purpose | Visual Look |
 | :--- | :--- | :--- |
-| **`"H1"`** | Main Page Titles | Large, Bold, High Contrast |
+| **`"Title"`** | Hero / splash titles | Extra-Large, Bold |
+| **`"H1"`** | Main Page Titles | Large, Bold |
 | **`"H2"`** | Section Headers | Medium-Large, Bold |
-| **`"Label"`** | Input Descriptions | Small, Bold (Perfect for "Name:", etc.) |
+| **`"H3"`** | Sub-section Headers | Medium, Bold |
 | **`"Body"`** | General Paragraphs | Standard Size, Normal Weight |
+| **`"Label"`** | Input Descriptions | Small, Italic (Perfect for "Name:", etc.) |
+| **`"Small"`** | Captions / footnotes | Small, Normal Weight |
 
 ---
 
@@ -583,13 +651,16 @@ When you create a `Text` object, you can pass a **Style String** as the second a
 **Code Example:**
 
 ```java
-// Create a big title
+// A page title
 Text title = new Text("Student Dashboard", "H1");
 root.add(title, 0, 0, Alignment.LEFT);
 
-// Create a small label for a field
+// A label for a form field
 Text nameLabel = new Text("Full Name:", "Label");
 root.add(nameLabel, 1, 0, Alignment.LEFT);
+
+// A shortcut: omitting the style defaults to "Body"
+Text note = new Text("Changes saved successfully.");
 ```
 
 ---
@@ -597,23 +668,27 @@ root.add(nameLabel, 1, 0, Alignment.LEFT);
 
 ### Text: Typography & Styles
 
-**Changing Content Dynamically**
+**Changing Content and Color Dynamically**
 
-Since `Text` is a **Component**, you can change what it says inside a Lambda!
+Since `Text` is a **Component**, you can change what it says — and what color it is — inside a Lambda!
 
 ```java
 Text status = new Text("System Ready", "Body");
 
 myBtn.onClick(() -> {
     status.setText("Processing...");
-    status.setColor("Warning"); // If your theme supports color keys
+    status.setColor("Warning"); // amber text from the color palette
+});
+
+// Restore it later
+myOtherBtn.onClick(() -> {
+    status.setText("Done!");
+    status.setColor("Success"); // green
 });
 ```
 
-**Tips:**
-
-* **Consistency is Key**: Don't use `"H1"` for everything. Use one `"H1"` per page, and use `"Label"` for all your form inputs so they line up perfectly.
-* **The "Alignment" Pair**: Usually, you want to pair a `Text` (Alignment.LEFT) with a `TextBox` (Alignment.FILL) in the same row to create a clean form layout.
+* **Consistency is Key**: Use one `"H1"` per page, `"Label"` for all form labels, and `"Body"` for everything else.
+* **The "Alignment" Pair**: Pair a `Text` (Alignment.LEFT) with a `TextBox` (Alignment.FILL) in the same row to create a clean form layout.
 
 
 ---
@@ -621,10 +696,13 @@ myBtn.onClick(() -> {
 ### TextBox: Capturing User Input
 
 **What is a TextBox?**
+
 A `TextBox` is a single-line input field. Unlike `Text`, which is for display only, a `TextBox` allows the user to type.
 
 **The "Get and Set" Pattern**
+
 To interact with a `TextBox`, you will primarily use two methods:
+
 1.  **`getText()`**: Pulls the current string out of the box (usually inside an `onClick` Lambda).
 2.  **`setText(String)`**: Replaces the text inside the box programmatically.
 
@@ -636,17 +714,13 @@ To interact with a `TextBox`, you will primarily use two methods:
 
 ```java
 TextBox nameField = new TextBox();
+nameField.setPlaceholder("Enter your name…"); // hint text when empty
 Button greetBtn = new Button("Say Hello");
 
 greetBtn.onClick(() -> {
-    // 1. Grab the input
     String input = nameField.getText();
-    
-    // 2. Use it!
     System.out.println("Hello, " + input + "!");
-    
-    // 3. Optional: Clear the box for the next entry
-    nameField.setText(""); 
+    nameField.setText(""); // clear for the next entry
 });
 
 root.add(nameField, 0, 0, Alignment.FILL);
@@ -662,7 +736,8 @@ root.add(greetBtn, 0, 1, Alignment.RIGHT);
 If you are building a login screen, you don't want the password visible. Use `setMasked(true)` to turn the characters into dots.
 ```java
 TextBox passField = new TextBox();
-passField.setMasked(true); // Secure input!
+passField.setPlaceholder("Enter password…");
+passField.setMasked(true); // characters appear as ●●●●
 ```
 
 
@@ -695,9 +770,9 @@ bio.setText("Line 1\nLine 2");
 Uses the **FontAwesomeSolid** set.
 
 - Case-insensitive codes (e.g., `"home"`, `"user-circle"`, `"arrow-left"`).
-    
+
 - Invalid codes automatically default to a `?` icon.
-    
+
 
 
 ```{.java code-line-numbers=""}
@@ -715,11 +790,16 @@ gear.setColor("Primary");
 
 ###  DropDownButton
 
-A button that reveals a menu of options when clicked.
+- A button that reveals a menu of options when clicked.
+- Each option has its own Lambda for handling user selection.
+- You can change the color and text, just like other buttons.
 
 
 ```{.java code-line-numbers=""}
 DropDownButton menu = new DropDownButton("Actions");
+menu.setColor("Warning");
+menu.onHover(() -> menu.setText("Wow!!"));
+menu.onHoverExit(() -> menu.setText("Actions"));
 menu.addOption("Edit", () -> openEdit());
 menu.addOption("Delete", () -> deleteItem());
 ```
@@ -729,17 +809,55 @@ menu.addOption("Delete", () -> deleteItem());
 
 ###  ComboBox & ListBox
 
-- **ComboBox**: A dropdown where you pick one item.
-    
-- **ListBox**: A visible list where you pick one item.
-    
-- **MultiListBox**: A list where you can select many items at once.
-    
+- **ComboBox**: A dropdown where you pick **one** item.
+- **ListBox**: A visible list where you pick **one** item.
+- **MultiListBox**: A list where you can select **many** items at once.
 
+All three implement the `Selectable` interface, which adds a single method:
+
+**`onSelectionChange(Runnable action)`** — fires whenever the user picks something new. No button needed.
+
+---
+
+### ComboBox
 
 ```{.java code-line-numbers=""}
 ComboBox choice = new ComboBox(List.of("Option A", "Option B"));
+choice.onSelectionChange(() -> System.out.println("Selected: " + choice.getSelectedItem()));
 ```
+
+---
+
+### ListBox
+
+```{.java code-line-numbers=""}
+ListBox courseList = new ListBox(List.of("CS1", "CS2", "CS3"));
+Text detailLabel = new Text("Pick a course to see details.", "Body");
+
+courseList.onSelectionChange(() -> {
+    String course = courseList.getSelectedItem();
+    detailLabel.setText("Viewing: " + course);
+});
+```
+
+---
+
+### MultiListBox
+
+```{.java code-line-numbers=""}
+MultiListBox tagPicker = new MultiListBox(List.of("Easy", "Medium", "Hard"));
+Text summary = new Text("No tags selected.", "Body");
+
+tagPicker.onSelectionChange(() -> {
+    List<String> picked = tagPicker.getSelectedItems();
+    summary.setText("Selected: " + String.join(", ", picked));
+});
+```
+
+**Tips:**
+
+* **`onSelectionChange` vs `onClick`**: Use `onSelectionChange` for live, immediate reactions. Use a Button's `onClick` when you want the user to explicitly confirm their choice first.
+* **Null check**: `getSelectedItem()` returns `null` if nothing is selected. Always guard against it before using the value.
 
 ---
 
@@ -771,9 +889,9 @@ public class Student implements ITable {
 The `Table` stays in sync with a `List`.
 
 - Call `refresh()` after modifying the list to update the UI.
-    
+
 - Displays "No Data Available" if the list is empty.
-    
+
 
 
 ```{.java code-line-numbers=""}
@@ -787,14 +905,52 @@ table.refresh(); // Table now builds its columns and rows
 ---
 
 
+### Table: Responding to Row Selection
+
+The `Table` can tell you which object the user has selected. Use this to build "click a row → show details" patterns.
+
+```{.java code-line-numbers=""}
+Table<Student> table = new Table<>(students);
+Button viewBtn = new Button("View Details");
+
+viewBtn.onClick(() -> {
+    // getSelectedObject() returns the actual Student object
+    Student selected = table.getSelectedObject();
+
+    if (selected == null) {
+        System.out.println("No row selected!");
+        return;
+    }
+
+    System.out.println("Viewing: " + selected.getName());
+    // e.g. navigate to a detail page and pass the student
+    navigateTo("Details");
+});
+
+// Clear the highlight after you're done
+table.clearSelection();
+```
+
+---
+
+
 ###  Chart: Visual Data
 
-Turn `Map` data into Bar or Pie charts instantly.
+Turn `Map` data into Bar or Pie charts. Call `refresh()` to update the chart when the data changes — just like `Table`.
 
 
 ```{.java code-line-numbers=""}
-Map<String, Double> data = Map.of("Passing", 85.0, "Failing", 15.0);
-Chart pie = Chart.createPieChart("Class Stats", data);
+Map<String, Double> grades = new LinkedHashMap<>();
+grades.put("A", 12.0);
+grades.put("B", 18.0);
+grades.put("C", 5.0);
+
+Chart pie = Chart.createPieChart("Grade Distribution", grades);
+root.add(pie, 1, 0, Alignment.FILL);
+
+// Later, after the data changes:
+grades.put("D", 2.0);
+pie.refresh(grades); // chart redraws instantly
 ```
 
 ---
@@ -805,34 +961,42 @@ Chart pie = Chart.createPieChart("Class Stats", data);
 Control your layout precisely.
 
 - **Alignment**: `LEFT`, `CENTER`, `RIGHT`, `FILL`.
-    
+
 - **ColumnStyle**:
-    
+
     - `ColumnStyle.GROW()`: Takes up all extra space.
-        
+
     - `ColumnStyle.FIXED()`: Only takes what it needs.
-        
-    - `ColumnStyle.WIDTH(px)`: Forces a specific width.
-        
+
+    - `ColumnStyle.WIDTH(px)`: Forces an **exact pixel width** — useful when you need a sidebar or panel to be a specific size regardless of content.
+
+    ```java
+    // A 3-column page: narrow label | main content | 200px sidebar
+    super("Dashboard", 5, 3,
+        ColumnStyle.FIXED(),
+        ColumnStyle.GROW(),
+        ColumnStyle.WIDTH(200)
+    );
+    ```
 
 ---
 
-## 🏁 FINAL SUMMARY
+## FINAL SUMMARY
 
 ---
 
 
 ###  Putting it all together
 
-1. **Initialize Theme**: `Theme.initialize("Light", "Modern");`
-    
-2. **Setup Window**: Create your `Window`.
-    
+1. **Initialize Theme**: `Theme.initialize("Light", "Default");`
+
+2. **Setup Window**: Create your `Window` and call `setVisible(true)`.
+
 3. **Build Pages**: Create your `Page` classes and use `root.add`.
-    
-4. **Logic**: Use `onClick` to change data and `table.refresh()` to show it.
-    
+
+4. **Navigate**: Use `navigateTo("PageName")` to switch between screens.
+
+5. **Logic**: Use `onClick` to change data and `table.refresh()` / `chart.refresh(data)` to show it.
+
 
 **Happy Coding with `ezui`!**
-
-
