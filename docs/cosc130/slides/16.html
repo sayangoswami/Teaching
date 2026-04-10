@@ -292,7 +292,7 @@
 <ul>
 <li><code>ColumnStyle.FIXED()</code>: Stays as small as possible (good for labels/icons).</li>
 <li><code>ColumnStyle.GROW()</code>: Stretches to fill all remaining screen space (good for Tables/Charts).</li>
-<li><code>ColumnSryle.WIDTH(px)</code>: Forces an exact pixel width (good for sidebars or panels that need to be a specific size).</li>
+<li><code>ColumnStyle.WIDTH(px)</code>: Stays fixed at a specific width in pixels (good for side panels).</li>
 </ul></li>
 </ol>
 </div>
@@ -860,40 +860,117 @@
 </section>
 <section class="slide level2">
 
-<h3 id="textarea-multi-line-input">TextArea: Multi-Line Input</h3>
-<p>For longer content like notes or descriptions.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb23-1"><a></a><span class="bu">TextArea</span> bio <span class="op">=</span> <span class="kw">new</span> <span class="bu">TextArea</span><span class="op">();</span></span>
-<span id="cb23-2"><a></a>bio<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Line 1</span><span class="sc">\n</span><span class="st">Line 2"</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 id="textarea-handling-big-strings">TextArea: Handling “Big” Strings</h3>
+<p><strong>What is a TextArea?</strong></p>
+<p>While a <code>TextBox</code> is a thin strip for a single line of text, a <code>TextArea</code> is a large, scrollable box. Use this when you need the user to provide a <strong>Description</strong>, a <strong>Bio</strong>, or <strong>Notes</strong>.</p>
+<p><strong>Key Differences from TextBox:</strong></p>
+<ol type="1">
+<li><strong>Multi-line</strong>: It automatically wraps text to the next line.</li>
+<li><strong>Scrollable</strong>: If the user types a whole essay, they can scroll up and down within the box.</li>
+<li><strong>Height</strong>: In your <code>root.add()</code>, a TextArea usually needs more “Vertical Room” to look right.</li>
+</ol>
 </section>
 <section class="slide level2">
 
-<h3 id="icon-visual-symbols">Icon: Visual Symbols</h3>
-<p>Uses the <strong>FontAwesomeSolid</strong> set.</p>
+<h3 id="textarea-handling-big-strings-1">TextArea: Handling “Big” Strings</h3>
+<p><strong>Code Example: A Feedback Form</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb23-1"><a></a><span class="co">// Create a large area for comments</span></span>
+<span id="cb23-2"><a></a><span class="bu">TextArea</span> feedbackBox <span class="op">=</span> <span class="kw">new</span> <span class="bu">TextArea</span><span class="op">();</span></span>
+<span id="cb23-3"><a></a></span>
+<span id="cb23-4"><a></a><span class="co">// You can set a prompt to help the user</span></span>
+<span id="cb23-5"><a></a>feedbackBox<span class="op">.</span><span class="fu">setPlaceholder</span><span class="op">(</span><span class="st">"Enter your suggestions here..."</span><span class="op">);</span></span>
+<span id="cb23-6"><a></a></span>
+<span id="cb23-7"><a></a><span class="bu">Button</span> sendBtn <span class="op">=</span> <span class="kw">new</span> <span class="bu">Button</span><span class="op">(</span><span class="st">"Submit Feedback"</span><span class="op">,</span> <span class="st">"paper-plane"</span><span class="op">);</span></span>
+<span id="cb23-8"><a></a></span>
+<span id="cb23-9"><a></a>sendBtn<span class="op">.</span><span class="fu">onClick</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb23-10"><a></a>    <span class="bu">String</span> longMessage <span class="op">=</span> feedbackBox<span class="op">.</span><span class="fu">getText</span><span class="op">();</span></span>
+<span id="cb23-11"><a></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"User sent: "</span> <span class="op">+</span> longMessage<span class="op">);</span></span>
+<span id="cb23-12"><a></a>    </span>
+<span id="cb23-13"><a></a>    <span class="co">// Clear it after sending</span></span>
+<span id="cb23-14"><a></a>    feedbackBox<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">""</span><span class="op">);</span></span>
+<span id="cb23-15"><a></a><span class="op">});</span></span>
+<span id="cb23-16"><a></a></span>
+<span id="cb23-17"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>feedbackBox<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">FILL</span><span class="op">);</span></span>
+<span id="cb23-18"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>sendBtn<span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">RIGHT</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+<h3 id="textarea-handling-big-strings-2">TextArea: Handling “Big” Strings</h3>
+<p><strong>The “Alignment.FILL” Rule:</strong></p>
+<p>Just like the TextBox, a <code>TextArea</code> looks best when it uses <code>Alignment.FILL</code>. This allows it to expand and fill the entire grid cell, giving the user plenty of room to type.</p>
 <ul>
 <li><p>Case-insensitive codes (e.g., <code>"home"</code>, <code>"user-circle"</code>, <code>"arrow-left"</code>).</p></li>
 <li><p>Invalid codes automatically default to a <code>?</code> icon.</p></li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb24-1"><a></a><span class="bu">Icon</span> gear <span class="op">=</span> <span class="kw">new</span> <span class="bu">Icon</span><span class="op">(</span><span class="st">"cog"</span><span class="op">);</span></span>
-<span id="cb24-2"><a></a>gear<span class="op">.</span><span class="fu">setSize</span><span class="op">(</span><span class="dv">32</span><span class="op">);</span></span>
-<span id="cb24-3"><a></a>gear<span class="op">.</span><span class="fu">setColor</span><span class="op">(</span><span class="st">"Primary"</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="section-3-selection-menus" class="slide level2">
-<h2>🟪 SECTION 3: SELECTION &amp; MENUS</h2>
+<h3 id="icons-visual-shorthand">Icons: Visual Shorthand</h3>
+<p><strong>What is the Icon Component?</strong> In <code>ezui</code>, we use <strong>FontAwesomeSolid</strong> icons (Version 5). Instead of loading image files, you just use a “Key” string. Icons make your buttons and labels instantly recognizable.</p>
+<p><strong>How to use them:</strong> You can use an Icon as a standalone component or as a decoration for a Button.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb24-1"><a></a><span class="co">// A standalone large icon for a header</span></span>
+<span id="cb24-2"><a></a><span class="bu">Icon</span> userIcon <span class="op">=</span> <span class="kw">new</span> <span class="bu">Icon</span><span class="op">(</span><span class="st">"account_circle"</span><span class="op">,</span> <span class="dv">48</span><span class="op">);</span> <span class="co">// Name and Size</span></span>
+<span id="cb24-3"><a></a></span>
+<span id="cb24-4"><a></a><span class="co">// A button with an icon</span></span>
+<span id="cb24-5"><a></a><span class="bu">Button</span> saveBtn <span class="op">=</span> <span class="kw">new</span> <span class="bu">Button</span><span class="op">(</span><span class="st">"Save Changes"</span><span class="op">,</span> <span class="st">"save"</span><span class="op">);</span> </span>
+<span id="cb24-6"><a></a></span>
+<span id="cb24-7"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>userIcon<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">CENTER</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Finding the Right Icon:</strong></p>
+<p>To find the correct icon name, go to the <a href="https://fontawesome.com/v5/search?ic=free-collection">FontAwesomeSolid V5 Icons Search page</a> and search for the icon you want. Click on it, and you’ll see the exact name you need to use in your code (e.g., “user-circle”, “save”, “trash”).</p>
 </section>
 <section class="slide level2">
 
-<h3 id="dropdownbutton">DropDownButton</h3>
+<h3 id="listbox-multilistbox-asking-user-choices">ListBox &amp; MultiListBox: Asking user choices</h3>
+<p><strong>What is a ListBox?</strong> Its a component that displays a list of items. The user can select one item from the list.</p>
+<p><strong>The MultiListBox Advantage</strong> The <code>MultiListBox</code> is also like a ListBox that allows users to select <strong>multiple items</strong> at once (using <code>Ctrl+Click</code> or <code>Shift+Click</code>). This is essential for things like “Assigning Tags” or “Selecting multiple students for an email.”</p>
+<p><strong>Notes:</strong></p>
 <ul>
-<li>A button that reveals a menu of options when clicked.</li>
-<li>Each option has its own Lambda for handling user selection.</li>
-<li>You can change the color and text, just like other buttons.</li>
+<li>The <code>addItems()</code> method in both <code>ListBox</code> and <code>MultiListBox</code> allows you to quickly populate the list with an array of strings. You can also add items one by one using <code>addItem()</code>.</li>
+<li>The <code>SelectedItem</code> method in <code>ListBox</code> returns the currently selected item from the list, or <code>null</code> if nothing is selected. For the <code>MultiListBox</code>, <code>getSelectedItems()</code> returns a list of all selected items, which can be empty if no selections are made.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb25-1"><a></a>DropDownButton menu <span class="op">=</span> <span class="kw">new</span> <span class="fu">DropDownButton</span><span class="op">(</span><span class="st">"Actions"</span><span class="op">);</span></span>
-<span id="cb25-2"><a></a>menu<span class="op">.</span><span class="fu">setColor</span><span class="op">(</span><span class="st">"Warning"</span><span class="op">);</span></span>
-<span id="cb25-3"><a></a>menu<span class="op">.</span><span class="fu">onHover</span><span class="op">(()</span> <span class="op">-&gt;</span> menu<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Wow!!"</span><span class="op">));</span></span>
-<span id="cb25-4"><a></a>menu<span class="op">.</span><span class="fu">onHoverExit</span><span class="op">(()</span> <span class="op">-&gt;</span> menu<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Actions"</span><span class="op">));</span></span>
-<span id="cb25-5"><a></a>menu<span class="op">.</span><span class="fu">addOption</span><span class="op">(</span><span class="st">"Edit"</span><span class="op">,</span> <span class="op">()</span> <span class="op">-&gt;</span> <span class="fu">openEdit</span><span class="op">());</span></span>
-<span id="cb25-6"><a></a>menu<span class="op">.</span><span class="fu">addOption</span><span class="op">(</span><span class="st">"Delete"</span><span class="op">,</span> <span class="op">()</span> <span class="op">-&gt;</span> <span class="fu">deleteItem</span><span class="op">());</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+<h3 id="listbox-multilistbox-asking-user-choices-1">ListBox &amp; MultiListBox: Asking user choices</h3>
+<p><strong>Code Example: A Resource Manager</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb25-1"><a></a><span class="co">// 1. Single Selection</span></span>
+<span id="cb25-2"><a></a>ListBox<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> categoryList <span class="op">=</span> <span class="kw">new</span> ListBox<span class="op">&lt;&gt;();</span></span>
+<span id="cb25-3"><a></a>categoryList<span class="op">.</span><span class="fu">addItems</span><span class="op">(</span><span class="st">"Homework"</span><span class="op">,</span> <span class="st">"Quizzes"</span><span class="op">,</span> <span class="st">"Exams"</span><span class="op">);</span></span>
+<span id="cb25-4"><a></a></span>
+<span id="cb25-5"><a></a><span class="co">// 2. Multiple Selection</span></span>
+<span id="cb25-6"><a></a>MultiListBox<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> studentList <span class="op">=</span> <span class="kw">new</span> MultiListBox<span class="op">&lt;&gt;();</span></span>
+<span id="cb25-7"><a></a>studentList<span class="op">.</span><span class="fu">addItems</span><span class="op">(</span><span class="st">"Alice"</span><span class="op">,</span> <span class="st">"Bob"</span><span class="op">,</span> <span class="st">"Charlie"</span><span class="op">,</span> <span class="st">"David"</span><span class="op">);</span></span>
+<span id="cb25-8"><a></a></span>
+<span id="cb25-9"><a></a><span class="co">// 3. Logic: Get what was selected</span></span>
+<span id="cb25-10"><a></a><span class="bu">Button</span> processBtn <span class="op">=</span> <span class="kw">new</span> <span class="bu">Button</span><span class="op">(</span><span class="st">"Process Selected"</span><span class="op">);</span></span>
+<span id="cb25-11"><a></a>processBtn<span class="op">.</span><span class="fu">onClick</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb25-12"><a></a>    <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> selectedStudents <span class="op">=</span> studentList<span class="op">.</span><span class="fu">getSelectedItems</span><span class="op">();</span></span>
+<span id="cb25-13"><a></a>    <span class="bu">String</span> selectedCategory <span class="op">=</span> categoryList<span class="op">.</span><span class="fu">getSelectedItem</span><span class="op">();</span></span>
+<span id="cb25-14"><a></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Processing "</span> <span class="op">+</span> selectedStudents<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">+</span> <span class="st">" students in category: "</span> <span class="op">+</span> selectedCategory<span class="op">);</span></span>
+<span id="cb25-15"><a></a><span class="op">});</span></span>
+<span id="cb25-16"><a></a></span>
+<span id="cb25-17"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>categoryList<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">FILL</span><span class="op">);</span></span>
+<span id="cb25-18"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>studentList<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">FILL</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+<h3 id="combobox-the-dropdown-listbox">ComboBox: The Dropdown ListBox</h3>
+<p><strong>What is a ComboBox?</strong> Use a <code>ComboBox</code> when you have a list of options (like “Select a Major” or “Pick a Color”) but you want to save space on the screen. It only shows the full list when clicked.</p>
+<p><strong>The Code Pattern:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb26-1"><a></a>ComboBox<span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> majorPicker <span class="op">=</span> <span class="kw">new</span> ComboBox<span class="op">&lt;&gt;();</span></span>
+<span id="cb26-2"><a></a>majorPicker<span class="op">.</span><span class="fu">addItem</span><span class="op">(</span><span class="st">"Computer Science"</span><span class="op">);</span></span>
+<span id="cb26-3"><a></a>majorPicker<span class="op">.</span><span class="fu">addItem</span><span class="op">(</span><span class="st">"Mathematics"</span><span class="op">);</span></span>
+<span id="cb26-4"><a></a>majorPicker<span class="op">.</span><span class="fu">addItem</span><span class="op">(</span><span class="st">"Physics"</span><span class="op">);</span></span>
+<span id="cb26-5"><a></a></span>
+<span id="cb26-6"><a></a><span class="op">-</span> A button that reveals a menu of options when clicked<span class="op">.</span></span>
+<span id="cb26-7"><a></a><span class="op">-</span> Each option has its own Lambda <span class="cf">for</span> handling user selection<span class="op">.</span></span>
+<span id="cb26-8"><a></a><span class="op">-</span> You can change the color and text<span class="op">,</span> just like other buttons<span class="op">.</span></span>
+<span id="cb26-9"><a></a></span>
+<span id="cb26-10"><a></a></span>
+<span id="cb26-11"><a></a>```<span class="op">{.</span><span class="fu">java</span> code<span class="op">-</span>line<span class="op">-</span>numbers<span class="op">=</span><span class="st">""</span><span class="op">}</span></span>
+<span id="cb26-12"><a></a>DropDownButton menu <span class="op">=</span> <span class="kw">new</span> <span class="fu">DropDownButton</span><span class="op">(</span><span class="st">"Actions"</span><span class="op">);</span></span>
+<span id="cb26-13"><a></a>menu<span class="op">.</span><span class="fu">setColor</span><span class="op">(</span><span class="st">"Warning"</span><span class="op">);</span></span>
+<span id="cb26-14"><a></a>menu<span class="op">.</span><span class="fu">onHover</span><span class="op">(()</span> <span class="op">-&gt;</span> menu<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Wow!!"</span><span class="op">));</span></span>
+<span id="cb26-15"><a></a>menu<span class="op">.</span><span class="fu">onHoverExit</span><span class="op">(()</span> <span class="op">-&gt;</span> menu<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Actions"</span><span class="op">));</span></span>
+<span id="cb26-16"><a></a>menu<span class="op">.</span><span class="fu">addOption</span><span class="op">(</span><span class="st">"Edit"</span><span class="op">,</span> <span class="op">()</span> <span class="op">-&gt;</span> <span class="fu">openEdit</span><span class="op">());</span></span>
+<span id="cb26-17"><a></a>menu<span class="op">.</span><span class="fu">addOption</span><span class="op">(</span><span class="st">"Delete"</span><span class="op">,</span> <span class="op">()</span> <span class="op">-&gt;</span> <span class="fu">deleteItem</span><span class="op">());</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -909,30 +986,30 @@
 <section class="slide level2">
 
 <h3 id="combobox">ComboBox</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb26-1"><a></a>ComboBox choice <span class="op">=</span> <span class="kw">new</span> <span class="fu">ComboBox</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"Option A"</span><span class="op">,</span> <span class="st">"Option B"</span><span class="op">));</span></span>
-<span id="cb26-2"><a></a>choice<span class="op">.</span><span class="fu">onSelectionChange</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Selected: "</span> <span class="op">+</span> choice<span class="op">.</span><span class="fu">getSelectedItem</span><span class="op">()));</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb27-1"><a></a>ComboBox choice <span class="op">=</span> <span class="kw">new</span> <span class="fu">ComboBox</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"Option A"</span><span class="op">,</span> <span class="st">"Option B"</span><span class="op">));</span></span>
+<span id="cb27-2"><a></a>choice<span class="op">.</span><span class="fu">onSelectionChange</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Selected: "</span> <span class="op">+</span> choice<span class="op">.</span><span class="fu">getSelectedItem</span><span class="op">()));</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
 <h3 id="listbox">ListBox</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb27-1"><a></a>ListBox courseList <span class="op">=</span> <span class="kw">new</span> <span class="fu">ListBox</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"CS1"</span><span class="op">,</span> <span class="st">"CS2"</span><span class="op">,</span> <span class="st">"CS3"</span><span class="op">));</span></span>
-<span id="cb27-2"><a></a><span class="bu">Text</span> detailLabel <span class="op">=</span> <span class="kw">new</span> <span class="bu">Text</span><span class="op">(</span><span class="st">"Pick a course to see details."</span><span class="op">,</span> <span class="st">"Body"</span><span class="op">);</span></span>
-<span id="cb27-3"><a></a></span>
-<span id="cb27-4"><a></a>courseList<span class="op">.</span><span class="fu">onSelectionChange</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
-<span id="cb27-5"><a></a>    <span class="bu">String</span> course <span class="op">=</span> courseList<span class="op">.</span><span class="fu">getSelectedItem</span><span class="op">();</span></span>
-<span id="cb27-6"><a></a>    detailLabel<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Viewing: "</span> <span class="op">+</span> course<span class="op">);</span></span>
-<span id="cb27-7"><a></a><span class="op">});</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb28-1"><a></a>ListBox courseList <span class="op">=</span> <span class="kw">new</span> <span class="fu">ListBox</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"CS1"</span><span class="op">,</span> <span class="st">"CS2"</span><span class="op">,</span> <span class="st">"CS3"</span><span class="op">));</span></span>
+<span id="cb28-2"><a></a><span class="bu">Text</span> detailLabel <span class="op">=</span> <span class="kw">new</span> <span class="bu">Text</span><span class="op">(</span><span class="st">"Pick a course to see details."</span><span class="op">,</span> <span class="st">"Body"</span><span class="op">);</span></span>
+<span id="cb28-3"><a></a></span>
+<span id="cb28-4"><a></a>courseList<span class="op">.</span><span class="fu">onSelectionChange</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb28-5"><a></a>    <span class="bu">String</span> course <span class="op">=</span> courseList<span class="op">.</span><span class="fu">getSelectedItem</span><span class="op">();</span></span>
+<span id="cb28-6"><a></a>    detailLabel<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Viewing: "</span> <span class="op">+</span> course<span class="op">);</span></span>
+<span id="cb28-7"><a></a><span class="op">});</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
 <h3 id="multilistbox">MultiListBox</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb28-1"><a></a>MultiListBox tagPicker <span class="op">=</span> <span class="kw">new</span> <span class="fu">MultiListBox</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"Easy"</span><span class="op">,</span> <span class="st">"Medium"</span><span class="op">,</span> <span class="st">"Hard"</span><span class="op">));</span></span>
-<span id="cb28-2"><a></a><span class="bu">Text</span> summary <span class="op">=</span> <span class="kw">new</span> <span class="bu">Text</span><span class="op">(</span><span class="st">"No tags selected."</span><span class="op">,</span> <span class="st">"Body"</span><span class="op">);</span></span>
-<span id="cb28-3"><a></a></span>
-<span id="cb28-4"><a></a>tagPicker<span class="op">.</span><span class="fu">onSelectionChange</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
-<span id="cb28-5"><a></a>    <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> picked <span class="op">=</span> tagPicker<span class="op">.</span><span class="fu">getSelectedItems</span><span class="op">();</span></span>
-<span id="cb28-6"><a></a>    summary<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Selected: "</span> <span class="op">+</span> <span class="bu">String</span><span class="op">.</span><span class="fu">join</span><span class="op">(</span><span class="st">", "</span><span class="op">,</span> picked<span class="op">));</span></span>
-<span id="cb28-7"><a></a><span class="op">});</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb29-1"><a></a>MultiListBox tagPicker <span class="op">=</span> <span class="kw">new</span> <span class="fu">MultiListBox</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"Easy"</span><span class="op">,</span> <span class="st">"Medium"</span><span class="op">,</span> <span class="st">"Hard"</span><span class="op">));</span></span>
+<span id="cb29-2"><a></a><span class="bu">Text</span> summary <span class="op">=</span> <span class="kw">new</span> <span class="bu">Text</span><span class="op">(</span><span class="st">"No tags selected."</span><span class="op">,</span> <span class="st">"Body"</span><span class="op">);</span></span>
+<span id="cb29-3"><a></a></span>
+<span id="cb29-4"><a></a>tagPicker<span class="op">.</span><span class="fu">onSelectionChange</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb29-5"><a></a>    <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> picked <span class="op">=</span> tagPicker<span class="op">.</span><span class="fu">getSelectedItems</span><span class="op">();</span></span>
+<span id="cb29-6"><a></a>    summary<span class="op">.</span><span class="fu">setText</span><span class="op">(</span><span class="st">"Selected: "</span> <span class="op">+</span> <span class="bu">String</span><span class="op">.</span><span class="fu">join</span><span class="op">(</span><span class="st">", "</span><span class="op">,</span> picked<span class="op">));</span></span>
+<span id="cb29-7"><a></a><span class="op">});</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Tips:</strong></p>
 <ul>
 <li><strong><code>onSelectionChange</code> vs <code>onClick</code></strong>: Use <code>onSelectionChange</code> for live, immediate reactions. Use a Button’s <code>onClick</code> when you want the user to explicitly confirm their choice first.</li>
@@ -941,77 +1018,101 @@
 </section>
 <section id="section-4-data-advanced" class="slide level2">
 <h2>🟩 SECTION 4: DATA &amp; ADVANCED</h2>
+<p><strong>What makes this Table special?</strong></p>
+<p>In <code>ezui</code>, the Table is “Smart.” You don’t have to tell it what the headers are or manually type every row. Instead, you give it a <strong>List of Objects</strong>, and the Table handles the rest.</p>
+<p><strong>Step 1: The <code>ITable</code> Contract</strong></p>
+<p>To show your data in a table, your class (like <code>Student</code> or <code>Book</code>) must “implement” the <code>ITable</code> interface. This tells the table how to “read” your object.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb30-1"><a></a><span class="kw">public</span> <span class="kw">class</span> Student <span class="kw">implements</span> ITable <span class="op">{</span></span>
+<span id="cb30-2"><a></a>    <span class="kw">private</span> <span class="bu">String</span> id<span class="op">,</span> name<span class="op">,</span> grade<span class="op">;</span></span>
+<span id="cb30-3"><a></a></span>
+<span id="cb30-4"><a></a>    <span class="co">// The Table calls this to build the top header row</span></span>
+<span id="cb30-5"><a></a>    <span class="kw">public</span> <span class="bu">String</span><span class="op">[]</span> <span class="fu">getHeaders</span><span class="op">()</span> <span class="op">{</span> </span>
+<span id="cb30-6"><a></a>        <span class="cf">return</span> <span class="kw">new</span> <span class="bu">String</span><span class="op">[]{</span><span class="st">"ID"</span><span class="op">,</span> <span class="st">"Student Name"</span><span class="op">,</span> <span class="st">"Current Grade"</span><span class="op">};</span> </span>
+<span id="cb30-7"><a></a>    <span class="op">}</span></span>
+<span id="cb30-8"><a></a></span>
+<span id="cb30-9"><a></a>    <span class="co">// The Table calls this to fill in each row</span></span>
+<span id="cb30-10"><a></a>    <span class="kw">public</span> <span class="bu">String</span><span class="op">[]</span> <span class="fu">getValues</span><span class="op">()</span> <span class="op">{</span> </span>
+<span id="cb30-11"><a></a>        <span class="cf">return</span> <span class="kw">new</span> <span class="bu">String</span><span class="op">[]{</span>id<span class="op">,</span> name<span class="op">,</span> grade<span class="op">};</span> </span>
+<span id="cb30-12"><a></a>    <span class="op">}</span></span>
+<span id="cb30-13"><a></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
-<h3 id="itable-the-data-contract">ITable: The Data Contract</h3>
-<p>To show objects in a Table, your class <strong>must</strong> implement <code>ITable</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb29-1"><a></a><span class="kw">public</span> <span class="kw">class</span> Student <span class="kw">implements</span> ITable <span class="op">{</span></span>
-<span id="cb29-2"><a></a>    <span class="kw">private</span> <span class="bu">String</span> name<span class="op">;</span></span>
-<span id="cb29-3"><a></a>    <span class="kw">private</span> <span class="dt">double</span> gpa<span class="op">;</span></span>
-<span id="cb29-4"><a></a></span>
-<span id="cb29-5"><a></a>    <span class="kw">public</span> <span class="bu">String</span><span class="op">[]</span> <span class="fu">getHeaders</span><span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">new</span> <span class="bu">String</span><span class="op">[]{</span><span class="st">"Name"</span><span class="op">,</span> <span class="st">"GPA"</span><span class="op">};</span> <span class="op">}</span></span>
-<span id="cb29-6"><a></a>    <span class="kw">public</span> <span class="bu">Object</span><span class="op">[]</span> <span class="fu">getValues</span><span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">new</span> <span class="bu">Object</span><span class="op">[]{</span>name<span class="op">,</span> gpa<span class="op">};</span> <span class="op">}</span></span>
-<span id="cb29-7"><a></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section class="slide level2">
-
-<h3 id="table-dynamic-data-display">Table: Dynamic Data Display</h3>
-<p>The <code>Table</code> stays in sync with a <code>List</code>.</p>
+<h3 id="table-automatic-data-mapping">Table: Automatic Data Mapping</h3>
+<p><strong>What makes this Table special?</strong></p>
+<p>In <code>ezui</code>, the Table is “Smart.” You don’t have to tell it what the headers are or manually type every row. Instead, you give it a <strong>List of Objects</strong>, and the Table handles the rest.</p>
 <ul>
 <li><p>Call <code>refresh()</code> after modifying the list to update the UI.</p></li>
 <li><p>Displays “No Data Available” if the list is empty.</p></li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb30-1"><a></a><span class="bu">List</span><span class="op">&lt;</span>Student<span class="op">&gt;</span> students <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
-<span id="cb30-2"><a></a>Table<span class="op">&lt;</span>Student<span class="op">&gt;</span> table <span class="op">=</span> <span class="kw">new</span> Table<span class="op">&lt;&gt;(</span>students<span class="op">);</span></span>
-<span id="cb30-3"><a></a></span>
-<span id="cb30-4"><a></a>students<span class="op">.</span><span class="fu">add</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Student</span><span class="op">(</span><span class="st">"Alice"</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">));</span></span>
-<span id="cb30-5"><a></a>table<span class="op">.</span><span class="fu">refresh</span><span class="op">();</span> <span class="co">// Table now builds its columns and rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
+<h3 id="selecting-refreshing-data">Selecting &amp; Refreshing Data</h3>
+<p><strong>Grabbing the Selected Object</strong></p>
+<p>Because this table uses Generics (<code>&lt;Student&gt;</code>), when you ask for the “Selected Object,” it doesn’t give you a row of text—it gives you the <strong>actual Student object</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb31-1"><a></a><span class="bu">Button</span> editBtn <span class="op">=</span> <span class="kw">new</span> <span class="bu">Button</span><span class="op">(</span><span class="st">"Edit Student"</span><span class="op">,</span> <span class="st">"user-edit"</span><span class="op">);</span></span>
+<span id="cb31-2"><a></a></span>
+<span id="cb31-3"><a></a>editBtn<span class="op">.</span><span class="fu">onClick</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb31-4"><a></a>    <span class="co">// Grab the actual Student object from the clicked row</span></span>
+<span id="cb31-5"><a></a>    Student selected <span class="op">=</span> studentTable<span class="op">.</span><span class="fu">getSelectedObject</span><span class="op">();</span></span>
+<span id="cb31-6"><a></a></span>
+<span id="cb31-7"><a></a>    <span class="cf">if</span> <span class="op">(</span>selected <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb31-8"><a></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Editing: "</span> <span class="op">+</span> selected<span class="op">.</span><span class="fu">getName</span><span class="op">());</span></span>
+<span id="cb31-9"><a></a>        <span class="co">// Logic to open an edit page...</span></span>
+<span id="cb31-10"><a></a>    <span class="op">}</span></span>
+<span id="cb31-11"><a></a><span class="op">});</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The <code>refresh()</code> Method</strong></p>
+<p>If you add a new student to your <code>ArrayList</code>, the table won’t know… <strong>unless you tell it.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb32-1"><a></a>myClass<span class="op">.</span><span class="fu">add</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Student</span><span class="op">(</span><span class="st">"105"</span><span class="op">,</span> <span class="st">"Charlie"</span><span class="op">,</span> <span class="st">"A-"</span><span class="op">));</span></span>
+<span id="cb32-2"><a></a>studentTable<span class="op">.</span><span class="fu">refresh</span><span class="op">();</span> <span class="co">// The UI updates instantly!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+<h3 id="why-this-is-industry-standard-design">Why this is “Industry Standard” Design</h3>
 <h3 id="table-responding-to-row-selection">Table: Responding to Row Selection</h3>
 <p>The <code>Table</code> can tell you which object the user has selected. Use this to build “click a row → show details” patterns.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb31-1"><a></a>Table<span class="op">&lt;</span>Student<span class="op">&gt;</span> table <span class="op">=</span> <span class="kw">new</span> Table<span class="op">&lt;&gt;(</span>students<span class="op">);</span></span>
-<span id="cb31-2"><a></a><span class="bu">Button</span> viewBtn <span class="op">=</span> <span class="kw">new</span> <span class="bu">Button</span><span class="op">(</span><span class="st">"View Details"</span><span class="op">);</span></span>
-<span id="cb31-3"><a></a></span>
-<span id="cb31-4"><a></a>viewBtn<span class="op">.</span><span class="fu">onClick</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
-<span id="cb31-5"><a></a>    <span class="co">// getSelectedObject() returns the actual Student object</span></span>
-<span id="cb31-6"><a></a>    Student selected <span class="op">=</span> table<span class="op">.</span><span class="fu">getSelectedObject</span><span class="op">();</span></span>
-<span id="cb31-7"><a></a></span>
-<span id="cb31-8"><a></a>    <span class="cf">if</span> <span class="op">(</span>selected <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb31-9"><a></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"No row selected!"</span><span class="op">);</span></span>
-<span id="cb31-10"><a></a>        <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb31-11"><a></a>    <span class="op">}</span></span>
-<span id="cb31-12"><a></a></span>
-<span id="cb31-13"><a></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Viewing: "</span> <span class="op">+</span> selected<span class="op">.</span><span class="fu">getName</span><span class="op">());</span></span>
-<span id="cb31-14"><a></a>    <span class="co">// e.g. navigate to a detail page and pass the student</span></span>
-<span id="cb31-15"><a></a>    <span class="fu">navigateTo</span><span class="op">(</span><span class="st">"Details"</span><span class="op">);</span></span>
-<span id="cb31-16"><a></a><span class="op">});</span></span>
-<span id="cb31-17"><a></a></span>
-<span id="cb31-18"><a></a><span class="co">// Clear the highlight after you're done</span></span>
-<span id="cb31-19"><a></a>table<span class="op">.</span><span class="fu">clearSelection</span><span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb33-1"><a></a>Table<span class="op">&lt;</span>Student<span class="op">&gt;</span> table <span class="op">=</span> <span class="kw">new</span> Table<span class="op">&lt;&gt;(</span>students<span class="op">);</span></span>
+<span id="cb33-2"><a></a><span class="bu">Button</span> viewBtn <span class="op">=</span> <span class="kw">new</span> <span class="bu">Button</span><span class="op">(</span><span class="st">"View Details"</span><span class="op">);</span></span>
+<span id="cb33-3"><a></a></span>
+<span id="cb33-4"><a></a>viewBtn<span class="op">.</span><span class="fu">onClick</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb33-5"><a></a>    <span class="co">// getSelectedObject() returns the actual Student object</span></span>
+<span id="cb33-6"><a></a>    Student selected <span class="op">=</span> table<span class="op">.</span><span class="fu">getSelectedObject</span><span class="op">();</span></span>
+<span id="cb33-7"><a></a></span>
+<span id="cb33-8"><a></a>    <span class="cf">if</span> <span class="op">(</span>selected <span class="op">==</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb33-9"><a></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"No row selected!"</span><span class="op">);</span></span>
+<span id="cb33-10"><a></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb33-11"><a></a>    <span class="op">}</span></span>
+<span id="cb33-12"><a></a></span>
+<span id="cb33-13"><a></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Viewing: "</span> <span class="op">+</span> selected<span class="op">.</span><span class="fu">getName</span><span class="op">());</span></span>
+<span id="cb33-14"><a></a>    <span class="co">// e.g. navigate to a detail page and pass the student</span></span>
+<span id="cb33-15"><a></a>    <span class="fu">navigateTo</span><span class="op">(</span><span class="st">"Details"</span><span class="op">);</span></span>
+<span id="cb33-16"><a></a><span class="op">});</span></span>
+<span id="cb33-17"><a></a></span>
+<span id="cb33-18"><a></a><span class="co">// Clear the highlight after you're done</span></span>
+<span id="cb33-19"><a></a>table<span class="op">.</span><span class="fu">clearSelection</span><span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
 <h3 id="chart-visual-data">Chart: Visual Data</h3>
 <p>Turn <code>Map</code> data into Bar or Pie charts. Call <code>refresh()</code> to update the chart when the data changes — just like <code>Table</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb32-1"><a></a><span class="bu">Map</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">,</span> <span class="bu">Double</span><span class="op">&gt;</span> grades <span class="op">=</span> <span class="kw">new</span> <span class="bu">LinkedHashMap</span><span class="op">&lt;&gt;();</span></span>
-<span id="cb32-2"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"A"</span><span class="op">,</span> <span class="fl">12.0</span><span class="op">);</span></span>
-<span id="cb32-3"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"B"</span><span class="op">,</span> <span class="fl">18.0</span><span class="op">);</span></span>
-<span id="cb32-4"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"C"</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">);</span></span>
-<span id="cb32-5"><a></a></span>
-<span id="cb32-6"><a></a>Chart pie <span class="op">=</span> Chart<span class="op">.</span><span class="fu">createPieChart</span><span class="op">(</span><span class="st">"Grade Distribution"</span><span class="op">,</span> grades<span class="op">);</span></span>
-<span id="cb32-7"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>pie<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">FILL</span><span class="op">);</span></span>
-<span id="cb32-8"><a></a></span>
-<span id="cb32-9"><a></a><span class="co">// Later, after the data changes:</span></span>
-<span id="cb32-10"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"D"</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
-<span id="cb32-11"><a></a>pie<span class="op">.</span><span class="fu">refresh</span><span class="op">(</span>grades<span class="op">);</span> <span class="co">// chart redraws instantly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34" data-code-line-numbers=""><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb34-1"><a></a><span class="bu">Map</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">,</span> <span class="bu">Double</span><span class="op">&gt;</span> grades <span class="op">=</span> <span class="kw">new</span> <span class="bu">LinkedHashMap</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb34-2"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"A"</span><span class="op">,</span> <span class="fl">12.0</span><span class="op">);</span></span>
+<span id="cb34-3"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"B"</span><span class="op">,</span> <span class="fl">18.0</span><span class="op">);</span></span>
+<span id="cb34-4"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"C"</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">);</span></span>
+<span id="cb34-5"><a></a></span>
+<span id="cb34-6"><a></a>Chart pie <span class="op">=</span> Chart<span class="op">.</span><span class="fu">createPieChart</span><span class="op">(</span><span class="st">"Grade Distribution"</span><span class="op">,</span> grades<span class="op">);</span></span>
+<span id="cb34-7"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>pie<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">FILL</span><span class="op">);</span></span>
+<span id="cb34-8"><a></a></span>
+<span id="cb34-9"><a></a><span class="co">// Later, after the data changes:</span></span>
+<span id="cb34-10"><a></a>grades<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"D"</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb34-11"><a></a>pie<span class="op">.</span><span class="fu">refresh</span><span class="op">(</span>grades<span class="op">);</span> <span class="co">// chart redraws instantly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
-<h3 id="alignment-columnstyle">Alignment &amp; ColumnStyle</h3>
-<p>Control your layout precisely.</p>
+<h3 id="charts-visualizing-the-data">Charts: Visualizing the Data</h3>
+<p><strong>Why use Charts?</strong> Numbers in a Table are great, but a <strong>Chart</strong> tells a story instantly. In <code>ezui</code>, Charts are created using <strong>Static Factory Methods</strong>. This means you don’t use <code>new Chart()</code>, you ask the <code>Chart</code> class to build one for you.</p>
+<h4 id="the-pie-chart">2. The Pie Chart</h4>
 <ul>
 <li><p><strong>Alignment</strong>: <code>LEFT</code>, <code>CENTER</code>, <code>RIGHT</code>, <code>FILL</code>.</p></li>
 <li><p><strong>ColumnStyle</strong>:</p>
@@ -1020,16 +1121,21 @@
 <li><p><code>ColumnStyle.FIXED()</code>: Only takes what it needs.</p></li>
 <li><p><code>ColumnStyle.WIDTH(px)</code>: Forces an <strong>exact pixel width</strong> — useful when you need a sidebar or panel to be a specific size regardless of content.</p></li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb33-1"><a></a><span class="co">// A 3-column page: narrow label | main content | 200px sidebar</span></span>
-<span id="cb33-2"><a></a><span class="kw">super</span><span class="op">(</span><span class="st">"Dashboard"</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span></span>
-<span id="cb33-3"><a></a>    ColumnStyle<span class="op">.</span><span class="fu">FIXED</span><span class="op">(),</span></span>
-<span id="cb33-4"><a></a>    ColumnStyle<span class="op">.</span><span class="fu">GROW</span><span class="op">(),</span></span>
-<span id="cb33-5"><a></a>    ColumnStyle<span class="op">.</span><span class="fu">WIDTH</span><span class="op">(</span><span class="dv">200</span><span class="op">)</span></span>
-<span id="cb33-6"><a></a><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb35-1"><a></a><span class="co">// A 3-column page: narrow label | main content | 200px sidebar</span></span>
+<span id="cb35-2"><a></a><span class="kw">super</span><span class="op">(</span><span class="st">"Dashboard"</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb35-3"><a></a>    ColumnStyle<span class="op">.</span><span class="fu">FIXED</span><span class="op">(),</span></span>
+<span id="cb35-4"><a></a>    ColumnStyle<span class="op">.</span><span class="fu">GROW</span><span class="op">(),</span></span>
+<span id="cb35-5"><a></a>    ColumnStyle<span class="op">.</span><span class="fu">WIDTH</span><span class="op">(</span><span class="dv">200</span><span class="op">)</span></span>
+<span id="cb35-6"><a></a><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
-</section>
-<section id="final-summary" class="slide level2">
-<h2>FINAL SUMMARY</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb36-1"><a></a><span class="bu">Map</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">,</span> <span class="bu">Double</span><span class="op">&gt;</span> attendance <span class="op">=</span> <span class="kw">new</span> <span class="bu">HashMap</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb36-2"><a></a>attendance<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"Present"</span><span class="op">,</span> <span class="fl">22.0</span><span class="op">);</span></span>
+<span id="cb36-3"><a></a>attendance<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"Absent"</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">);</span></span>
+<span id="cb36-4"><a></a>attendance<span class="op">.</span><span class="fu">put</span><span class="op">(</span><span class="st">"Excused"</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb36-5"><a></a></span>
+<span id="cb36-6"><a></a>## FINAL SUMMARY</span>
+<span id="cb36-7"><a></a></span>
+<span id="cb36-8"><a></a>root<span class="op">.</span><span class="fu">add</span><span class="op">(</span>pie<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> Alignment<span class="op">.</span><span class="fu">FILL</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 

@@ -161,158 +161,186 @@
     "text": "Key Design Decisions\nWhen implementing backtracking + pruning, ask yourself:\n\nWhat is a “partial solution”?\n→ What state do I need to track?\nWhat are the choices at each step?\n→ What’s the branching factor?\nWhat makes a partial solution invalid? (backtracking)\n→ Implement this check cheaply\nWhat makes a partial solution hopeless? (pruning)\n→ This is where domain knowledge pays off\nCan I order choices to fail fast?\n→ Try the most constrained variables first (MRV heuristic)"
   },
   {
-    "objectID": "cosc445/index.html",
-    "href": "cosc445/index.html",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "cosc445/slides/astar.html#where-weve-been",
+    "href": "cosc445/slides/astar.html#where-weve-been",
+    "title": "A* Search",
+    "section": "Where We’ve Been",
+    "text": "Where We’ve Been\nYou already know:\n\nBacktracking — explore, undo, try another way\nPruning — skip branches that can’t possibly work\n\n\nQuestion: In backtracking, when you have multiple branches to try — which one do you try first?\n\n\nUsually… whichever comes first. Arbitrary order.\n\n\nWhat if we could rank our choices and always try the most promising one?\nThat’s the core idea behind A*."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#motivating-example-navigation",
+    "href": "cosc445/slides/astar.html#motivating-example-navigation",
+    "title": "A* Search",
+    "section": "Motivating Example: Navigation",
+    "text": "Motivating Example: Navigation\nYou’re in a city. You want to go from A to B.\n\n\nOption 1 — Blind search:\nExpand every reachable node equally.\nEventually you’ll find B… maybe.\n\n\n\nA broad, wasteful search frontier spreading in all directions\n\n\n\nOption 2 — Guided search:\nPrefer nodes that are closer to B and cheaply reached.\n\n\n\nA more focussed elliptical search frontier growing towards the destination\n\n\n\n\n\nRecap: In backtracking, when you have multiple branches to try — which one do you try first?\n\n\nIts arbitrary. A* gives us a principled way to rank our choices and always pick the best one first."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#two-algorithms-to-know-first",
+    "href": "cosc445/slides/astar.html#two-algorithms-to-know-first",
+    "title": "A* Search",
+    "section": "Two Algorithms to Know First",
+    "text": "Two Algorithms to Know First\nBefore A*, let’s name two simpler cousins:\n\n\n\nAlgorithm\nStrategy\nBlind to…\n\n\n\n\nBFS\nExpand shallowest node first\nCost of edges\n\n\nDijkstra’s\nExpand cheapest-cost node first\nDirection to goal\n\n\nA*\nExpand best estimated total cost\nNothing — uses both!\n\n\n\n\n\nA* = Dijkstra’s + a compass pointing toward the goal."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#the-key-insight-two-costs",
+    "href": "cosc445/slides/astar.html#the-key-insight-two-costs",
+    "title": "A* Search",
+    "section": "The Key Insight: Two Costs",
+    "text": "The Key Insight: Two Costs\nFor every node \\(n\\) we’re considering, A* tracks:\n\\[f(n) = g(n) + h(n)\\]\n\n\n\\(g(n)\\)\nCost so far\nHow much did it cost to reach this node from the start?\n(exact — we know this)\n\n\\(h(n)\\)\nEstimated cost ahead\nHow far are we still from the goal?\n(a guess — a heuristic)\n\n\\(f(n)\\)\nTotal estimated cost\nOur best estimate of the whole path cost through \\(n\\).\n(what A* uses to decide)\n\n\n\nQuestion: \\(g\\) is exact. \\(h\\) is a guess. Why not just use \\(g\\) and be precise?"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#the-heuristic-hn-a-guess-with-rules",
+    "href": "cosc445/slides/astar.html#the-heuristic-hn-a-guess-with-rules",
+    "title": "A* Search",
+    "section": "The Heuristic \\(h(n)\\): A Guess With Rules",
+    "text": "The Heuristic \\(h(n)\\): A Guess With Rules\n\\(h(n)\\) is an estimate of the cost from \\(n\\) to the goal.\nYou get to design it — but it must follow one key rule.\nAdmissibility rule: \\(h(n)\\) must never overestimate the true cost.\n\\[h(n) \\leq h^*(n) \\quad \\text{(true cost to goal)}\\]\n\nQuestion: Why would overestimating be a problem?\nThink: if \\(h\\) overestimates, what might A* skip?\n\n\nIt might skip the optimal path — mistakenly thinking it’s too expensive."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#classic-heuristic-straight-line-distance",
+    "href": "cosc445/slides/astar.html#classic-heuristic-straight-line-distance",
+    "title": "A* Search",
+    "section": "Classic Heuristic: Straight-Line Distance",
+    "text": "Classic Heuristic: Straight-Line Distance\nFor navigation on a map, a natural heuristic is:\n\\[h(n) = \\text{straight-line distance from } n \\text{ to goal}\\]\nQuestion: Is straight-line distance admissible? Can the real road ever be shorter than a straight line?\n\nNo! Roads can only be at least as long as the straight line.\nSo straight-line distance never overestimates. ✅ Admissible.\n\n\nAdmissibility is easy to reason about intuitively:\n“Could the real cost ever be less than my guess?”\nIf the answer is no, you’re admissible."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#how-a-works-the-algorithm",
+    "href": "cosc445/slides/astar.html#how-a-works-the-algorithm",
+    "title": "A* Search",
+    "section": "How A* Works: The Algorithm",
+    "text": "How A* Works: The Algorithm\ndef search(graph):\n  open_set = priority_queue()  # ordered by f(n)\n  start = graph.start_node\n  f[start] = g[start] + h[start]\n  open_set.add(start, f[start])  # add the start node with priority value f\n\n  while open_set is not empty:\n    node = open_set.pop()  # get the node with lowest f(n)\n    if node == goal:\n      return reconstruct_path(node) # found goal! reconstruct path back to source\n    for neighbor in graph.neighbors(node):\n      if neighbor not in open_set:\n        g[neighbor] = g[node] + cost(node, neighbor)\n        f[neighbor] = g[neighbor] + h[neighbor]\n        open_set.add(neighbor, f[neighbor])\n  return FAILURE\n\nNotice: we only update a node if we found a better path to it.\nQuestion: What does this remind you of from earlier in the course?"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#worked-example-romania-road-map",
+    "href": "cosc445/slides/astar.html#worked-example-romania-road-map",
+    "title": "A* Search",
+    "section": "Worked Example: Romania Road Map",
+    "text": "Worked Example: Romania Road Map\nFrom A (Arad) to B (Bucharest).\n\nRomania map with cities and road distances"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#worked-example-romania-road-map-1",
+    "href": "cosc445/slides/astar.html#worked-example-romania-road-map-1",
+    "title": "A* Search",
+    "section": "Worked Example: Romania Road Map",
+    "text": "Worked Example: Romania Road Map\nFrom A (Arad) to B (Bucharest).\n\nRomania map with cities, road distances, and straight-line distances"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#worked-example-romania-road-map-2",
+    "href": "cosc445/slides/astar.html#worked-example-romania-road-map-2",
+    "title": "A* Search",
+    "section": "Worked Example: Romania Road Map",
+    "text": "Worked Example: Romania Road Map\n\n\n\n\n\nRomania map with cities, road distances, and straight-line distances\n\n\n\n\n\nStart: A\nStep 1: Expand A.\nNeighbors: Z (75), S (140), T (118)\nCompute \\(f\\) for each:\n\nZ: \\(f = 75 + 374 = 449\\)\nS: \\(f = 140 + 253 = 393\\)\nT: \\(f = 118 + 329 = 447\\)\n\nBest: S ← expand next\n\n\nExpanding S (\\(g = 140\\)):\nNeighbors: F (99), R (80), O (151), A (already visited better)\n\n\n\nNode\n\\(g\\)\n\\(h\\)\n\\(f\\)\n\n\n\n\nF\n140+99=239\n176\n415\n\n\nR\n140+80=220\n193\n413\n\n\nZ (old)\n—\n—\n449\n\n\nT (old)\n—\n—\n447\n\n\n\nBest next: R (\\(f = 413\\))\n\n\n\n\n\nQuestion: We’re skipping Z and T for now, even though they’re direct neighbors of the start.\nIs this a problem? Could we be missing the optimal path?"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#why-a-doesnt-miss-the-optimal-path",
+    "href": "cosc445/slides/astar.html#why-a-doesnt-miss-the-optimal-path",
+    "title": "A* Search",
+    "section": "Why A* Doesn’t Miss the Optimal Path",
+    "text": "Why A* Doesn’t Miss the Optimal Path\n\nKey guarantee: If \\(h\\) is admissible, A* will find the optimal path.\n\nIntuition:\n\nThe optimal path has some true cost \\(C^*\\)\nAny unexplored node on the optimal path has \\(f \\leq C^*\\)\n(because \\(h\\) never overestimates what remains)\nA* only stops when it pops the goal from the queue\nWhen the goal is popped, its \\(g\\) value is the optimal cost\n\n\n\nQuestion: What would happen if we used \\(h = 0\\) for everything?\n(i.e., we pretend there’s no remaining cost)\n\n\n\n\\(h = 0\\) → \\(f = g\\) → A* becomes Dijkstra’s! Still correct, just slower."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#heuristic-quality-matters",
+    "href": "cosc445/slides/astar.html#heuristic-quality-matters",
+    "title": "A* Search",
+    "section": "Heuristic Quality Matters",
+    "text": "Heuristic Quality Matters\nAll admissible heuristics give correct answers.\nBut better heuristics give faster answers.\n\nQuestion: Which heuristic explores fewer nodes — a good one or a weak one?\n\n\nA stronger \\(h\\) (closer to the true cost) → fewer nodes expanded → faster.\n\n\n\nHeuristic\nBehavior\n\n\n\n\n\\(h = 0\\)\nDijkstra’s — explores many nodes\n\n\n\\(h = h^*\\) (perfect)\nOnly explores nodes on the optimal path\n\n\n\\(h &gt; h^*\\) (inadmissible)\nFast, but may miss optimal\n\n\n\n\n\n\nThe sweet spot: as close to \\(h^*\\) as possible without going over."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#aside-8-puzzle-tree",
+    "href": "cosc445/slides/astar.html#aside-8-puzzle-tree",
+    "title": "A* Search",
+    "section": "Aside: 8-Puzzle tree",
+    "text": "Aside: 8-Puzzle tree\n\n\nSTART               GOAL\n\n+---+---+---+       +---+---+---+\n| 7 | 2 | 4 |       | 1 | 2 | 3 |\n+---+---+---+       +---+---+---+\n| 5 |   | 6 |       | 4 | 5 | 6 |\n+---+---+---+       +---+---+---+\n| 8 | 3 | 1 |       | 7 | 8 |   |\n+---+---+---+       +---+---+---+\n\n\n\n\n\nA tree depicting the configurations of the 8-puzzle"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#designing-heuristics-relaxed-problems",
+    "href": "cosc445/slides/astar.html#designing-heuristics-relaxed-problems",
+    "title": "A* Search",
+    "section": "Designing Heuristics: Relaxed Problems",
+    "text": "Designing Heuristics: Relaxed Problems\nA powerful technique: solve an easier version of the problem.\n\n“What if some constraints didn’t exist?”\n\n\n8-Puzzle example: move tiles to reach goal configuration.\n\n\nSTART               GOAL\n\n+---+---+---+       +---+---+---+\n| 7 | 2 | 4 |       | 1 | 2 | 3 |\n+---+---+---+       +---+---+---+\n| 5 |   | 6 |       | 4 | 5 | 6 |\n+---+---+---+       +---+---+---+\n| 8 | 3 | 1 |       | 7 | 8 |   |\n+---+---+---+       +---+---+---+\n\nPossible heuristics:\n\n\\(h_1\\): Misplaced tiles — count tiles not in their goal position\n(Relaxation: tiles can teleport anywhere)\n\\(h_2\\): Manhattan distance — sum of how far each tile needs to move\n(Relaxation: tiles can pass through each other)\n\n\n\n\n\n\nQuestion: Which is stronger, \\(h_1\\) or \\(h_2\\)?\nCan you give an example where they differ?"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#dominance-comparing-heuristics",
+    "href": "cosc445/slides/astar.html#dominance-comparing-heuristics",
+    "title": "A* Search",
+    "section": "Dominance: Comparing Heuristics",
+    "text": "Dominance: Comparing Heuristics\nWe say \\(h_2\\) dominates \\(h_1\\) if:\n\\[h_2(n) \\geq h_1(n) \\quad \\text{for all } n\\]\n(and both are admissible)\n\nA dominating heuristic always expands no more nodes than the dominated one.\nManhattan distance dominates misplaced tiles for the 8-puzzle.\n\n\n\nQuestion: If you have two admissible heuristics \\(h_1\\) and \\(h_2\\), can you combine them?\nHow?\n\n\n\nYes! \\(h(n) = \\max(h_1(n), h_2(n))\\) is admissible and dominates both."
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#consistency-a-stronger-property",
+    "href": "cosc445/slides/astar.html#consistency-a-stronger-property",
+    "title": "A* Search",
+    "section": "Consistency (a Stronger Property)",
+    "text": "Consistency (a Stronger Property)\nAdmissibility: \\(h(n) \\leq\\) true cost from \\(n\\) to goal.\nConsistency (also called monotonicity): for every edge \\(n \\to m\\):\n\\[h(n) \\leq \\text{cost}(n \\to m) + h(m)\\]\n\nQuestion: What does this inequality look like geometrically?\n(Hint: think triangle)\n\n\nIt’s the triangle inequality — the heuristic can’t drop faster than the actual edge cost.\n\nConsistency → Admissibility (but not vice versa).\nWith a consistent heuristic, every node is expanded at most once — no re-expansion!"
+  },
+  {
+    "objectID": "cosc445/slides/astar.html#a-vs.-dijkstras-visualized",
+    "href": "cosc445/slides/astar.html#a-vs.-dijkstras-visualized",
+    "title": "A* Search",
+    "section": "A* vs. Dijkstra’s: Visualized",
+    "text": "A* vs. Dijkstra’s: Visualized\n\n\nDijkstra’s (\\(h = 0\\))\nExpands in uniform rings of equal cost — like ripples in a pond.\nExplores in all directions equally.\n\n\nA* (good \\(h\\))\nExpands in an ellipse stretching toward the goal.\nFocuses exploration where it matters.\n\n\n\n\nQuestion: When would A* and Dijkstra’s expand the same set of nodes?\n\n\n\nWhen the goal is the closest node — or when \\(h\\) gives no useful information about direction."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
     "section": "",
-    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nWhen and Where: Tuesday, Thursday. 1:45 PM - 3:00 PM. Schaefer Hall, Room 165.\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: The Algorithm Design Manual, 3rd Edition, by Steven Skiena\nPrerequisites: COSC 201; and MATH 200 or MATH 281\n\n\n\nThis course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms.\n\n\n\nBy the end of this course, you will be able to:\n\nAnalyze the best-case, average-case, and worst-case asymptotic performance of algorithms using standard notations (Big-O, \\(\\Omega\\), \\(\\Theta\\)).\nConstruct correctness proofs for algorithms using techniques such as loop invariants and mathematical induction.\nCompare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.\nApply key algorithmic design paradigms, including divide-and-conquer, dynamic programming, and greedy strategies, to solve complex problems.\nSynthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.\nCategorize computational problems into complexity classes (P, NP, NP-Complete) and identify when a problem is likely to be computationally intractable.\n\n\n\n\nThe Engaged Learning component will include problem solving and readings.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center 240-895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu.\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.\n\nHomework Assignments: Homework is the primary vehicle for learning in this course. These sets will involve:\n\nAlgorithm Design: Developing efficient solutions to complex engineering problems.\nProofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.\nComplexity Analysis: Determining the asymptotic bounds (e.g., \\(O(n \\log n)\\)) of your proposed solutions.\nNote: Submission must be through pdf files, and must be typed (not hand written). Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.\n\nQuizzes Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on “familiarity” tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.\nMidterm Exam and Final Exam Exams will test your ability to synthesize the paradigms learned in class under time constraints.\n\nThe Midterm covers foundational analysis, sorting, and divide-and-conquer.\nThe Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.\n\n\nImportant: All quizzes and exams will be paper-based.\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n20%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n30%\n\n\nFinal exam\n30%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nThe grades would be published on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
+    "text": "Welcome! This site contains all the lecture notes, slides, and resources for my courses.\n\n\nYou can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS\n\n\n\n\nIf you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard.\n\n\n\nThis site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
   },
   {
-    "objectID": "cosc445/index.html#course-goals",
-    "href": "cosc445/index.html#course-goals",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "index.html#how-to-navigate",
+    "href": "index.html#how-to-navigate",
+    "title": "Home",
     "section": "",
-    "text": "This course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms."
+    "text": "You can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS"
   },
   {
-    "objectID": "cosc445/index.html#learning-outcomes",
-    "href": "cosc445/index.html#learning-outcomes",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "index.html#searching-for-topics",
+    "href": "index.html#searching-for-topics",
+    "title": "Home",
     "section": "",
-    "text": "By the end of this course, you will be able to:\n\nAnalyze the best-case, average-case, and worst-case asymptotic performance of algorithms using standard notations (Big-O, \\(\\Omega\\), \\(\\Theta\\)).\nConstruct correctness proofs for algorithms using techniques such as loop invariants and mathematical induction.\nCompare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.\nApply key algorithmic design paradigms, including divide-and-conquer, dynamic programming, and greedy strategies, to solve complex problems.\nSynthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.\nCategorize computational problems into complexity classes (P, NP, NP-Complete) and identify when a problem is likely to be computationally intractable."
+    "text": "If you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard."
   },
   {
-    "objectID": "cosc445/index.html#engaged-learning",
-    "href": "cosc445/index.html#engaged-learning",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "index.html#accessibility-note",
+    "href": "index.html#accessibility-note",
+    "title": "Home",
     "section": "",
-    "text": "The Engaged Learning component will include problem solving and readings."
+    "text": "This site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
   },
   {
-    "objectID": "cosc445/index.html#smcm-code-of-student-conduct",
-    "href": "cosc445/index.html#smcm-code-of-student-conduct",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "cosc130/slides/projectGuidelines.html",
+    "href": "cosc130/slides/projectGuidelines.html",
+    "title": "COSC130 - Project Guidelines",
     "section": "",
-    "text": "I support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct."
+    "text": "Objective: Develop a robust, interactive management system that synchronizes file persistence, complex filtering, and real-time data visualization.\n\n\nYou are tasked with creating StockMaster Pro, a desktop application designed for local warehouse management. In this capstone, you will move beyond simple console programs to build a reactive, persistent GUI.\nThe application serves three primary functions:\n\nInventory Tracking: A live data-grid of all products.\nBusiness Intelligence: Visual dashboards that summarize stock value and categories.\nOperational Control: Tools to filter data, view specific item details, and record sales transactions.\n\n\n\n\nTo successfully complete this project, you must submit a working application that satisfies these four requirements:\n\nPersistence. Data must not disappear when the app closes. You will implement a system that reads from and writes to inventory.csv.\nResponsive Layout. A multi-page interface (Dashboard, Inventory, Details) that maintains a professional look and feel across different screens.\nData Visualization. Integrated charts that update dynamically as your inventory levels change.\nInteraction Logic. A system that handles complex user events—such as multi-criteria searching and “Master-Detail” selection.\n\n\n\n\nYour Item class must implement ITable. It is responsible for its own state logic.\n\nPrimary Fields: String id, String name, String category, int quantity, double price, String description.\nDerived Data: A List&lt;String&gt; tags that is updated via an internal updateStatusTags() method whenever quantity or price changes (e.g., if quantity &lt; 5, add “Low Stock”).\nUI Mapping: getValues() must return a 7-element array including the current primary Status tag.\n\n\n\n\n\n\n\nRequirement 1: Implement the Item class and a Warehouse manager class. The Warehouse should contain the master ArrayList&lt;Item&gt;and must handle all logic related to adding, removing, and updating items, as well as file I/O for persistence.\nRequirement 2: Implement CSV parsing logic. On startup, the Warehouse must read inventory.csv and populate the list.\nRequirement 3: A Window with a Sidebar and three empty Pages: Dashboard, Inventory, Details.\nSuccess Metric: The app launches and displays the CSV data in a Table immediately in the Inventory Page. The app should print “Data Loaded” to the console after successfully parsing the CSV into an ArrayList. If file loading fails, print “Failed to load data from [filename]” and start with an empty list.\n\n\n\n\n\nRequirement 1 (Filter): On the Inventory page, create a search bar with a TextBox (Name) and a ComboBox (Category).\nRequirement 2 (Multi-Filter): Clicking “Search” must filter the table by both criteria.\n\nHint: Create a temporary “filtered” list for the table to display.\n\nRequirement 3 (Charts): On the Dashboard page, create two charts that visualize the inventory data:\n\nPieChart: Show the count of items per Category.\nBarChart: Show the Top 5 most expensive items.\n\nSuccess Metric: Changing a search filter updates the Table and Charts simultaneously.\n\n\n\n\n\nRequirement 1 (Adding items): Implement a form for adding new items to the inventory. On the Inventory page, add an “Add Item” button that opens the Details page. This form should have fields for all the required item attributes (id, name, category, quantity, price, description). When the form is submitted, the new item should be added to the Warehouse, and both the Table and Charts should update immediately to reflect this addition.\nRequirement 2 (Editing items): When a row in the Table is clicked, the Details page must update to show all the primary fields of that specific item. These details should be displayed in the same form that is used for adding items, and these form fields should be populated with the selected item’s data. Any changes to the form valuesshould update the item and Warehouse data immediately.\nRequirement 3 (Transactions): Add a “Sell Item” button on the Details page. This must decrement the quantity of the selected item in the Warehouse. The “Sell Item” button should only be enabled if the item exists (you are not adding a new item) and the selected item has a quantity greater than 0. After selling an item, the Table and Charts should update immediately to reflect the new quantity and any changes in status tags.\nRequirement 4 (Sync Loop): Add a “Save Changes” button. This must overwrite inventory.csv with the current state of the ArrayList.\nSome Useful Hints:\n\nCreate a variable in your Details page called currentItem. When you click a table row, set currentItem to that item. When you click ‘Add Item,’ set currentItem to null. Your save logic should check: If currentItem is null, create a new Item(); otherwise, update the existing one.\nRemember that your ‘Status’ is a calculation. Every time you change a number, you must tell the Item to re-calculate its tags before you refresh the Table.\nYour ‘Save’ logic should involve looping through the entire ArrayList and building one giant String, then writing that whole String to the file at once to overwrite the old data.\n\nSuccess Metric: Adding, editing, or selling an item updates the Table and Charts immediately. Clicking “Save Changes” successfully updates the CSV file, which can be verified by closing and reopening the app to see if the changes persist."
   },
   {
-    "objectID": "cosc445/index.html#academic-accommodations",
-    "href": "cosc445/index.html#academic-accommodations",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "cosc130/slides/projectGuidelines.html#project-overview",
+    "href": "cosc130/slides/projectGuidelines.html#project-overview",
+    "title": "COSC130 - Project Guidelines",
     "section": "",
-    "text": "SMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu"
+    "text": "You are tasked with creating StockMaster Pro, a desktop application designed for local warehouse management. In this capstone, you will move beyond simple console programs to build a reactive, persistent GUI.\nThe application serves three primary functions:\n\nInventory Tracking: A live data-grid of all products.\nBusiness Intelligence: Visual dashboards that summarize stock value and categories.\nOperational Control: Tools to filter data, view specific item details, and record sales transactions."
   },
   {
-    "objectID": "cosc445/index.html#digital-accessibility-of-course-materials",
-    "href": "cosc445/index.html#digital-accessibility-of-course-materials",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "cosc130/slides/projectGuidelines.html#core-requirements",
+    "href": "cosc130/slides/projectGuidelines.html#core-requirements",
+    "title": "COSC130 - Project Guidelines",
     "section": "",
-    "text": "Digital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator."
+    "text": "To successfully complete this project, you must submit a working application that satisfies these four requirements:\n\nPersistence. Data must not disappear when the app closes. You will implement a system that reads from and writes to inventory.csv.\nResponsive Layout. A multi-page interface (Dashboard, Inventory, Details) that maintains a professional look and feel across different screens.\nData Visualization. Integrated charts that update dynamically as your inventory levels change.\nInteraction Logic. A system that handles complex user events—such as multi-criteria searching and “Master-Detail” selection."
   },
   {
-    "objectID": "cosc445/index.html#office-of-student-success-services",
-    "href": "cosc445/index.html#office-of-student-success-services",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "cosc130/slides/projectGuidelines.html#the-data-model-item.java",
+    "href": "cosc130/slides/projectGuidelines.html#the-data-model-item.java",
+    "title": "COSC130 - Project Guidelines",
     "section": "",
-    "text": "The Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu ."
+    "text": "Your Item class must implement ITable. It is responsible for its own state logic.\n\nPrimary Fields: String id, String name, String category, int quantity, double price, String description.\nDerived Data: A List&lt;String&gt; tags that is updated via an internal updateStatusTags() method whenever quantity or price changes (e.g., if quantity &lt; 5, add “Low Stock”).\nUI Mapping: getValues() must return a 7-element array including the current primary Status tag."
   },
   {
-    "objectID": "cosc445/index.html#office-of-title-ix-compliance-and-training",
-    "href": "cosc445/index.html#office-of-title-ix-compliance-and-training",
-    "title": "COSC445 - Design and Analysis of Algorithms",
+    "objectID": "cosc130/slides/projectGuidelines.html#weekly-deliverables-milestones",
+    "href": "cosc130/slides/projectGuidelines.html#weekly-deliverables-milestones",
+    "title": "COSC130 - Project Guidelines",
     "section": "",
-    "text": "St. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center 240-895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training."
-  },
-  {
-    "objectID": "cosc445/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
-    "href": "cosc445/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "A growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu.\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/"
-  },
-  {
-    "objectID": "cosc445/index.html#evaluation-components",
-    "href": "cosc445/index.html#evaluation-components",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "Your course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.\n\nHomework Assignments: Homework is the primary vehicle for learning in this course. These sets will involve:\n\nAlgorithm Design: Developing efficient solutions to complex engineering problems.\nProofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.\nComplexity Analysis: Determining the asymptotic bounds (e.g., \\(O(n \\log n)\\)) of your proposed solutions.\nNote: Submission must be through pdf files, and must be typed (not hand written). Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.\n\nQuizzes Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on “familiarity” tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.\nMidterm Exam and Final Exam Exams will test your ability to synthesize the paradigms learned in class under time constraints.\n\nThe Midterm covers foundational analysis, sorting, and divide-and-conquer.\nThe Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.\n\n\nImportant: All quizzes and exams will be paper-based."
-  },
-  {
-    "objectID": "cosc445/index.html#grading",
-    "href": "cosc445/index.html#grading",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "Your final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n20%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n30%\n\n\nFinal exam\n30%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nThe grades would be published on Blackboard."
-  },
-  {
-    "objectID": "cosc445/index.html#use-of-generative-ai",
-    "href": "cosc445/index.html#use-of-generative-ai",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "Generative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies."
-  },
-  {
-    "objectID": "cosc445/index.html#attendance-policy",
-    "href": "cosc445/index.html#attendance-policy",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "Attendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade."
-  },
-  {
-    "objectID": "cosc445/index.html#late-work-policy",
-    "href": "cosc445/index.html#late-work-policy",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "Assignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date."
-  },
-  {
-    "objectID": "cosc445/index.html#tentative-schedule",
-    "href": "cosc445/index.html#tentative-schedule",
-    "title": "COSC445 - Design and Analysis of Algorithms",
-    "section": "",
-    "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
-  },
-  {
-    "objectID": "cosc130/slides/projectSetup.html#step-1-install-the-tools",
-    "href": "cosc130/slides/projectSetup.html#step-1-install-the-tools",
-    "title": "COSC130 - Project Setup",
-    "section": "Step 1: Install the Tools",
-    "text": "Step 1: Install the Tools\nYou need two main things installed on your computer:\n\nJava JDK (Version 17 or higher): Download here. (Make sure to pick the installer for your OS: Windows, macOS, or Linux).\nGit:\n\nWindows: Download and run the Git for Windows installer. Just click “Next” on all defaults.\nmacOS: Open your terminal and type git --version. If it’s not there, it will ask you to install “Xcode Command Line Tools.” Say yes.\n\nVS Code: Download here."
-  },
-  {
-    "objectID": "cosc130/slides/projectSetup.html#step-2-get-the-code",
-    "href": "cosc130/slides/projectSetup.html#step-2-get-the-code",
-    "title": "COSC130 - Project Setup",
-    "section": "Step 2: Get the Code",
-    "text": "Step 2: Get the Code\nWe aren’t going to download a ZIP file. Instead, we are going to “Clone” the project so you can receive updates from me later.\n\nOpen VS Code.\nPress Ctrl + Shift + P (Windows) or Cmd + Shift + P (Mac) to open the Command Palette.\nType Git: Clone and press Enter.\nPaste this URL: https://github.com/sayangoswami/ezui.git\nSelect a folder on your computer to save the project.\nWhen prompted, click Open in the bottom right corner."
-  },
-  {
-    "objectID": "cosc130/slides/projectSetup.html#step-3-setup-java-in-vs-code",
-    "href": "cosc130/slides/projectSetup.html#step-3-setup-java-in-vs-code",
-    "title": "COSC130 - Project Setup",
-    "section": "Step 3: Setup Java in VS Code",
-    "text": "Step 3: Setup Java in VS Code\nOnce the project is open, VS Code will likely show a pop-up in the bottom right saying: “The ‘Extension Pack for Java’ is recommended for this repository.”\n\nClick Install. This gives you the “Play” button to run your code easily.\n\nIf it doesn’t pop up, you might already have it. Go to the Extensions view (Ctrl + Shift + X or Cmd + Shift + X) and search for “Extension Pack for Java”."
-  },
-  {
-    "objectID": "cosc130/slides/projectSetup.html#step-4-how-to-write-your-code",
-    "href": "cosc130/slides/projectSetup.html#step-4-how-to-write-your-code",
-    "title": "COSC130 - Project Setup",
-    "section": "Step 4: How to write your code",
-    "text": "Step 4: How to write your code\nTo keep things simple and ensure your project doesn’t break when I send updates:\n\nYour Code: Create your new Java files inside the src/ folder.\nThe Library: Do not modify any files inside the lib/ or src/ezui/ folders."
-  },
-  {
-    "objectID": "cosc130/slides/projectSetup.html#step-5-getting-updates-from-me",
-    "href": "cosc130/slides/projectSetup.html#step-5-getting-updates-from-me",
-    "title": "COSC130 - Project Setup",
-    "section": "Step 5: Getting Updates from me",
-    "text": "Step 5: Getting Updates from me\nSometimes I will fix a bug or add a new feature to the EZUI library. To get these changes without losing your work, follow these three steps in the VS Code Terminal (shortcut: Ctrl + `).\n\nSave your current spot: git stash (This “hides” your current changes temporarily so they don’t get in the way of the update.)\nDownload the update: git pull origin main\nBring your work back: git stash pop (This puts your code back exactly where it was, now with my updates included!)\n\nIn VS Code, the shortcut to toggle (open/hide) the terminal is:\n\nWindows & Linux\nCtrl + ` (Backtick)\n\n\nmacOS\n⌃ (Control) + ` (Backtick)\n\nNote: The “Backtick” key is usually located in the top-left corner of the keyboard, right below the Esc key and above the Tab key."
-  },
-  {
-    "objectID": "cosc130/slides/projectSetup.html#pro-tip-use-vs-code-timeline",
-    "href": "cosc130/slides/projectSetup.html#pro-tip-use-vs-code-timeline",
-    "title": "COSC130 - Project Setup",
-    "section": "Pro-Tip: Use VS Code “Timeline”",
-    "text": "Pro-Tip: Use VS Code “Timeline”\nSince you are using VS Code, you will have access to the Timeline View (usually at the bottom of the File Explorer). - VS Code keeps a “Local History” of every save. - If you mess up a git pull or delete a file accidentally, you can restore it from the Timeline without knowing advanced Git commands.\n\n\n⚠️ Common Troubleshooting\n\n“Permission Denied” when pushing: This is normal! You are allowed to take code from my repo, but you cannot change my master copy. You only save your work on your own computer.\nRed squiggly lines: Ensure you installed the “Java Extension Pack” and that you have opened the entire folder (ezui) in VS Code, not just a single file."
+    "text": "Requirement 1: Implement the Item class and a Warehouse manager class. The Warehouse should contain the master ArrayList&lt;Item&gt;and must handle all logic related to adding, removing, and updating items, as well as file I/O for persistence.\nRequirement 2: Implement CSV parsing logic. On startup, the Warehouse must read inventory.csv and populate the list.\nRequirement 3: A Window with a Sidebar and three empty Pages: Dashboard, Inventory, Details.\nSuccess Metric: The app launches and displays the CSV data in a Table immediately in the Inventory Page. The app should print “Data Loaded” to the console after successfully parsing the CSV into an ArrayList. If file loading fails, print “Failed to load data from [filename]” and start with an empty list.\n\n\n\n\n\nRequirement 1 (Filter): On the Inventory page, create a search bar with a TextBox (Name) and a ComboBox (Category).\nRequirement 2 (Multi-Filter): Clicking “Search” must filter the table by both criteria.\n\nHint: Create a temporary “filtered” list for the table to display.\n\nRequirement 3 (Charts): On the Dashboard page, create two charts that visualize the inventory data:\n\nPieChart: Show the count of items per Category.\nBarChart: Show the Top 5 most expensive items.\n\nSuccess Metric: Changing a search filter updates the Table and Charts simultaneously.\n\n\n\n\n\nRequirement 1 (Adding items): Implement a form for adding new items to the inventory. On the Inventory page, add an “Add Item” button that opens the Details page. This form should have fields for all the required item attributes (id, name, category, quantity, price, description). When the form is submitted, the new item should be added to the Warehouse, and both the Table and Charts should update immediately to reflect this addition.\nRequirement 2 (Editing items): When a row in the Table is clicked, the Details page must update to show all the primary fields of that specific item. These details should be displayed in the same form that is used for adding items, and these form fields should be populated with the selected item’s data. Any changes to the form valuesshould update the item and Warehouse data immediately.\nRequirement 3 (Transactions): Add a “Sell Item” button on the Details page. This must decrement the quantity of the selected item in the Warehouse. The “Sell Item” button should only be enabled if the item exists (you are not adding a new item) and the selected item has a quantity greater than 0. After selling an item, the Table and Charts should update immediately to reflect the new quantity and any changes in status tags.\nRequirement 4 (Sync Loop): Add a “Save Changes” button. This must overwrite inventory.csv with the current state of the ArrayList.\nSome Useful Hints:\n\nCreate a variable in your Details page called currentItem. When you click a table row, set currentItem to that item. When you click ‘Add Item,’ set currentItem to null. Your save logic should check: If currentItem is null, create a new Item(); otherwise, update the existing one.\nRemember that your ‘Status’ is a calculation. Every time you change a number, you must tell the Item to re-calculate its tags before you refresh the Table.\nYour ‘Save’ logic should involve looping through the entire ArrayList and building one giant String, then writing that whole String to the file at once to overwrite the old data.\n\nSuccess Metric: Adding, editing, or selling an item updates the Table and Charts immediately. Clicking “Save Changes” successfully updates the CSV file, which can be verified by closing and reopening the app to see if the changes persist."
   },
   {
     "objectID": "cosc130/slides/15.html#what-is-persistence",
@@ -508,7 +536,7 @@
     "href": "cosc130/index.html",
     "title": "COSC130 - Introduction to Computer Science II",
     "section": "",
-    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: None required\nPrerequisites: COSC 120\n\n\n\nThis course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs.\n\n\n\nBy the end of this course, you will be able to:\n\nDesign and implement object-oriented programs in Java that integrate encapsulation, inheritance, polymorphism, and interfaces.\nAnalyze and debug Java programs to trace execution, identify errors, and improve correctness.\nEvaluate alternative design choices (e.g., composition vs inheritance, abstract classes vs interfaces) and justify trade-offs.\nCreate a medium-scale Java project that demonstrates sound object-oriented design principles.\n\n\n\n\nThe Engaged Learning component will emphasize teamwork in solving programming problems. Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center (240) 895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, a final exam, and a programming project. Most components will emphasize hands-on programming.\n\nHomework Assignments - Programming requires consistent practice, so you will complete several assignments throughout the semester. These involve coding on a laptop or desktop computer. You may use your own device, borrow a Chromebook from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or work on library desktop computers (Windows) available on the first and second floors. See the SMCM library computing page for details.\nQuizzes - Programming builds on many small concepts that fit together to form larger systems. To help you stay on track, there will be regular quizzes focused on these building blocks.\nMidterm Exam and Final Exam - These exams will assess your cumulative knowledge and problem-solving skills.\nProgramming Project - A larger-scale programming project will give you the opportunity to apply what you’ve learned in a more open-ended context.\n\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n15%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n25%\n\n\nProject\n15%\n\n\nFinal exam\n25%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nI will publish the grades on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: None required\nPrerequisites: COSC 120\n\n\n\nThis course examines object-oriented design and programming in greater detail. An examination of the use of the data structures provided by language-specific libraries, and some common simple algorithms. Students learn to design and implement simple applications. The emphasis of this course is on learning good design. This course is suitable for non-majors who want to improve their ability to solve problems using programs.\n\n\n\nBy the end of this course, you will be able to:\n\nDesign and implement object-oriented programs in Java that integrate encapsulation, inheritance, polymorphism, and interfaces.\nAnalyze and debug Java programs to trace execution, identify errors, and improve correctness.\nEvaluate alternative design choices (e.g., composition vs inheritance, abstract classes vs interfaces) and justify trade-offs.\nCreate a medium-scale Java project that demonstrates sound object-oriented design principles.\n\n\n\n\nThe Engaged Learning component will emphasize teamwork in solving programming problems. Together in class, we will finalize the format of this activity, and with my guidance, you will help choose the problems your teams will work on.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center (240) 895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, a final exam, and a programming project. Most components will emphasize hands-on programming.\n\nHomework Assignments - Programming requires consistent practice, so you will complete several assignments throughout the semester. These involve coding on a laptop or desktop computer. You may use your own device, borrow a Chromebook from the Library (first-come, first-served; semester-long loan due May 1 or December 1), or work on library desktop computers (Windows) available on the first and second floors. See the SMCM library computing page for details.\nQuizzes - Programming builds on many small concepts that fit together to form larger systems. To help you stay on track, there will be regular quizzes focused on these building blocks.\nMidterm Exam and Final Exam - These exams will assess your cumulative knowledge and problem-solving skills.\nProgramming Project - A larger-scale programming project will give you the opportunity to apply what you’ve learned in a more open-ended context.\n\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n15%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n25%\n\n\nProject\n15%\n\n\nFinal exam\n25%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nI will publish the grades on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nContinuation of Project\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
   },
   {
     "objectID": "cosc130/index.html#course-goals",
@@ -613,7 +641,7 @@
     "href": "cosc130/index.html#tentative-schedule",
     "title": "COSC130 - Introduction to Computer Science II",
     "section": "",
-    "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nThanksgiving: No Class\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
+    "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation in programming.\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nGetting started. Quick refresher: types, operators. Setup submission.\nA1 out\n\n\n\n\nJan 22\nRefresher – branches, loops, arrays\n\n\n\n\n2\nJan 27\nRefresher – objects, methods, encapsulation\nA2 out\nQ1\n\n\n\nJan 29\nMotivating example in OOP design\n\n\n\n\n3\nFeb 3\nIntroduction to Object-Oriented Design\nA3 out\nQ2\n\n\n\nFeb 5\nAggregation and Composition\n\n\n\n\n4\nFeb 10\nAggregation and Composition (contd.)\nA4 out\nQ3\n\n\n\nFeb 12\nIntroduction to Inheritance\n\n\n\n\n5\nFeb 17\nInheritance (contd.)\nA5 out\nQ4\n\n\n\nFeb 19\nPolymorphism II\n\n\n\n\n6\nFeb 24\nPolymorphism II\nA6 out\nQ5\n\n\n\nFeb 26\nAbstract Classes\n\n\n\n\n7\nMar 3\nInterfaces I\nA7 out\nQ6\n\n\n\nMar 5\nInterfaces II\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\nMar 26\nRecursion I\n\n\n\n\n11\nMar 31\nRecursion II\nA8 out\nQ7\n\n\n\nApr 2\nJava Standard Library - List, Map\n\n\n\n\n12\nApr 7\nGenerics\nA9 out\nQ8\n\n\n\nApr 9\nGenerics\n\n\n\n\n13\nApr 14\nProject Kickoff\nA10 out\nQ9\n\n\n\nApr 16\nContinuation of Project\n\n\n\n\n14\nApr 21\nContinuation of Project\n\nQ10\n\n\n\nApr 23\nContinuation of Project\n\n\n\n\n15\nApr 28\nProject Completion and Presentation.\n\n\n\n\n\nApr 30\nFinals Review\nProject Due\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\nMay 7\nFinal Exam (9:00 AM – 11:15 AM)"
   },
   {
     "objectID": "cosc130/slides/16.html#section-1-the-structure",
@@ -630,25 +658,11 @@
     "text": "🟧 SECTION 2: BASIC INPUTS & WIDGETS"
   },
   {
-    "objectID": "cosc130/slides/16.html#section-3-selection-menus",
-    "href": "cosc130/slides/16.html#section-3-selection-menus",
-    "title": "ezui: The Modern Java UI Toolkit",
-    "section": "🟪 SECTION 3: SELECTION & MENUS",
-    "text": "🟪 SECTION 3: SELECTION & MENUS"
-  },
-  {
     "objectID": "cosc130/slides/16.html#section-4-data-advanced",
     "href": "cosc130/slides/16.html#section-4-data-advanced",
     "title": "ezui: The Modern Java UI Toolkit",
     "section": "🟩 SECTION 4: DATA & ADVANCED",
-    "text": "🟩 SECTION 4: DATA & ADVANCED"
-  },
-  {
-    "objectID": "cosc130/slides/16.html#final-summary",
-    "href": "cosc130/slides/16.html#final-summary",
-    "title": "ezui: The Modern Java UI Toolkit",
-    "section": "FINAL SUMMARY",
-    "text": "FINAL SUMMARY"
+    "text": "🟩 SECTION 4: DATA & ADVANCED\nWhat makes this Table special?\nIn ezui, the Table is “Smart.” You don’t have to tell it what the headers are or manually type every row. Instead, you give it a List of Objects, and the Table handles the rest.\nStep 1: The ITable Contract\nTo show your data in a table, your class (like Student or Book) must “implement” the ITable interface. This tells the table how to “read” your object.\npublic class Student implements ITable {\n    private String id, name, grade;\n\n    // The Table calls this to build the top header row\n    public String[] getHeaders() { \n        return new String[]{\"ID\", \"Student Name\", \"Current Grade\"}; \n    }\n\n    // The Table calls this to fill in each row\n    public String[] getValues() { \n        return new String[]{id, name, grade}; \n    }\n}"
   },
   {
     "objectID": "cosc130/slides/14.html#introduction-to-exceptions",
@@ -714,150 +728,374 @@
     "text": "Exam Prep - “What is the Output?”\nQuestion: What prints if the user enters “0”?\ntry {\n    int x = 5 / Integer.parseInt(input);\n    System.out.println(\"A\");\n} catch (ArithmeticException e) {\n    System.out.println(\"B\");\n} finally {\n    System.out.println(\"C\");\n}\n\nAnswer: B then C. “A” is skipped because the error happens on the first line of the try."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Home",
+    "objectID": "cosc130/slides/projectSetup.html#step-1-install-the-tools",
+    "href": "cosc130/slides/projectSetup.html#step-1-install-the-tools",
+    "title": "COSC130 - Project Setup",
+    "section": "Step 1: Install the Tools",
+    "text": "Step 1: Install the Tools\nYou need two main things installed on your computer:\n\nJava JDK (Version 17 or higher): Download here. (Make sure to pick the installer for your OS: Windows, macOS, or Linux).\nGit:\n\nWindows: Download and run the Git for Windows installer. Just click “Next” on all defaults.\nmacOS: Open your terminal and type git --version. If it’s not there, it will ask you to install “Xcode Command Line Tools.” Say yes.\n\nVS Code: Download here."
+  },
+  {
+    "objectID": "cosc130/slides/projectSetup.html#step-2-get-the-code",
+    "href": "cosc130/slides/projectSetup.html#step-2-get-the-code",
+    "title": "COSC130 - Project Setup",
+    "section": "Step 2: Get the Code",
+    "text": "Step 2: Get the Code\nWe aren’t going to download a ZIP file. Instead, we are going to “Clone” the project so you can receive updates from me later.\n\nOpen VS Code.\nPress Ctrl + Shift + P (Windows) or Cmd + Shift + P (Mac) to open the Command Palette.\nType Git: Clone and press Enter.\nPaste this URL: https://github.com/sayangoswami/ezui.git\nSelect a folder on your computer to save the project.\nWhen prompted, click Open in the bottom right corner."
+  },
+  {
+    "objectID": "cosc130/slides/projectSetup.html#step-3-setup-java-in-vs-code",
+    "href": "cosc130/slides/projectSetup.html#step-3-setup-java-in-vs-code",
+    "title": "COSC130 - Project Setup",
+    "section": "Step 3: Setup Java in VS Code",
+    "text": "Step 3: Setup Java in VS Code\nOnce the project is open, VS Code will likely show a pop-up in the bottom right saying: “The ‘Extension Pack for Java’ is recommended for this repository.”\n\nClick Install. This gives you the “Play” button to run your code easily.\n\nIf it doesn’t pop up, you might already have it. Go to the Extensions view (Ctrl + Shift + X or Cmd + Shift + X) and search for “Extension Pack for Java”."
+  },
+  {
+    "objectID": "cosc130/slides/projectSetup.html#step-4-how-to-write-your-code",
+    "href": "cosc130/slides/projectSetup.html#step-4-how-to-write-your-code",
+    "title": "COSC130 - Project Setup",
+    "section": "Step 4: How to write your code",
+    "text": "Step 4: How to write your code\nTo keep things simple and ensure your project doesn’t break when I send updates:\n\nYour Code: Create your new Java files inside the src/ folder.\nThe Library: Do not modify any files inside the lib/ or src/ezui/ folders."
+  },
+  {
+    "objectID": "cosc130/slides/projectSetup.html#step-5-getting-updates-from-me",
+    "href": "cosc130/slides/projectSetup.html#step-5-getting-updates-from-me",
+    "title": "COSC130 - Project Setup",
+    "section": "Step 5: Getting Updates from me",
+    "text": "Step 5: Getting Updates from me\nSometimes I will fix a bug or add a new feature to the EZUI library. To get these changes without losing your work, follow these three steps in the VS Code Terminal (shortcut: Ctrl + `).\n\nSave your current spot: git stash (This “hides” your current changes temporarily so they don’t get in the way of the update.)\nDownload the update: git pull origin main\nBring your work back: git stash pop (This puts your code back exactly where it was, now with my updates included!)\n\nIn VS Code, the shortcut to toggle (open/hide) the terminal is:\n\nWindows & Linux\nCtrl + ` (Backtick)\n\n\nmacOS\n⌃ (Control) + ` (Backtick)\n\nNote: The “Backtick” key is usually located in the top-left corner of the keyboard, right below the Esc key and above the Tab key."
+  },
+  {
+    "objectID": "cosc130/slides/projectSetup.html#pro-tip-use-vs-code-timeline",
+    "href": "cosc130/slides/projectSetup.html#pro-tip-use-vs-code-timeline",
+    "title": "COSC130 - Project Setup",
+    "section": "Pro-Tip: Use VS Code “Timeline”",
+    "text": "Pro-Tip: Use VS Code “Timeline”\nSince you are using VS Code, you will have access to the Timeline View (usually at the bottom of the File Explorer). - VS Code keeps a “Local History” of every save. - If you mess up a git pull or delete a file accidentally, you can restore it from the Timeline without knowing advanced Git commands.\n\n\n⚠️ Common Troubleshooting\n\n“Permission Denied” when pushing: This is normal! You are allowed to take code from my repo, but you cannot change my master copy. You only save your work on your own computer.\nRed squiggly lines: Ensure you installed the “Java Extension Pack” and that you have opened the entire folder (ezui) in VS Code, not just a single file."
+  },
+  {
+    "objectID": "cosc445/index.html",
+    "href": "cosc445/index.html",
+    "title": "COSC445 - Design and Analysis of Algorithms",
     "section": "",
-    "text": "Welcome! This site contains all the lecture notes, slides, and resources for my courses.\n\n\nYou can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS\n\n\n\n\nIf you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard.\n\n\n\nThis site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+    "text": "Section: 01\nCredit hours: 4\nTerm and year: Spring 2026\nDelivery Mode Classroom\nWhen and Where: Tuesday, Thursday. 1:45 PM - 3:00 PM. Schaefer Hall, Room 165.\nInstructor: Sayan Goswami\nOffice: Schaefer Hall, Room 152\nOffice Hours: Monday and Wednesday from 3:00 PM to 4:00 PM or by appointment.\nPhone: 240-895-2153\nEmail: sgoswami@smcm.edu\nTextbook: The Algorithm Design Manual, 3rd Edition, by Steven Skiena\nPrerequisites: COSC 201; and MATH 200 or MATH 281\n\n\n\nThis course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms.\n\n\n\nBy the end of this course, you will be able to:\n\nAnalyze the best-case, average-case, and worst-case asymptotic performance of algorithms using standard notations (Big-O, \\(\\Omega\\), \\(\\Theta\\)).\nConstruct correctness proofs for algorithms using techniques such as loop invariants and mathematical induction.\nCompare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.\nApply key algorithmic design paradigms, including divide-and-conquer, dynamic programming, and greedy strategies, to solve complex problems.\nSynthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.\nCategorize computational problems into complexity classes (P, NP, NP-Complete) and identify when a problem is likely to be computationally intractable.\n\n\n\n\nThe Engaged Learning component will include problem solving and readings.\n\n\n\nI support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct.\n\n\n\nSMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu\n\n\n\nDigital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator.\n\n\n\nThe Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu .\n\n\n\nSt. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center 240-895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training.\n\n\n\nA growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu.\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/\n\n\n\nYour course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.\n\nHomework Assignments: Homework is the primary vehicle for learning in this course. These sets will involve:\n\nAlgorithm Design: Developing efficient solutions to complex engineering problems.\nProofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.\nComplexity Analysis: Determining the asymptotic bounds (e.g., \\(O(n \\log n)\\)) of your proposed solutions.\nNote: Submission must be through pdf files, and must be typed (not hand written). Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.\n\nQuizzes Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on “familiarity” tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.\nMidterm Exam and Final Exam Exams will test your ability to synthesize the paradigms learned in class under time constraints.\n\nThe Midterm covers foundational analysis, sorting, and divide-and-conquer.\nThe Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.\n\n\nImportant: All quizzes and exams will be paper-based.\n\n\n\nYour final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n20%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n30%\n\n\nFinal exam\n30%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nThe grades would be published on Blackboard.\n\n\n\nGenerative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies.\n\n\n\nAttendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade.\n\n\n\n\nAssignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date.\n\n\n\nThe schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
   },
   {
-    "objectID": "index.html#how-to-navigate",
-    "href": "index.html#how-to-navigate",
-    "title": "Home",
+    "objectID": "cosc445/index.html#course-goals",
+    "href": "cosc445/index.html#course-goals",
+    "title": "COSC445 - Design and Analysis of Algorithms",
     "section": "",
-    "text": "You can find all course materials in the header bar on the top.\n\nCOSC130: INTRO TO COMPUTER SCIENCE II\nCOSC445: DESIGN/ANALYSIS OF ALGORITHMS"
+    "text": "This course studies the design, implementation and analysis of important algorithms. Topics include lower and upper complexity bounds, algorithm analysis techniques, NP-completeness, sorting algorithms, searching algorithms, graph algorithms, divide-and-conquer algorithms, greedy algorithms, dynamic programming, backtracking, probabilistic algorithms, and mathematical algorithms."
   },
   {
-    "objectID": "index.html#searching-for-topics",
-    "href": "index.html#searching-for-topics",
-    "title": "Home",
+    "objectID": "cosc445/index.html#learning-outcomes",
+    "href": "cosc445/index.html#learning-outcomes",
+    "title": "COSC445 - Design and Analysis of Algorithms",
     "section": "",
-    "text": "If you are looking for a specific topic (e.g., “Dynamic programming” or “ArrayList”), use the search bar at the top right or press the f key on your keyboard."
+    "text": "By the end of this course, you will be able to:\n\nAnalyze the best-case, average-case, and worst-case asymptotic performance of algorithms using standard notations (Big-O, \\(\\Omega\\), \\(\\Theta\\)).\nConstruct correctness proofs for algorithms using techniques such as loop invariants and mathematical induction.\nCompare and contrast major algorithms and data structures (such as sorting, graph traversal, and hashing) to determine their suitability for specific computational problems.\nApply key algorithmic design paradigms, including divide-and-conquer, dynamic programming, and greedy strategies, to solve complex problems.\nSynthesize efficient algorithms for engineering design situations and validate their performance through theoretical analysis and empirical testing.\nCategorize computational problems into complexity classes (P, NP, NP-Complete) and identify when a problem is likely to be computationally intractable."
   },
   {
-    "objectID": "index.html#accessibility-note",
-    "href": "index.html#accessibility-note",
-    "title": "Home",
+    "objectID": "cosc445/index.html#engaged-learning",
+    "href": "cosc445/index.html#engaged-learning",
+    "title": "COSC445 - Design and Analysis of Algorithms",
     "section": "",
-    "text": "This site is designed to be screen-reader friendly and supports keyboard-only navigation. If you encounter any issues accessing these materials, please contact me directly. Below are some keyboard shortcuts -\n\nF , S , / : open search dialog\n\nDown , Up : select next / previous result\nEsc , Tab : close search dialog\nEnter : follow selected result\n\nP , , : go to previous page\nN , . : go to next page"
+    "text": "The Engaged Learning component will include problem solving and readings."
   },
   {
-    "objectID": "cosc445/slides/astar.html#where-weve-been",
-    "href": "cosc445/slides/astar.html#where-weve-been",
-    "title": "A* Search",
-    "section": "Where We’ve Been",
-    "text": "Where We’ve Been\nYou already know:\n\nBacktracking — explore, undo, try another way\nPruning — skip branches that can’t possibly work\n\n\nQuestion: In backtracking, when you have multiple branches to try — which one do you try first?\n\n\nUsually… whichever comes first. Arbitrary order.\n\n\nWhat if we could rank our choices and always try the most promising one?\nThat’s the core idea behind A*."
+    "objectID": "cosc445/index.html#smcm-code-of-student-conduct",
+    "href": "cosc445/index.html#smcm-code-of-student-conduct",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "I support the SMCM Code of Student Conduct, which states, in part: “St. Mary’s College of Maryland is committed to the ideals of honesty, personal integrity, and mutual trust.  Academic integrity is a responsibility of all students, members of the faculty, and administrative officers.  All students are expected to uphold the highest ideals of academic integrity throughout their career at St. Mary’s.”\nStudents who commit acts of academic misconduct are subject to in-class penalties imposed by the instructor and to a hearing before the Academic Judicial Board with possibilities of additional penalties. \nYou are responsible for understanding and complying with the SMCM Code of Student Conduct."
   },
   {
-    "objectID": "cosc445/slides/astar.html#motivating-example-navigation",
-    "href": "cosc445/slides/astar.html#motivating-example-navigation",
-    "title": "A* Search",
-    "section": "Motivating Example: Navigation",
-    "text": "Motivating Example: Navigation\nYou’re in a city. You want to go from A to B.\n\n\nOption 1 — Blind search:\nExpand every reachable node equally.\nEventually you’ll find B… maybe.\n\n\n\nA broad, wasteful search frontier spreading in all directions\n\n\n\nOption 2 — Guided search:\nPrefer nodes that are closer to B and cheaply reached.\n\n\n\nA more focussed elliptical search frontier growing towards the destination\n\n\n\n\n\nRecap: In backtracking, when you have multiple branches to try — which one do you try first?\n\n\nIts arbitrary. A* gives us a principled way to rank our choices and always pick the best one first."
+    "objectID": "cosc445/index.html#academic-accommodations",
+    "href": "cosc445/index.html#academic-accommodations",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "SMCM is committed to providing access to the learning and living experience to students with disabilities and disabling health conditions. If you have received a letter from the Office of Accessibility Services (OAS), which outlines the academic accommodations to which you are entitled to and you want those accommodations to apply to this course, you MUST share your letter and meet with me to review that letter. If you suspect that you have a learning or living need related to a disability or disabling health condition that could benefit from accommodations, you should contact the Office of Accessibility Services, who can help you learn more about how to proceed. Email: adasupport@smcm.edu"
   },
   {
-    "objectID": "cosc445/slides/astar.html#two-algorithms-to-know-first",
-    "href": "cosc445/slides/astar.html#two-algorithms-to-know-first",
-    "title": "A* Search",
-    "section": "Two Algorithms to Know First",
-    "text": "Two Algorithms to Know First\nBefore A*, let’s name two simpler cousins:\n\n\n\nAlgorithm\nStrategy\nBlind to…\n\n\n\n\nBFS\nExpand shallowest node first\nCost of edges\n\n\nDijkstra’s\nExpand cheapest-cost node first\nDirection to goal\n\n\nA*\nExpand best estimated total cost\nNothing — uses both!\n\n\n\n\n\nA* = Dijkstra’s + a compass pointing toward the goal."
+    "objectID": "cosc445/index.html#digital-accessibility-of-course-materials",
+    "href": "cosc445/index.html#digital-accessibility-of-course-materials",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Digital accessibility requirements under Title II of the Americans with Disabilities Act go into effect as of April 24, 2026. The instructor is making every reasonable effort to ensure that the digital materials distributed to students and/or required to engage in the course are reviewed for compliance with the federal regulations. As of April 24, 2026, if you discover that a course material has an accessibility issue, please report it to the instructor immediately after discovery. If the issue has not been resolved within one week, please report this accessibility issue by way of the College’s standing Campus Accessibility Issue reporting form for review by our ADA Coordinator."
   },
   {
-    "objectID": "cosc445/slides/astar.html#the-key-insight-two-costs",
-    "href": "cosc445/slides/astar.html#the-key-insight-two-costs",
-    "title": "A* Search",
-    "section": "The Key Insight: Two Costs",
-    "text": "The Key Insight: Two Costs\nFor every node \\(n\\) we’re considering, A* tracks:\n\\[f(n) = g(n) + h(n)\\]\n\n\n\\(g(n)\\)\nCost so far\nHow much did it cost to reach this node from the start?\n(exact — we know this)\n\n\\(h(n)\\)\nEstimated cost ahead\nHow far are we still from the goal?\n(a guess — a heuristic)\n\n\\(f(n)\\)\nTotal estimated cost\nOur best estimate of the whole path cost through \\(n\\).\n(what A* uses to decide)\n\n\n\nQuestion: \\(g\\) is exact. \\(h\\) is a guess. Why not just use \\(g\\) and be precise?"
+    "objectID": "cosc445/index.html#office-of-student-success-services",
+    "href": "cosc445/index.html#office-of-student-success-services",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "The Office of Student Success Services (OS3) provides free tutoring services and academic coaching with professional staff and Peer Academic Success Strategies (PASS) Specialists. You may make appointments by emailing PASS@smcm.edu. To request tutoring for a specific course, email tutoring@smcm.edu. For any other help call 240-895-4388, stop by Glendening 230, or email os3@smcm.edu ."
   },
   {
-    "objectID": "cosc445/slides/astar.html#the-heuristic-hn-a-guess-with-rules",
-    "href": "cosc445/slides/astar.html#the-heuristic-hn-a-guess-with-rules",
-    "title": "A* Search",
-    "section": "The Heuristic \\(h(n)\\): A Guess With Rules",
-    "text": "The Heuristic \\(h(n)\\): A Guess With Rules\n\\(h(n)\\) is an estimate of the cost from \\(n\\) to the goal.\nYou get to design it — but it must follow one key rule.\nAdmissibility rule: \\(h(n)\\) must never overestimate the true cost.\n\\[h(n) \\leq h^*(n) \\quad \\text{(true cost to goal)}\\]\n\nQuestion: Why would overestimating be a problem?\nThink: if \\(h\\) overestimates, what might A* skip?\n\n\nIt might skip the optimal path — mistakenly thinking it’s too expensive."
+    "objectID": "cosc445/index.html#office-of-title-ix-compliance-and-training",
+    "href": "cosc445/index.html#office-of-title-ix-compliance-and-training",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "St. Mary’s College of Maryland is committed to helping create a safe and open learning environment for all students. If you (or someone you know) have experienced any form of sexual misconduct, including sexual assault, dating or domestic violence, or stalking, know that help and support are available.\nThe College strongly encourages all community members to take action, seek support, and report incidents of sexual misconduct to the Title IX Office.  Under Title IX of the Education Amendments of 1972, I am required to disclose information about such misconduct to the Title IX Office.\nIf you would like to talk to a confidential employee who does not have this reporting responsibility, you can contact SMCM Wellness Center 240-895-4289. \nFor more information about reporting options and resources at St. Mary’s College of Maryland and the community, please visit the Office of Title IX Compliance and Training."
   },
   {
-    "objectID": "cosc445/slides/astar.html#classic-heuristic-straight-line-distance",
-    "href": "cosc445/slides/astar.html#classic-heuristic-straight-line-distance",
-    "title": "A* Search",
-    "section": "Classic Heuristic: Straight-Line Distance",
-    "text": "Classic Heuristic: Straight-Line Distance\nFor navigation on a map, a natural heuristic is:\n\\[h(n) = \\text{straight-line distance from } n \\text{ to goal}\\]\nQuestion: Is straight-line distance admissible? Can the real road ever be shorter than a straight line?\n\nNo! Roads can only be at least as long as the straight line.\nSo straight-line distance never overestimates. ✅ Admissible.\n\n\nAdmissibility is easy to reason about intuitively:\n“Could the real cost ever be less than my guess?”\nIf the answer is no, you’re admissible."
+    "objectID": "cosc445/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
+    "href": "cosc445/index.html#wellness-center-health-services-and-counseling-psychological-services-caps",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "A growing number of students are experiencing mental health challenges to varying degrees. Doing what you can to stay ahead by wisely taking care of yourself will be a key to succeeding academically.  Sometimes mental health challenges can affect your ability to complete required work. For example, a particular assignment might trigger anxiety for you in ways which were not anticipated. Or, maybe it becomes difficult to attend class due to mental health challenges. In any of those cases please come and talk with more or send me an email.  I’ll listen and do what I can to help. The sooner you share your challenges with me, the better prepared I am to assist you.  I am one of many people here at SMCM who care about you and your welfare. For further support, the Wellness Center provides numerous confidential health and counseling services including same day/next day connections to counseling by calling 240-895-4289 or emailing the Director at jljolly@smcm.edu.\nTo learn more about Wellness Center Services please go to their webpage at https://www.smcm.edu/wellness/"
   },
   {
-    "objectID": "cosc445/slides/astar.html#how-a-works-the-algorithm",
-    "href": "cosc445/slides/astar.html#how-a-works-the-algorithm",
-    "title": "A* Search",
-    "section": "How A* Works: The Algorithm",
-    "text": "How A* Works: The Algorithm\ndef search(graph):\n  open_set = priority_queue()  # ordered by f(n)\n  start = graph.start_node\n  f[start] = g[start] + h[start]\n  open_set.add(start, f[start])  # add the start node with priority value f\n\n  while open_set is not empty:\n    node = open_set.pop()  # get the node with lowest f(n)\n    if node == goal:\n      return reconstruct_path(node) # found goal! reconstruct path back to source\n    for neighbor in graph.neighbors(node):\n      if neighbor not in open_set:\n        g[neighbor] = g[node] + cost(node, neighbor)\n        f[neighbor] = g[neighbor] + h[neighbor]\n        open_set.add(neighbor, f[neighbor])\n  return FAILURE\n\nNotice: we only update a node if we found a better path to it.\nQuestion: What does this remind you of from earlier in the course?"
+    "objectID": "cosc445/index.html#evaluation-components",
+    "href": "cosc445/index.html#evaluation-components",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Your course grade will be based on homework assignments, quizzes, a midterm exam, and a final exam. All components will emphasize algorithm design and problem-solving.\n\nHomework Assignments: Homework is the primary vehicle for learning in this course. These sets will involve:\n\nAlgorithm Design: Developing efficient solutions to complex engineering problems.\nProofs: Providing mathematical justification (e.g., loop invariants, induction) for algorithm correctness.\nComplexity Analysis: Determining the asymptotic bounds (e.g., \\(O(n \\log n)\\)) of your proposed solutions.\nNote: Submission must be through pdf files, and must be typed (not hand written). Using Markdown with LaTeX is highly encouraged to ensure clarity in mathematical notation.\n\nQuizzes Quizzes are short, low-stakes assessments designed to ensure you are keeping up with core concepts. These will focus on “familiarity” tasks, such as tracing a specific algorithm (like Dijkstra’s or Quicksort) on a provided data set or identifying the complexity class of a given function.\nMidterm Exam and Final Exam Exams will test your ability to synthesize the paradigms learned in class under time constraints.\n\nThe Midterm covers foundational analysis, sorting, and divide-and-conquer.\nThe Final Exam is cumulative but will heavily emphasize dynamic programming, greedy algorithms, and graph theory.\n\n\nImportant: All quizzes and exams will be paper-based."
   },
   {
-    "objectID": "cosc445/slides/astar.html#worked-example-romania-road-map",
-    "href": "cosc445/slides/astar.html#worked-example-romania-road-map",
-    "title": "A* Search",
-    "section": "Worked Example: Romania Road Map",
-    "text": "Worked Example: Romania Road Map\nFrom A (Arad) to B (Bucharest).\n\nRomania map with cities and road distances"
+    "objectID": "cosc445/index.html#grading",
+    "href": "cosc445/index.html#grading",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Your final grade will be based on the following components:\n\n\n\nComponent\nWeight\n\n\n\n\nAssignments\n20%\n\n\nQuizzes\n20%\n\n\nMidterm exam\n30%\n\n\nFinal exam\n30%\n\n\n\nI will determine the exact letter-grade cutoffs at the end of the course. To ensure fairness, I guarantee the minimum grade you will receive based on your overall percentage:\nIf adjustments are made to the grading scale, they will only raise your final letter grade, never lower it.\nThe table below represents the lowest possible letter grade you can earn for a given percentage.\n\n\n\nPoints\nLetter Grade\n\n\n\n\n93 - 100\nA or higher\n\n\n86 - 92.9\nA- or higher\n\n\n79 - 85.9\nB+ or higher\n\n\n72 - 78.9\nB or higher\n\n\n65 - 71.9\nB- or higher\n\n\n58 - 64.9\nC+ or higher\n\n\n51 - 57.9\nC or higher\n\n\n44 - 50.9\nC- or higher\n\n\n37 - 43.9\nD+ or higher\n\n\n30 - 36.9\nD or higher\n\n\n0 - 29.9\nF or higher\n\n\n\nThe grades would be published on Blackboard."
   },
   {
-    "objectID": "cosc445/slides/astar.html#worked-example-romania-road-map-1",
-    "href": "cosc445/slides/astar.html#worked-example-romania-road-map-1",
-    "title": "A* Search",
-    "section": "Worked Example: Romania Road Map",
-    "text": "Worked Example: Romania Road Map\nFrom A (Arad) to B (Bucharest).\n\nRomania map with cities, road distances, and straight-line distances"
+    "objectID": "cosc445/index.html#use-of-generative-ai",
+    "href": "cosc445/index.html#use-of-generative-ai",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Generative artificial intelligence (AI) (tools such as ChatGPT, Gemini, Copilot) is a fast-developing tool that greatly impacts the learning process. As with many things, there are times when using these tools is appropriate and when it is not.  For this course, I encourage you to use the generative AI tools at your disposal, including creating study guides or assisting with class assignments. However it is your responsibility to properly evaluate the information created through generative AI as well as explicitly cite its use within your assignments. We will discuss how to do this in class, and you should contact me with any questions that you may have if you encounter a situation where it is unclear how to do these citations. Failure to use the proper citation of generative AI tools may be considered plagiarism and will be handled via the SMCM Academic Misconduct policies."
   },
   {
-    "objectID": "cosc445/slides/astar.html#worked-example-romania-road-map-2",
-    "href": "cosc445/slides/astar.html#worked-example-romania-road-map-2",
-    "title": "A* Search",
-    "section": "Worked Example: Romania Road Map",
-    "text": "Worked Example: Romania Road Map\n\n\n\n\n\nRomania map with cities, road distances, and straight-line distances\n\n\n\n\n\nStart: A\nStep 1: Expand A.\nNeighbors: Z (75), S (140), T (118)\nCompute \\(f\\) for each:\n\nZ: \\(f = 75 + 374 = 449\\)\nS: \\(f = 140 + 253 = 393\\)\nT: \\(f = 118 + 329 = 447\\)\n\nBest: S ← expand next\n\n\nExpanding S (\\(g = 140\\)):\nNeighbors: F (99), R (80), O (151), A (already visited better)\n\n\n\nNode\n\\(g\\)\n\\(h\\)\n\\(f\\)\n\n\n\n\nF\n140+99=239\n176\n415\n\n\nR\n140+80=220\n193\n413\n\n\nZ (old)\n—\n—\n449\n\n\nT (old)\n—\n—\n447\n\n\n\nBest next: R (\\(f = 413\\))\n\n\n\n\n\nQuestion: We’re skipping Z and T for now, even though they’re direct neighbors of the start.\nIs this a problem? Could we be missing the optimal path?"
+    "objectID": "cosc445/index.html#attendance-policy",
+    "href": "cosc445/index.html#attendance-policy",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Attendance is not mandatory, and thus absence from class is not penalized directly, but you will lose out in other ways. Class attendance is the #1 indicator of academic success. OS3 emphatically encourages all students to Go To Class! Class attendance is important for numerous reasons:\n\nStudents tend to remember info more when they attend class.\nYour presence in class shows your instructor that you care about the course and it is important to you. If your grade is borderline at the end of the semester, the instructor may give you the benefit of the doubt because you regularly attended class.\nYou/your families are paying to be in class. In-state residents who miss a class are wasting over $56 per class. Out-of-state students who miss a class are throwing away $110 per class!\nYour instructor will likely explain material differently/better than you can learn it yourself, and can answer questions more directly.\nGoing to class helps you build community and relationships with peers and your instructors.\nBy not going to class, you may miss a pop quiz, participation points, extra credit opportunities, important info, or in-class assignments that can impact your grade."
   },
   {
-    "objectID": "cosc445/slides/astar.html#why-a-doesnt-miss-the-optimal-path",
-    "href": "cosc445/slides/astar.html#why-a-doesnt-miss-the-optimal-path",
-    "title": "A* Search",
-    "section": "Why A* Doesn’t Miss the Optimal Path",
-    "text": "Why A* Doesn’t Miss the Optimal Path\n\nKey guarantee: If \\(h\\) is admissible, A* will find the optimal path.\n\nIntuition:\n\nThe optimal path has some true cost \\(C^*\\)\nAny unexplored node on the optimal path has \\(f \\leq C^*\\)\n(because \\(h\\) never overestimates what remains)\nA* only stops when it pops the goal from the queue\nWhen the goal is popped, its \\(g\\) value is the optimal cost\n\n\n\nQuestion: What would happen if we used \\(h = 0\\) for everything?\n(i.e., we pretend there’s no remaining cost)\n\n\n\n\\(h = 0\\) → \\(f = g\\) → A* becomes Dijkstra’s! Still correct, just slower."
+    "objectID": "cosc445/index.html#late-work-policy",
+    "href": "cosc445/index.html#late-work-policy",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "Assignments are due at 11:59 PM Eastern Time (UTC – 4) on the posted due date, with a one-hour grace period. Submissions received after that time will be subject to a late penalty of 10% of the maximum possible points per additional day past the deadline. The minimum grade on any assignment is zero; late penalties will not reduce a score below this.\nBecause the penalty accumulates continuously, assignments submitted several days late will earn little or no credit. Please plan accordingly and submit on time.\nThis policy is designed to ensure fairness and to allow me to return graded work to the class within two weeks of the due date."
   },
   {
-    "objectID": "cosc445/slides/astar.html#heuristic-quality-matters",
-    "href": "cosc445/slides/astar.html#heuristic-quality-matters",
-    "title": "A* Search",
-    "section": "Heuristic Quality Matters",
-    "text": "Heuristic Quality Matters\nAll admissible heuristics give correct answers.\nBut better heuristics give faster answers.\n\nQuestion: Which heuristic explores fewer nodes — a good one or a weak one?\n\n\nA stronger \\(h\\) (closer to the true cost) → fewer nodes expanded → faster.\n\n\n\nHeuristic\nBehavior\n\n\n\n\n\\(h = 0\\)\nDijkstra’s — explores many nodes\n\n\n\\(h = h^*\\) (perfect)\nOnly explores nodes on the optimal path\n\n\n\\(h &gt; h^*\\) (inadmissible)\nFast, but may miss optimal\n\n\n\n\n\n\nThe sweet spot: as close to \\(h^*\\) as possible without going over."
+    "objectID": "cosc445/index.html#tentative-schedule",
+    "href": "cosc445/index.html#tentative-schedule",
+    "title": "COSC445 - Design and Analysis of Algorithms",
+    "section": "",
+    "text": "The schedule below outlines our plan for the semester. As we move through the course, I may adjust the pace, spend more or less time on certain topics, or add/remove assignments and quizzes. These adjustments will be made with your learning in mind, to ensure you have the time and support needed to build a strong foundation.\n\n\n\nWeek\nDates\nTopic\nBook Pages\nAssignment\nQuiz\n\n\n\n\n1\nJan 20\nIntroduction to algorithms\n1-27\nA1 out\n\n\n\n\nJan 22\nAsymptotic notation\n31-40\n\n\n\n\n2\nJan 27\nLogarithms and more\n41-58\nA2 out\nQ1\n\n\n\nJan 29\nElementary data structures\n65-75\n\n\n\n\n3\nFeb 3\nDictionary data structures\n76-92\nA3 out\nQ2\n\n\n\nFeb 5\nHashing\n93-102\n\n\n\n\n4\nFeb 10\nApplications of Sorting\n109-114\nA4 out\nQ3\n\n\n\nFeb 12\nHeapsort/Priority Queues\n115-126\n\n\n\n\n5\nFeb 17\nMergesort/Quicksort/Binsort\n127-151\nA5 out\nQ4\n\n\n\nFeb 19\nData structures for graphs\n197-211\n\n\n\n\n6\nFeb 24\nBreadth-first search\n212-220\nA6 out\nQ5\n\n\n\nFeb 26\nTopological sort/connectivity\n221-234\n\n\n\n\n7\nMar 3\nMinimum spanning trees\n243-256\nA7 out\nQ6\n\n\n\nMar 5\nShortest paths\n257-266\n\n\n\n\n8\nMar 10\nMidterm exam review\n\n\n\n\n\n\nMar 12\nMidterm Exam\n\n\n\n\n\n9\nMar 17\nNo class - Spring Recess\n\n\n\n\n\n\nMar 19\nNo class - Spring Recess\n\n\n\n\n\n10\nMar 24\nNo class - Advising Day\n\n\n\n\n\n\nMar 26\nNetwork flows and bipartite matching\n267-275\n\n\n\n\n11\nMar 31\nCombinatorial search - backtracking and pruning\n281 - 298\nA8 out\nQ7\n\n\n\nApr 2\nCombinatorial search - A* Heuristic\n298 - 303\n\n\n\n\n12\nApr 7\nElements of dynamic programming\n307-325\nA9 out\nQ8\n\n\n\nApr 9\nExamples of dynamic programming\n326-336\n\n\n\n\n13\nApr 14\nLimitations of dynamic programming\n337-344\nA10 out\nQ9\n\n\n\nApr 16\nDynamic programming review\n\n\n\n\n\n14\nApr 21\nReductions\n355-360\n\nQ10\n\n\n\nApr 23\nEasy reductions\n361-368\n\n\n\n\n15\nApr 28\nHarder reductions\n369-372\n\n\n\n\n\nApr 30\nThe NP-completeness challenge\n373-382\n\n\n\n\n16\nMay 5\nFinal Exam review\n\n\n\n\n\n\nMay 6\nFinal Exam (2:00 PM – 4:15 PM)"
   },
   {
-    "objectID": "cosc445/slides/astar.html#aside-8-puzzle-tree",
-    "href": "cosc445/slides/astar.html#aside-8-puzzle-tree",
-    "title": "A* Search",
-    "section": "Aside: 8-Puzzle tree",
-    "text": "Aside: 8-Puzzle tree\n\n\nSTART               GOAL\n\n+---+---+---+       +---+---+---+\n| 7 | 2 | 4 |       | 1 | 2 | 3 |\n+---+---+---+       +---+---+---+\n| 5 |   | 6 |       | 4 | 5 | 6 |\n+---+---+---+       +---+---+---+\n| 8 | 3 | 1 |       | 7 | 8 |   |\n+---+---+---+       +---+---+---+\n\n\n\n\n\nA tree depicting the configurations of the 8-puzzle"
+    "objectID": "cosc445/slides/dynamic_programming.html#what-is-dynamic-programming",
+    "href": "cosc445/slides/dynamic_programming.html#what-is-dynamic-programming",
+    "title": "Introduction to Dynamic Programming",
+    "section": "What Is Dynamic Programming?",
+    "text": "What Is Dynamic Programming?\nDynamic Programming (DP) is a technique for solving problems by:\n\nBreaking them into overlapping subproblems\nSolving each subproblem once\nStoring the result so it’s never recomputed\n\n\n\n\nDP is NOT:\n\nA data structure\nA specific algorithm\nOnly for hard problems\n\n\n\n\nDP IS:\n\nA way of thinking about recursion\nAn optimisation of repeated work\nRecursion + memory\n\n\n\n\n\nOne-liner: “Remember what you’ve already solved.”"
   },
   {
-    "objectID": "cosc445/slides/astar.html#designing-heuristics-relaxed-problems",
-    "href": "cosc445/slides/astar.html#designing-heuristics-relaxed-problems",
-    "title": "A* Search",
-    "section": "Designing Heuristics: Relaxed Problems",
-    "text": "Designing Heuristics: Relaxed Problems\nA powerful technique: solve an easier version of the problem.\n\n“What if some constraints didn’t exist?”\n\n\n8-Puzzle example: move tiles to reach goal configuration.\n\n\nSTART               GOAL\n\n+---+---+---+       +---+---+---+\n| 7 | 2 | 4 |       | 1 | 2 | 3 |\n+---+---+---+       +---+---+---+\n| 5 |   | 6 |       | 4 | 5 | 6 |\n+---+---+---+       +---+---+---+\n| 8 | 3 | 1 |       | 7 | 8 |   |\n+---+---+---+       +---+---+---+\n\nPossible heuristics:\n\n\\(h_1\\): Misplaced tiles — count tiles not in their goal position\n(Relaxation: tiles can teleport anywhere)\n\\(h_2\\): Manhattan distance — sum of how far each tile needs to move\n(Relaxation: tiles can pass through each other)\n\n\n\n\n\n\nQuestion: Which is stronger, \\(h_1\\) or \\(h_2\\)?\nCan you give an example where they differ?"
+    "objectID": "cosc445/slides/dynamic_programming.html#the-two-ingredients-of-dp",
+    "href": "cosc445/slides/dynamic_programming.html#the-two-ingredients-of-dp",
+    "title": "Introduction to Dynamic Programming",
+    "section": "The Two Ingredients of DP",
+    "text": "The Two Ingredients of DP\nEvery DP problem requires exactly two things:\n\n\n\n1. Optimal Substructure\nThe optimal solution to the problem contains optimal solutions to its subproblems.\n\n“I can build the best answer from the best answers to smaller versions.”\n\n\n\n\n2. Overlapping Subproblems\nThe same subproblems appear again and again during recursion.\n\n“I keep solving the same smaller problems repeatedly — let me cache them.”\n\n\n\n\nIf both conditions hold → DP will help you."
   },
   {
-    "objectID": "cosc445/slides/astar.html#dominance-comparing-heuristics",
-    "href": "cosc445/slides/astar.html#dominance-comparing-heuristics",
-    "title": "A* Search",
-    "section": "Dominance: Comparing Heuristics",
-    "text": "Dominance: Comparing Heuristics\nWe say \\(h_2\\) dominates \\(h_1\\) if:\n\\[h_2(n) \\geq h_1(n) \\quad \\text{for all } n\\]\n(and both are admissible)\n\nA dominating heuristic always expands no more nodes than the dominated one.\nManhattan distance dominates misplaced tiles for the 8-puzzle.\n\n\n\nQuestion: If you have two admissible heuristics \\(h_1\\) and \\(h_2\\), can you combine them?\nHow?\n\n\n\nYes! \\(h(n) = \\max(h_1(n), h_2(n))\\) is admissible and dominates both."
+    "objectID": "cosc445/slides/dynamic_programming.html#dp-vs.-divide-conquer",
+    "href": "cosc445/slides/dynamic_programming.html#dp-vs.-divide-conquer",
+    "title": "Introduction to Dynamic Programming",
+    "section": "DP vs. Divide & Conquer",
+    "text": "DP vs. Divide & Conquer\n\n\n\n\nDivide & Conquer\nDynamic Programming\n\n\n\n\nSubproblems\nIndependent\nOverlapping\n\n\nReuse results?\nNo (not needed)\nYes (essential)\n\n\nExamples\nMerge Sort, Binary Search\nFibonacci, Knapsack\n\n\nOverhead\nRecursion only\nRecursion + memory\n\n\n\n\n\nMerge Sort splits [1..n] into [1..n/2] and [n/2+1..n]. Those halves never overlap.\nFibonacci needs fib(4) to compute both fib(5) and fib(6). They do overlap."
   },
   {
-    "objectID": "cosc445/slides/astar.html#consistency-a-stronger-property",
-    "href": "cosc445/slides/astar.html#consistency-a-stronger-property",
-    "title": "A* Search",
-    "section": "Consistency (a Stronger Property)",
-    "text": "Consistency (a Stronger Property)\nAdmissibility: \\(h(n) \\leq\\) true cost from \\(n\\) to goal.\nConsistency (also called monotonicity): for every edge \\(n \\to m\\):\n\\[h(n) \\leq \\text{cost}(n \\to m) + h(m)\\]\n\nQuestion: What does this inequality look like geometrically?\n(Hint: think triangle)\n\n\nIt’s the triangle inequality — the heuristic can’t drop faster than the actual edge cost.\n\nConsistency → Admissibility (but not vice versa).\nWith a consistent heuristic, every node is expanded at most once — no re-expansion!"
+    "objectID": "cosc445/slides/dynamic_programming.html#fibonacci-naive-recursion",
+    "href": "cosc445/slides/dynamic_programming.html#fibonacci-naive-recursion",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Fibonacci — Naive Recursion",
+    "text": "Fibonacci — Naive Recursion\n\\[F(n) = F(n-1) + F(n-2), \\quad F(0)=0,\\ F(1)=1\\]\ndef fib(n):\n    if n &lt;= 1:\n        return n\n    return fib(n-1) + fib(n-2)\nSimple and correct. But let’s trace fib(6):\n\n\n\n\nfib(6) call tree\n\n\n\n\n\nTime complexity: O(2ⁿ) — doubles with every step. Terrible!"
   },
   {
-    "objectID": "cosc445/slides/astar.html#a-vs.-dijkstras-visualized",
-    "href": "cosc445/slides/astar.html#a-vs.-dijkstras-visualized",
-    "title": "A* Search",
-    "section": "A* vs. Dijkstra’s: Visualized",
-    "text": "A* vs. Dijkstra’s: Visualized\n\n\nDijkstra’s (\\(h = 0\\))\nExpands in uniform rings of equal cost — like ripples in a pond.\nExplores in all directions equally.\n\n\nA* (good \\(h\\))\nExpands in an ellipse stretching toward the goal.\nFocuses exploration where it matters.\n\n\n\n\nQuestion: When would A* and Dijkstra’s expand the same set of nodes?\n\n\n\nWhen the goal is the closest node — or when \\(h\\) gives no useful information about direction."
+    "objectID": "cosc445/slides/dynamic_programming.html#why-is-it-so-slow",
+    "href": "cosc445/slides/dynamic_programming.html#why-is-it-so-slow",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Why Is It So Slow?",
+    "text": "Why Is It So Slow?\nThe call tree for fib(6) has 25 nodes, even though there are only 7 distinct subproblems (fib(0)…fib(6)).\n\nfib(6) call treefib(3) alone is called 3 times, fib(2) is called 5 times.\n\nThis is the overlapping subproblems problem.\nThe fix? Store results the first time. Memoisation."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#fibonacci-top-down-dp-memoisation",
+    "href": "cosc445/slides/dynamic_programming.html#fibonacci-top-down-dp-memoisation",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Fibonacci — Top-Down DP (Memoisation)",
+    "text": "Fibonacci — Top-Down DP (Memoisation)\nAdd a cache. If we’ve seen it before, return the stored answer.\nmemo = {}\ndef fib_memo(n):\n    if n in memo:\n        return memo[n]          # ← cache hit!\n    if n &lt;= 1:\n        return n\n\n    memo[n] = fib_memo(n-1) + fib_memo(n-2)  # ← store result in cache\n    return memo[n]\nNow fib(5) only ever computes each value once:\nfib(5) → fib(4) → fib(3) → fib(2) → fib(1) = 1\n                                   → fib(0) = 0\n                         → fib(1) = 1  [cached: skip]\n               → fib(2) = 1  [cached: skip]\n         → fib(3) = 2  [cached: skip]\nTime: O(n) — Space: O(n)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#fibonacci-bottom-up-dp-tabulation",
+    "href": "cosc445/slides/dynamic_programming.html#fibonacci-bottom-up-dp-tabulation",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Fibonacci — Bottom-Up DP (Tabulation)",
+    "text": "Fibonacci — Bottom-Up DP (Tabulation)\nInstead of recursing top-down, fill a table from the base cases upward.\ndef fib_dp(n):\n    if n &lt;= 1:\n        return n\n\n    dp = [0] * (n + 1)\n    dp[0] = 0\n    dp[1] = 1\n\n    for i in range(2, n + 1):\n        dp[i] = dp[i-1] + dp[i-2]   # ← use already-computed values\n\n    return dp[n]\n\n\n\ni\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\ndp[i]\n0\n1\n1\n2\n3\n5\n8\n13\n\n\n\nTime: O(n) — Space: O(n) (can reduce to O(1) with two variables)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#two-flavours-of-dp",
+    "href": "cosc445/slides/dynamic_programming.html#two-flavours-of-dp",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Two Flavours of DP",
+    "text": "Two Flavours of DP\n\n\n\n\n\n\n\n\n\nTop-Down (Memoisation)\nBottom-Up (Tabulation)\n\n\n\n\nStyle\nRecursive + cache\nIterative + table\n\n\nOrder\nLazy (computed on demand)\nExplicit (fill in order)\n\n\nEasier to\nWrite (mirrors recurrence)\nOptimise (no call stack)\n\n\nRisk\nStack overflow for large n\nNeed to figure out fill order\n\n\nUse when\nNot all subproblems needed\nAll subproblems needed\n\n\n\n\nBoth give the same asymptotic complexity.\nStart with top-down (it’s easier), then convert to bottom-up if needed."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#problem-climbing-stairs",
+    "href": "cosc445/slides/dynamic_programming.html#problem-climbing-stairs",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Problem: Climbing Stairs",
+    "text": "Problem: Climbing Stairs\n\nYou’re climbing a staircase with n steps.\nEach move you can climb 1 or 2 steps.\nHow many distinct ways can you reach the top?\n\n\nExamples:\n\nn = 1: [1] → 1 way\nn = 2: [1+1], [2] → 2 ways\nn = 3: [1+1+1], [1+2], [2+1] → 3 ways\nn = 4: [1+1+1+1], [1+1+2], [1+2+1], [2+1+1], [2+2] → 5 ways\n\nNotice anything?\n\n\n1, 2, 3, 5, 8, 13, ... — it’s Fibonacci!"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#climbing-stairs-recurrence",
+    "href": "cosc445/slides/dynamic_programming.html#climbing-stairs-recurrence",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Climbing Stairs — Recurrence",
+    "text": "Climbing Stairs — Recurrence\nKey insight: to reach step n, you came from either:\n\nstep n-1 (took a 1-step), or\nstep n-2 (took a 2-step)\n\nSo: ways(n) = ways(n-1) + ways(n-2)\n\ndef climb_stairs(n):\n    if n &lt;= 2:\n        return n\n\n    dp = [0] * (n + 1)\n    dp[1] = 1   # one way to reach step 1\n    dp[2] = 2   # two ways to reach step 2\n\n    for i in range(3, n + 1):\n        dp[i] = dp[i-1] + dp[i-2]\n\n    return dp[n]\n\n\nThis problem teaches the core DP pattern: define dp[i] = answer for subproblem of size i, build up from base cases."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#problem-coin-change",
+    "href": "cosc445/slides/dynamic_programming.html#problem-coin-change",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Problem: Coin Change",
+    "text": "Problem: Coin Change\n\nYou have coins of denominations [1, 5, 6, 9].\nWhat is the minimum number of coins to make amount n = 11?\n\nGreedy fails here! Greedy picks 9 first → 9 + 1 + 1 = 3 coins.\nBut optimal is 5 + 6 = 2 coins. ✓\nWhy DP? To make amount n, we can use any coin c, and then we need to make n - c with minimum coins. The subproblems overlap heavily."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#coin-change-recurrence",
+    "href": "cosc445/slides/dynamic_programming.html#coin-change-recurrence",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Coin Change — Recurrence",
+    "text": "Coin Change — Recurrence\nLet dp[i] = minimum coins needed to make amount i.\nRecurrence: \\[dp[i] = 1 + \\min_{c \\in \\text{coins}} dp[i - c] \\quad \\text{for } i \\geq c\\]\nBase case: dp[0] = 0 (zero coins needed to make 0)\nIntuition: for each amount, try every coin and take the best option."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#coin-change-building-the-table",
+    "href": "cosc445/slides/dynamic_programming.html#coin-change-building-the-table",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Coin Change — Building the Table",
+    "text": "Coin Change — Building the Table\nCoins = [1, 5, 6, 9], target = 11\n\n\n\nAmount\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\ndp\n0\n1\n2\n3\n4\n1\n1\n2\n2\n1\n2\n2\n\n\n\nFor dp[11]:\n\nUse coin 1: dp[10] + 1 = 3\nUse coin 5: dp[6] + 1 = 2 ✓\nUse coin 6: dp[5] + 1 = 2 ✓\nUse coin 9: dp[2] + 1 = 3\n\nAnswer: 2 coins (e.g. 5 + 6)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#coin-change-code",
+    "href": "cosc445/slides/dynamic_programming.html#coin-change-code",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Coin Change — Code",
+    "text": "Coin Change — Code\ndef coin_change(coins, amount):\n    INF = float('inf')\n    dp = [INF] * (amount + 1)\n    dp[0] = 0   # base case\n\n    for i in range(1, amount + 1):\n        for coin in coins:\n            if coin &lt;= i and dp[i - coin] != INF:\n                dp[i] = min(dp[i], dp[i - coin] + 1)\n\n    return dp[amount] if dp[amount] != INF else -1\n\nprint(coin_change([1, 5, 6, 9], 11))  # → 2\nprint(coin_change([2], 3))            # → -1 (impossible)\nTime: O(amount × |coins|)\nSpace: O(amount)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#problem-longest-common-subsequence-lcs",
+    "href": "cosc445/slides/dynamic_programming.html#problem-longest-common-subsequence-lcs",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Problem: Longest Common Subsequence (LCS)",
+    "text": "Problem: Longest Common Subsequence (LCS)\n\nGiven two strings, find the length of their longest common subsequence.\n\nA subsequence keeps characters in order but skips some.\nExample:\ns1 = \"ABCBDAB\"\ns2 = \"BDCABA\"\n\nLCS = \"BCBA\"  (length 4)\nB_C_B_A appears in both strings (in order, not necessarily contiguous).\nApplications: diff tools (git diff!), DNA sequence alignment, spell checking."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#lcs-recurrence",
+    "href": "cosc445/slides/dynamic_programming.html#lcs-recurrence",
+    "title": "Introduction to Dynamic Programming",
+    "section": "LCS — Recurrence",
+    "text": "LCS — Recurrence\nDefine dp[i][j] = LCS length of s1[0..i-1] and s2[0..j-1].\nRecurrence:\n\\(dp[i][j] = \\begin{cases} dp[i-1][j-1] + 1 & \\text{if } s1[i-1] = s2[j-1] \\\\ \\max(dp[i-1][j],\\ dp[i][j-1]) & \\text{otherwise} \\end{cases}\\)\nIntuition:\n\nCharacters match → extend the LCS by 1\nCharacters don’t match → take the better of skipping from either string\n\nBase cases: dp[0][j] = 0, dp[i][0] = 0 (empty string has no common subsequence)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#lcs-filling-the-table",
+    "href": "cosc445/slides/dynamic_programming.html#lcs-filling-the-table",
+    "title": "Introduction to Dynamic Programming",
+    "section": "LCS — Filling the Table",
+    "text": "LCS — Filling the Table\n\\(dp[i][j] = \\begin{cases} dp[i-1][j-1] + 1 & \\text{if } s1[i-1] = s2[j-1] \\\\ \\max(dp[i-1][j],\\ dp[i][j-1]) & \\text{otherwise} \\end{cases}\\)\n\n\nSequence 1: C T A G T C A Sequence 2: A G C T A C G\n\nEach cell only looks at its left, top, and diagonal neighbour.\ndp[0][j] = 0, dp[i][0] = 0\n\n\n\n\n\ndp table for LCS"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#lcs-code",
+    "href": "cosc445/slides/dynamic_programming.html#lcs-code",
+    "title": "Introduction to Dynamic Programming",
+    "section": "LCS — Code",
+    "text": "LCS — Code\ndef lcs(s1, s2):\n    m, n = len(s1), len(s2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if s1[i-1] == s2[j-1]:\n                dp[i][j] = dp[i-1][j-1] + 1      # characters match!\n            else:\n                dp[i][j] = max(dp[i-1][j], dp[i][j-1])  # take the best\n\n    return dp[m][n]\n\nprint(lcs(\"ABCBDAB\", \"BDCABA\"))  # → 4\nprint(lcs(\"AGGTAB\",  \"GXTXAYB\")) # → 4\nTime: O(m × n)\nSpace: O(m × n) (reducible to O(min(m,n)) with a rolling array)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#problem-01-knapsack",
+    "href": "cosc445/slides/dynamic_programming.html#problem-01-knapsack",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Problem: 0/1 Knapsack",
+    "text": "Problem: 0/1 Knapsack\n\nYou have a knapsack with capacity W.\nThere are n items, each with a weight and a value.\nMaximise total value without exceeding capacity.\nEach item is either taken (1) or left (0).\n\nExample: capacity W = 7\n\n\n\nItem\nWeight\nValue\n\n\n\n\nA\n1\n1\n\n\nB\n3\n4\n\n\nC\n4\n5\n\n\nD\n5\n7\n\n\n\nBest choice: B + C = weight 7, value 9 ✓"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#knapsack-recurrence",
+    "href": "cosc445/slides/dynamic_programming.html#knapsack-recurrence",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Knapsack — Recurrence",
+    "text": "Knapsack — Recurrence\nDefine dp[i][w] = max value using the first i items with capacity w.\nFor each item i, two choices:\n\\[\ndp[i][w] = \\begin{cases} dp[i-1][w] & \\text{skip item } i \\\\ dp[i-1][w - wt_i] + val_i & \\text{take item } i \\quad (\\text{if } wt_i \\leq w) \\end{cases}\n\\]\nTake the maximum of the two options.\nBase case: dp[0][w] = 0 for all w (no items → no value)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#knapsack-filling-the-table",
+    "href": "cosc445/slides/dynamic_programming.html#knapsack-filling-the-table",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Knapsack — Filling the Table",
+    "text": "Knapsack — Filling the Table\n\\[\ndp[i][w] = \\begin{cases} dp[i-1][w] & \\text{skip item } i \\\\ dp[i-1][w - wt_i] + val_i & \\text{take item } i \\quad (\\text{if } wt_i \\leq w) \\end{cases}\n\\]\n\n\n\n\n\nItem\nWeight\nValue\n\n\n\n\nA\n1\n1\n\n\nB\n3\n4\n\n\nC\n4\n5\n\n\nD\n5\n7\n\n\n\nCapacity = 7\n\n\n\n\ndp table for Knapsack"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#knapsack-code",
+    "href": "cosc445/slides/dynamic_programming.html#knapsack-code",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Knapsack — Code",
+    "text": "Knapsack — Code\ndef knapsack(weights, values, W):\n    n = len(weights)\n    dp = [[0] * (W + 1) for _ in range(n + 1)]\n\n    for i in range(1, n + 1):\n        wt, val = weights[i-1], values[i-1]\n        for w in range(W + 1):\n            # Option 1: skip item i\n            dp[i][w] = dp[i-1][w]\n\n            # Option 2: take item i (if it fits)\n            if wt &lt;= w:\n                dp[i][w] = max(dp[i][w], dp[i-1][w - wt] + val)\n\n    return dp[n][W]\n\nweights = [1, 3, 4, 5]\nvalues  = [1, 4, 5, 7]\nprint(knapsack(weights, values, 7))   # → 9\nTime: O(n × W) — Space: O(n × W)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#the-dp-design-process",
+    "href": "cosc445/slides/dynamic_programming.html#the-dp-design-process",
+    "title": "Introduction to Dynamic Programming",
+    "section": "The DP Design Process",
+    "text": "The DP Design Process\nWhen you see a new problem, ask these questions in order:\n\nCan I define the problem recursively?\n→ “What smaller versions of this problem do I need?”\nDo subproblems overlap?\n→ Draw the recursion tree. Are the same calls repeated?\nWhat is my dp[...] state?\n→ What information fully describes a subproblem?\nWhat is the recurrence?\n→ How does dp[i] (or dp[i][j]) depend on smaller states?\nWhat are the base cases?\n→ What are the smallest subproblems I can answer directly?\nIn what order should I fill the table?\n→ Each cell must be computed after the cells it depends on."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#identifying-the-state",
+    "href": "cosc445/slides/dynamic_programming.html#identifying-the-state",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Identifying the State",
+    "text": "Identifying the State\nThe state is the hardest part. It must capture everything you need to solve a subproblem — no more, no less.\n\n\n\n\n\n\n\n\nProblem\nState\nMeaning\n\n\n\n\nFibonacci\ndp[i]\nF(i)\n\n\nClimbing Stairs\ndp[i]\nways to reach step i\n\n\nCoin Change\ndp[i]\nmin coins for amount i\n\n\nLCS\ndp[i][j]\nLCS of s1[0..i-1] and s2[0..j-1]\n\n\nKnapsack\ndp[i][w]\nmax value using first i items, capacity w\n\n\n\n\nRule of thumb: if the problem has one “variable dimension” → 1D table.\nIf it has two → 2D table. Three → 3D. (Rare beyond 3D.)"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#common-dp-patterns",
+    "href": "cosc445/slides/dynamic_programming.html#common-dp-patterns",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Common DP Patterns",
+    "text": "Common DP Patterns\n\n\n\n\n\n\n\n\nPattern\nSignature\nExamples\n\n\n\n\nLinear\ndp[i] depends on dp[i-1], dp[i-2]\nFibonacci, Stairs, Max Subarray\n\n\nPrefix\ndp[i] = best answer for first i elements\nCoin Change, Jump Game\n\n\nInterval\ndp[i][j] = answer for subarray [i..j]\nMatrix Chain, Burst Balloons\n\n\nTwo-sequence\ndp[i][j] = answer for s1[0..i], s2[0..j]\nLCS, Edit Distance\n\n\nKnapsack\ndp[i][w] = best using i items, budget w\n0/1 Knapsack, Subset Sum\n\n\n\nRecognising the pattern is half the battle."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#all-four-examples-side-by-side",
+    "href": "cosc445/slides/dynamic_programming.html#all-four-examples-side-by-side",
+    "title": "Introduction to Dynamic Programming",
+    "section": "All Four Examples Side by Side",
+    "text": "All Four Examples Side by Side\n\n\n\nProblem\nDimensions\nRecurrence idea\nComplexity\n\n\n\n\nFibonacci\n1D\ndp[i] = dp[i-1] + dp[i-2]\nO(n) time\n\n\nCoin Change\n1D\ndp[i] = 1 + min(dp[i-c])\nO(n·k) time\n\n\nLCS\n2D\nmatch → extend; mismatch → max of skip\nO(mn) time\n\n\nKnapsack\n2D\nskip or take each item\nO(nW) time"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#backtracking-vs-dp-when-to-use-which",
+    "href": "cosc445/slides/dynamic_programming.html#backtracking-vs-dp-when-to-use-which",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Backtracking vs DP — When to Use Which?",
+    "text": "Backtracking vs DP — When to Use Which?\n(Connecting to last class!)\n\n\n\n\n\n\n\n\n\nBacktracking\nDynamic Programming\n\n\n\n\nGoal\nFind a solution / all solutions\nFind the optimal solution\n\n\nSubproblems\nIndependent (tree structure)\nOverlapping\n\n\nSaves work via\nPruning\nMemoisation\n\n\nOutput\nSolution(s)\nValue / count\n\n\nComplexity\nExponential (but pruned)\nPolynomial\n\n\n\n\nIn practice: if you find yourself doing backtracking and the subproblems repeat → add memoisation → you’ve discovered DP!"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#key-takeaways",
+    "href": "cosc445/slides/dynamic_programming.html#key-takeaways",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\n\nWhat DP gives you:\n\nPolynomial solutions to seemingly exponential problems\nA systematic, repeatable design process\nThe ability to prove optimality via the recurrence\n\nWhat you need to practice:\n\nIdentifying overlapping subproblems\nDefining the right state\nWriting the recurrence before the code\n\n\nNext class:\n\nMore example of Dynamic Programming\nLimitations of DP\n\n\n\n“DP is just recursion that remembers its past.”"
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#thieving-in-the-street",
+    "href": "cosc445/slides/dynamic_programming.html#thieving-in-the-street",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Thieving in the Street",
+    "text": "Thieving in the Street\nA professional thief is planning to steal from houses along a street. Each house has a certain amount of money stashed.\nConstraint: Adjacent houses have a security system — one cannot steal from two directly adjacent houses.\nGoal: Return the maximum amount of money you can steal tonight."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#longest-increasing-subsequence",
+    "href": "cosc445/slides/dynamic_programming.html#longest-increasing-subsequence",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Longest Increasing Subsequence",
+    "text": "Longest Increasing Subsequence\nGiven an integer array nums, return the length of the longest strictly increasing subsequence.\n\nA subsequence does not need to be contiguous."
+  },
+  {
+    "objectID": "cosc445/slides/dynamic_programming.html#edit-distance",
+    "href": "cosc445/slides/dynamic_programming.html#edit-distance",
+    "title": "Introduction to Dynamic Programming",
+    "section": "Edit Distance",
+    "text": "Edit Distance\nGiven two strings word1 and word2, return the minimum number of operations to convert word1 to word2.\nAllowed operations (each counts as 1 step):\n\nInsert a character\nDelete a character\nReplace a character\n\nAlso known as the Levenshtein distance."
   }
 ]

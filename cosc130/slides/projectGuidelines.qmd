@@ -1,0 +1,118 @@
+---
+title: "COSC130 - Project Guidelines"
+format: 
+  html:
+    toc: true
+---    
+
+
+# Project Specification: StockMaster Pro
+
+**Objective:** Develop a robust, interactive management system that synchronizes file persistence, complex filtering, and real-time data visualization.
+
+
+## Project Overview
+
+You are tasked with creating **StockMaster Pro**, a desktop application designed for local warehouse management. In this capstone, you will move beyond simple console programs to build a reactive, persistent GUI.
+
+The application serves three primary functions:
+
+- **Inventory Tracking:** A live data-grid of all products.
+    
+- **Business Intelligence:** Visual dashboards that summarize stock value and categories.
+    
+- **Operational Control:** Tools to filter data, view specific item details, and record sales transactions.
+
+## Core Requirements
+
+To successfully complete this project, you must submit a working application that satisfies these four requirements:
+
+- **Persistence.** Data must not disappear when the app closes. You will implement a system that reads from and writes to `inventory.csv`.
+    
+- **Responsive Layout.** A multi-page interface (Dashboard, Inventory, Details) that maintains a professional look and feel across different screens.
+    
+- **Data Visualization.** Integrated charts that update dynamically as your inventory levels change.
+    
+- **Interaction Logic.** A system that handles complex user events—such as multi-criteria searching and "Master-Detail" selection.
+    
+
+## The Data Model (`Item.java`)
+
+Your `Item` class must implement `ITable`. It is responsible for its own state logic.
+
+- **Primary Fields:** `String id`, `String name`, `String category`, `int quantity`, `double price`, `String description`.
+    
+- **Derived Data:** A `List<String> tags` that is updated via an internal `updateStatusTags()` method whenever quantity or price changes (e.g., if quantity < 5, add "Low Stock").
+    
+- **UI Mapping:** `getValues()` must return a 7-element array including the current primary Status tag.
+
+
+## Weekly Deliverables & Milestones
+
+### Week 1: The Data Model & Persistence
+
+- **Requirement 1:** Implement the `Item` class and a `Warehouse` manager class. The `Warehouse` should contain the master `ArrayList<Item>`and must handle all logic related to adding, removing, and updating items, as well as file I/O for persistence.
+    
+- **Requirement 2:** Implement CSV parsing logic. On startup, the `Warehouse` must read `inventory.csv` and populate the list.
+    
+- **Requirement 3:** A `Window` with a `Sidebar` and three empty Pages: **Dashboard**, **Inventory**, **Details**.
+    
+- **Success Metric:** The app launches and displays the CSV data in a `Table` immediately in the Inventory Page. The app should print “Data Loaded” to the console after successfully parsing the CSV into an ArrayList. If file loading fails, print “Failed to load data from [filename]” and start with an empty list.
+
+
+### Week 2: The Logic & Visualization Engine
+
+- **Requirement 1 (Filter):** On the Inventory page, create a search bar with a `TextBox` (Name) and a `ComboBox` (Category).
+    
+- **Requirement 2 (Multi-Filter):** Clicking "Search" must filter the table by **both** criteria. 
+  - _Hint:_ Create a temporary "filtered" list for the table to display.
+    
+- **Requirement 3 (Charts):** On the Dashboard page, create two charts that visualize the inventory data:
+    
+    - **PieChart:** Show the count of items per Category.
+        
+    - **BarChart:** Show the Top 5 most expensive items.
+        
+- **Success Metric:** Changing a search filter updates the Table and Charts simultaneously.
+        
+
+### Week 3: Interaction & Global State
+
+- **Requirement 1 (Adding items):** Implement a form for adding new items to the inventory. On the Inventory page, add an "Add Item" button that opens the **Details** page. This form should have fields for all the required item attributes (id, name, category, quantity, price, description). When the form is submitted, the new item should be added to the `Warehouse`, and both the Table and Charts should update immediately to reflect this addition.
+
+- **Requirement 2 (Editing items):** When a row in the Table is clicked, the **Details** page must update to show all the primary fields of that specific item. These details should be displayed in the same form that is used for adding items, and these form fields should be populated with the selected item's data. Any changes to the form valuesshould update the item and `Warehouse` data immediately.
+    
+- **Requirement 3 (Transactions):** Add a "Sell Item" button on the Details page. This must decrement the quantity of the selected item in the `Warehouse`. The "Sell Item" button should only be enabled if the item exists (you are not adding a new item) and the selected item has a quantity greater than 0. After selling an item, the Table and Charts should update immediately to reflect the new quantity and any changes in status tags.
+    
+- **Requirement 4 (Sync Loop):** Add a "Save Changes" button. This must overwrite `inventory.csv` with the current state of the `ArrayList`.
+
+- **Some Useful Hints:**
+
+  - Create a variable in your `Details` page called `currentItem`. When you click a table row, set `currentItem` to that item. When you click 'Add Item,' set `currentItem` to `null`. Your save logic should check: If `currentItem` is `null`, create a new `Item()`; otherwise, update the existing one.
+
+  - Remember that your 'Status' is a calculation. Every time you change a number, you must tell the Item to re-calculate its tags before you refresh the Table.
+
+  - Your 'Save' logic should involve looping through the entire ArrayList and building one giant String, then writing that whole String to the file at once to overwrite the old data.
+    
+- **Success Metric:** Adding, editing, or selling an item updates the Table and Charts immediately. Clicking "Save Changes" successfully updates the CSV file, which can be verified by closing and reopening the app to see if the changes persist.    
+
+
+<!-- ## 📝 Grading Rubric
+
+|**Category**|**5 pts (Exceeds)**|**3 pts (Meets)**|**1 pt (Below)**|
+|---|---|---|---|
+|**Persistence**|CSV reads/writes perfectly with no data loss.|Reads CSV, but saving is buggy.|Data is lost on app close.|
+|**UI/UX**|Grid is organized; hover effects are active; Theme is consistent.|UI is functional but messy or "sticky."|Layout is broken; no hover effects.|
+|**Logic**|Search, Delete, and Add work without crashing.|Basic functions work; Search is case-sensitive.|App crashes when interacting with data.|
+|**Visuals**|Charts provide meaningful insights into the data.|Charts are present but show static data.|No charts present.|
+
+
+## 🚀 Getting Started
+
+1. Initialize your `Window app = new Window(...)`.
+    
+2. Create your `ArrayList<Item> storage = new ArrayList<>()`.
+    
+3. Pass that `storage` list into your `Table` and `Charts`.
+    
+4. **Remember:** Whenever you change the `storage` list, you must call `.refresh()` on your Table and Charts to see the changes! -->

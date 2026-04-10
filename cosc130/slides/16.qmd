@@ -124,7 +124,7 @@ public class DashboardPage extends Page {
 4.  **ColumnStyles**: These tell the columns how to behave. These are optional.
     * `ColumnStyle.FIXED()`: Stays as small as possible (good for labels/icons).
     * `ColumnStyle.GROW()`: Stretches to fill all remaining screen space (good for Tables/Charts).
-    * `ColumnSryle.WIDTH(px)`: Forces an exact pixel width (good for sidebars or panels that need to be a specific size).
+    * `ColumnStyle.WIDTH(px)`: Stays fixed at a specific width in pixels (good for side panels).
 
 :::
 ::: {.fragment .fade-in-then-out}
@@ -751,23 +751,52 @@ passField.setMasked(true); // characters appear as ●●●●
 
 ---
 
+### TextArea: Handling "Big" Strings
 
-###  TextArea: Multi-Line Input
+**What is a TextArea?**
 
-For longer content like notes or descriptions.
+While a `TextBox` is a thin strip for a single line of text, a `TextArea` is a large, scrollable box. Use this when you need the user to provide a **Description**, a **Bio**, or **Notes**.
 
+**Key Differences from TextBox:**
 
-```{.java code-line-numbers=""}
-TextArea bio = new TextArea();
-bio.setText("Line 1\nLine 2");
+1.  **Multi-line**: It automatically wraps text to the next line.
+2.  **Scrollable**: If the user types a whole essay, they can scroll up and down within the box.
+3.  **Height**: In your `root.add()`, a TextArea usually needs more "Vertical Room" to look right.
+
+---
+
+### TextArea: Handling "Big" Strings
+
+**Code Example: A Feedback Form**
+
+```java
+// Create a large area for comments
+TextArea feedbackBox = new TextArea();
+
+// You can set a prompt to help the user
+feedbackBox.setPlaceholder("Enter your suggestions here...");
+
+Button sendBtn = new Button("Submit Feedback", "paper-plane");
+
+sendBtn.onClick(() -> {
+    String longMessage = feedbackBox.getText();
+    System.out.println("User sent: " + longMessage);
+    
+    // Clear it after sending
+    feedbackBox.setText("");
+});
+
+root.add(feedbackBox, 1, 0, Alignment.FILL);
+root.add(sendBtn, 2, 0, Alignment.RIGHT);
 ```
 
 ---
 
+### TextArea: Handling "Big" Strings
 
-###  Icon: Visual Symbols
+**The "Alignment.FILL" Rule:**
 
-Uses the **FontAwesomeSolid** set.
+Just like the TextBox, a `TextArea` looks best when it uses `Alignment.FILL`. This allows it to expand and fill the entire grid cell, giving the user plenty of room to type.
 
 - Case-insensitive codes (e.g., `"home"`, `"user-circle"`, `"arrow-left"`).
 
@@ -775,20 +804,80 @@ Uses the **FontAwesomeSolid** set.
 
 
 
-```{.java code-line-numbers=""}
-Icon gear = new Icon("cog");
-gear.setSize(32);
-gear.setColor("Primary");
+### Icons: Visual Shorthand
+
+**What is the Icon Component?** In `ezui`, we use **FontAwesomeSolid** icons (Version 5). Instead of loading image files, you just use a "Key" string. Icons make your buttons and labels instantly recognizable.
+
+**How to use them:** You can use an Icon as a standalone component or as a decoration for a Button.
+
+```java
+// A standalone large icon for a header
+Icon userIcon = new Icon("account_circle", 48); // Name and Size
+
+// A button with an icon
+Button saveBtn = new Button("Save Changes", "save"); 
+
+root.add(userIcon, 0, 0, Alignment.CENTER);
+```
+
+**Finding the Right Icon:**
+
+To find the correct icon name, go to the [FontAwesomeSolid V5 Icons Search page](https://fontawesome.com/v5/search?ic=free-collection) and search for the icon you want. Click on it, and you'll see the exact name you need to use in your code (e.g., "user-circle", "save", "trash").
+
+---
+
+### ListBox & MultiListBox: Asking user choices
+
+**What is a ListBox?** Its a component that displays a list of items. The user can select one item from the list.
+
+**The MultiListBox Advantage** The `MultiListBox` is also like a ListBox that allows users to select **multiple items** at once (using `Ctrl+Click` or `Shift+Click`). This is essential for things like "Assigning Tags" or "Selecting multiple students for an email."
+
+
+**Notes:** 
+
+- The `addItems()` method in both `ListBox` and `MultiListBox` allows you to quickly populate the list with an array of strings. You can also add items one by one using `addItem()`.
+- The `SelectedItem` method in `ListBox` returns the currently selected item from the list, or `null` if nothing is selected. For the `MultiListBox`, `getSelectedItems()` returns a list of all selected items, which can be empty if no selections are made.
+
+---
+
+### ListBox & MultiListBox: Asking user choices
+
+**Code Example: A Resource Manager**
+
+```java
+// 1. Single Selection
+ListBox<String> categoryList = new ListBox<>();
+categoryList.addItems("Homework", "Quizzes", "Exams");
+
+// 2. Multiple Selection
+MultiListBox<String> studentList = new MultiListBox<>();
+studentList.addItems("Alice", "Bob", "Charlie", "David");
+
+// 3. Logic: Get what was selected
+Button processBtn = new Button("Process Selected");
+processBtn.onClick(() -> {
+    List<String> selectedStudents = studentList.getSelectedItems();
+    String selectedCategory = categoryList.getSelectedItem();
+    System.out.println("Processing " + selectedStudents.size() + " students in category: " + selectedCategory);
+});
+
+root.add(categoryList, 1, 0, Alignment.FILL);
+root.add(studentList, 1, 1, Alignment.FILL);
 ```
 
 ---
 
-## 🟪 SECTION 3: SELECTION & MENUS
+### ComboBox: The Dropdown ListBox
 
----
+**What is a ComboBox?** Use a `ComboBox` when you have a list of options (like "Select a Major" or "Pick a Color") but you want to save space on the screen. It only shows the full list when clicked.
 
+**The Code Pattern:**
 
-###  DropDownButton
+```java
+ComboBox<String> majorPicker = new ComboBox<>();
+majorPicker.addItem("Computer Science");
+majorPicker.addItem("Mathematics");
+majorPicker.addItem("Physics");
 
 - A button that reveals a menu of options when clicked.
 - Each option has its own Lambda for handling user selection.
@@ -863,30 +952,37 @@ tagPicker.onSelectionChange(() -> {
 
 ## 🟩 SECTION 4: DATA & ADVANCED
 
----
+**What makes this Table special?**
 
+In `ezui`, the Table is "Smart." You don't have to tell it what the headers are or manually type every row. Instead, you give it a **List of Objects**, and the Table handles the rest.
 
-###  ITable: The Data Contract
+**Step 1: The `ITable` Contract**
 
-To show objects in a Table, your class **must** implement `ITable`.
+To show your data in a table, your class (like `Student` or `Book`) must "implement" the `ITable` interface. This tells the table how to "read" your object.
 
-
-```{.java code-line-numbers=""}
+```java
 public class Student implements ITable {
-    private String name;
-    private double gpa;
+    private String id, name, grade;
 
-    public String[] getHeaders() { return new String[]{"Name", "GPA"}; }
-    public Object[] getValues() { return new Object[]{name, gpa}; }
+    // The Table calls this to build the top header row
+    public String[] getHeaders() { 
+        return new String[]{"ID", "Student Name", "Current Grade"}; 
+    }
+
+    // The Table calls this to fill in each row
+    public String[] getValues() { 
+        return new String[]{id, name, grade}; 
+    }
 }
 ```
 
 ---
 
+### Table: Automatic Data Mapping
 
-###  Table: Dynamic Data Display
+**What makes this Table special?**
 
-The `Table` stays in sync with a `List`.
+In `ezui`, the Table is "Smart." You don't have to tell it what the headers are or manually type every row. Instead, you give it a **List of Objects**, and the Table handles the rest.
 
 - Call `refresh()` after modifying the list to update the UI.
 
@@ -894,16 +990,41 @@ The `Table` stays in sync with a `List`.
 
 
 
-```{.java code-line-numbers=""}
-List<Student> students = new ArrayList<>();
-Table<Student> table = new Table<>(students);
 
-students.add(new Student("Alice", 4.0));
-table.refresh(); // Table now builds its columns and rows
+---
+
+### Selecting & Refreshing Data
+
+**Grabbing the Selected Object**
+
+Because this table uses Generics (`<Student>`), when you ask for the "Selected Object," it doesn't give you a row of text—it gives you the **actual Student object**.
+
+```java
+Button editBtn = new Button("Edit Student", "user-edit");
+
+editBtn.onClick(() -> {
+    // Grab the actual Student object from the clicked row
+    Student selected = studentTable.getSelectedObject();
+
+    if (selected != null) {
+        System.out.println("Editing: " + selected.getName());
+        // Logic to open an edit page...
+    }
+});
+```
+
+**The `refresh()` Method**
+
+If you add a new student to your `ArrayList`, the table won't know... **unless you tell it.**
+
+```java
+myClass.add(new Student("105", "Charlie", "A-"));
+studentTable.refresh(); // The UI updates instantly!
 ```
 
 ---
 
+### Why this is "Industry Standard" Design
 
 ### Table: Responding to Row Selection
 
@@ -955,10 +1076,11 @@ pie.refresh(grades); // chart redraws instantly
 
 ---
 
+### Charts: Visualizing the Data
 
-###  Alignment & ColumnStyle
+**Why use Charts?** Numbers in a Table are great, but a **Chart** tells a story instantly. In `ezui`, Charts are created using **Static Factory Methods**. This means you don't use `new Chart()`, you ask the `Chart` class to build one for you.
 
-Control your layout precisely.
+#### 2. The Pie Chart
 
 - **Alignment**: `LEFT`, `CENTER`, `RIGHT`, `FILL`.
 
@@ -979,10 +1101,16 @@ Control your layout precisely.
     );
     ```
 
----
+```java
+Map<String, Double> attendance = new HashMap<>();
+attendance.put("Present", 22.0);
+attendance.put("Absent", 3.0);
+attendance.put("Excused", 1.0);
 
 ## FINAL SUMMARY
 
+root.add(pie, 0, 1, Alignment.FILL);
+```
 ---
 
 
