@@ -947,6 +947,7 @@ tagPicker.onSelectionChange(() -> {
 
 * **`onSelectionChange` vs `onClick`**: Use `onSelectionChange` for live, immediate reactions. Use a Button's `onClick` when you want the user to explicitly confirm their choice first.
 * **Null check**: `getSelectedItem()` returns `null` if nothing is selected. Always guard against it before using the value.
+* ***Programmatically updating selections***: You can set the selected item in `ListBox` and `ComboBox` programmatically using `setSelectedItem(String item)` or select multiple items in a `MultiListBox` using `setSelectedItems(List<String> items)`.
 
 ---
 
