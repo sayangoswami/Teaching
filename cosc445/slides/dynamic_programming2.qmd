@@ -1,0 +1,1263 @@
+---
+title: "Dynamic Programming: More Problems"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+
+# House Robber {background-color="#16213e"}
+
+## House Robber — Problem
+
+**You are a professional robber** planning to rob houses along a street. Each house has a certain amount of money stashed.
+
+**Constraint:** Adjacent houses have a security system — you **cannot rob two directly adjacent houses**.
+
+**Goal:** Return the maximum amount of money you can rob tonight.
+
+---
+
+**Example:**
+
+```
+Input:  nums = [2, 7, 9, 3, 1]
+Output: 12
+Explanation: Rob house 1 (2) + house 3 (9) + house 5 (1) = 12
+```
+
+```
+Input:  nums = [1, 2, 3, 1]
+Output: 4
+Explanation: Rob house 1 (1) + house 3 (3) = 4
+```
+
+::: {.callout-note title="Hints"}
+- What are the two choices at each house?
+- Can you define `dp[i]` as "max money robbing up to house `i`"?
+- What is the recurrence? Think about whether you rob house `i` or skip it.
+- Base cases: What is `dp[0]`? What is `dp[1]`?
+:::
+
+---
+
+## House Robber — Solution
+
+**State:** `dp[i]` = maximum money robbed considering houses `0..i`
+
+**Recurrence:**
+
+$$dp[i] = \max(\underbrace{dp[i-1]}_{\text{skip house } i},\ \underbrace{nums[i] + dp[i-2]}_{\text{rob house } i})$$
+
+**Base cases:** `dp[0] = nums[0]`,  `dp[1] = max(nums[0], nums[1])`
+
+---
+
+```python
+def rob(nums: list[int]) -> int:
+    n = len(nums)
+    if n == 1:
+        return nums[0]
+
+    dp = [0] * n
+    dp[0] = nums[0]
+    dp[1] = max(nums[0], nums[1])
+
+    for i in range(2, n):
+        dp[i] = max(dp[i-1],          # skip house i
+                    nums[i] + dp[i-2]) # rob house i
+
+    return dp[-1]
+```
+
+**Space optimisation** — only last two values needed:
+
+```python
+def rob(nums: list[int]) -> int:
+    prev2, prev1 = 0, 0
+    for num in nums:
+        prev2, prev1 = prev1, max(prev1, num + prev2)
+    return prev1
+```
+
+**Time:** O(n) &nbsp;|&nbsp; **Space:** O(1) (optimised)
+
+---
+
+## House Robber — Trace Through
+
+```
+nums = [2, 7, 9, 3, 1]
+         0  1  2  3  4
+
+dp[0] = 2
+dp[1] = max(2, 7) = 7
+dp[2] = max(dp[1], nums[2] + dp[0]) = max(7, 9+2) = 11
+dp[3] = max(dp[2], nums[3] + dp[1]) = max(11, 3+7) = 11
+dp[4] = max(dp[3], nums[4] + dp[2]) = max(11, 1+11) = 12
+
+Answer: 12  ✓
+```
+
+::: {.callout-tip title="Pattern Insight"}
+House Robber is the canonical **"skip or take"** linear DP. The same recurrence structure appears in many problems — once you see `dp[i] = max(dp[i-1], val + dp[i-2])`, you've seen House Robber.
+:::
+
+---
+
+# Longest Increasing Subsequence {background-color="#16213e"}
+
+## LIS — Problem
+
+Given an integer array `nums`, return the length of the **longest strictly increasing subsequence**.
+
+> A **subsequence** does not need to be contiguous.
+
+---
+
+**Examples:**
+
+```
+Input:  nums = [10, 9, 2, 5, 3, 7, 101, 18]
+Output: 4
+Explanation: [2, 3, 7, 101] is the longest increasing subsequence
+```
+
+```
+Input:  nums = [0, 1, 0, 3, 2, 3]
+Output: 4
+```
+
+```
+Input:  nums = [7, 7, 7, 7]
+Output: 1
+```
+
+::: {.callout-note title="Hints"}
+- Try defining `dp[i]` as the length of the LIS **ending at index `i`**.
+- For each `i`, which earlier indices `j` are useful?
+- Every element is an LIS of length at least 1.
+- Can you build from smaller subproblems to larger ones?
+:::
+
+---
+
+## LIS — Solution
+
+**State:** `dp[i]` = length of the longest increasing subsequence ending at index `i`
+
+**Recurrence:**
+
+$$dp[i] = 1 + \max_{j < i,\ nums[j] < nums[i]} dp[j]$$
+
+(If no such `j` exists, `dp[i] = 1`)
+
+**Answer:** `max(dp)`
+
+---
+
+```python
+def lengthOfLIS(nums: list[int]) -> int:
+    n = len(nums)
+    dp = [1] * n  # every element is an LIS of length 1
+
+    for i in range(1, n):
+        for j in range(i):
+            if nums[j] < nums[i]:           # can extend
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+```
+
+**Time:** O(n²) &nbsp;|&nbsp; **Space:** O(n)
+
+::: {.callout-note title="Bonus: O(n log n) with patience sorting"}
+Use binary search to maintain a `tails` array where `tails[k]` is the smallest tail element of all increasing subsequences of length `k+1`. This gives O(n log n) but is trickier to derive.
+:::
+
+---
+
+## LIS — Trace Through
+
+```
+nums = [10, 9, 2, 5, 3, 7, 101, 18]
+idx      0  1  2  3  4  5   6   7
+
+dp init: [1,  1,  1,  1,  1,  1,  1,  1]
+
+i=1: nums[1]=9  — no j<1 with nums[j]<9 strictly? nums[0]=10 ✗
+     dp[1] = 1
+
+i=2: nums[2]=2  — no j with nums[j]<2
+     dp[2] = 1
+
+i=3: nums[3]=5  — j=2: nums[2]=2<5 → dp[3]=max(1,dp[2]+1)=2
+     dp[3] = 2
+
+i=4: nums[4]=3  — j=2: nums[2]=2<3 → dp[4]=max(1,dp[2]+1)=2
+     dp[4] = 2
+
+i=5: nums[5]=7  — j=2:dp=1, j=3:dp=2, j=4:dp=2 → dp[5]=3
+     dp[5] = 3
+
+i=6: nums[6]=101 — all j qualify → best is dp[5]=3 → dp[6]=4
+i=7: nums[7]=18  — best is dp[5]=3 → dp[7]=4
+
+dp = [1, 1, 1, 2, 2, 3, 4, 4]
+max(dp) = 4  ✓
+```
+
+---
+
+# Edit Distance {background-color="#16213e"}
+
+## Edit Distance — Problem
+
+Given two strings `word1` and `word2`, return the **minimum number of operations** to convert `word1` to `word2`.
+
+**Allowed operations** (each counts as 1 step):
+
+- **Insert** a character
+- **Delete** a character
+- **Replace** a character
+
+Also known as the **Levenshtein distance**.
+
+---
+
+**Examples:**
+
+```
+Input:  word1 = "horse", word2 = "ros"
+Output: 3
+Explanation:
+  horse → rorse (replace 'h' with 'r')
+  rorse → rose  (delete 'r')
+  rose  → ros   (delete 'e')
+```
+
+```
+Input:  word1 = "intention", word2 = "execution"
+Output: 5
+```
+
+::: {.callout-note title="Hints"}
+- Think of a 2D table where `dp[i][j]` = edit distance between the first `i` chars of `word1` and first `j` chars of `word2`.
+- What happens when `word1[i-1] == word2[j-1]`?
+- When they differ, which of the three operations maps to which table cell?
+- Base cases: what does converting to/from an empty string cost?
+:::
+
+---
+
+## Edit Distance — Solution
+
+**State:** `dp[i][j]` = min edits to convert `word1[0..i-1]` → `word2[0..j-1]`
+
+**Base cases:**
+- `dp[i][0] = i` (delete all `i` chars)
+- `dp[0][j] = j` (insert all `j` chars)
+
+**Recurrence:**
+
+$$dp[i][j] = \begin{cases} dp[i-1][j-1] & \text{if } word1[i-1] = word2[j-1] \\ 1 + \min\begin{cases} dp[i-1][j] & \text{(delete)} \\ dp[i][j-1] & \text{(insert)} \\ dp[i-1][j-1] & \text{(replace)} \end{cases} & \text{otherwise} \end{cases}$$
+
+---
+
+```python
+def minDistance(word1: str, word2: str) -> int:
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # base cases
+    for i in range(m + 1):
+        dp[i][0] = i
+    for j in range(n + 1):
+        dp[0][j] = j
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if word1[i-1] == word2[j-1]:
+                dp[i][j] = dp[i-1][j-1]       # characters match — free
+            else:
+                dp[i][j] = 1 + min(
+                    dp[i-1][j],    # delete from word1
+                    dp[i][j-1],    # insert into word1
+                    dp[i-1][j-1]   # replace
+                )
+
+    return dp[m][n]
+```
+
+**Time:** O(m·n) &nbsp;|&nbsp; **Space:** O(m·n) — reducible to O(min(m,n))
+
+---
+
+## Edit Distance — DP Table
+
+`word1 = "horse"`, `word2 = "ros"`
+
+```
+      ""  r   o   s
+  ""  [0,  1,  2,  3]
+  h   [1,  1,  2,  3]
+  o   [2,  2,  1,  2]
+  r   [3,  2,  2,  2]
+  s   [4,  3,  3,  2]
+  e   [5,  4,  4,  3]
+
+Answer: dp[5][3] = 3  ✓
+```
+
+::: {.callout-tip title="How to read the table"}
+- Moving **left→right** = insert
+- Moving **top→bottom** = delete
+- Moving **diagonal** = match (free) or replace (+1)
+:::
+
+---
+
+# Partition Equal Subset Sum {background-color="#16213e"}
+
+## Partition Equal Subset — Problem
+
+Given an integer array `nums`, return `true` if you can partition it into **two subsets with equal sum**, and `false` otherwise.
+
+**Examples:**
+
+```
+Input:  nums = [1, 5, 11, 5]
+Output: true
+Explanation: [1, 5, 5] and [11]
+```
+
+```
+Input:  nums = [1, 2, 3, 5]
+Output: false
+```
+
+::: {.callout-note title="Hints"}
+- If the total sum is odd, what can you immediately conclude?
+- The target for each partition is `total // 2`.
+- Reduce to: **"Can we pick a subset that sums to `target`?"**
+- This is exactly 0/1 Knapsack! `dp[j]` = can we achieve sum `j`?
+- Process each number and update the DP table.
+:::
+
+---
+
+## Partition Equal Subset — Solution
+
+**Key insight:** Partition into two equal subsets ⟺ find a subset summing to `total // 2`.
+
+**State:** `dp[j]` = `True` if subset sum `j` is achievable
+
+**Recurrence (for each `num` in `nums`):**
+
+$$dp[j] = dp[j] \;\text{ OR }\; dp[j - num] \quad \text{(iterate } j \text{ from target down to } num\text{)}$$
+
+Iterate `j` **backwards** to avoid using the same element twice (0/1 constraint). If you iterate from thre front, you reuse items.
+- To see an example of this in action, try partitioning the set `{1, 5}` using this recurrence.
+
+Or just use a 2d DP table with the recurrence `dp[i][j] = dp[i-1][j]  OR  dp[i-1][j - nums[i]]`
+
+---
+
+## Why backwards? .{visibility="hidden"}
+
+Take `nums = [1, 5]`, target = `3` (sum = 6, sum//2 = 3). No subset sums to 3 — answer should be **False**.
+
+Start: `dp = [T, F, F, F]`
+
+**Forward (buggy), processing item `1`:**
+
+```
+j=1: dp[1] = dp[1] OR dp[0] = T
+j=2: dp[2] = dp[2] OR dp[1] = T   ← reads updated dp[1]
+j=3: dp[3] = dp[3] OR dp[2] = T   ← reads updated dp[2]
+```
+
+`dp[3] = True` — **wrong**. Used `1` three times.
+
+Item `5` is skipped (5 > 3). Final answer: **True**. Incorrect.
+
+**Backward (correct), processing item `1`:**
+
+```
+j=3: dp[3] = dp[3] OR dp[2] = F
+j=2: dp[2] = dp[2] OR dp[1] = F
+j=1: dp[1] = dp[1] OR dp[0] = T
+```
+
+`dp = [T, T, F, F]`. Item `5` skipped. Final answer: **False**. Correct.
+
+The ripple effect of forward iteration turns a single `1` into an unlimited supply of `1`s, reaching any target ≤ the number of items. Backward cuts that off completely.
+
+---
+
+```python
+def canPartition(nums: list[int]) -> bool:
+    total = sum(nums)
+    if total % 2 != 0:
+        return False          # odd total → impossible
+
+    target = total // 2
+    dp = [False] * (target + 1)
+    dp[0] = True              # empty subset sums to 0
+
+    for num in nums:
+        # iterate backwards to enforce 0/1 (each num used at most once)
+        for j in range(target, num - 1, -1):
+            dp[j] = dp[j] or dp[j - num]
+
+    return dp[target]
+```
+
+**Time:** O(n · target) = O(n · sum/2) &nbsp;|&nbsp; **Space:** O(target)
+
+---
+
+## Partition Equal Subset — Trace Through
+
+```
+nums = [1, 5, 11, 5],  total = 22,  target = 11
+
+dp = [T, F, F, F, F, F, F, F, F, F, F, F]
+       0  1  2  3  4  5  6  7  8  9 10 11
+
+Process num=1:
+  dp = [T, T, F, F, F, F, F, F, F, F, F, F]
+
+Process num=5:
+  j=11..5: dp[6]=dp[1]=T, dp[5]=dp[0]=T
+  dp = [T, T, F, F, F, T, T, F, F, F, F, F]
+
+Process num=11:
+  j=11: dp[11]=dp[0]=T  ← found it!
+  dp = [T, T, F, F, F, T, T, F, F, F, F, T]
+
+return dp[11] = True  ✓
+```
+
+---
+
+
+
+
+## The Setup
+
+> You have **k eggs** and a building with **n floors**.
+> There exists a critical floor **f** such that:
+> - Any egg dropped from floor **≤ f** survives
+> - Any egg dropped from floor **> f** breaks
+>
+> Find **f** using the **minimum number of trials** in the worst case.
+
+. . .
+
+**Rules:**
+- A broken egg is gone — you can't reuse it
+- An unbroken egg can be dropped again
+- You want to minimise trials **in the worst case**
+
+. . .
+
+> **The question:** with `k` eggs and `n` floors, what's the minimum number of drops you need to *guarantee* finding `f`?
+
+---
+
+## First, Build Intuition: 1 Egg
+
+With **only 1 egg**, you can't afford to break it — if it breaks, you learn nothing about higher floors and have no eggs left.
+
+. . .
+
+**Only safe strategy:** drop from floor 1, then 2, then 3...
+
+```
+1 egg, n floors → n trials in worst case
+```
+
+. . .
+
+If the critical floor is the very top, you had to check every floor below it.
+
+> With 1 egg, you're stuck with **linear search**.
+
+---
+
+## Binary Search Won't Work Either
+
+With **infinite eggs**, binary search works perfectly:
+
+```
+100 floors → try floor 50
+  breaks?  → search floors 1-49
+  survives? → search floors 51-100
+```
+
+→ **O(log n)** trials with unlimited eggs.
+
+. . .
+
+But with **2 eggs**, binary search is risky:
+
+- Drop from floor 50. It breaks. You have 1 egg left.
+- Now you must check floors 1–49 **one by one**: 49 more trials!
+- Worst case: **50 trials total** — no better than floor 25 as a starting point.
+
+. . .
+
+> **The tension:** go high to eliminate many floors, but risk losing your egg and being forced into a long linear scan.
+
+---
+
+## Two Eggs — The Key Insight
+
+With 2 eggs and n floors, let's say we make at most **t** total trials.
+
+. . .
+
+**Try floor `t` first.**
+If it breaks → 1 egg, `t-1` trials left → can check `t-1` more floors.
+If it survives → try floor `t + (t-1)` next.
+
+. . .
+
+This gives us floors: `t, t+(t-1), t+(t-2), ...`
+
+The total floors covered: $t + (t-1) + (t-2) + \cdots + 1 = \frac{t(t+1)}{2}$
+
+. . .
+
+So with 2 eggs and `n` floors, we need the smallest `t` such that $\frac{t(t+1)}{2} \geq n$.
+
+**For n = 100:** $t = 14$ (since $14 \times 15 / 2 = 105 \geq 100$)
+
+> Drop from floors **14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99, 100...**
+
+---
+
+## Generalising to k Eggs
+
+For arbitrary `k` eggs and `n` floors, the greedy trick doesn't generalize cleanly.
+
+**Enter DP.**
+
+. . .
+
+**State:** `dp[k][n]` = minimum number of trials needed to find the critical floor with `k` eggs and `n` floors.
+
+. . .
+
+**Decision:** drop from floor `f` (where `1 ≤ f ≤ n`):
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.fragment}
+**Egg breaks** 🥚💥
+Critical floor is below `f`.
+Remaining: `k-1` eggs, `f-1` floors
+→ `dp[k-1][f-1]` more trials
+:::
+:::
+::: {.column width="50%"}
+::: {.fragment}
+**Egg survives** 🥚✓
+Critical floor is at `f` or above.
+Remaining: `k` eggs, `n-f` floors
+→ `dp[k][n-f]` more trials
+:::
+:::
+::::
+
+. . .
+
+Since we need to handle the **worst case**, we take the `max`.
+Since we get to **choose** floor `f` wisely, we take the `min` over all choices.
+
+---
+
+## The Recurrence
+
+$$dp[k][n] = 1 + \min_{1 \leq f \leq n} \max\bigl(dp[k-1][f-1],\ dp[k][n-f]\bigr)$$
+
+. . .
+
+**Base cases:**
+
+| Situation | Answer |
+|-----------|--------|
+| `dp[1][n]` | `n` — with 1 egg, check each floor |
+| `dp[k][0]` | `0` — no floors to check |
+| `dp[k][1]` | `1` — only one floor, one drop |
+
+---
+
+## Walking Through a Small Example
+
+`k = 2, n = 6` — let's compute `dp[2][6]`:
+
+. . .
+
+Try each floor `f` from 1 to 6:
+
+| Drop from floor `f` | Breaks: `dp[1][f-1]` | Survives: `dp[2][6-f]` | Worst case |
+|---|---|---|---|
+| f=1 | dp[1][0] = 0 | dp[2][5] = ? | need more |
+| f=2 | dp[1][1] = 1 | dp[2][4] = ? | need more |
+| f=3 | dp[1][2] = 2 | dp[2][3] = ? | need more |
+
+. . .
+
+We need to fill the table bottom-up. After filling:
+
+| | n=0 | n=1 | n=2 | n=3 | n=4 | n=5 | n=6 |
+|---|---|---|---|---|---|---|---|
+| **k=1** | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+| **k=2** | 0 | 1 | 2 | 2 | 3 | 3 | **3** |
+
+With 2 eggs and 6 floors: **3 trials** suffice.
+
+---
+
+## The Code
+
+```python
+def egg_drop(k, n):
+    # dp[i][j] = min trials with i eggs and j floors
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+
+    # Base cases
+    for j in range(1, n + 1):
+        dp[1][j] = j          # 1 egg: must go floor by floor
+    for i in range(1, k + 1):
+        dp[i][1] = 1          # 1 floor: one drop suffices
+        dp[i][0] = 0          # 0 floors: no drops needed
+
+    # Fill the table
+    for i in range(2, k + 1):
+        for j in range(2, n + 1):
+            dp[i][j] = float('inf')
+            for f in range(1, j + 1):
+                worst = 1 + max(dp[i-1][f-1], dp[i][j-f])
+                dp[i][j] = min(dp[i][j], worst)
+
+    return dp[k][n]
+
+print(egg_drop(1, 10))   # → 10
+print(egg_drop(2, 10))   # → 4
+print(egg_drop(3, 10))   # → 4 (wait — why?)
+print(egg_drop(2, 100))  # → 14
+```
+
+**Time: O(k · n²) — Space: O(k · n)**
+
+---
+
+## What the Table Tells Us
+
+```python
+for k in range(1, 5):
+    row = [egg_drop(k, n) for n in range(1, 11)]
+    print(f"k={k}: {row}")
+```
+
+```
+k=1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]   # linear
+k=2: [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]    # ~sqrt(n)
+k=3: [1, 2, 2, 2, 3, 3, 3, 3, 3, 4]    # getting better
+k=4: [1, 2, 2, 2, 2, 3, 3, 3, 3, 3]    # approaching log(n)
+```
+
+. . .
+
+Each extra egg buys you a better strategy. With enough eggs, you converge to binary search (O(log n)).
+
+> **The DP table captures a whole family of optimal strategies at once.**
+
+---
+
+## Why This Problem is a Great DP Example
+
+::: {.incremental}
+- **The state is two-dimensional** — you need to track both eggs *and* floors
+- **The recurrence involves a min-of-max** — a classic adversarial structure
+- **Greedy fails** — the right floor to drop from is non-obvious and depends on remaining resources
+- **The base cases are meaningful** — 1 egg and 0 floors have clear physical interpretations
+- **It has real-world analogues** — stress testing, binary vs linear search tradeoffs
+:::
+
+---
+
+## Key Takeaways
+
+| | Answer |
+|---|---|
+| **State** | `dp[k][n]` = min trials, k eggs, n floors |
+| **Recurrence** | `1 + min over f of max(break, survive)` |
+| **1 egg** | Linear search — O(n) |
+| **∞ eggs** | Binary search — O(log n) |
+| **k eggs** | Something in between! |
+
+> *"The egg drop problem is DP at its purest: you make a choice, then prepare for the worst, but choose wisely."*
+
+# Longest Palindromic Subsequence {background-color="#16213e"}
+
+## What Is a Palindrome?
+
+A **palindrome** reads the same forwards and backwards.
+
+. . .
+
+**Words:** `"racecar"`, `"level"`, `"noon"`, `"a"`
+
+**Sequences:** `[1, 2, 3, 2, 1]`, `[7, 7]`
+
+. . .
+
+A **subsequence** keeps characters in original order but can skip some.
+
+```
+s = "b b b a b"
+         ↑ skip this 'a'
+subsequence: "b b b b"  → palindrome! length 4
+```
+
+. . .
+
+> **Problem (LC 516):** Given a string `s`, find the length of its **longest palindromic subsequence (LPS)**.
+
+---
+
+## Warm-Up Examples
+
+```
+s = "bbbab"
+LPS = "bbbb"  (length 4)   ← skip the 'a'
+```
+
+. . .
+
+```
+s = "cbbd"
+LPS = "bb"   (length 2)    ← skip 'c' and 'd'
+```
+
+. . .
+
+```
+s = "agbdba"
+LPS = "abdba" (length 5)   ← skip the 'g'
+```
+
+. . .
+
+**Observation:** the longest palindromic subsequence of `s` is the LCS of `s` and its reverse!
+
+```
+s         = "agbdba"
+reverse(s) = "abdgba"
+LCS        = "abdba"   ✓
+```
+
+---
+
+## The LCS Connection (Elegant Shortcut)
+
+```python
+def lps_via_lcs(s):
+    return lcs(s, s[::-1])   # LCS of s and its reverse
+```
+
+. . .
+
+**Why does this work?**
+
+A palindromic subsequence reads the same forwards and backwards.
+So it appears as a subsequence *both* in `s` (forward) and `s` (backward, i.e. reverse).
+Their LCS finds exactly the longest such match.
+
+. . .
+
+This is beautiful — but let's also build the **direct DP** so we understand the structure.
+
+---
+
+## Direct DP: Thinking About Intervals
+
+**Key idea:** think about the substring `s[i..j]`.
+
+What's the LPS of a small string? Easy.
+What's the LPS of the full string? Build it up from smaller substrings.
+
+. . .
+
+**State:** `dp[i][j]` = length of LPS of substring `s[i..j]`
+
+**We want:** `dp[0][n-1]`
+
+. . .
+
+**Base cases:**
+
+- `dp[i][i] = 1` — a single character is always a palindrome
+- `dp[i][j] = 0` for `i > j` — empty string
+
+---
+
+## The Recurrence
+
+Look at the two **outermost** characters `s[i]` and `s[j]`:
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.fragment}
+**Case 1: `s[i] == s[j]`**
+
+They match! Include both ends.
+
+```
+dp[i][j] = dp[i+1][j-1] + 2
+```
+
+> The inner substring's LPS, plus the two matching outer chars.
+:::
+:::
+::: {.column width="50%"}
+::: {.fragment}
+**Case 2: `s[i] != s[j]`**
+
+They don't match. Skip one end or the other.
+
+```
+dp[i][j] = max(dp[i+1][j],
+               dp[i][j-1])
+```
+
+> Take the better of skipping the left or right character.
+:::
+:::
+::::
+
+---
+
+## Example: `s = "bbbab"`
+
+Indices: `b(0) b(1) b(2) a(3) b(4)`
+
+Fill the DP table diagonally (substrings of increasing length):
+
+| | b(0) | b(1) | b(2) | a(3) | b(4) |
+|---|---|---|---|---|---|
+| **b(0)** | 1 | 2 | 3 | 3 | **4** |
+| **b(1)** | — | 1 | 2 | 2 | 3 |
+| **b(2)** | — | — | 1 | 1 | 2 |
+| **a(3)** | — | — | — | 1 | 1 |
+| **b(4)** | — | — | — | — | 1 |
+
+. . .
+
+Answer: `dp[0][4] = 4` → `"bbbb"`
+
+---
+
+## Tracing Through a Cell
+
+How did we get `dp[0][4] = 4`?
+
+```
+s[0] = 'b',  s[4] = 'b'   → they MATCH!
+dp[0][4] = dp[1][3] + 2
+         = 2 + 2
+         = 4
+```
+
+. . .
+
+And `dp[1][3] = 2` (substring `"bba"`):
+
+```
+s[1] = 'b',  s[3] = 'a'   → they DON'T match
+dp[1][3] = max(dp[2][3], dp[1][2])
+         = max(1, 2)
+         = 2
+```
+
+The matching outer characters `b...b` wrap around an inner `"bb"`.
+
+---
+
+## The Code
+
+```python
+def lps(s):
+    n = len(s)
+    # dp[i][j] = LPS length of s[i..j]
+    dp = [[0] * n for _ in range(n)]
+
+    # Base case: single characters
+    for i in range(n):
+        dp[i][i] = 1
+
+    # Fill by increasing substring length
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+
+            if s[i] == s[j]:
+                inner = dp[i+1][j-1] if length > 2 else 0
+                dp[i][j] = inner + 2
+            else:
+                dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+
+    return dp[0][n-1]
+
+print(lps("bbbab"))   # → 4
+print(lps("cbbd"))    # → 2
+print(lps("agbdba"))  # → 5
+```
+
+**Time: O(n²) — Space: O(n²)**
+
+---
+
+## LPS vs LCS vs Edit Distance
+
+All three use a 2D DP table over characters/indices — but the *question* differs:
+
+| Problem | State | Recurrence idea |
+|---------|-------|-----------------|
+| **LCS** | `dp[i][j]` over two strings | Match → extend; mismatch → skip one |
+| **Edit Distance** | `dp[i][j]` over two strings | Match → carry; mismatch → min of 3 ops |
+| **LPS** | `dp[i][j]` over one string, two ends | Match → include both; mismatch → skip one end |
+
+. . .
+
+> **LPS is *interval DP* on a single string.** The subproblems are substrings `s[i..j]`, not prefixes.
+
+---
+
+## A Close Cousin: Minimum Insertions to Make a Palindrome
+
+> How many characters do you need to insert into `s` to make it a palindrome?
+
+. . .
+
+**Answer:** `n - LPS(s)`
+
+. . .
+
+Intuition: the LPS characters already form a palindrome. Every character *not* in the LPS needs a mirror inserted.
+
+```
+s   = "mbadm"   (n=5)
+LPS = "madam"   (length 3)   ← wait, that's length 5!
+LPS = "mam" or "mdm"  (length 3)
+
+Insertions needed = 5 - 3 = 2
+```
+
+> One formula, two problems — classic DP leverage.
+
+---
+
+## Key Takeaways
+
+| | |
+|---|---|
+| **Problem** | Longest palindromic subsequence of `s` |
+| **State** | `dp[i][j]` = LPS of `s[i..j]` |
+| **Fill order** | By increasing substring length (diagonal) |
+| **Recurrence** | Ends match → `+2`; mismatch → `max` of skip |
+| **Shortcut** | LPS(s) = LCS(s, reverse(s)) |
+| **Cousin** | Min insertions to make palindrome = `n - LPS` |
+
+. . .
+
+> *"When the problem is about a single string and you look at both ends simultaneously — think interval DP."*
+
+# Unique Paths {background-color="#16213e"}
+
+## The Problem
+
+> A robot is on a **m × n grid**, starting at the **top-left corner**.
+> It can only move **right** or **down** at each step.
+> How many distinct paths lead to the **bottom-right corner**?
+
+. . .
+
+```
+S . . .
+. . . .
+. . . G
+```
+
+`m = 3 rows, n = 4 cols` — how many ways from S to G?
+
+. . .
+
+**Why only right/down?** Think of it as a robot on a factory floor that can only move forward — no backtracking.
+
+---
+
+## Small Cases Build Intuition
+
+**1 × n grid** (single row): only one path — go right all the way.
+
+```
+S → → → G     (1 path)
+```
+
+. . .
+
+**m × 1 grid** (single column): only one path — go down all the way.
+
+```
+S
+↓
+↓
+G             (1 path)
+```
+
+. . .
+
+**2 × 2 grid:**
+
+```
+S → .         S .
+↓   ↓   or    ↓ →
+.   G         . → G
+```
+
+→ **2 paths**
+
+---
+
+## 3 × 3 Grid — Count Together
+
+```
+S . .
+. . .
+. . G
+```
+
+. . .
+
+How many paths? Let's think recursively.
+
+To reach G (bottom-right), the robot came from either:
+- The cell **above** G, or
+- The cell **to the left** of G
+
+. . .
+
+So: `paths(G) = paths(above G) + paths(left of G)`
+
+This is the **recurrence** — and it applies to every cell.
+
+---
+
+## The DP Table
+
+`dp[i][j]` = number of distinct paths to reach cell `(i, j)`
+
+**Recurrence:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`
+
+**Base cases:** entire top row and left column are `1` (only one way to reach them).
+
+. . .
+
+For a **3 × 7** grid:
+
+| | c0 | c1 | c2 | c3 | c4 | c5 | c6 |
+|---|---|---|---|---|---|---|---|
+| **r0** | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| **r1** | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| **r2** | 1 | 3 | 6 | 10 | 15 | 21 | **28** |
+
+Answer: **28 paths**
+
+---
+
+## Do You Recognise This Table?
+
+The values in the DP table are **binomial coefficients** — Pascal's Triangle!
+
+| | c0 | c1 | c2 | c3 |
+|---|---|---|---|---|
+| **r0** | 1 | 1 | 1 | 1 |
+| **r1** | 1 | 2 | 3 | 4 |
+| **r2** | 1 | 3 | 6 | 10 |
+| **r3** | 1 | 4 | 10 | **20** |
+
+. . .
+
+The answer for an `m × n` grid is exactly $\binom{m+n-2}{m-1}$.
+
+> To go from top-left to bottom-right, you make exactly `(m-1)` down moves and `(n-1)` right moves — in some order. Choosing which steps are "down" gives the count.
+
+. . .
+
+**But DP gives us this without knowing the formula!** That's the power.
+
+---
+
+## The Code
+
+```python
+def unique_paths(m, n):
+    dp = [[1] * n for _ in range(m)]   # fill with 1s (base cases handled)
+
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+    return dp[m-1][n-1]
+
+print(unique_paths(3, 7))   # → 28
+print(unique_paths(3, 2))   # → 3
+print(unique_paths(1, 1))   # → 1
+```
+
+**Time: O(m × n) — Space: O(m × n)**
+
+. . .
+
+Space can be reduced to **O(n)** with a rolling array — we only ever look at the current and previous row.
+
+```python
+def unique_paths_opt(m, n):
+    row = [1] * n
+    for _ in range(1, m):
+        for j in range(1, n):
+            row[j] += row[j-1]    # row[j] = old row[j] + new row[j-1]
+    return row[-1]
+```
+
+---
+
+# Unique Paths II — With Obstacles {background-color="#16213e"}
+
+## Adding Obstacles
+
+> Same grid, same rules. But some cells have **obstacles** — the robot cannot pass through them.
+>
+> `0` = free cell, `1` = obstacle
+
+```
+0 0 0
+0 1 0
+0 0 0
+```
+
+. . .
+
+**How many paths from top-left to bottom-right?**
+
+The obstacle blocks two paths that went through the middle.
+
+Answer: **2** (instead of 6 without obstacle)
+
+---
+
+## Adjusting the Recurrence
+
+Only change: if a cell has an obstacle, it contributes **0** paths.
+
+```python
+def unique_paths_obstacles(grid):
+    m, n = len(grid), len(grid[0])
+    if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+        return 0    # start or end is blocked
+
+    dp = [[0] * n for _ in range(m)]
+    dp[0][0] = 1
+
+    # First column: if any obstacle, all cells below it are blocked
+    for i in range(1, m):
+        dp[i][0] = dp[i-1][0] if grid[i][0] == 0 else 0
+
+    # First row: same logic
+    for j in range(1, n):
+        dp[0][j] = dp[0][j-1] if grid[0][j] == 0 else 0
+
+    # Fill the rest
+    for i in range(1, m):
+        for j in range(1, n):
+            if grid[i][j] == 1:
+                dp[i][j] = 0         # obstacle: no paths through here
+            else:
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+    return dp[m-1][n-1]
+```
+
+---
+
+## Tracing the Obstacle Example
+
+```
+Grid:               DP table:
+0  0  0             1  1  1
+0  1  0             1  0  1
+0  0  0             1  1  2
+```
+
+. . .
+
+- `dp[1][1] = 0` — obstacle, no path through here
+- `dp[1][2] = dp[0][2] + dp[1][1] = 1 + 0 = 1`
+- `dp[2][1] = dp[1][1] + dp[2][0] = 0 + 1 = 1`
+- `dp[2][2] = dp[1][2] + dp[2][1] = 1 + 1 = 2` ✓
+
+---
+
+## A Useful Variant: Minimum Path Sum
+
+> Same grid, but now each cell has a **cost**. Find the path from top-left to bottom-right with **minimum total cost**.
+
+```
+1  3  1
+1  5  1
+4  2  1
+```
+
+. . .
+
+Same structure, different recurrence:
+
+```python
+dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+```
+
+```
+1  4  5
+2  7  6
+6  8  7   ← minimum cost path = 7
+```
+
+Path: `1 → 3 → 1 → 1 → 1 = 7` (go right, right, down, down)
+
+---
+
+## Key Takeaways
+
+| | |
+|---|---|
+| **State** | `dp[i][j]` = paths/cost to reach cell `(i,j)` |
+| **Recurrence** | `dp[i][j] = dp[i-1][j] + dp[i][j-1]` |
+| **Base cases** | First row and column = 1 (unique paths) |
+| **Obstacles** | Set `dp[i][j] = 0` at blocked cells |
+| **Space opt.** | Only need previous row → O(n) space |
+| **Pattern** | Grid DP — build from top-left to bottom-right |
+
+. . .
+
+> *"Grid DP is like filling in a spreadsheet — each cell only looks at its neighbours, but the answer propagates beautifully."*
+

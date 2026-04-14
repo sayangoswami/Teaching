@@ -1,0 +1,281 @@
+---
+title: "Generics in Java"
+format: revealjs
+code-font-size: "1.6em"
+---
+
+## The Problem: Same Logic, Different Types
+
+Imagine you want to print the last element of an array. You write this:
+
+```{.java code-line-numbers=""}
+public static void printLast(int[] arr) {
+    System.out.println(arr[arr.length - 1]);
+}
+```
+
+Then your classmate asks: *"Can it work with Strings?"*
+
+. . .
+
+You write another version:
+
+```{.java code-line-numbers=""}
+public static void printLast(String[] arr) {
+    System.out.println(arr[arr.length - 1]);
+}
+```
+
+The logic is **identical**. Only the type changed.
+
+---
+
+## Method Overloading: A Quick Recap
+
+**Method overloading** lets you define multiple methods with the **same name** but **different parameter types**.
+
+```{.java code-line-numbers=""}
+public static int findMax(int[] arr) {
+    int max = arr[0];
+    for (int x : arr) if (x > max) max = x;
+    return max;
+}
+
+public static double findMax(double[] arr) {
+    double max = arr[0];
+    for (double x : arr) if (x > max) max = x;
+    return max;
+}
+```
+
+Java picks the right version at **compile time** based on the argument type.
+
+---
+
+## Overloading: It Works… But It's Painful
+
+::: {.incremental}
+- ✅ Works correctly
+- ❌ You are **copy-pasting the same logic** for every type
+- ❌ If you find a bug, you must fix it in **every version**
+- ❌ You can't support `String[]`, `Double[]`, `Student[]` without writing even more copies
+- ❌ Code becomes harder to read and maintain
+:::
+
+. . .
+
+> **Key Insight:** The logic doesn't depend on the type. Only the *placeholder* for the type changes.
+
+---
+
+## The Solution: Generic Methods
+
+A **generic method** lets you write the logic **once** and let the caller supply the type.
+
+```{.java code-line-numbers="|1|"}
+public static <T> void printLast(T[] arr) {
+    System.out.println(arr[arr.length - 1]);
+}
+```
+
+. . .
+
+**Breaking it down:**
+
+| Part | Meaning |
+|------|---------|
+| `<T>` | Declares a **type parameter** — a placeholder for any type |
+| Appears **before** the return type | Always placed between modifiers and return type |
+| `T[]` | An array of *whatever type* the caller provides |
+
+---
+
+## Using a Generic Method
+
+Java **infers** the type from what you pass in — no special syntax needed at the call site.
+
+```{.java code-line-numbers=""}
+Integer[] nums    = {10, 20, 30};
+String[]  words   = {"apple", "banana", "cherry"};
+Double[]  prices  = {1.99, 4.49, 2.75};
+
+printLast(nums);    // prints 30
+printLast(words);   // prints cherry
+printLast(prices);  // prints 2.75
+```
+
+. . .
+
+::: {.callout-note}
+`T` must be an **object type** (like `Integer`, `String`, `Double`) — not a primitive (`int`, `double`). That's why we use `Integer[]` instead of `int[]`.
+:::
+
+---
+
+## Generic findMax: One Method for All
+
+Let's rewrite `findMax` generically. We need `T` to be **comparable**:
+
+```{.java code-line-numbers="|1|2|3|"}
+public static <T extends Comparable<T>> T findMax(T[] arr) {
+    T max = arr[0];
+    for (T x : arr) if (x.compareTo(max) > 0) max = x;
+    return max;
+}
+```
+
+. . .
+
+**`T extends Comparable<T>`** is a **bounded type parameter** — it means:
+
+> *"T can be any type, as long as it knows how to compare itself to another T."*
+
+`Integer`, `String`, `Double` all implement `Comparable` — so they all work.
+
+---
+
+## Calling findMax Generically
+
+```{.java code-line-numbers=""}
+Integer[] nums  = {3, 1, 7, 4};
+String[]  names = {"Zara", "Alice", "Mia"};
+
+System.out.println(findMax(nums));   // 7
+System.out.println(findMax(names));  // Zara
+```
+
+. . .
+
+Compare to the overloaded version — this is **one method** that handles everything correctly.
+
+If you find a bug in the logic, you fix it **in one place**.
+
+---
+
+## From Generic Methods to Generic Classes
+
+Sometimes the **type** is a property of the whole class, not just one method.
+
+Think about a box that can hold *anything*:
+
+```{.java code-line-numbers=""}
+public class Box {
+    private Object contents;
+
+    public void put(Object item) { this.contents = item; }
+    public Object get()          { return this.contents; }
+}
+```
+
+. . .
+
+Problem: `get()` returns `Object`, so you must **cast** every time:
+
+```{.java code-line-numbers=""}
+Box b = new Box();
+b.put("Hello");
+String s = (String) b.get();  // cast required — easy to get wrong
+```
+
+---
+
+## Generic Classes: The Fix
+
+Declare the type parameter at the **class level** using `<T>`:
+
+```{.java code-line-numbers="|1|2|3-4|"}
+public class Box<T> {
+    private T contents;
+    public void put(T item)  { this.contents = item; }
+    public T    get()        { return this.contents; }
+}
+```
+
+. . .
+
+Now each `Box` is locked to one type — no casting needed:
+
+```{.java code-line-numbers=""}
+Box<String>  strBox = new Box<>();
+Box<Integer> intBox = new Box<>();
+
+strBox.put("Hello");
+intBox.put(42);
+
+String  s = strBox.get();  // no cast
+Integer n = intBox.get();  // no cast
+```
+
+---
+
+## Generic Classes: Multiple Type Parameters
+
+A class can have **more than one** type parameter. Use different letters by convention:
+
+```{.java code-line-numbers=""}
+public class Pair<A, B> {
+    private A first;
+    private B second;
+
+    public Pair(A first, B second) {
+        this.first  = first;
+        this.second = second;
+    }
+
+    public A getFirst()  { return first; }
+    public B getSecond() { return second; }
+}
+```
+
+```{.java code-line-numbers=""}
+Pair<String, Integer> grade = new Pair<>("Alice", 95);
+System.out.println(grade.getFirst());   // Alice
+System.out.println(grade.getSecond());  // 95
+```
+
+---
+
+## You've Been Using Generic Classes All Along
+
+::: {.incremental}
+- `ArrayList<T>` — a list that holds objects of type T
+:::
+
+. . .
+
+The diamond `<>` on the right lets Java infer the type from the left side:
+
+```{.java code-line-numbers=""}
+// These are all generic classes in the Java standard library:
+ArrayList<String>  names   = new ArrayList<>();
+ArrayList<Integer> scores  = new ArrayList<>();
+```
+
+You've been using generics the whole time — now you know how they work under the hood.
+
+---
+
+## When to Use Generics
+
+| Situation | Use |
+|-----------|-----|
+| Same algorithm, different types | Generic **method** |
+| A container/wrapper for any type | Generic **class** |
+| You need type safety without casting | Either |
+| Types are always the same (e.g., always `String`) | No generics needed |
+
+. . .
+
+**Rule of thumb:** If you catch yourself copy-pasting a method and only changing the type, it's time for a generic method.
+
+---
+
+## Summary
+
+::: {.incremental}
+- **Method overloading** lets multiple methods share a name — but you still write separate code for each type.
+- **Generic methods** (`<T>`) write the logic once and work on any object type.
+- **Bounded type parameters** (`<T extends Comparable<T>>`) add constraints so you can use specific methods on T.
+- **Generic classes** (`Box<T>`, `Pair<A,B>`) let an entire class be parameterized by a type.
+- You've already been using generic classes: `ArrayList<T>`. We will see a couple more in the next lecture.
+:::

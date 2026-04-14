@@ -1,0 +1,271 @@
+---
+title: "Dynamic Programming — Egg Drop"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+# The Egg Drop Problem {background-color="#0d1b2a"}
+
+## The Setup
+
+> You have **k eggs** and a building with **n floors**.
+> There exists a critical floor **f** such that:
+> - Any egg dropped from floor **≤ f** survives
+> - Any egg dropped from floor **> f** breaks
+>
+> Find **f** using the **minimum number of trials** in the worst case.
+
+. . .
+
+**Rules:**
+- A broken egg is gone — you can't reuse it
+- An unbroken egg can be dropped again
+- You want to minimise trials **in the worst case**
+
+. . .
+
+> **The question:** with `k` eggs and `n` floors, what's the minimum number of drops you need to *guarantee* finding `f`?
+
+---
+
+## First, Build Intuition: 1 Egg
+
+With **only 1 egg**, you can't afford to break it — if it breaks, you learn nothing about higher floors and have no eggs left.
+
+. . .
+
+**Only safe strategy:** drop from floor 1, then 2, then 3...
+
+```
+1 egg, n floors → n trials in worst case
+```
+
+. . .
+
+If the critical floor is the very top, you had to check every floor below it.
+
+> With 1 egg, you're stuck with **linear search**.
+
+---
+
+## Binary Search Won't Work Either
+
+With **infinite eggs**, binary search works perfectly:
+
+```
+100 floors → try floor 50
+  breaks?  → search floors 1-49
+  survives? → search floors 51-100
+```
+
+→ **O(log n)** trials with unlimited eggs.
+
+. . .
+
+But with **2 eggs**, binary search is risky:
+
+- Drop from floor 50. It breaks. You have 1 egg left.
+- Now you must check floors 1–49 **one by one**: 49 more trials!
+- Worst case: **50 trials total** — no better than floor 25 as a starting point.
+
+. . .
+
+> **The tension:** go high to eliminate many floors, but risk losing your egg and being forced into a long linear scan.
+
+---
+
+## Two Eggs — The Key Insight
+
+With 2 eggs and n floors, let's say we make at most **t** total trials.
+
+. . .
+
+**Try floor `t` first.**
+If it breaks → 1 egg, `t-1` trials left → can check `t-1` more floors.
+If it survives → try floor `t + (t-1)` next.
+
+. . .
+
+This gives us floors: `t, t+(t-1), t+(t-2), ...`
+
+The total floors covered: $t + (t-1) + (t-2) + \cdots + 1 = \frac{t(t+1)}{2}$
+
+. . .
+
+So with 2 eggs and `n` floors, we need the smallest `t` such that $\frac{t(t+1)}{2} \geq n$.
+
+**For n = 100:** $t = 14$ (since $14 \times 15 / 2 = 105 \geq 100$)
+
+> Drop from floors **14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99, 100...**
+
+---
+
+## Generalising to k Eggs
+
+For arbitrary `k` eggs and `n` floors, the greedy trick doesn't generalize cleanly.
+
+**Enter DP.**
+
+. . .
+
+**State:** `dp[k][n]` = minimum number of trials needed to find the critical floor with `k` eggs and `n` floors.
+
+. . .
+
+**Decision:** drop from floor `f` (where `1 ≤ f ≤ n`):
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.fragment}
+**Egg breaks** 🥚💥
+Critical floor is below `f`.
+Remaining: `k-1` eggs, `f-1` floors
+→ `dp[k-1][f-1]` more trials
+:::
+:::
+::: {.column width="50%"}
+::: {.fragment}
+**Egg survives** 🥚✓
+Critical floor is at `f` or above.
+Remaining: `k` eggs, `n-f` floors
+→ `dp[k][n-f]` more trials
+:::
+:::
+::::
+
+. . .
+
+Since we need to handle the **worst case**, we take the `max`.
+Since we get to **choose** floor `f` wisely, we take the `min` over all choices.
+
+---
+
+## The Recurrence
+
+$$dp[k][n] = 1 + \min_{1 \leq f \leq n} \max\bigl(dp[k-1][f-1],\ dp[k][n-f]\bigr)$$
+
+. . .
+
+**Base cases:**
+
+| Situation | Answer |
+|-----------|--------|
+| `dp[1][n]` | `n` — with 1 egg, check each floor |
+| `dp[k][0]` | `0` — no floors to check |
+| `dp[k][1]` | `1` — only one floor, one drop |
+
+---
+
+## Walking Through a Small Example
+
+`k = 2, n = 6` — let's compute `dp[2][6]`:
+
+. . .
+
+Try each floor `f` from 1 to 6:
+
+| Drop from floor `f` | Breaks: `dp[1][f-1]` | Survives: `dp[2][6-f]` | Worst case |
+|---|---|---|---|
+| f=1 | dp[1][0] = 0 | dp[2][5] = ? | need more |
+| f=2 | dp[1][1] = 1 | dp[2][4] = ? | need more |
+| f=3 | dp[1][2] = 2 | dp[2][3] = ? | need more |
+
+. . .
+
+We need to fill the table bottom-up. After filling:
+
+| | n=0 | n=1 | n=2 | n=3 | n=4 | n=5 | n=6 |
+|---|---|---|---|---|---|---|---|
+| **k=1** | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+| **k=2** | 0 | 1 | 2 | 2 | 3 | 3 | **3** |
+
+With 2 eggs and 6 floors: **3 trials** suffice.
+
+---
+
+## The Code
+
+```python
+def egg_drop(k, n):
+    # dp[i][j] = min trials with i eggs and j floors
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+
+    # Base cases
+    for j in range(1, n + 1):
+        dp[1][j] = j          # 1 egg: must go floor by floor
+    for i in range(1, k + 1):
+        dp[i][1] = 1          # 1 floor: one drop suffices
+        dp[i][0] = 0          # 0 floors: no drops needed
+
+    # Fill the table
+    for i in range(2, k + 1):
+        for j in range(2, n + 1):
+            dp[i][j] = float('inf')
+            for f in range(1, j + 1):
+                worst = 1 + max(dp[i-1][f-1], dp[i][j-f])
+                dp[i][j] = min(dp[i][j], worst)
+
+    return dp[k][n]
+
+print(egg_drop(1, 10))   # → 10
+print(egg_drop(2, 10))   # → 4
+print(egg_drop(3, 10))   # → 4 (wait — why?)
+print(egg_drop(2, 100))  # → 14
+```
+
+**Time: O(k · n²) — Space: O(k · n)**
+
+---
+
+## What the Table Tells Us
+
+```python
+for k in range(1, 5):
+    row = [egg_drop(k, n) for n in range(1, 11)]
+    print(f"k={k}: {row}")
+```
+
+```
+k=1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]   # linear
+k=2: [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]    # ~sqrt(n)
+k=3: [1, 2, 2, 2, 3, 3, 3, 3, 3, 4]    # getting better
+k=4: [1, 2, 2, 2, 2, 3, 3, 3, 3, 3]    # approaching log(n)
+```
+
+. . .
+
+Each extra egg buys you a better strategy. With enough eggs, you converge to binary search (O(log n)).
+
+> **The DP table captures a whole family of optimal strategies at once.**
+
+---
+
+## Why This Problem is a Great DP Example
+
+::: {.incremental}
+- **The state is two-dimensional** — you need to track both eggs *and* floors
+- **The recurrence involves a min-of-max** — a classic adversarial structure
+- **Greedy fails** — the right floor to drop from is non-obvious and depends on remaining resources
+- **The base cases are meaningful** — 1 egg and 0 floors have clear physical interpretations
+- **It has real-world analogues** — stress testing, binary vs linear search tradeoffs
+:::
+
+---
+
+## Key Takeaways
+
+| | Answer |
+|---|---|
+| **State** | `dp[k][n]` = min trials, k eggs, n floors |
+| **Recurrence** | `1 + min over f of max(break, survive)` |
+| **1 egg** | Linear search — O(n) |
+| **∞ eggs** | Binary search — O(log n) |
+| **k eggs** | Something in between! |
+
+> *"The egg drop problem is DP at its purest: you make a choice, then prepare for the worst, but choose wisely."*

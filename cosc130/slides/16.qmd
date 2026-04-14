@@ -878,6 +878,7 @@ ComboBox<String> majorPicker = new ComboBox<>();
 majorPicker.addItem("Computer Science");
 majorPicker.addItem("Mathematics");
 majorPicker.addItem("Physics");
+```
 
 - A button that reveals a menu of options when clicked.
 - Each option has its own Lambda for handling user selection.
@@ -953,6 +954,8 @@ tagPicker.onSelectionChange(() -> {
 
 ## 🟩 SECTION 4: DATA & ADVANCED
 
+### Table: Automatic Data Mapping
+
 **What makes this Table special?**
 
 In `ezui`, the Table is "Smart." You don't have to tell it what the headers are or manually type every row. Instead, you give it a **List of Objects**, and the Table handles the rest.
@@ -985,11 +988,19 @@ public class Student implements ITable {
 
 In `ezui`, the Table is "Smart." You don't have to tell it what the headers are or manually type every row. Instead, you give it a **List of Objects**, and the Table handles the rest.
 
-- Call `refresh()` after modifying the list to update the UI.
+**Step 2: Connecting the Data**
 
-- Displays "No Data Available" if the list is empty.
+Once your objects follow the rules, creating the table is a single line of code!
 
+```java
+// 1. Get your data (usually from a Database or List)
+ArrayList<Student> myClass = database.getStudents();
 
+// 2. Create the table and pass the list
+Table<Student> studentTable = new Table<>(myClass);
+
+root.add(studentTable, 0, 0, Alignment.FILL);
+```
 
 
 ---
@@ -1024,8 +1035,6 @@ studentTable.refresh(); // The UI updates instantly!
 ```
 
 ---
-
-### Why this is "Industry Standard" Design
 
 ### Table: Responding to Row Selection
 
@@ -1075,43 +1084,6 @@ grades.put("D", 2.0);
 pie.refresh(grades); // chart redraws instantly
 ```
 
----
-
-### Charts: Visualizing the Data
-
-**Why use Charts?** Numbers in a Table are great, but a **Chart** tells a story instantly. In `ezui`, Charts are created using **Static Factory Methods**. This means you don't use `new Chart()`, you ask the `Chart` class to build one for you.
-
-#### 2. The Pie Chart
-
-- **Alignment**: `LEFT`, `CENTER`, `RIGHT`, `FILL`.
-
-- **ColumnStyle**:
-
-    - `ColumnStyle.GROW()`: Takes up all extra space.
-
-    - `ColumnStyle.FIXED()`: Only takes what it needs.
-
-    - `ColumnStyle.WIDTH(px)`: Forces an **exact pixel width** — useful when you need a sidebar or panel to be a specific size regardless of content.
-
-    ```java
-    // A 3-column page: narrow label | main content | 200px sidebar
-    super("Dashboard", 5, 3,
-        ColumnStyle.FIXED(),
-        ColumnStyle.GROW(),
-        ColumnStyle.WIDTH(200)
-    );
-    ```
-
-```java
-Map<String, Double> attendance = new HashMap<>();
-attendance.put("Present", 22.0);
-attendance.put("Absent", 3.0);
-attendance.put("Excused", 1.0);
-
-## FINAL SUMMARY
-
-root.add(pie, 0, 1, Alignment.FILL);
-```
 ---
 
 

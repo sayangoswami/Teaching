@@ -1,0 +1,300 @@
+---
+title: "Maps and Sets in Java"
+format: revealjs
+code-font-size: "1.6em"
+---
+
+## Beyond the ArrayList
+
+You already know `ArrayList` — a list that stores items **in order**, allows **duplicates**, and lets you access by **index**.
+
+But sometimes you need something different:
+
+. . .
+
+> *"Does my list contain this username already?"*
+
+> *"What is the phone number for 'Alice'?"*
+
+> *"Make sure no value appears twice."*
+
+. . .
+
+For these questions, `ArrayList` works — but there are **better tools** for the job: **Sets** and **Maps**.
+
+---
+
+## What is a Set?
+
+A **Set** is a collection that:
+
+::: {.incremental}
+- Stores **no duplicates** — adding something that's already there does nothing
+- Has **no guaranteed order** (unlike a list)
+- Lets you quickly ask: *"Is this value in the set?"*
+:::
+
+. . .
+
+Think of a **set of student IDs** — each ID either is in the set or it isn't. You never want the same ID twice.
+
+---
+
+## Creating a HashSet
+
+```{.java code-line-numbers=""}
+import java.util.HashSet;
+import java.util.Set;
+
+Set<String> enrolled = new HashSet<>();
+```
+
+. . .
+
+::: {.callout-note}
+We declare the variable as `Set<String>` (the interface) and create a `HashSet<String>` (the implementation). This is the standard Java style.
+:::
+
+---
+
+## Core Set Methods
+
+```{.java code-line-numbers=""}
+Set<String> enrolled = new HashSet<>();
+
+enrolled.add("Alice");      // adds "Alice"
+enrolled.add("Bob");
+enrolled.add("Alice");      // duplicate — silently ignored!
+
+System.out.println(enrolled.size());            // 2
+System.out.println(enrolled.contains("Bob"));   // true
+System.out.println(enrolled.contains("Zara"));  // false
+
+enrolled.remove("Bob");
+System.out.println(enrolled.contains("Bob"));   // false
+```
+
+| Method | What it does |
+|--------|-------------|
+| `add(x)` | Adds x; does nothing if already present |
+| `contains(x)` | Returns true/false |
+| `remove(x)` | Removes x if present |
+| `size()` | Number of elements |
+
+---
+
+## Iterating Over a Set
+
+Since *Sets have no index*, you use a **for-each loop**:
+
+```{.java code-line-numbers=""}
+Set<String> fruits = new HashSet<>();
+fruits.add("Mango");
+fruits.add("Apple");
+fruits.add("Banana");
+
+for (String fruit : fruits) {
+    System.out.println(fruit);
+}
+```
+
+. . .
+
+::: {.callout-warning}
+The order of iteration is **not guaranteed** with `HashSet`. You might see `Apple`, `Banana`, `Mango` or any other order. If order matters, use `TreeSet` (alphabetical) or `LinkedHashSet` (insertion order).
+:::
+
+---
+
+## Set Use Cases
+
+::: {.incremental}
+- **Checking for duplicates:** Add items one by one; if `size()` stays the same, you had a duplicate.
+- **Membership testing:** Is this username taken? Is this word in the dictionary?
+- **Removing duplicates from a list:** Dump an `ArrayList` into a `HashSet` and all duplicates vanish.
+:::
+
+. . .
+
+```{.java code-line-numbers=""}
+// Remove duplicates from a list
+ArrayList<Integer> nums = new ArrayList<>(List.of(3, 1, 4, 1, 5, 9, 2, 6, 5));
+Set<Integer> unique = new HashSet<>(nums);
+System.out.println(unique);  // [1, 2, 3, 4, 5, 6, 9] — no duplicates
+```
+
+---
+
+## What is a Map?
+
+A **Map** stores **key-value pairs** — like a dictionary or a phone book.
+
+::: {.incremental}
+- Each **key** is unique (like a Set)
+- Each key maps to exactly **one value**
+- Values can be duplicated
+- You look up values **by key**, not by position or value
+:::
+
+. . .
+
+```
+Key        →   Value
+─────────────────────
+"Alice"    →   "555-1234"
+"Bob"      →   "555-9876"
+"Carol"    →   "555-4444"
+```
+
+---
+
+## Creating a HashMap
+
+```{.java code-line-numbers=""}
+import java.util.HashMap;
+import java.util.Map;
+
+Map<String, String> phoneBook = new HashMap<>();
+```
+
+The first type is the **key type**, the second is the **value type**.
+
+. . .
+
+```{.java code-line-numbers=""}
+Map<String, Integer> scores  = new HashMap<>();  // name → score
+Map<Integer, String> idToName = new HashMap<>(); // ID → name
+Map<String, Double>  prices   = new HashMap<>(); // item → price
+```
+
+---
+
+## Core Map Methods
+
+```{.java code-line-numbers=""}
+Map<String, Integer> scores = new HashMap<>();
+
+scores.put("Alice", 95);     // add or update a key-value pair
+scores.put("Bob", 82);
+scores.put("Alice", 99);     // updates Alice's score to 99
+
+System.out.println(scores.get("Alice"));       // 99
+System.out.println(scores.get("Bob"));         // 82
+System.out.println(scores.get("Zara"));        // null — key not found
+
+System.out.println(scores.containsKey("Bob")); // true
+scores.remove("Bob");
+System.out.println(scores.size());             // 1
+```
+
+---
+
+## Map Methods at a Glance
+
+| Method | What it does |
+|--------|-------------|
+| `put(key, value)` | Adds or updates a key-value pair |
+| `get(key)` | Returns value, or `null` if key missing |
+| `containsKey(key)` | Returns true/false |
+| `remove(key)` | Removes the pair with that key |
+| `size()` | Number of key-value pairs |
+| `getOrDefault(key, def)` | Returns value, or `def` if key missing |
+
+. . .
+
+```{.java code-line-numbers=""}
+// getOrDefault is safer than get when key might be missing
+int score = scores.getOrDefault("Zara", 0);  // 0 instead of null
+```
+
+---
+
+## Iterating Over a Map
+
+Loop over **entries** (key + value pairs) using `entrySet()`:
+
+```{.java code-line-numbers=""}
+Map<String, Integer> scores = new HashMap<>();
+scores.put("Alice", 95);
+scores.put("Bob",   82);
+scores.put("Carol", 88);
+
+for (Map.Entry<String, Integer> entry : scores.entrySet()) {
+    System.out.println(entry.getKey() + " → " + entry.getValue());
+}
+```
+
+. . .
+
+You can also loop over just the keys or just the values:
+
+```{.java code-line-numbers=""}
+for (String name  : scores.keySet())   { System.out.println(name); }
+for (int   score  : scores.values())   { System.out.println(score); }
+```
+
+---
+
+## Map Use Cases
+
+::: {.incremental}
+- **Frequency counting:** How many times does each word appear in a text?
+- **Caching/lookups:** Map student ID → Student object for fast lookup.
+- **Grouping:** Map course name → list of enrolled students.
+- **Configuration:** Map setting name → setting value.
+:::
+
+. . .
+
+```{.java code-line-numbers=""}
+// Frequency count example
+String[] words = {"the", "cat", "sat", "on", "the", "mat", "the"};
+Map<String, Integer> freq = new HashMap<>();
+
+for (String word : words) {
+    freq.put(word, freq.getOrDefault(word, 0) + 1);
+}
+
+System.out.println(freq);
+// {the=3, cat=1, sat=1, on=1, mat=1}
+```
+
+---
+
+## Choosing the Right Collection
+
+| Question | Use |
+|----------|-----|
+| Need items in order, allow duplicates, access by index | `ArrayList` |
+| Need unique items, fast membership check | `Set` / `HashSet` |
+| Need to look up values by a key | `Map` / `HashMap` |
+| Need a Set that stays in sorted order | `TreeSet` |
+| Need a Map that stays in insertion order | `LinkedHashMap` |
+
+---
+
+## Sets and Maps in the Real World
+
+::: {.incremental}
+- **Social networks:** Your list of friends is a Set (can't friend the same person twice). A DM inbox is a Map from username → messages.
+- **Spell checkers:** The dictionary is a `Set<String>` — fast to ask "is this word valid?"
+- **Games:** A Map from player name → score keeps the leaderboard. A Set tracks which rooms you've visited.
+- **Web servers:** A Map from URL path → handler function routes requests.
+:::
+
+---
+
+## Summary
+
+::: {.incremental}
+- A **Set** is an **unordered collection of unique values**.
+  - `add()`, `contains()`, `remove()`, `size()`
+  - Use when you need uniqueness or fast membership testing.
+
+- A **Map** stores **key-value pairs** with unique keys.
+  - `put()`, `get()`, `containsKey()`, `remove()`, `size()`
+  - Use when you need to look something up by a key.
+
+- Both are **generic** (`Set<T>`, `Map<K,V>`) — you choose the types.
+- `HashSet` and `HashMap` are the standard implementations you'll use most.
+:::

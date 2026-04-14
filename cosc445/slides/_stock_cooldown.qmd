@@ -1,0 +1,339 @@
+---
+title: "Dynamic Programming — Stock Buy/Sell with Cooldown"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+# Stock with Cooldown {background-color="#0d1b2a"}
+
+## The Problem
+
+> You have an array `prices` where `prices[i]` is the stock price on day `i`.
+> You can **buy and sell** on any day, but:
+> - You can only hold **one share** at a time
+> - After selling, you must **rest for one day** (cooldown)
+> - Find the **maximum profit**
+
+. . .
+
+```
+prices = [1, 2, 3, 0, 2]
+```
+
+. . .
+
+One good strategy: buy day 0, sell day 1, **rest day 2**, buy day 3, sell day 4.
+
+```
+Profit = (2-1) + (2-0) = 1 + 2 = 3
+```
+
+---
+
+## Why Is This Hard?
+
+Unlike the simple buy/sell problem, the cooldown creates **dependencies between days**.
+
+. . .
+
+Selling on day `i` means you **cannot** buy on day `i+1`.
+
+So your decision on day `i` affects what you can do on day `i+2`.
+
+. . .
+
+**Greedy doesn't work** — buying every dip and selling every peak ignores the cooldown penalty.
+
+> We need to track **what state we're in** on each day, not just the prices.
+
+---
+
+## The State Machine Idea
+
+At any point in time, you're in one of **three states**:
+
+:::: {.columns}
+::: {.column width="33%"}
+**HOLDING**
+
+You own a share.
+You bought it on some earlier day.
+:::
+::: {.column width="33%"}
+**COOLDOWN**
+
+You just sold yesterday.
+You must rest today.
+:::
+::: {.column width="33%"}
+**READY**
+
+You don't own a share and are free to buy.
+:::
+::::
+
+. . .
+
+The key insight: **your state today determines your options tomorrow.**
+
+---
+
+## State Transitions
+
+```
+                    sell
+     HOLDING ──────────────→ COOLDOWN
+        ↑                        │
+        │ buy                    │ (rest)
+        │                        ↓
+      READY ←──────────────── COOLDOWN
+        ↑
+        └──── (rest/do nothing) ──┘
+        READY → READY
+```
+
+. . .
+
+| From | Action | To |
+|------|--------|----|
+| READY | buy | HOLDING |
+| READY | rest | READY |
+| HOLDING | sell | COOLDOWN |
+| HOLDING | hold | HOLDING |
+| COOLDOWN | (forced rest) | READY |
+
+---
+
+## Defining the DP States
+
+`hold[i]` = max profit on day `i` if you **own** a share at end of day `i`
+
+`cool[i]` = max profit on day `i` if you're in **cooldown** at end of day `i`
+
+`ready[i]` = max profit on day `i` if you're **free to buy** at end of day `i`
+
+. . .
+
+**We want:** `max(hold[n-1], cool[n-1], ready[n-1])` — best profit on the last day in any state.
+(In practice: we'll never end in HOLDING optimally if we can sell, so `max(cool, ready)`.)
+
+---
+
+## The Recurrences
+
+**To be HOLDING on day `i`:**
+
+Either you were holding yesterday and did nothing, **or** you were READY yesterday and bought today.
+
+```
+hold[i] = max(hold[i-1],  ready[i-1] - prices[i])
+               ↑ kept it        ↑ just bought
+```
+
+. . .
+
+**To be in COOLDOWN on day `i`:**
+
+You sold today, so you were HOLDING yesterday.
+
+```
+cool[i] = hold[i-1] + prices[i]
+```
+
+. . .
+
+**To be READY on day `i`:**
+
+You were either READY yesterday and did nothing, **or** you were in COOLDOWN yesterday (cooldown ends).
+
+```
+ready[i] = max(ready[i-1], cool[i-1])
+```
+
+---
+
+## Walking Through the Example
+
+`prices = [1, 2, 3, 0, 2]`
+
+**Day 0 (price = 1):** Start fresh.
+
+```
+hold[0]  = -prices[0] = -1      (buy on day 0)
+cool[0]  = -∞                   (can't have sold already)
+ready[0] = 0                    (do nothing)
+```
+
+. . .
+
+**Day 1 (price = 2):**
+
+```
+hold[1]  = max(hold[0], ready[0] - 2)  = max(-1, -2) = -1
+cool[1]  = hold[0] + 2                 = -1 + 2 = 1
+ready[1] = max(ready[0], cool[0])       = max(0, -∞) = 0
+```
+
+---
+
+## Walking Through — Days 2–4
+
+`prices = [1, 2, 3, 0, 2]`
+
+**Day 2 (price = 3):**
+```
+hold[2]  = max(-1, 0 - 3) = max(-1, -3) = -1
+cool[2]  = hold[1] + 3   = -1 + 3 = 2
+ready[2] = max(0, 1)     = 1
+```
+
+. . .
+
+**Day 3 (price = 0):**
+```
+hold[3]  = max(-1, 1 - 0) = max(-1, 1) = 1    ← buy the dip!
+cool[3]  = hold[2] + 0   = -1 + 0 = -1
+ready[3] = max(1, 2)     = 2
+```
+
+. . .
+
+**Day 4 (price = 2):**
+```
+hold[4]  = max(1, 2 - 2) = max(1, 0) = 1
+cool[4]  = hold[3] + 2  = 1 + 2 = 3     ← sell!
+ready[4] = max(2, -1)   = 2
+```
+
+**Answer:** `max(cool[4], ready[4]) = max(3, 2) = 3` ✓
+
+---
+
+## The Code
+
+```python
+def max_profit(prices):
+    if len(prices) <= 1:
+        return 0
+
+    n = len(prices)
+    hold  = [-float('inf')] * n
+    cool  = [-float('inf')] * n
+    ready = [0] * n
+
+    hold[0]  = -prices[0]
+    cool[0]  = -float('inf')
+    ready[0] = 0
+
+    for i in range(1, n):
+        hold[i]  = max(hold[i-1], ready[i-1] - prices[i])
+        cool[i]  = hold[i-1] + prices[i]
+        ready[i] = max(ready[i-1], cool[i-1])
+
+    return max(cool[n-1], ready[n-1])
+
+print(max_profit([1, 2, 3, 0, 2]))  # → 3
+print(max_profit([1]))              # → 0
+print(max_profit([1, 2]))           # → 1
+```
+
+**Time: O(n) — Space: O(n)** (reducible to O(1) — only need previous values)
+
+---
+
+## Space-Optimised Version
+
+We only ever look at `i-1`, so we can drop the arrays:
+
+```python
+def max_profit(prices):
+    hold  = -float('inf')
+    cool  = -float('inf')
+    ready = 0
+
+    for price in prices:
+        prev_hold  = hold
+        prev_cool  = cool
+        prev_ready = ready
+
+        hold  = max(prev_hold,  prev_ready - price)
+        cool  = prev_hold + price
+        ready = max(prev_ready, prev_cool)
+
+    return max(cool, ready)
+```
+
+**Time: O(n) — Space: O(1)**
+
+> Three variables, one pass. The state machine makes this elegant.
+
+---
+
+## What Makes This DP Different?
+
+:::: {.columns}
+::: {.column width="55%"}
+Most DP we've seen has **one sequence of states** (`dp[i]` means "at position i").
+
+Stock with cooldown has **multiple parallel states** — at each day, you can be in different modes, and transitions between modes carry the profit.
+
+This is **state machine DP**.
+:::
+::: {.column width="45%"}
+```
+Day:  0   1   2   3   4
+
+HOLD: -1  -1  -1   1   1
+COOL: -∞   1   2  -1   3
+READY: 0   0   1   2   2
+```
+:::
+::::
+
+. . .
+
+> **When you see:** "after doing X, you must wait / you change mode / you can't do X again immediately" → think state machine DP.
+
+---
+
+## Related Problems
+
+**Best Time to Buy and Sell Stock II** (no cooldown, unlimited transactions):
+→ Greedy works — take every upward move.
+
+**Best Time to Buy and Sell Stock with Fee** (pay a fee per transaction):
+→ Same state machine, but subtract `fee` when selling.
+
+```python
+cool[i] = hold[i-1] + prices[i] - fee   # only change!
+```
+
+**Best Time to Buy and Sell Stock III** (at most 2 transactions):
+→ Add a dimension for "how many transactions used".
+
+. . .
+
+> All four LC stock problems use the same underlying framework — once you understand state machine DP, you get all of them.
+
+---
+
+## Key Takeaways
+
+| | |
+|---|---|
+| **Problem** | Max profit with buy/sell/cooldown constraint |
+| **Key idea** | Track which *state* you're in each day |
+| **States** | HOLDING, COOLDOWN, READY |
+| **Recurrences** | `hold`, `cool`, `ready` each depend on yesterday |
+| **Pattern** | State machine DP |
+| **Space** | Reducible to O(1) — only need previous day |
+
+. . .
+
+> *"When a problem says 'after doing X you must wait,' you're not just tracking position — you're tracking state. Draw the state machine first, then write the DP."*

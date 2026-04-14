@@ -28,5 +28,3 @@ This site is designed to be screen-reader friendly and supports keyboard-only na
 	- **`Down`** , **`Up`** : select next / previous result
 	- **`Esc`** , **`Tab`** : close search dialog
 	- **`Enter`** : follow selected result
-- **`P`** , **`,`** : go to previous page
-- **`N`** , **`.`** : go to next page

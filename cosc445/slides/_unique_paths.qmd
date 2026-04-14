@@ -1,0 +1,318 @@
+---
+title: "Dynamic Programming — Unique Paths"
+format:
+  revealjs:
+    slide-number: true
+    incremental: false
+    transition: slide
+    fig-align: center
+execute:
+  echo: true
+---
+
+# Unique Paths {background-color="#0d1b2a"}
+
+## The Problem
+
+> A robot is on a **m × n grid**, starting at the **top-left corner**.
+> It can only move **right** or **down** at each step.
+> How many distinct paths lead to the **bottom-right corner**?
+
+. . .
+
+```
+S . . .
+. . . .
+. . . G
+```
+
+`m = 3 rows, n = 4 cols` — how many ways from S to G?
+
+. . .
+
+**Why only right/down?** Think of it as a robot on a factory floor that can only move forward — no backtracking.
+
+---
+
+## Small Cases Build Intuition
+
+**1 × n grid** (single row): only one path — go right all the way.
+
+```
+S → → → G     (1 path)
+```
+
+. . .
+
+**m × 1 grid** (single column): only one path — go down all the way.
+
+```
+S
+↓
+↓
+G             (1 path)
+```
+
+. . .
+
+**2 × 2 grid:**
+
+```
+S → .         S .
+↓   ↓   or    ↓ →
+.   G         . → G
+```
+
+→ **2 paths**
+
+---
+
+## 3 × 3 Grid — Count Together
+
+```
+S . .
+. . .
+. . G
+```
+
+. . .
+
+How many paths? Let's think recursively.
+
+To reach G (bottom-right), the robot came from either:
+- The cell **above** G, or
+- The cell **to the left** of G
+
+. . .
+
+So: `paths(G) = paths(above G) + paths(left of G)`
+
+This is the **recurrence** — and it applies to every cell.
+
+---
+
+## The DP Table
+
+`dp[i][j]` = number of distinct paths to reach cell `(i, j)`
+
+**Recurrence:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`
+
+**Base cases:** entire top row and left column are `1` (only one way to reach them).
+
+. . .
+
+For a **3 × 7** grid:
+
+| | c0 | c1 | c2 | c3 | c4 | c5 | c6 |
+|---|---|---|---|---|---|---|---|
+| **r0** | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| **r1** | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| **r2** | 1 | 3 | 6 | 10 | 15 | 21 | **28** |
+
+Answer: **28 paths**
+
+---
+
+## Do You Recognise This Table?
+
+The values in the DP table are **binomial coefficients** — Pascal's Triangle!
+
+| | c0 | c1 | c2 | c3 |
+|---|---|---|---|---|
+| **r0** | 1 | 1 | 1 | 1 |
+| **r1** | 1 | 2 | 3 | 4 |
+| **r2** | 1 | 3 | 6 | 10 |
+| **r3** | 1 | 4 | 10 | **20** |
+
+. . .
+
+The answer for an `m × n` grid is exactly $\binom{m+n-2}{m-1}$.
+
+> To go from top-left to bottom-right, you make exactly `(m-1)` down moves and `(n-1)` right moves — in some order. Choosing which steps are "down" gives the count.
+
+. . .
+
+**But DP gives us this without knowing the formula!** That's the power.
+
+---
+
+## The Code
+
+```python
+def unique_paths(m, n):
+    dp = [[1] * n for _ in range(m)]   # fill with 1s (base cases handled)
+
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+    return dp[m-1][n-1]
+
+print(unique_paths(3, 7))   # → 28
+print(unique_paths(3, 2))   # → 3
+print(unique_paths(1, 1))   # → 1
+```
+
+**Time: O(m × n) — Space: O(m × n)**
+
+. . .
+
+Space can be reduced to **O(n)** with a rolling array — we only ever look at the current and previous row.
+
+```python
+def unique_paths_opt(m, n):
+    row = [1] * n
+    for _ in range(1, m):
+        for j in range(1, n):
+            row[j] += row[j-1]    # row[j] = old row[j] + new row[j-1]
+    return row[-1]
+```
+
+---
+
+# Unique Paths II — With Obstacles {background-color="#0d1b2a"}
+
+## Adding Obstacles
+
+> Same grid, same rules. But some cells have **obstacles** — the robot cannot pass through them.
+>
+> `0` = free cell, `1` = obstacle
+
+```
+0 0 0
+0 1 0
+0 0 0
+```
+
+. . .
+
+**How many paths from top-left to bottom-right?**
+
+The obstacle blocks two paths that went through the middle.
+
+Answer: **2** (instead of 6 without obstacle)
+
+---
+
+## Adjusting the Recurrence
+
+Only change: if a cell has an obstacle, it contributes **0** paths.
+
+```python
+def unique_paths_obstacles(grid):
+    m, n = len(grid), len(grid[0])
+    if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+        return 0    # start or end is blocked
+
+    dp = [[0] * n for _ in range(m)]
+    dp[0][0] = 1
+
+    # First column: if any obstacle, all cells below it are blocked
+    for i in range(1, m):
+        dp[i][0] = dp[i-1][0] if grid[i][0] == 0 else 0
+
+    # First row: same logic
+    for j in range(1, n):
+        dp[0][j] = dp[0][j-1] if grid[0][j] == 0 else 0
+
+    # Fill the rest
+    for i in range(1, m):
+        for j in range(1, n):
+            if grid[i][j] == 1:
+                dp[i][j] = 0         # obstacle: no paths through here
+            else:
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+    return dp[m-1][n-1]
+```
+
+---
+
+## Tracing the Obstacle Example
+
+```
+Grid:               DP table:
+0  0  0             1  1  1
+0  1  0             1  0  1
+0  0  0             1  1  2
+```
+
+. . .
+
+- `dp[1][1] = 0` — obstacle, no path through here
+- `dp[1][2] = dp[0][2] + dp[1][1] = 1 + 0 = 1`
+- `dp[2][1] = dp[1][1] + dp[2][0] = 0 + 1 = 1`
+- `dp[2][2] = dp[1][2] + dp[2][1] = 1 + 1 = 2` ✓
+
+---
+
+## A Useful Variant: Minimum Path Sum
+
+> Same grid, but now each cell has a **cost**. Find the path from top-left to bottom-right with **minimum total cost**.
+
+```
+1  3  1
+1  5  1
+4  2  1
+```
+
+. . .
+
+Same structure, different recurrence:
+
+```python
+dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+```
+
+```
+1  4  5
+2  7  6
+6  8  7   ← minimum cost path = 7
+```
+
+Path: `1 → 3 → 1 → 1 → 1 = 7` (go right, right, down, down)
+
+---
+
+## The Dungeon Game (Hard Variant)
+
+> A knight must travel from top-left to bottom-right. Cells have positive (health restore) or negative (damage) values. The knight dies if health drops to 0 or below. Find the **minimum starting health** needed.
+
+. . .
+
+**Twist:** you must fill the DP table **bottom-up from the goal**, because the constraint (staying alive) applies at each step along the way.
+
+This is a great example of how changing the problem slightly can flip the fill direction.
+
+::: {.callout-note title="Exam-style hint"}
+When constraints are "must survive the whole journey", think backwards — what's the minimum health needed entering each cell, given what comes after?
+:::
+
+---
+
+## Why Unique Paths Is a Great Teaching Problem
+
+::: {.incremental}
+- **The recurrence is obvious** — almost everyone gets it right away
+- **The base cases are clear** — first row and column are all 1s
+- **It connects to combinatorics** — the table is Pascal's Triangle
+- **It scales naturally** — obstacles, costs, survival constraints add complexity without changing the core structure
+- **Grid DP appears everywhere** — image processing, robotics, game maps, sequence alignment
+:::
+
+---
+
+## Key Takeaways
+
+| | |
+|---|---|
+| **State** | `dp[i][j]` = paths/cost to reach cell `(i,j)` |
+| **Recurrence** | `dp[i][j] = dp[i-1][j] + dp[i][j-1]` |
+| **Base cases** | First row and column = 1 (unique paths) |
+| **Obstacles** | Set `dp[i][j] = 0` at blocked cells |
+| **Space opt.** | Only need previous row → O(n) space |
+| **Pattern** | Grid DP — build from top-left to bottom-right |
+
+. . .
+
+> *"Grid DP is like filling in a spreadsheet — each cell only looks at its neighbours, but the answer propagates beautifully."*

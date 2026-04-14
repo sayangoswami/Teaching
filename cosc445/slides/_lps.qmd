@@ -1,0 +1,286 @@
+---
+title: "Dynamic Programming — Longest Palindromic Subsequence"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+# Longest Palindromic Subsequence {background-color="#0d1b2a"}
+
+## What Is a Palindrome?
+
+A **palindrome** reads the same forwards and backwards.
+
+. . .
+
+**Words:** `"racecar"`, `"level"`, `"noon"`, `"a"`
+
+**Sequences:** `[1, 2, 3, 2, 1]`, `[7, 7]`
+
+. . .
+
+A **subsequence** keeps characters in original order but can skip some.
+
+```
+s = "b b b a b"
+         ↑ skip this 'a'
+subsequence: "b b b b"  → palindrome! length 4
+```
+
+. . .
+
+> **Problem (LC 516):** Given a string `s`, find the length of its **longest palindromic subsequence (LPS)**.
+
+---
+
+## Warm-Up Examples
+
+```
+s = "bbbab"
+LPS = "bbbb"  (length 4)   ← skip the 'a'
+```
+
+. . .
+
+```
+s = "cbbd"
+LPS = "bb"   (length 2)    ← skip 'c' and 'd'
+```
+
+. . .
+
+```
+s = "agbdba"
+LPS = "abdba" (length 5)   ← skip the 'g'
+```
+
+. . .
+
+**Observation:** the longest palindromic subsequence of `s` is the LCS of `s` and its reverse!
+
+```
+s         = "agbdba"
+reverse(s) = "abdgba"
+LCS        = "abdba"   ✓
+```
+
+---
+
+## The LCS Connection (Elegant Shortcut)
+
+```python
+def lps_via_lcs(s):
+    return lcs(s, s[::-1])   # LCS of s and its reverse
+```
+
+. . .
+
+**Why does this work?**
+
+A palindromic subsequence reads the same forwards and backwards.
+So it appears as a subsequence *both* in `s` (forward) and `s` (backward, i.e. reverse).
+Their LCS finds exactly the longest such match.
+
+. . .
+
+This is beautiful — but let's also build the **direct DP** so we understand the structure.
+
+---
+
+## Direct DP: Thinking About Intervals
+
+**Key idea:** think about the substring `s[i..j]`.
+
+What's the LPS of a small string? Easy.
+What's the LPS of the full string? Build it up from smaller substrings.
+
+. . .
+
+**State:** `dp[i][j]` = length of LPS of substring `s[i..j]`
+
+**We want:** `dp[0][n-1]`
+
+. . .
+
+**Base cases:**
+
+- `dp[i][i] = 1` — a single character is always a palindrome
+- `dp[i][j] = 0` for `i > j` — empty string
+
+---
+
+## The Recurrence
+
+Look at the two **outermost** characters `s[i]` and `s[j]`:
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.fragment}
+**Case 1: `s[i] == s[j]`**
+
+They match! Include both ends.
+
+```
+dp[i][j] = dp[i+1][j-1] + 2
+```
+
+> The inner substring's LPS, plus the two matching outer chars.
+:::
+:::
+::: {.column width="50%"}
+::: {.fragment}
+**Case 2: `s[i] != s[j]`**
+
+They don't match. Skip one end or the other.
+
+```
+dp[i][j] = max(dp[i+1][j],
+               dp[i][j-1])
+```
+
+> Take the better of skipping the left or right character.
+:::
+:::
+::::
+
+---
+
+## Example: `s = "bbbab"`
+
+Indices: `b(0) b(1) b(2) a(3) b(4)`
+
+Fill the DP table diagonally (substrings of increasing length):
+
+| | b(0) | b(1) | b(2) | a(3) | b(4) |
+|---|---|---|---|---|---|
+| **b(0)** | 1 | 2 | 3 | 3 | **4** |
+| **b(1)** | — | 1 | 2 | 2 | 3 |
+| **b(2)** | — | — | 1 | 1 | 2 |
+| **a(3)** | — | — | — | 1 | 1 |
+| **b(4)** | — | — | — | — | 1 |
+
+. . .
+
+Answer: `dp[0][4] = 4` → `"bbbb"`
+
+---
+
+## Tracing Through a Cell
+
+How did we get `dp[0][4] = 4`?
+
+```
+s[0] = 'b',  s[4] = 'b'   → they MATCH!
+dp[0][4] = dp[1][3] + 2
+         = 2 + 2
+         = 4
+```
+
+. . .
+
+And `dp[1][3] = 2` (substring `"bba"`):
+
+```
+s[1] = 'b',  s[3] = 'a'   → they DON'T match
+dp[1][3] = max(dp[2][3], dp[1][2])
+         = max(1, 2)
+         = 2
+```
+
+The matching outer characters `b...b` wrap around an inner `"bb"`.
+
+---
+
+## The Code
+
+```python
+def lps(s):
+    n = len(s)
+    # dp[i][j] = LPS length of s[i..j]
+    dp = [[0] * n for _ in range(n)]
+
+    # Base case: single characters
+    for i in range(n):
+        dp[i][i] = 1
+
+    # Fill by increasing substring length
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+
+            if s[i] == s[j]:
+                inner = dp[i+1][j-1] if length > 2 else 0
+                dp[i][j] = inner + 2
+            else:
+                dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+
+    return dp[0][n-1]
+
+print(lps("bbbab"))   # → 4
+print(lps("cbbd"))    # → 2
+print(lps("agbdba"))  # → 5
+```
+
+**Time: O(n²) — Space: O(n²)**
+
+---
+
+## LPS vs LCS vs Edit Distance
+
+All three use a 2D DP table over characters/indices — but the *question* differs:
+
+| Problem | State | Recurrence idea |
+|---------|-------|-----------------|
+| **LCS** | `dp[i][j]` over two strings | Match → extend; mismatch → skip one |
+| **Edit Distance** | `dp[i][j]` over two strings | Match → carry; mismatch → min of 3 ops |
+| **LPS** | `dp[i][j]` over one string, two ends | Match → include both; mismatch → skip one end |
+
+. . .
+
+> **LPS is *interval DP* on a single string.** The subproblems are substrings `s[i..j]`, not prefixes.
+
+---
+
+## A Close Cousin: Minimum Insertions to Make a Palindrome
+
+> How many characters do you need to insert into `s` to make it a palindrome?
+
+. . .
+
+**Answer:** `n - LPS(s)`
+
+. . .
+
+Intuition: the LPS characters already form a palindrome. Every character *not* in the LPS needs a mirror inserted.
+
+```
+s   = "mbadm"   (n=5)
+LPS = "madam"   (length 3)   ← wait, that's length 5!
+LPS = "mam" or "mdm"  (length 3)
+
+Insertions needed = 5 - 3 = 2
+```
+
+> One formula, two problems — classic DP leverage.
+
+---
+
+## Key Takeaways
+
+| | |
+|---|---|
+| **Problem** | Longest palindromic subsequence of `s` |
+| **State** | `dp[i][j]` = LPS of `s[i..j]` |
+| **Fill order** | By increasing substring length (diagonal) |
+| **Recurrence** | Ends match → `+2`; mismatch → `max` of skip |
+| **Shortcut** | LPS(s) = LCS(s, reverse(s)) |
+| **Cousin** | Min insertions to make palindrome = `n - LPS` |
+
+. . .
+
+> *"When the problem is about a single string and you look at both ends simultaneously — think interval DP."*
