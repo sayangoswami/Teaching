@@ -1,0 +1,255 @@
+# Randomized Primality Testing {background-color="#1a1a2e"}
+
+## Why Test Primality?
+
+RSA encryption uses primes with **hundreds of digits**.
+
+. . .
+
+How do you find a 1024-bit prime?
+
+1. Pick a random 1024-bit number
+2. Test if it's prime
+3. If not, try another
+
+. . .
+
+**Problem:** Trial division up to $\sqrt{n}$ is completely infeasible for 1024-bit numbers.
+
+We need a fast primality test — and randomization is the key.
+
+---
+
+## Fermat's Little Theorem
+
+If $p$ is prime and $\gcd(a, p) = 1$, then:
+
+$$a^{p-1} \equiv 1 \pmod{p}$$
+
+. . .
+
+**Fermat Test:** To test if $p$ is prime:
+
+1. Pick random $a$ with $2 \le a \le p-2$
+2. Compute $a^{p-1} \bmod p$ (fast with modular exponentiation)
+3. If result $\neq 1$ → **definitely composite**
+4. If result $= 1$ → **probably prime** (repeat with more $a$'s)
+
+. . .
+
+::: {.callout-warning}
+**Caveat:** Carmichael numbers pass Fermat test for ALL $a$ but are composite. The **Miller-Rabin** test fixes this.
+:::
+
+---
+
+## Miller-Rabin in Practice
+
+The **Miller-Rabin** test is a refinement that handles Carmichael numbers.
+
+. . .
+
+- Run $k$ rounds with random witnesses → error probability $\le 4^{-k}$
+- With $k = 40$ rounds: probability of error $< 10^{-24}$
+
+. . .
+
+```python
+from sympy import isprime
+
+# Under the hood, Python's isprime uses Miller-Rabin
+isprime(2**127 - 1)   # True — this is a Mersenne prime!
+```
+
+. . .
+
+This is how **real cryptographic libraries** generate primes. Randomness isn't a hack — it's essential to the algorithm.
+
+
+# The Power of Two Choices {background-color="#3d2b1f"}
+
+## Simple Load Balancing Problem
+
+You have $n$ servers and $n$ jobs arriving one at a time.
+
+**Strategy 1 — Random assignment:** Pick a server uniformly at random.
+
+. . .
+
+Expected max load on any server: $\Theta\!\left(\dfrac{\log n}{\log \log n}\right)$
+
+For $n = 10^6$: max load ≈ **20 jobs**. Not bad!
+
+. . .
+
+**Strategy 2 — Two random choices:** Pick **two** servers at random, assign to the **less loaded** one.
+
+. . .
+
+Expected max load: $\Theta\!\left(\log \log n\right)$
+
+For $n = 10^6$: max load ≈ **4 jobs**. Dramatically better!
+
+---
+
+## The Two-Choice Miracle
+
+Going from 1 random choice to 2 random choices:
+
+$$\frac{\log n}{\log \log n} \longrightarrow \log \log n$$
+
+. . .
+
+This is called **"the power of two choices"** — one of the most surprising results in randomized algorithms.
+
+**Why?** A tiny bit of information (which of two options is less loaded) causes an exponential improvement in balance.
+
+. . .
+
+::: {.callout-tip}
+**Application:** **Cuckoo hashing** uses this idea — two hash tables, insert into whichever has an empty slot. Near-perfect load balance guaranteed.
+:::
+
+
+# Reservoir Sampling {background-color="#1a1a2e"}
+
+## The Streaming Sampling Problem
+
+**Problem:** You have a stream of items — you don't know how many there will be. At any moment, you want to have a **uniformly random sample** of $k$ items from everything seen so far.
+
+. . .
+
+**Constraints:**
+- Can't store the whole stream (it might be enormous)
+- Don't know $n$ in advance
+- Must be uniform — every item equally likely to be in sample
+
+. . .
+
+This comes up constantly: log sampling, database query sampling, social media feeds...
+
+---
+
+## Reservoir Sampling Algorithm
+
+```python
+def reservoir_sample(stream, k):
+    reservoir = []
+    for i, item in enumerate(stream):
+        if i < k:
+            reservoir.append(item)        # fill reservoir
+        else:
+            j = random.randint(0, i)      # random index in [0, i]
+            if j < k:
+                reservoir[j] = item       # replace with probability k/(i+1)
+    return reservoir
+```
+
+. . .
+
+**Claim:** At every point in the stream, each seen item is in the reservoir with probability exactly $k / (\text{items seen so far})$.
+
+. . .
+
+**Proof sketch:** When item $i+1$ arrives, it should be in the sample with probability $\frac{k}{i+1}$. We include it with exactly that probability, and displace an old item uniformly.
+
+---
+
+## Reservoir Sampling: Why It Works
+
+After seeing items 1 through $n$, each item is in the reservoir with probability $\frac{k}{n}$. 
+
+Let's verify for item 1 with $k=1$, $n=3$:
+
+- Item 1 survives step 2 with prob $\frac{1}{2}$
+- Item 1 survives step 3 with prob $\frac{2}{3}$
+- Overall: $1 \cdot \frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$ ✓
+
+. . .
+
+One pass, O(k) space, provably uniform. **Elegant!**
+
+
+# Putting It All Together {background-color="#16213e"}
+
+## The Randomized Algorithms Toolkit
+
+| Algorithm | Problem | Key Idea | Error Type |
+|---|---|---|---|
+| Rand. QuickSort | Sorting | Random pivot | Las Vegas |
+| Rabin-Karp | String search | Rolling hash | Monte Carlo |
+| Bloom Filter | Set membership | Multiple hashes | Monte Carlo (FP only) |
+| Skip List | Ordered dict. | Random promotion | Las Vegas |
+| Miller-Rabin | Primality | Fermat witnesses | Monte Carlo |
+| Reservoir Sampling | Stream sampling | Accept/replace | Las Vegas |
+| Two Choices | Load balancing | Greedy on 2 samples | Las Vegas |
+
+---
+
+## Common Themes
+
+::: {.incremental}
+1. **Hashing as fingerprinting** — represent large objects by small digests (Rabin-Karp, Bloom filters)
+
+2. **Randomness defeats adversaries** — no worst-case input works reliably against a randomized algorithm
+
+3. **Expected analysis, not worst-case** — we prove algorithms are good *on average over coin flips*, not for every execution
+
+4. **Tunable error** — Monte Carlo algorithms let you trade speed for reliability; run more trials for higher confidence
+
+5. **Simplicity** — randomized solutions are often far simpler than their deterministic counterparts (skip list vs. AVL tree)
+:::
+
+---
+
+## Discussion Questions
+
+1. Bloom filters allow false positives but not false negatives. Can you think of a situation where you'd want the *opposite* — false negatives but not false positives?
+
+2. Rabin-Karp picks a random prime $q$ to reduce hash collisions. What happens if an adversary knows your prime? How would you fix this?
+
+3. Reservoir sampling works for $k=1$. How would you modify it to sample $k$ items proportional to weights (some items more likely to appear)?
+
+4. The two-choice load balancer is dramatically better than random. Does a **third** choice help further? (Hint: Yes, but much less dramatically — why?)
+
+---
+
+## Further Reading
+
+::: {.columns}
+::: {.column width="50%"}
+**In Skiena:**
+- §6.1 — Random numbers
+- §6.3 — Hashing
+- Randomized QuickSort analysis
+:::
+::: {.column width="50%"}
+**Classic Papers:**
+- Burton Bloom (1970) — Original Bloom filter paper
+- Rabin & Karp (1987) — Rolling hash string search
+- Azar et al. (1999) — Power of two choices
+:::
+:::
+
+. . .
+
+**Implementations to explore:**
+- `mmh3` (Python) — fast non-cryptographic hashing for Bloom filters
+- `pybloom-live` — Bloom filter library
+- Redis sorted sets — skip list in production
+
+---
+
+## Lab / Homework Ideas
+
+::: {.incremental}
+- **Bloom filter from scratch:** Implement one with $k$ hash functions, measure actual vs. theoretical false positive rate as you vary $m$, $n$, $k$
+
+- **Rabin-Karp multi-pattern:** Extend to search for a *set* of patterns simultaneously in one pass
+
+- **Skip list implementation:** Build insert/search/delete; compare performance to `sortedcontainers.SortedList`
+
+- **Stream challenge:** Given a stream of tweets, maintain a random sample of 100 at all times — implement and verify uniformity
+
+- **Two-choice simulation:** Simulate load balancing, plot max load for 1-choice vs. 2-choice vs. 3-choice as $n$ grows
+:::

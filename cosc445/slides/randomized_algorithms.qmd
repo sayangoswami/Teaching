@@ -1,0 +1,502 @@
+---
+title: "Randomized Algorithms"
+format:
+  revealjs:
+    # theme: simple
+    slide-number: true
+    transition: fade
+    code-block-height: 400px
+    highlight-style: github
+    incremental: false
+    # footer: "Randomized Algorithms · Based on Skiena Ch. 6"
+---
+
+# Why Randomize? {background-color="#1a1a2e"}
+
+## The Core Idea
+
+We've been designing algorithms that are **deterministic** — same input, same exact steps, same output every time.
+
+. . .
+
+**What if we let the algorithm flip coins?**
+
+. . .
+
+Surprisingly, this can be:
+
+- **Simpler** to implement
+- **Faster** in practice
+- **Harder to fool** by adversaries
+- The only known approach for some problems
+
+## Two Flavors of Randomized Algorithms
+
+::: {.columns}
+::: {.column width="50%"}
+### Las Vegas 🎰
+Always gives the **correct answer**.  
+Running time varies randomly.
+
+*"We'll get there — just not sure when."*
+
+**Example:** Randomized QuickSort
+:::
+::: {.column width="50%"}
+### Monte Carlo 🎲
+Always runs in **bounded time**.  
+Answer may be wrong with small probability.
+
+*"We're probably right."*
+
+**Example:** Bloom filters, primality testing
+:::
+:::
+
+. . .
+
+> Most randomized algorithms we'll see today are **Monte Carlo** — tunable error probability.
+
+---
+
+## Intuition: Why Randomness Helps
+
+Imagine an **adversary** who knows your algorithm and picks the worst-case input.
+
+. . .
+
+- **Deterministic QuickSort:** Always pick first element as pivot → adversary gives sorted array → O(n²) every time
+
+. . .
+
+- **Randomized QuickSort:** Pick pivot randomly → adversary can't predict your choice → O(n log n) expected *no matter what*
+
+. . .
+
+**Key insight:** Randomness breaks the adversary's ability to plan against you.
+
+
+
+# Randomized QuickSort {background-color="#16213e"}
+
+## Review: What Makes QuickSort Fast (or Slow)?
+
+```
+partition(A, lo, hi):
+    pivot = A[lo]          # ← this choice matters a lot!
+    ...
+```
+
+Performance depends entirely on **pivot quality**:
+
+| Pivot Quality | Partition Split | Time Complexity |
+|---|---|---|
+| Perfect median | 50/50 | O(n log n) |
+| Pretty good | 25/75 | O(n log n) |
+| Always worst | 0/n | O(n²) |
+
+. . .
+
+We need a pivot strategy that's **good on average**, regardless of input.
+
+---
+
+## Randomized Pivot Selection
+
+```python
+import random
+
+def quicksort(A, lo, hi):
+    if lo < hi:
+        pivot_idx = random.randint(lo, hi)   # random pivot!
+        A[lo], A[pivot_idx] = A[pivot_idx], A[lo]
+        p = partition(A, lo, hi)
+        quicksort(A, lo, p - 1)
+        quicksort(A, p + 1, hi)
+```
+
+. . .
+
+**One-line change. Huge difference.**
+
+- Expected time: **O(n log n)** on *any* input
+- Worst case still O(n²) — but now astronomically unlikely
+- No adversary can engineer a bad case without knowing your coin flips
+
+---
+
+## Intuition for Expected O(n log n)
+
+Think about any two elements $x$ and $y$ in the array.
+
+. . .
+
+**When do they get compared?** Only when one of them is chosen as a pivot before either is "separated" from the other by an earlier partition.
+
+. . .
+
+The probability that $x$ and $y$ are ever compared = $\frac{2}{\text{elements between them (inclusive)}}$
+
+. . .
+
+Summing over all pairs → **O(n log n) expected comparisons** total.
+
+*(This is the key insight — we don't need to trace through recursion!)*
+
+
+# Hashing & Fingerprinting {background-color="#0f3460"}
+
+## The Fingerprinting Idea
+
+**Problem:** You have a 10 GB file. Your friend has a 10 GB file. Are they the same?
+
+. . .
+
+**Naive:** Send the whole file.
+
+. . .
+
+**Smart:** Compute a short **fingerprint** (hash) of each file. Compare fingerprints.
+
+. . .
+
+A good hash function maps a big object → small digest such that:
+
+- Same object → same hash (always)
+- Different objects → same hash (almost never)
+
+. . .
+
+This is the foundation of **Rabin-Karp** and **Bloom Filters**.
+
+
+# Rabin-Karp String Search {background-color="#0f3460"}
+
+## The Pattern Matching Problem
+
+**Input:** Text $T$ of length $n$, Pattern $P$ of length $m$  
+**Output:** All positions in $T$ where $P$ occurs
+
+```
+T = "the cat sat on the mat"
+P = "at"
+
+Matches at positions: 5, 9, 20
+```
+
+. . .
+
+**Naive approach:** Slide $P$ over $T$, compare character by character.  
+Worst case: **O(nm)** — think T = "aaaa...a", P = "aaa...ab"
+
+---
+
+## Rabin-Karp: The Key Idea
+
+Instead of comparing strings character-by-character, compare their **hashes**.
+
+. . .
+
+1. Compute hash of pattern $P$ → $h_P$
+2. Slide a window of length $m$ over $T$
+3. At each position, compute hash of window → $h_W$
+4. If $h_W = h_P$ → **probably** a match (verify to be sure)
+5. If $h_W \neq h_P$ → **definitely** not a match
+
+. . .
+
+**Magic:** We can update the window hash in **O(1)** using a *rolling hash*.
+
+---
+
+## Rolling Hash: The Mechanism
+
+Treat each window as a number in base $b$ (e.g., $b = 256$ for ASCII):
+
+$$h(\text{"cat"}) = \text{'c'} \cdot b^2 + \text{'a'} \cdot b^1 + \text{'t'} \cdot b^0 \pmod{q}$$
+
+. . .
+
+When the window slides right by one character:
+
+$$h_{\text{new}} = \left( h_{\text{old}} - T[i] \cdot b^{m-1} \right) \cdot b + T[i+m] \pmod{q}$$
+
+. . .
+
+$q$ is a large prime to prevent overflow and reduce collisions.
+
+::: {.callout-tip}
+**Intuition:** Subtract the leftmost character's contribution, shift everything left, add the new rightmost character. O(1) per step!
+:::
+
+---
+
+## Rabin-Karp: Full Picture
+
+```python
+def rabin_karp(T, P, b=256, q=101):
+    n, m = len(T), len(P)
+    h_P = hash_str(P, b, q)
+    h_W = hash_str(T[:m], b, q)
+    matches = []
+
+    for i in range(n - m + 1):
+        if h_W == h_P:
+            if T[i:i+m] == P:    # verify (avoid false positives)
+                matches.append(i)
+        if i < n - m:
+            # roll the hash
+            h_W = (b * (h_W - ord(T[i]) * pow(b, m-1, q)) + ord(T[i+m])) % q
+
+    return matches
+```
+
+. . .
+
+**Expected time: O(n + m)** — one pass, O(1) per step, rare verifications.
+
+**False positives** (hash collision, no match): re-reduced by choosing large prime $q$.
+
+---
+
+## Why Not Just Use KMP? {visibility="hidden"}
+
+| Algorithm | Time | Space | Multi-pattern? |
+|---|---|---|---|
+| Naive | O(nm) | O(1) | Yes (slow) |
+| KMP | O(n + m) | O(m) | Complex |
+| **Rabin-Karp** | **O(n + m) expected** | **O(1)** | **Yes! Easily** |
+
+. . .
+
+Rabin-Karp shines for **multiple pattern search** — hash all patterns into a set, check membership in O(1). One pass over T finds all of them!
+
+
+# Bloom Filters {background-color="#533483"}
+
+## The Membership Problem
+
+**Question:** Is element $x$ in set $S$?
+
+. . .
+
+**Exact solutions:**
+
+- Hash table: O(1) average, but stores all elements
+- For millions of URLs, this needs gigabytes of RAM
+
+. . .
+
+**What if we allow a small error?**
+
+> "Is this URL in our blocklist?"  
+> Acceptable: occasionally say "yes" when it's actually "no"  
+> Not acceptable: say "no" when it's actually "yes"
+
+---
+
+## Bloom Filter: The Structure
+
+A Bloom filter is a **bit array** of $m$ bits (all initially 0) + **$k$ hash functions**.
+
+. . .
+
+**Insert** element $x$:  
+Hash $x$ with each of $k$ functions → set those $k$ bits to 1
+
+. . .
+
+**Query** element $x$:  
+Hash $x$ → check those $k$ bits  
+
+- All 1? → **probably in set**
+- Any 0? → **definitely not in set**
+
+---
+
+## Bloom Filter: Visual Example
+
+::: {.columns}
+::: {.column width="60%"}
+*Array of 10 bits, 2 hash functions*
+
+Insert **"cat"**: $h_1$("cat")=2, $h_2$("cat")=7 → set bits 2, 7  
+Insert **"dog"**: $h_1$("dog")=1, $h_2$("dog")=5 → set bits 1, 5
+
+```
+Bit index: 0 1 2 3 4 5 6 7 8 9
+           0 1 1 0 0 1 0 1 0 0
+```
+::: {.fragment}
+
+Query **"cat"**: bits 2,7 → both 1 ✅ *probably yes*  
+Query **"rat"**: $h_1$=1, $h_2$=4 → bit 4 is 0 ❌ *definitely no*  
+Query **"eel"**: $h_1$=1, $h_2$=5 → both 1... **false positive!**
+:::
+:::
+::: {.column width="40%"}
+::: {.fragment}
+::: {.callout-warning}
+**False positives** happen when an element "accidentally" maps to all set bits.
+
+**False negatives** are **impossible** — if you inserted it, those bits stay 1.
+:::
+:::
+:::
+:::
+
+---
+
+## Tuning the Error Rate
+
+The false positive rate depends on:
+
+- **$m$** — number of bits (bigger → fewer collisions)
+- **$n$** — number of elements inserted
+- **$k$** — number of hash functions
+
+. . .
+
+$$\text{False positive rate} \approx \left(1 - e^{-kn/m}\right)^k$$
+
+. . .
+
+**Optimal $k$** (minimizes false positives): $k = \frac{m}{n} \ln 2 \approx 0.7 \cdot \frac{m}{n}$
+
+. . .
+
+::: {.callout-tip}
+**Rule of thumb:** ~10 bits per element → ~1% false positive rate with optimal $k \approx 7$ hash functions.
+:::
+
+---
+
+## Real-World Bloom Filter Uses
+
+- **Browsers** (Chrome): Safe Browsing — is this URL malicious? (Bloom filter downloaded locally, rare positives trigger a real server lookup)
+- **Databases** (Cassandra, HBase): "Does this key exist anywhere before we do a disk seek?"
+- **Spell checkers**: Is this word in the dictionary?
+- **Network routers**: Duplicate packet detection
+- **CDNs**: Track which objects to cache
+
+. . .
+
+**Common theme:** A tiny, fast "probably yes/definitely no" check that saves expensive lookups.
+
+---
+
+## Limitations of Bloom Filters
+
+::: {.columns}
+::: {.column width="50%"}
+**Can't do:**
+
+- Delete elements (without extensions)
+- Return the element itself
+- Count occurrences
+- Enumerate members
+:::
+::: {.column width="50%"}
+**Variants that extend this:**
+
+- **Counting Bloom Filter**: supports deletes
+- **Cuckoo Filter**: also supports deletes, better cache performance
+- **HyperLogLog**: count distinct elements approximately
+:::
+:::
+
+
+# Skip Lists {background-color="#2d6a4f"}
+
+## Motivation: Ordered Dictionaries
+
+A hash table gives O(1) lookup but **no ordering**.
+
+Sorted arrays give O(log n) search but **O(n) insert**.
+
+Balanced BSTs give O(log n) for both but are **complex to implement correctly** (rotations!).
+
+. . .
+
+**Skip List:** A randomized data structure achieving O(log n) expected for search, insert, delete — with a beautifully simple idea.
+
+---
+
+## The Skip List Idea
+
+Start with a **sorted linked list**. Search is O(n) — we have to walk it.
+
+. . .
+
+**What if we add "express lanes"?**
+
+. . .
+
+
+```
+Level 1: 1 ──> 3 ──> 4 ──> 6 ──> 7 ──> 8 ──> 9
+Level 2: 1 ────────> 4 ────────> 7 ────────> 9
+Level 3: 1 ────────────────────────────────> 9
+```
+
+. . .
+
+
+Search for 6:
+
+- Start at *level 3*: 1 → 9 (too far), drop down
+- *Level 2*: 1 → 4 → 7 (overshot), drop down
+- *Level 1*: 4 → 6 ✓
+
+. . .
+
+**3 steps instead of 6**
+
+---
+
+## How Levels Are Assigned
+
+When inserting a new element, flip a coin repeatedly:
+
+```python
+def random_level(max_level, p=0.5):
+    level = 1
+    while random.random() < p and level < max_level:
+        level += 1
+    return level
+```
+
+. . .
+
+- Each element appears on level 1 (always)
+- Promoted to level 2 with probability $p$
+- Promoted to level 3 with probability $p^2$
+- ...
+
+. . .
+
+**Expected number of levels:** $\log_{1/p} n$  
+With $p = 0.5$: **~$\log_2 n$ levels** — like a balanced BST, but no balancing code!
+
+---
+
+## Skip List vs. Balanced BST
+
+| | Balanced BST (e.g., AVL) | Skip List |
+|---|---|---|
+| Search | O(log n) worst case | O(log n) **expected** |
+| Insert | O(log n) worst case | O(log n) expected |
+| Delete | O(log n) worst case | O(log n) expected |
+| Implementation | Complex (rotations) | Simple |
+| Concurrent access | Painful | Elegant |
+
+. . .
+
+Skip lists are used in **Redis** (sorted sets) and **LevelDB** (memtable).
+
+
+# Summary {background-color="#1a1a2e"}
+
+*"A randomized algorithm is an algorithm that uses random numbers to make decisions during its execution. Unlike a deterministic algorithm, different runs of a randomized algorithm on the same input can produce different results."*
+
+— Skiena, *The Algorithm Design Manual*
