@@ -1909,5 +1909,243 @@
     "title": "Dynamic Programming: More Problems",
     "section": "Key Takeaways",
     "text": "Key Takeaways\n\n\n\nState\ndp[i][j] = paths/cost to reach cell (i,j)\n\n\nRecurrence\ndp[i][j] = dp[i-1][j] + dp[i][j-1]\n\n\nBase cases\nFirst row and column = 1 (unique paths)\n\n\nObstacles\nSet dp[i][j] = 0 at blocked cells\n\n\nSpace opt.\nOnly need previous row → O(n) space\n\n\nPattern\nGrid DP — build from top-left to bottom-right\n\n\n\n\n\n“Grid DP is like filling in a spreadsheet — each cell only looks at its neighbours, but the answer propagates beautifully.”"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#what-does-it-mean-for-a-problem-to-be-hard",
+    "href": "cosc445/slides/p-np-reductions.html#what-does-it-mean-for-a-problem-to-be-hard",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "What Does It Mean for a Problem to Be “Hard”?",
+    "text": "What Does It Mean for a Problem to Be “Hard”?\nSome problems feel genuinely different from others.\n\nEasy to solve:\n\nSort a list of numbers\nFind the shortest path in a map\nCheck if a number is even\n\n\n\nSeemingly harder:\n\nFind the shortest tour visiting every city and returning home\nSchedule classes so no student has two at once\nPack items into a suitcase to maximize value\n\n\n\n\nIs this just a matter of not being clever enough yet — or is something deeper going on?"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-two-tasks-solving-vs.-checking",
+    "href": "cosc445/slides/p-np-reductions.html#the-two-tasks-solving-vs.-checking",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Two Tasks: Solving vs. Checking",
+    "text": "The Two Tasks: Solving vs. Checking\nHere’s a key observation.\n\nFor many hard problems, even if we can’t find a solution quickly…\n\n\n…we can verify a proposed solution quickly.\n\n\n\n\n\n\n\n\nExample: Sudoku\n\n\n\nHard: Fill in a blank 9×9 Sudoku grid correctly.\n\nEasy: Check whether a completed grid is valid.\n\n\n\n\n\n\nThis gap between finding and checking is at the heart of P vs. NP."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#a-tale-of-two-students",
+    "href": "cosc445/slides/p-np-reductions.html#a-tale-of-two-students",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "A Tale of Two Students",
+    "text": "A Tale of Two Students\n\nAlice is given a Sudoku puzzle and must fill it in from scratch.\nBob is handed a completed grid and must check if it’s right.\n\n\n\nBob’s job is clearly easier.\nIs Alice’s job fundamentally harder? Or just harder in practice?\n\n\n\nThis is the P vs. NP question — one of the biggest unsolved problems in all of mathematics."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#what-is-a-decision-problem",
+    "href": "cosc445/slides/p-np-reductions.html#what-is-a-decision-problem",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "What Is a “Decision Problem”?",
+    "text": "What Is a “Decision Problem”?\nBefore defining P and NP, we need a common format for problems.\n\nA decision problem has a yes/no answer:\n\n\n\nProblem\nDecision version\n\n\n\n\nFind shortest path\nIs there a path of length ≤ k?\n\n\nFind a schedule\nIs there a valid schedule?\n\n\nFactor a number\nDoes n have a factor &lt; k?\n\n\n\n\n\nWe focus on decision problems because they’re clean to reason about — and most optimization problems have a natural decision version."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-class-p",
+    "href": "cosc445/slides/p-np-reductions.html#the-class-p",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Class P",
+    "text": "The Class P\nP = the set of decision problems solvable in polynomial time.\n\nPolynomial time means the algorithm runs in \\(O(n^k)\\) steps for some fixed \\(k\\), where \\(n\\) is the input size.\n\n\n\n\nIn P:\n\nIs this list sorted?\nIs there a path from A to B?\nIs this number prime?\nDoes this graph have an Euler circuit?\n\n\nWhat “polynomial” buys us:\n\n\\(O(n)\\) — linear, great\n\\(O(n^2)\\) — quadratic, fine\n\\(O(b^{10})\\) — \\(b\\) is the number of bits. technically polynomial, but rough\n\n\n\n\nIntuition: P is the class of problems we can solve efficiently."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-class-np",
+    "href": "cosc445/slides/p-np-reductions.html#the-class-np",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Class NP",
+    "text": "The Class NP\nNP = the set of decision problems where a “yes” answer can be verified in polynomial time.\n\nMore carefully: given a proposed solution (called a certificate or witness), we can check it quickly.\n\n\n\n\n\n\n\n\nExamples\n\n\n\nHamiltonian Cycle: Given a graph and a proposed cycle, check it visits every vertex exactly once. ✓ Easy to check!\n3-Colorability: Given a graph and a proposed coloring, verify no two adjacent vertices share a color. ✓ Easy to check!\nSubset Sum: Given numbers and a proposed subset, check if they sum to the target. ✓ Easy to check!\n\n\n\n\n\n\nNP does NOT mean “not polynomial” — it stands for Nondeterministic Polynomial time."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#p-vs.-np-the-picture",
+    "href": "cosc445/slides/p-np-reductions.html#p-vs.-np-the-picture",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "P vs. NP — The Picture",
+    "text": "P vs. NP — The Picture\n         All Problems\n    ┌───────────────────────────────┐\n    │                               │\n    │    ┌───────────────────┐      │\n    │    │        NP         │      │\n    │    │   ┌───────────┐   │      │\n    │    │   │     P     │   │      │\n    │    │   │           │   │      │\n    │    │   └───────────┘   │      │\n    │    │                   │      │\n    │    └───────────────────┘      │\n    │                               │\n    └───────────────────────────────┘\n\n\nEvery problem in P is also in NP. (If you can solve it fast, you can certainly verify it fast.)\nThe question: Is P = NP? Is there anything in NP that’s not in P?\n\n\n\nMost researchers believe P ≠ NP — but nobody has proved it."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#why-does-p-np-feel-true",
+    "href": "cosc445/slides/p-np-reductions.html#why-does-p-np-feel-true",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Why Does P ≠ NP Feel True?",
+    "text": "Why Does P ≠ NP Feel True?\nThink about creativity vs. appreciation:\n\n\nIt’s much easier to appreciate a great novel than to write one.\nIt’s much easier to verify a proof than to discover one.\nIt’s much easier to check a schedule is valid than to build one.\n\n\n\nIf P = NP, then finding would be no harder than checking — which feels profoundly wrong.\n\n\n\n“If P = NP, then the world would be a profoundly different place…\nThere would be no special value in ‘creative leaps,’ no fundamental gap between solving a problem and recognizing the solution…\nEveryone who could appreciate a symphony would be Mozart; everyone who could follow a step-by-step argument would be Gauss; everyone who could recognize a good investment strategy would be Warren Buffett.”\n— Scott Aaronson"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-hardest-problems-in-np",
+    "href": "cosc445/slides/p-np-reductions.html#the-hardest-problems-in-np",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Hardest Problems in NP",
+    "text": "The Hardest Problems in NP\nSome problems in NP seem especially hard. We call them NP-complete.\n\nAn NP-complete problem is one that is:\n\nIn NP — solutions can be verified quickly.\nNP-hard — at least as hard as every other problem in NP.\n\n\n\nInformally: if you could solve any NP-complete problem efficiently, you could solve all of NP efficiently — and P would equal NP.\n\n\n\n\n\n\n\n\nThe Stakes\n\n\nIf anyone finds a polynomial-time algorithm for even one NP-complete problem, then P = NP and cryptography, as we know it, collapses."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#famous-np-complete-problems",
+    "href": "cosc445/slides/p-np-reductions.html#famous-np-complete-problems",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Famous NP-Complete Problems",
+    "text": "Famous NP-Complete Problems\n\n\nGraph Problems\n\nHamiltonian Cycle\nGraph Coloring (3+ colors)\nClique\nIndependent Set\nVertex Cover\n\n\nOther Problems\n\n3-SAT (Boolean satisfiability)\nSubset Sum\nBin Packing\nTraveling Salesman (decision version)\nScheduling with constraints\n\n\n\nThese all look completely different — but they’re all secretly the same problem in disguise.\n\n\nThat’s where reductions come in."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#what-is-a-reduction",
+    "href": "cosc445/slides/p-np-reductions.html#what-is-a-reduction",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "What Is a Reduction?",
+    "text": "What Is a Reduction?\nA reduction from problem A to problem B means:\n\n“If I can solve B, I can solve A.”\n\n\nWe transform any instance of A into an instance of B, solve B, and translate the answer back.\n\n\n   Input to A ──► [Transform] ──► Input to B ──► [Solve B] ──► Answer to B\n                                                                     │\n   Answer to A ◄───────────────────────────────────────────────────[Translate]\n\n\nKey requirement: The transformation must run in polynomial time."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#reduction-intuition-the-adapter",
+    "href": "cosc445/slides/p-np-reductions.html#reduction-intuition-the-adapter",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Reduction Intuition: The Adapter",
+    "text": "Reduction Intuition: The Adapter\nThink of a reduction like a power adapter:\n\n\nYou have a US plug (Problem A) and a European outlet (Problem B solver).\nThe adapter transforms the plug so it fits the outlet.\nThe adapter doesn’t solve your problem — the outlet does.\nThe adapter just needs to be simple and reliable.\n\n\n\nIf you have the adapter (reduction), and access to the outlet (B solver), you can always charge your phone (solve A)."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#reduction-the-logic",
+    "href": "cosc445/slides/p-np-reductions.html#reduction-the-logic",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Reduction: The Logic",
+    "text": "Reduction: The Logic\nIf A reduces to B (written \\(A \\leq_p B\\)), then:\n\n\nB is at least as hard as A.\n(If B were easy, A would be too.)\n\n\n\n\nContrapositively: If A is hard, then B must be hard too.\n\n\n\n\n\n\n\n\n\nProving NP-hardness\n\n\nTo show a new problem X is NP-hard:\nTake a known NP-hard problem (like 3-SAT) and reduce it to X.\nThis shows X is at least as hard as 3-SAT."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#a-concrete-example-independent-set-vertex-cover",
+    "href": "cosc445/slides/p-np-reductions.html#a-concrete-example-independent-set-vertex-cover",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "A Concrete Example: Independent Set → Vertex Cover",
+    "text": "A Concrete Example: Independent Set → Vertex Cover\nIndependent Set: Does graph G have k vertices with no edges between them?\nVertex Cover: Does graph G have k vertices that touch every edge?\n\nClaim: These two problems are equivalent via a simple reduction.\n\n\n\n\n\n\n\n\nThe Key Observation\n\n\nA set S is an independent set ↔︎ V  S (all other vertices) is a vertex cover.\n\n\n\n\n\nWhy? Every edge must have at least one endpoint in V  S — because if both endpoints were in S, they’d violate the independent set condition."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#independent-set-vertex-cover-example",
+    "href": "cosc445/slides/p-np-reductions.html#independent-set-vertex-cover-example",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Independent Set ↔︎ Vertex Cover: Example",
+    "text": "Independent Set ↔︎ Vertex Cover: Example\nConsider this graph (6 vertices):\n    1 ─── 2\n    │     │\n    3 ─── 4 ─── 5\n              │\n              6\n\n\nIndependent Set of size 3: {1, 4, 6}? Check: no edges between them… yes! ✓\nVertex Cover of size 3: {2, 3, 5}? Check: does every edge have an endpoint here?\n\n1-2 ✓, 2-4 ✓, 1-3 ✓, 3-4 ✓, 4-5 ✓, 5-6 ✓ — yes! ✓\n\n\n\n\nThe independent set and vertex cover are complements of each other."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-reduction-formally",
+    "href": "cosc445/slides/p-np-reductions.html#the-reduction-formally",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Reduction (Formally)",
+    "text": "The Reduction (Formally)\nReducing Independent Set to Vertex Cover:\nGiven: Instance (G, k) of Independent Set\nProduce: Instance (G, n−k) of Vertex Cover\n\n\nSame graph G\nTarget size changes from k to n−k\nAnswer is the same!\n\n\n\nThis transformation takes \\(O(1)\\) time — it’s trivially polynomial.\nSo Independent Set \\(\\leq_p\\) Vertex Cover, and vice versa."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#sat-the-universal-problem",
+    "href": "cosc445/slides/p-np-reductions.html#sat-the-universal-problem",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "3-SAT: The Universal Problem",
+    "text": "3-SAT: The Universal Problem\n3-SAT: Given a Boolean formula in CNF with exactly 3 literals per clause, is there an assignment of variables that makes it true?\n\nExample: \\[(x_1 \\lor \\lnot x_2 \\lor x_3) \\land (\\lnot x_1 \\lor x_2 \\lor x_4) \\land (x_2 \\lor \\lnot x_3 \\lor \\lnot x_4)\\]\n\n\n3-SAT was the first problem proved NP-complete (Cook, 1971). Almost every NP-hardness proof starts here.\n\n\n\nThe game: reduce 3-SAT → your problem. Show that solving your problem would let us solve 3-SAT."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#reduction-3-sat-independent-set",
+    "href": "cosc445/slides/p-np-reductions.html#reduction-3-sat-independent-set",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Reduction: 3-SAT → Independent Set",
+    "text": "Reduction: 3-SAT → Independent Set\nIdea: Build a graph where an independent set corresponds to a satisfying assignment.\n\nConstruction:\nFor each clause with 3 literals, create a triangle (3-clique) of nodes.\nAdd an edge between a literal and its negation across triangles.\n\n\nClause 1: (x₁ ∨ ¬x₂ ∨ x₃)        Clause 2: (¬x₁ ∨ x₂ ∨ x₄)\n\n     x₁ ──── ¬x₂                      ¬x₁ ──── x₂\n      │  \\  / │                         │  \\   / │\n      │   \\/  │                         │   \\/   │\n      │   /\\  │                         │   /\\   │\n      │  /  \\ │                         │  /  \\  │\n     x₃ ──── (triangle)               x₄ ──── (triangle)\n\n         x₁ ─────────────────────────── ¬x₁   (conflict edge)\n         ¬x₂ ────────────────────────── x₂    (conflict edge)\n\n\nClaim: The formula is satisfiable ↔︎ the graph has an independent set of size = number of clauses."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#why-the-reduction-works",
+    "href": "cosc445/slides/p-np-reductions.html#why-the-reduction-works",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Why the Reduction Works",
+    "text": "Why the Reduction Works\n\nEach triangle represents a clause. An independent set can pick at most one node per triangle.\nTo get an independent set of size k (= number of clauses), we must pick exactly one from each triangle — i.e., one true literal per clause.\nConflict edges prevent picking contradictory literals (x₁ and ¬x₁).\n\n\nSo: a satisfying assignment → a valid independent set, and vice versa.\n\n\nThis proves Independent Set is NP-hard — because 3-SAT (known hard) reduces to it."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#np-completeness-in-the-wild",
+    "href": "cosc445/slides/p-np-reductions.html#np-completeness-in-the-wild",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "NP-Completeness in the Wild",
+    "text": "NP-Completeness in the Wild\nOnce we have a toolbox of NP-complete problems, we can prove new ones quickly.\n\nThe reduction chain looks like:\nCircuit SAT\n    │\n    ▼\n  3-SAT ──────────────────────────┐\n    │                             │\n    ▼                             ▼\nIndependent Set            Hamiltonian Cycle\n    │                             │\n    ▼                             ▼\nVertex Cover               Traveling Salesman\n    │\n    ▼\n  Clique\n\n\nEach arrow is a polynomial-time reduction. Problems inherit hardness upward."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#a-reduction-story-exam-scheduling",
+    "href": "cosc445/slides/p-np-reductions.html#a-reduction-story-exam-scheduling",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "A Reduction Story: Exam Scheduling",
+    "text": "A Reduction Story: Exam Scheduling\nScenario: A university must schedule exams so that no student has two exams at the same time.\n\nModel as a graph: - Node = each exam - Edge = two exams share a student\n\n\nQuestion: Can we schedule k exam slots?\n= Can we color the graph with k colors?\n\n\nGraph coloring is NP-complete → exam scheduling is NP-hard.\n\n\nPractical takeaway: Don’t expect a perfect algorithm. Use heuristics, approximations, or exploit special structure."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#reductions-give-us-two-powers",
+    "href": "cosc445/slides/p-np-reductions.html#reductions-give-us-two-powers",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Reductions Give Us Two Powers",
+    "text": "Reductions Give Us Two Powers\n\n\nPower 1: Prove hardness\nReduce a known hard problem to your problem.\n“Even 3-SAT reduces to this — so it must be hard.”\n\nPower 2: Solve via transformation\nReduce your problem to something you have a solver for.\n“I can transform my scheduling problem into an ILP and use an existing solver.”\n\n\nBoth directions are useful! Theoretical computer scientists use Power 1. Practitioners often use Power 2."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#were-not-helpless",
+    "href": "cosc445/slides/p-np-reductions.html#were-not-helpless",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "We’re Not Helpless",
+    "text": "We’re Not Helpless\nJust because a problem is NP-complete doesn’t mean we give up.\n\nStrategy 1: Exact algorithms for small inputs\nExponential algorithms are fine when n is small. Many real scheduling problems have n &lt; 30.\n\n\nStrategy 2: Approximation algorithms\nFind a solution guaranteed to be within some factor of optimal.\nE.g., a 2-approximation for Vertex Cover runs in polynomial time.\n\n\nStrategy 3: Heuristics and local search\nNo guarantees, but often work well in practice. (Simulated annealing, genetic algorithms, etc.)\n\n\nStrategy 4: Exploit special structure\nMany NP-hard problems become easy on special graph types (trees, planar graphs, etc.)."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-vertex-cover-2-approximation",
+    "href": "cosc445/slides/p-np-reductions.html#the-vertex-cover-2-approximation",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Vertex Cover 2-Approximation",
+    "text": "The Vertex Cover 2-Approximation\nHere’s a beautiful simple approximation:\n\nVertexCover-Approx(G):\n  C = {}\n  while G has edges:\n    pick any edge (u, v)\n    add both u and v to C\n    remove u, v, and all their edges from G\n  return C\n\n\nWhy it’s a 2-approximation:\nEvery optimal solution must include at least one of u or v from each picked edge.\nWe included both — so we’re off by at most a factor of 2.\n\n\nPolynomial time, guaranteed quality. Not optimal, but provably good."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#special-cases-when-hard-problems-become-easy",
+    "href": "cosc445/slides/p-np-reductions.html#special-cases-when-hard-problems-become-easy",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Special Cases: When Hard Problems Become Easy",
+    "text": "Special Cases: When Hard Problems Become Easy\n\n\n\nGeneral Problem\nSpecial Case\nComplexity\n\n\n\n\nGraph Coloring\n2-coloring (bipartite check)\nP\n\n\nGraph Coloring\nPlanar graphs\nP (4 colors always suffice)\n\n\nTSP\nPoints in a metric space\nApprox. in P\n\n\nHamiltonian Cycle\nComplete graphs\nTrivially yes\n\n\nVertex Cover\nTrees\nP\n\n\n\n\nLesson: NP-completeness is a worst-case statement. Real inputs often have structure you can exploit."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-complexity-zoo-simplified",
+    "href": "cosc445/slides/p-np-reductions.html#the-complexity-zoo-simplified",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Complexity Zoo (Simplified)",
+    "text": "The Complexity Zoo (Simplified)\n         ┌──────────────────────────────────────────┐\n         │             All Problems                  │\n         │   ┌──────────────────────────────────┐   │\n         │   │         Decidable                │   │\n         │   │  ┌────────────────────────────┐  │   │\n         │   │  │          NP                │  │   │\n         │   │  │  ┌──────────────────────┐  │  │   │\n         │   │  │  │  NP-complete         │  │  │   │\n         │   │  │  │  ┌────────────────┐  │  │  │   │\n         │   │  │  │  │       P        │  │  │  │   │\n         │   │  │  │  └────────────────┘  │  │  │   │\n         │   │  │  └──────────────────────┘  │  │   │\n         │   │  └────────────────────────────┘  │   │\n         │   └──────────────────────────────────┘   │\n         └──────────────────────────────────────────┘\n\nNP-complete problems sit at the frontier of NP — they’re in NP, and they’re the hardest things in it."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-million-dollar-question-literally",
+    "href": "cosc445/slides/p-np-reductions.html#the-million-dollar-question-literally",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Million Dollar Question (Literally)",
+    "text": "The Million Dollar Question (Literally)\nThe P vs. NP problem is one of the Millennium Prize Problems.\n\nThe Clay Mathematics Institute will award $1,000,000 for a solution — in either direction.\n\n\nIf P = NP: - Efficient proofs for math theorems - AI that could solve any problem a human could check - Cryptography as we know it breaks\n\n\nIf P ≠ NP: (what most believe) - Hard problems are genuinely hard — forever - Cryptography is on safe ground - Creativity and insight have intrinsic value"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#why-this-matters-for-you-as-a-programmer",
+    "href": "cosc445/slides/p-np-reductions.html#why-this-matters-for-you-as-a-programmer",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Why This Matters for You as a Programmer",
+    "text": "Why This Matters for You as a Programmer\n\nWhen you encounter a new problem:\n\nTry to solve it — maybe it’s in P.\nIf you’re stuck, ask: does this look like an NP-complete problem I’ve seen?\nIf yes: try to reduce a known NP-hard problem to yours — that’s your evidence.\nIf it seems NP-hard: pivot to approximations, heuristics, or special cases.\n\n\n\nRecognizing NP-complete problems is a core professional skill.\nIt saves you from searching for an algorithm that doesn’t exist."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#classic-np-complete-problems-to-remember",
+    "href": "cosc445/slides/p-np-reductions.html#classic-np-complete-problems-to-remember",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Classic NP-Complete Problems to Remember",
+    "text": "Classic NP-Complete Problems to Remember\n\n\n\n\n\n\n\nProblem\nWhat it asks\n\n\n\n\n3-SAT\nCan we satisfy a Boolean formula?\n\n\nClique\nDoes the graph have k mutually connected nodes?\n\n\nIndependent Set\nDoes the graph have k mutually disconnected nodes?\n\n\nVertex Cover\nCan k nodes touch every edge?\n\n\nHamiltonian Cycle\nIs there a cycle visiting every node exactly once?\n\n\nGraph Coloring\nCan we color nodes with k colors, no two adjacent the same?\n\n\nSubset Sum\nDoes any subset add up to the target?\n\n\n\n\nThese are your “reduction starting points.”"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#summary",
+    "href": "cosc445/slides/p-np-reductions.html#summary",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Summary",
+    "text": "Summary\n\nP: Problems solvable in polynomial time — our efficient algorithms live here.\nNP: Problems verifiable in polynomial time — solutions are easy to check.\nNP-complete: The hardest problems in NP — if any one is in P, then P = NP.\nReduction: A transformation showing one problem is “at least as hard as” another.\nP vs. NP: Unsolved; most believe P ≠ NP — finding and checking are genuinely different.\nIn practice: Use approximations, heuristics, or special-case algorithms for NP-hard problems."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#looking-ahead",
+    "href": "cosc445/slides/p-np-reductions.html#looking-ahead",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Looking Ahead",
+    "text": "Looking Ahead\nNext topics to explore:\n\n\nApproximation algorithms — with provable guarantees (Set Cover, TSP in metric spaces)\nFixed-parameter tractability — solving NP-hard problems efficiently when some parameter is small\nRandomized algorithms — sometimes randomness breaks hardness\nMore NP-complete reductions — practice makes perfect\n\n\n\n\n“A problem well-reduced is a problem half-understood.”"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#discussion-questions",
+    "href": "cosc445/slides/p-np-reductions.html#discussion-questions",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Discussion Questions",
+    "text": "Discussion Questions\n\nCan you think of a problem in your daily life that feels more like “checking” than “finding”? What’s the difference?\nIf P = NP were proved tomorrow, which consequence would be most significant — the cryptography implications, or the AI implications? Why?\nWe showed Independent Set ↔︎ Vertex Cover. Can you intuitively convince yourself these are the same problem?\nThe 2-approximation for Vertex Cover is simple and elegant. Why might a 3-approximation be easier to find than a 1.5-approximation?\nThe exam scheduling problem reduces to graph coloring. What does it mean for a university scheduler if graph coloring is NP-hard?"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#practice-problems",
+    "href": "cosc445/slides/p-np-reductions.html#practice-problems",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Practice Problems",
+    "text": "Practice Problems\nProblem 1: Show that the Clique problem (does G have a clique of size k?) reduces to Independent Set.\nHint: Think about the complement graph.\n\nProblem 2: The Subset Sum problem: given integers \\(S = \\{s_1, \\ldots, s_n\\}\\) and target \\(T\\), does any subset sum to \\(T\\)? Is this in NP? Argue why or why not.\n\n\nProblem 3: Consider the Partition problem: can we split \\(S\\) into two subsets with equal sum? Show this reduces to Subset Sum.\n\n\nProblem 4 (Challenge): Suppose someone claimed to have a polynomial-time algorithm for 3-SAT. Outline how you would use it to solve Hamiltonian Cycle in polynomial time. (Use the reduction chain from the lecture.)"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#further-reading",
+    "href": "cosc445/slides/p-np-reductions.html#further-reading",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "Further Reading",
+    "text": "Further Reading\n\nSkiena, Ch. 11 — NP-completeness and reductions (your textbook)\nSipser, Introduction to the Theory of Computation — More rigorous treatment of complexity\nScott Aaronson’s blog (Shtetl-Optimized) — Accessible and fascinating writing on P vs. NP\n“Computers and Intractability” by Garey & Johnson — The classic reference for NP-completeness proofs\nP vs. NP problem page (Clay Mathematics Institute) — clay math.org\n\n\nAnd if you solve P vs. NP: please let me know before submitting to the journal."
   }
 ]
