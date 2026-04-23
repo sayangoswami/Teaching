@@ -4,7 +4,13 @@ format:
   html:
     toc: true
 ---
-
+<!-- Use the  following to create a pdf version of the syllabus.
+lang: en
+format: 
+  pdf:
+    pdf-standard: ua-2
+    mainfont: "Atkinson Hyperlegible"
+-->
 
 
 # COSC 445: DESIGN/ANALYSIS OF ALGORITHMS - Syllabus
