@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excalidraw SVG Animator</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f4f4f9; margin: 0; }
+        #drop-zone { width: 400px; height: 200px; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; background: white; border-radius: 10px; transition: 0.3s; }
+        #drop-zone.hover { border-color: #6965db; background: #eeedff; transform: scale(1.02); }
+        .controls { margin-top: 20px; display: flex; gap: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+
+    <h1>Excalidraw Animator</h1>
+    <div id="drop-zone">Drop your Excalidraw SVG here or click to upload</div>
+
+    <div class="controls">
+        <label><input type="checkbox" id="autoPlay"> Auto-Play</label>
+        <label>Delay (ms): <input type="number" id="interval" value="1200" style="width: 70px;"></label>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const autoPlayCheck = document.getElementById('autoPlay');
+        const intervalInput = document.getElementById('interval');
+
+        dropZone.onclick = () => { 
+            const input = document.createElement('input'); 
+            input.type = 'file'; 
+            input.accept = ".svg";
+            input.onchange = e => handleFile(e.target.files[0]); 
+            input.click(); 
+        };
+
+        dropZone.ondragover = e => { e.preventDefault(); dropZone.classList.add('hover'); };
+        dropZone.ondragleave = () => dropZone.classList.remove('hover');
+        dropZone.ondrop = e => { e.preventDefault(); dropZone.classList.remove('hover'); handleFile(e.dataTransfer.files[0]); };
+
+        async function handleFile(file) {
+            if (!file || !file.name.endsWith('.svg')) return alert("Please drop an SVG file.");
+            
+            const text = await file.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, "image/svg+xml");
+            const svg = doc.querySelector('svg');
+
+            // 1. Build Timeline Data
+            const timeline = [];
+            // Excalidraw usually places elements inside <g> tags
+            const groups = Array.from(svg.children).filter(n => n.nodeName === 'g');
+
+            groups.forEach((g, i) => {
+                const id = `step-${i}`;
+                g.setAttribute('id', id);
+                g.setAttribute('style', 'opacity: 0;'); 
+                
+                const isText = g.querySelector('text') !== null;
+                // JavaScript uses .push() instead of .append()
+                timeline.push({
+                    id: id,
+                    step: i,
+                    type: isText ? 'fast' : 'slow',
+                    duration: isText ? 300 : 1200
+                });
+            });
+
+            // 2. Create Config Object
+            const config = {
+                auto: autoPlayCheck.checked,
+                interval: parseInt(intervalInput.value),
+                timeline: timeline
+            };
+
+            // 3. Inject Config Script
+            const configScript = doc.createElementNS("http://www.w3.org/2000/svg", "script");
+            configScript.setAttribute('id', 'animation-config');
+            configScript.setAttribute('type', 'application/json');
+            configScript.textContent = JSON.stringify(config, null, 2);
+            svg.insertBefore(configScript, svg.firstChild);
+
+            // 4. Inject Animation Engine
+            const engineScript = doc.createElementNS("http://www.w3.org/2000/svg", "script");
+
+            // We omit the CDATA tags here. Modern browsers handle raw JS in SVG fine.
+            // We use .textContent which is the standard way to inject script body.
+            engineScript.textContent = `
+                const data = JSON.parse(document.getElementById('animation-config').textContent);
+                let currentStep = 0;
+
+                function runStep(idx) {
+                    const items = data.timeline.filter(d => d.step === idx);
+                    if (items.length === 0) return false;
+                    items.forEach(item => {
+                        const el = document.getElementById(item.id);
+                        if (!el) return;
+                        if (item.type === 'slow') {
+                            el.querySelectorAll('path').forEach(p => {
+                                const len = p.getTotalLength();
+                                p.style.strokeDasharray = len;
+                                p.style.strokeDashoffset = len;
+                                p.getBoundingClientRect();
+                                p.style.transition = 'stroke-dashoffset ' + item.duration + 'ms ease-in-out';
+                                p.style.strokeDashoffset = '0';
+                            });
+                        }
+                        el.style.opacity = '1';
+                        el.style.transition = 'opacity ' + item.duration + 'ms';
+                    });
+                    return true;
+                }
+
+                if (data.auto) {
+                    const timer = setInterval(() => { 
+                        if (!runStep(currentStep++)) clearInterval(timer); 
+                    }, data.interval);
+                } else {
+                    window.addEventListener('keydown', e => { 
+                        if (e.code === 'Space' || e.code === 'ArrowRight') runStep(currentStep++); 
+                    });
+                }
+            `;
+            svg.appendChild(engineScript);
+
+            // 5. Download the result
+            const blob = new Blob([new XMLSerializer().serializeToString(doc)], {type: "image/svg+xml"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "animated_" + file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
