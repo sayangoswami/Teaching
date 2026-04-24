@@ -16,7 +16,7 @@ format:
 
 # COSC 130: INTRO TO COMPUTER SCIENCE II - Syllabus
 
-- **Section:** 01
+- **Section:** 01/02
 - **Credit hours:** 4
 - **Term and year:** Spring 2026
 - **Delivery Mode** Classroom
@@ -185,6 +185,6 @@ The schedule below outlines our plan for the semester. As we move through the co
 | 15   | Apr 28    | Project Completion and Presentation.                                  |             |      |
 |      | Apr 30    | Finals Review                                                         | Project Due |      |
 | 16   | May 5     | Final Exam review                                                     |             |      |
-|      | **May 7** | **Final Exam (9:00 AM – 11:15 AM)**                                   |             |      |
+|      | **May 7** | **Final Exam (Sec01: 9:00AM–11:15AM, Sec02: 7:00PM–9:15PM)**          |             |      |
 
 

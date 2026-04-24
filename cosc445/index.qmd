@@ -199,10 +199,10 @@ The schedule below outlines our plan for the semester. As we move through the co
 |      | Apr 9     | [Examples of dynamic programming](slides/dynamic_programming.qmd)                 | 326-336    |            |      |
 | 13   | Apr 14    | [Examples of dynamic programming](slides/dynamic_programming2.qmd)      |     | A10 out    | Q9   |
 |      | Apr 16    | [Randomized Algorithms](slides/randomized_algorithms.qmd)                      |            |            |      |
-| 14   | Apr 21    | Reductions                                      | 355-360    |            | Q10  |
-|      | Apr 23    | Easy reductions                                 | 361-368    |            |      |
-| 15   | Apr 28    | Harder reductions                               | 369-372    |            |      |
-|      | Apr 30    | The NP-completeness challenge                   | 373-382    |            |      |
+| 14   | Apr 21    | [Streaming & Sketching](slides/streaming_sketching.qmd)                                      |     |            | Q10  |
+|      | Apr 23    | Streaming & Sketching contd.                                 |     |            |      |
+| 15   | Apr 28    | P and NP, reductions                               |     |            |      |
+|      | Apr 30    | Apploximation algorithms                   |     |            |      |
 | 16   | May 5     | Final Exam review                               |            |            |      |
 |      | **May 6** | **Final Exam (2:00 PM – 4:15 PM)**              |            |            |      |
 

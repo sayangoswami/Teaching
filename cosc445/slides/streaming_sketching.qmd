@@ -1,0 +1,621 @@
+---
+title: "Streaming and Sketching Algorithms"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+# Part 1 — Why Do We Need This? {background-color="#0d1b2a"}
+
+## A Problem at Scale
+
+Imagine you run a website like YouTube.
+
+Every second: **500 hours of video uploaded**, **millions of views**, **billions of log entries per day**.
+
+. . .
+
+You want to answer questions like:
+
+- How many **distinct users** visited today?
+- What is the most **frequently searched** term this hour?
+- Is this user **new** or have they visited before?
+
+. . .
+
+**Naive approach:** store everything, then query it.
+
+> How much RAM does a billion log entries take?
+> At ~100 bytes each → **100 GB** just for one day's logs.
+> That's just RAM, not disk. And you need answers in real time.
+
+---
+
+## The Fundamental Tension
+
+:::: {.columns}
+::: {.column width="50%"}
+**What we want:**
+
+- Exact answers
+- Fast queries
+- Low memory
+- Real-time results
+:::
+::: {.column width="50%"}
+**What reality gives us:**
+
+- Data arrives faster than we can store it
+- Memory is finite
+- We can't go back and re-read old data
+:::
+::::
+
+. . .
+
+**The insight:** for many real-world questions, an answer that is *almost right* is perfectly fine.
+
+> "We had **4.7 million** distinct visitors today" is just as useful as "**4,718,243** visitors" — and far cheaper to compute.
+
+. . .
+
+Streaming and sketching algorithms trade **a little accuracy** for **massive savings in memory and time**.
+
+---
+
+## The Streaming Model
+
+A **data stream** is a sequence of items that:
+
+::: {.incremental}
+- Arrives **one at a time** (or in small batches)
+- Is **too large to store** in memory
+- **Cannot be rewound** — you see each item once
+- May be **infinite** (network traffic, sensor readings)
+:::
+
+. . .
+
+**Your constraint:** a small, fixed amount of memory — a *sketch* of the data.
+
+```
+Stream:  [cat, dog, cat, bird, cat, dog, fish, cat, ...]
+                                                  ↓
+                                  Sketch (tiny summary in memory)
+                                  "cat: ~4, dog: ~2, ..."
+```
+
+> A **sketch** is a compressed summary that can answer certain questions approximately.
+
+---
+
+## What You've Already Seen
+
+You've already met two flavours of approximate algorithms:
+
+| Algorithm | Guarantee | Example |
+|-----------|-----------|---------|
+| **Las Vegas** | Always correct, random runtime | Randomized Quicksort |
+| **Monte Carlo** | Always fast, possibly wrong | Bloom Filter |
+
+. . .
+
+Streaming algorithms are Monte Carlo: they give **approximate answers** with **guaranteed memory bounds**.
+
+The Bloom filter you've seen is actually a streaming/sketching algorithm — it answers "have I seen this before?" using far less memory than storing everything.
+
+Today we go deeper into this family.
+
+
+# Part 2 — Bloom Filters, Revisited {background-color="#0d1b2a"}
+
+## Quick Recap
+
+A **Bloom filter** answers: *"Have I seen this item before?"*
+
+It uses a **bit array** + **multiple hash functions**.
+
+<!-- ## Bloom Filter: Visual Example -->
+
+::: {.columns}
+::: {.column width="60%"}
+::: {.fragment}
+*Array of 10 bits, 2 hash functions*
+
+Insert **"cat"**: $h_1$("cat")=2, $h_2$("cat")=7 → set bits 2, 7  
+Insert **"dog"**: $h_1$("dog")=1, $h_2$("dog")=5 → set bits 1, 5
+
+```
+Bit index: 0 1 2 3 4 5 6 7 8 9
+           0 1 1 0 0 1 0 1 0 0
+```
+:::
+::: {.fragment}
+
+Query **"cat"**: bits 2,7 → both 1 ✅ *probably yes*  
+Query **"rat"**: $h_1$=1, $h_2$=4 → bit 4 is 0 ❌ *definitely no*  
+Query **"eel"**: $h_1$=1, $h_2$=5 → both 1... **false positive!**
+:::
+:::
+::: {.column width="40%"}
+::: {.fragment}
+::: {.callout-warning}
+**False positives** happen when an element "accidentally" maps to all set bits.
+
+**False negatives** are **impossible** — if you inserted it, those bits stay 1.
+:::
+:::
+:::
+:::
+
+. . .
+
+**The key property:**
+
+- **No false negatives** — if you inserted it, the filter will say "yes"
+- **Possible false positives** — it might say "yes" for something you never inserted (bit collisions)
+
+---
+
+## Why Bloom Filters Work in Practice
+
+The false positive rate is *controllable* — you tune it by choosing:
+
+- How big the bit array is
+- How many hash functions you use
+
+. . .
+
+Used everywhere in industry:
+
+- **Chrome** uses a Bloom filter to check if a URL is malicious (without sending every URL to Google's servers)
+- **Cassandra / HBase** use them to skip unnecessary disk reads
+- **Bitcoin** uses them to sync wallets
+
+. . .
+
+> **Bloom filters answer a membership question.** But what if we want to know *how often* something appeared? Or *how many distinct things* we've seen? We need new tools.
+
+
+# Part 3 — Count-Min Sketch {background-color="#0d1b2a"}
+
+## The Frequency Problem
+
+> **Problem:** a stream of search queries arrives. At any point, someone asks: "How many times has the word 'algorithms' appeared so far?"
+
+. . .
+
+**Naive solution:** keep a dictionary `{word: count}`.
+
+For English text, that's ~171,000 words. Fine.
+
+For web-scale data with billions of distinct URLs, user IDs, or product codes? **Not fine.**
+
+. . .
+
+> **Can we estimate frequencies using far less memory?**
+
+---
+
+## The Intuition: Hash to Counters
+
+Instead of one counter per item, use a **small table of counters** and **hash functions**.
+
+```
+        col:  0    1    2    3    4
+hash1:  [ 0,  0,   0,   0,   0 ]
+hash2:  [ 0,  0,   0,   0,   0 ]
+hash3:  [ 0,  0,   0,   0,   0 ]
+```
+
+**Insert "cat" (seen 3 times):**
+
+```
+hash1("cat") = 2  →  row1[2] += 1
+hash2("cat") = 4  →  row2[4] += 1
+hash3("cat") = 0  →  row3[0] += 1
+```
+
+. . .
+
+**Query "cat":**
+
+```
+look at row1[2], row2[4], row3[0]
+return the MINIMUM of those values
+```
+
+---
+
+## Why Take the Minimum?
+
+Counters can get **inflated** by other items hashing to the same cell (collisions).
+
+But all three counters being inflated *at the same time* is unlikely.
+
+. . .
+
+The true count of "cat" is always `≤` every counter that tracks it.
+The minimum counter is the **least inflated** — our best estimate.
+
+```
+After many insertions:
+
+        col:  0    1    2    3    4
+hash1:  [ 3,  1,   5,   2,   0 ]   ← row1[2]=5 (cat collides with others)
+hash2:  [ 0,  2,   1,   3,   4 ]   ← row2[4]=4 (cat + others)
+hash3:  [ 3,  0,   2,   1,   1 ]   ← row3[0]=3 (cat only!)
+
+Query "cat": min(5, 4, 3) = 3 ✓
+```
+
+The minimum cuts through the noise.
+
+---
+
+## Count-Min Sketch in Code .{visibility="hidden"}
+
+```python
+import hashlib
+
+class CountMinSketch:
+    def __init__(self, width, depth):
+        self.width = width
+        self.depth = depth
+        self.table = [[0] * width for _ in range(depth)]
+
+    def _hashes(self, item):
+        return [
+            int(hashlib.md5(f"{i}{item}".encode()).hexdigest(), 16) % self.width
+            for i in range(self.depth)
+        ]
+
+    def add(self, item):
+        for row, col in enumerate(self._hashes(item)):
+            self.table[row][col] += 1
+
+    def query(self, item):
+        return min(
+            self.table[row][col]
+            for row, col in enumerate(self._hashes(item))
+        )
+```
+
+**Memory:** `width × depth` integers — completely fixed, regardless of stream size.
+
+---
+
+## Count-Min vs Bloom Filter
+
+| | Bloom Filter | Count-Min Sketch |
+|---|---|---|
+| **Question** | "Have I seen this?" | "How many times?" |
+| **Structure** | Bit array | Counter array |
+| **Hash functions** | Multiple | Multiple |
+| **Error type** | False positives | Over-counts (never under) |
+| **Memory** | Fixed | Fixed |
+
+. . .
+
+They're siblings — same core idea (hash to a small structure, tolerate collisions), different questions.
+
+> **One-liner:** Bloom filter = Count-Min but you only care if count > 0.
+
+
+# Part 4 — Counting Distinct Elements {background-color="#0d1b2a"}
+
+## The Distinct Counting Problem
+
+> **Problem:** how many **unique** users visited your website today?
+
+You see a stream of user IDs: `[u1, u5, u2, u1, u3, u5, u1, ...]`
+
+The naive solution: keep a set of all seen IDs. For a billion users, that's billions of entries. Not feasible in a small memory budget.
+
+. . .
+
+> Can we estimate the number of distinct elements without storing them all?
+
+This is called the **cardinality estimation** problem.
+
+---
+
+## A Surprising Observation
+
+Imagine flipping a coin until you get heads. The longer your streak of tails, the *rarer* the event.
+
+- Getting 0 tails before heads: happens ~50% of the time
+- Getting 3 tails before heads: happens ~6% of the time
+- Getting 10 tails before heads: happens ~0.1% of the time
+
+. . .
+
+**Key idea:** if you observe a very rare event, you probably have a large sample.
+
+> If you flip coins for many independent users and one of them gets 15 tails in a row, you probably have *a lot* of users.
+
+---
+
+## Trailing Zeros Trick
+
+Hash each item to a binary number. Count its **trailing zeros**.
+
+```
+hash(user_1) = 10110100  → 2 trailing zeros
+hash(user_2) = 11001000  → 3 trailing zeros
+hash(user_3) = 10100000  → 5 trailing zeros
+hash(user_4) = 11110010  → 1 trailing zero
+```
+
+. . .
+
+The maximum trailing zeros seen so far = `R`.
+
+**Estimate of distinct count:** $2^R$
+
+```
+Max trailing zeros seen = 5  →  estimate = 2^5 = 32 distinct items
+```
+
+. . .
+
+**Why?** A hash with `k` trailing zeros is roughly a 1-in-$2^k$ event.
+If you saw such a hash, you likely had at least $2^k$ distinct items flow through.
+
+---
+
+## HyperLogLog: Making It Better
+
+The single-maximum estimate is noisy. **HyperLogLog** (2007) fixes this:
+
+::: {.incremental}
+1. Use the first few bits of each hash to assign each item to one of many **buckets**
+2. Track the max trailing zeros *within each bucket*
+3. **Average** the estimates across all buckets
+:::
+
+. . .
+
+The averaging smooths out the noise dramatically.
+
+```python
+buckets = [0] * 1024   # 1024 buckets
+for item in stream:
+    h = hash(item)
+    bucket = h % 1024          # which bucket?
+    zeros  = trailing_zeros(h) # how rare is this?
+    buckets[bucket] = max(buckets[bucket], zeros)
+estimate = 2 ** (sum(buckets) / len(buckets))
+```
+
+**Memory:** ~1.5 KB to estimate cardinalities up to billions with ~2% error.
+
+Redis, Postgres, Spark, and most analytics systems use HyperLogLog under the hood.
+
+---
+
+## The Three Tools Side by Side
+
+| Problem | Tool | Memory |
+|---------|------|--------|
+| "Have I seen X?" | **Bloom Filter** | Kilobytes |
+| "How often did X appear?" | **Count-Min Sketch** | Kilobytes |
+| "How many distinct items?" | **HyperLogLog** | ~1.5 KB |
+
+All three:
+
+- Work in a **single pass** over the stream
+- Use **fixed memory** regardless of stream size
+- Give **approximate answers** with controllable error
+- Are used **in production** at every major tech company
+
+
+# Part 5 — Reservoir Sampling {background-color="#0d1b2a"}
+
+## A Different Kind of Problem
+
+So far we've been counting things. Now: **random sampling**.
+
+> **Problem:** you have a stream of unknown length. You want to pick **k items** uniformly at random — every item should have an equal chance of being selected.
+
+. . .
+
+**Why is this hard?**
+
+If you knew the stream had `n` items, you'd pick each with probability `k/n`. But you don't know `n` — the stream is live.
+
+. . .
+
+**Example:** pick 3 random tweets from Twitter's live feed. You don't know how many tweets will arrive today.
+
+---
+
+## Reservoir Sampling (k=1)
+
+Let's start with picking **1 item**:
+
+. . .
+
+**Algorithm:**
+
+```
+current_sample = first item in stream
+
+for each new item i (starting from item 2):
+    with probability 1/i:
+        replace current_sample with item i
+```
+
+. . .
+
+**Why does this work?** After seeing `i` items, each one should have a `1/i` chance of being the sample. Let's check:
+
+- After item 1: item 1 is chosen. Probability = 1. ✓
+- After item 2: item 2 chosen with prob 1/2. Item 1 survives with prob 1/2. ✓
+- After item 3: item 3 chosen with prob 1/3. Each of items 1,2 survives with prob (1 - 1/3) × 1/2 = 1/3. ✓
+
+---
+
+## Reservoir Sampling (General k)
+
+```python
+import random
+
+def reservoir_sample(stream, k):
+    reservoir = []
+
+    for i, item in enumerate(stream):
+        if i < k:
+            reservoir.append(item)        # fill the reservoir first
+        else:
+            j = random.randint(0, i)      # random index in [0, i]
+            if j < k:
+                reservoir[j] = item       # replace a random reservoir slot
+
+    return reservoir
+```
+
+. . .
+
+**Intuition:**
+
+- The first `k` items fill the reservoir.
+- Each new item `i` has a `k/(i+1)` chance of entering the reservoir.
+- If it enters, it evicts a random existing item.
+- After the stream ends, every item has equal probability of being in the reservoir.
+
+---
+
+## Reservoir Sampling in Action
+
+Stream: `[A, B, C, D, E, F]`, k=2
+
+| Step | Item | Action | Reservoir |
+|------|------|--------|-----------|
+| 1 | A | Fill | [A, _] |
+| 2 | B | Fill | [A, B] |
+| 3 | C | j = rand(0,2). If j<2, replace slot j | [C, B] or [A, C] or [A, B] |
+| 4 | D | j = rand(0,3). If j<2, replace slot j | ... |
+| 5 | E | j = rand(0,4). If j<2, replace slot j | ... |
+| 6 | F | j = rand(0,5). If j<2, replace slot j | ... |
+
+After the stream: both remaining items each had an equal `2/6 = 1/3` chance of being sampled.
+
+---
+
+## Why Reservoir Sampling is Elegant
+
+::: {.incremental}
+- **No knowledge of stream length required** — works for infinite streams
+- **Single pass** — never re-reads the data
+- **Fixed memory** — stores exactly `k` items at all times
+- **Perfectly fair** — every item has exactly `k/n` probability (provably)
+- **Used everywhere** — SQL `TABLESAMPLE`, A/B testing infrastructure, log sampling
+:::
+
+. . .
+
+> It's the rare algorithm where the proof of correctness is almost as elegant as the algorithm itself — and you can convince yourself it works with just a few examples.
+
+
+# Part 6 — The Big Picture {background-color="#0d1b2a"}
+
+## Sketching Algorithms: A Family Portrait
+
+| Algorithm | Question | Key idea | Error |
+|-----------|----------|----------|-------|
+| **Bloom Filter** | Seen before? | Bit array + hashing | False positives only |
+| **Count-Min Sketch** | Frequency? | Counter table + min | Over-counts only |
+| **HyperLogLog** | How many distinct? | Max trailing zeros + averaging | ~2% |
+| **Reservoir Sampling** | Random sample? | Replace with decreasing prob | None — exact! |
+
+. . .
+
+Notice: Reservoir Sampling is actually **exact** (Las Vegas), not approximate.
+The others are approximate (Monte Carlo).
+
+---
+
+## The Accuracy–Memory Tradeoff
+
+All sketching algorithms live on this curve:
+
+```
+Memory used
+    |
+ ∞  | ●  Exact answer (hash set / dictionary)
+    |
+    |
+    |      ●  Count-Min, Bloom Filter
+ KB |           ●  HyperLogLog
+    |
+    +------------------------→
+         100%   99%   95%   Accuracy
+```
+
+. . .
+
+The question is never "exact vs approximate" — it's **which point on the curve** is right for your problem.
+
+> A 98% accurate answer using 2 KB of memory, computed in real time, beats a 100% accurate answer that takes 8 hours and 200 GB of RAM.
+
+---
+
+## When Should You Reach for These?
+
+Reach for streaming/sketching algorithms when:
+
+::: {.incremental}
+- Data is **too large to store** (web logs, network packets, sensor streams)
+- You need answers **in real time** (dashboards, fraud detection)
+- An **approximate answer is acceptable** (analytics, recommendations)
+- You need to process data in **one pass** (data arrives and is discarded)
+:::
+
+. . .
+
+Stick to exact algorithms when:
+
+::: {.incremental}
+- Correctness is **non-negotiable** (banking transactions, medical records)
+- Data is **small enough** to fit in memory
+- You can afford **multiple passes** over stored data
+:::
+
+---
+
+## These Are Used Everywhere
+
+| Company | What they use |
+|---------|--------------|
+| **Redis** | HyperLogLog built-in (`PFADD`, `PFCOUNT`) |
+| **Google Chrome** | Bloom filter for Safe Browsing |
+| **Facebook** | Count-Min for trending topics |
+| **Twitter** | Reservoir sampling for tweet samples |
+| **Apache Spark** | All of the above, at petabyte scale |
+| **PostgreSQL** | HyperLogLog for `COUNT(DISTINCT ...)` estimates |
+
+. . .
+
+These are not academic curiosities — they are core infrastructure at every company that processes data at scale.
+
+---
+
+## Key Takeaways
+
+::: {.incremental}
+- **Exact answers at scale are often impossible** — streaming algorithms trade accuracy for feasibility
+- **Hashing is the core primitive** — map items to small structures, tolerate collisions
+- **Bloom filter** → membership; **Count-Min** → frequency; **HyperLogLog** → cardinality; **Reservoir** → sampling
+- **Error is controllable** — more memory = less error; tune the tradeoff for your use case
+- **One-pass, fixed memory** — these algorithms work on live streams with no storage
+:::
+
+. . .
+
+> *"The best algorithm is not always the one that gives the exact answer — it's the one that gives a good-enough answer in the time and memory you actually have."*

@@ -1,0 +1,791 @@
+---
+title: "P, NP, and the Hardest Problems"
+format:
+  revealjs:
+    slide-number: true
+    transition: slide
+    incremental: false
+    fig-align: center
+execute:
+  echo: true
+---
+
+# Part 1: The Big Question {background-color="#1a1a2e"}
+
+## What Does It Mean for a Problem to Be "Hard"?
+
+Some problems feel genuinely different from others.
+
+. . .
+
+**Easy to solve:**
+
+- Sort a list of numbers
+- Find the shortest path in a map
+- Check if a number is even
+
+. . .
+
+**Seemingly harder:**
+
+- Find the shortest *tour* visiting every city and returning home
+- Schedule classes so no student has two at once
+- Pack items into a suitcase to maximize value
+
+. . .
+
+> Is this just a matter of not being clever enough yet — or is something deeper going on?
+
+---
+
+## The Two Tasks: Solving vs. Checking
+
+Here's a key observation.
+
+. . .
+
+**For many hard problems**, even if we can't *find* a solution quickly...
+
+. . .
+
+...we *can* **verify** a proposed solution quickly.
+
+. . .
+
+::: {.callout-note}
+## Example: Sudoku
+- **Hard:** Fill in a blank 9×9 Sudoku grid correctly.  
+- **Easy:** Check whether a completed grid is valid.
+:::
+
+. . .
+
+This gap between *finding* and *checking* is at the heart of P vs. NP.
+
+---
+
+## A Tale of Two Students
+
+> Alice is given a Sudoku puzzle and must fill it in from scratch.  
+> Bob is handed a completed grid and must check if it's right.
+
+. . .
+
+- Bob's job is clearly easier.
+- Is Alice's job *fundamentally* harder? Or just harder in practice?
+
+. . .
+
+**This is the P vs. NP question** — one of the biggest unsolved problems in all of mathematics.
+
+---
+
+# Part 2: Defining the Players {background-color="#16213e"}
+
+## What Is a "Decision Problem"?
+
+Before defining P and NP, we need a common format for problems.
+
+. . .
+
+A **decision problem** has a yes/no answer:
+
+| Problem | Decision version |
+|---|---|
+| Find shortest path | Is there a path of length ≤ k? |
+| Find a schedule | Is there a valid schedule? |
+| Factor a number | Does n have a factor < k? |
+
+. . .
+
+We focus on decision problems because they're clean to reason about — and most optimization problems have a natural decision version.
+
+---
+
+## The Class P
+
+**P** = the set of decision problems solvable in **polynomial time**.
+
+. . .
+
+Polynomial time means the algorithm runs in $O(n^k)$ steps for some fixed $k$, where $n$ is the input size.
+
+. . .
+
+::: {.columns}
+::: {.column width="50%"}
+**In P:**
+
+- Is this list sorted?
+- Is there a path from A to B?
+- Is this number prime?
+- Does this graph have an Euler circuit?
+:::
+::: {.column width="50%"}
+**What "polynomial" buys us:**
+
+- $O(n)$ — linear, great
+- $O(n^2)$ — quadratic, fine
+- $O(b^{10})$ — $b$ is the number of bits. technically polynomial, but rough
+:::
+:::
+
+. . .
+
+**Intuition:** P is the class of problems we can *solve* efficiently.
+
+---
+
+## The Class NP
+
+**NP** = the set of decision problems where a "yes" answer can be **verified** in polynomial time.
+
+. . .
+
+More carefully: given a proposed solution (called a **certificate** or **witness**), we can check it quickly.
+
+. . .
+
+::: {.callout-note}
+## Examples
+- **Hamiltonian Cycle:** Given a graph and a proposed cycle, check it visits every vertex exactly once. ✓ Easy to check!
+- **3-Colorability:** Given a graph and a proposed coloring, verify no two adjacent vertices share a color. ✓ Easy to check!
+- **Subset Sum:** Given numbers and a proposed subset, check if they sum to the target. ✓ Easy to check!
+:::
+
+. . .
+
+**NP does NOT mean "not polynomial"** — it stands for **Nondeterministic Polynomial time**.
+
+---
+
+## P vs. NP — The Picture
+
+```
+         All Problems
+    ┌───────────────────────────────┐
+    │                               │
+    │    ┌───────────────────┐      │
+    │    │        NP         │      │
+    │    │   ┌───────────┐   │      │
+    │    │   │     P     │   │      │
+    │    │   │           │   │      │
+    │    │   └───────────┘   │      │
+    │    │                   │      │
+    │    └───────────────────┘      │
+    │                               │
+    └───────────────────────────────┘
+```
+
+. . .
+
+- Every problem in P is also in NP. (If you can solve it fast, you can certainly verify it fast.)
+- The question: **Is P = NP?** Is there anything in NP that's *not* in P?
+
+. . .
+
+Most researchers believe **P ≠ NP** — but nobody has proved it.
+
+---
+
+## Why Does P ≠ NP Feel True?
+
+Think about creativity vs. appreciation:
+
+. . .
+
+- It's much easier to *appreciate* a great novel than to *write* one.
+- It's much easier to *verify* a proof than to *discover* one.
+- It's much easier to *check* a schedule is valid than to *build* one.
+
+. . .
+
+If P = NP, then **finding** would be no harder than **checking** — which feels profoundly wrong.
+
+. . .
+
+> "If P = NP, then the world would be a profoundly different place...  
+> There would be no special value in 'creative leaps,' no fundamental gap between solving a problem and recognizing the solution...
+> 
+> Everyone who could appreciate a symphony would be Mozart; everyone who could follow a step-by-step argument would be Gauss; everyone who could recognize a good investment strategy would be Warren Buffett."  
+> — [Scott Aaronson](https://scottaaronson.blog/?p=122)
+
+---
+
+# Part 3: NP-Completeness {background-color="#0f3460"}
+
+## The Hardest Problems in NP
+
+Some problems in NP seem especially hard. We call them **NP-complete**.
+
+. . .
+
+An NP-complete problem is one that is:
+
+1. **In NP** — solutions can be verified quickly.
+2. **NP-hard** — at least as hard as every other problem in NP.
+
+. . .
+
+Informally: if you could solve *any* NP-complete problem efficiently, you could solve *all* of NP efficiently — and P would equal NP.
+
+. . .
+
+::: {.callout-important}
+## The Stakes
+If anyone finds a polynomial-time algorithm for even one NP-complete problem, then **P = NP** and cryptography, as we know it, collapses.
+:::
+
+---
+
+## Famous NP-Complete Problems
+
+::: {.columns}
+::: {.column width="50%"}
+**Graph Problems**
+
+- Hamiltonian Cycle
+- Graph Coloring (3+ colors)
+- Clique
+- Independent Set
+- Vertex Cover
+:::
+::: {.column width="50%"}
+**Other Problems**
+
+- 3-SAT (Boolean satisfiability)
+- Subset Sum
+- Bin Packing
+- Traveling Salesman (decision version)
+- Scheduling with constraints
+:::
+:::
+
+. . .
+
+These all look completely different — but they're all secretly the *same* problem in disguise.
+
+. . .
+
+That's where **reductions** come in.
+
+---
+
+# Part 4: Reductions {background-color="#533483"}
+
+## What Is a Reduction?
+
+A **reduction** from problem A to problem B means:
+
+> "If I can solve B, I can solve A."
+
+. . .
+
+We transform any instance of A into an instance of B, solve B, and translate the answer back.
+
+. . .
+
+```
+   Input to A ──► [Transform] ──► Input to B ──► [Solve B] ──► Answer to B
+                                                                     │
+   Answer to A ◄───────────────────────────────────────────────────[Translate]
+```
+
+. . .
+
+**Key requirement:** The transformation must run in polynomial time.
+
+---
+
+## Reduction Intuition: The Adapter
+
+Think of a reduction like a power adapter:
+
+. . .
+
+- You have a US plug (Problem A) and a European outlet (Problem B solver).
+- The adapter transforms the plug so it fits the outlet.
+- The adapter doesn't solve your problem — the outlet does.
+- The adapter just needs to be simple and reliable.
+
+. . .
+
+If you have the adapter (reduction), and access to the outlet (B solver), you can always charge your phone (solve A).
+
+---
+
+## Reduction: The Logic
+
+If A reduces to B (written $A \leq_p B$), then:
+
+. . .
+
+- **B is at least as hard as A.**  
+  (If B were easy, A would be too.)
+
+. . .
+
+- **Contrapositively:** If A is hard, then B must be hard too.
+
+. . .
+
+::: {.callout-tip}
+## Proving NP-hardness
+To show a new problem X is NP-hard:  
+Take a known NP-hard problem (like 3-SAT) and reduce it to X.  
+This shows X is at least as hard as 3-SAT.
+:::
+
+---
+
+## A Concrete Example: Independent Set → Vertex Cover
+
+**Independent Set:** Does graph G have k vertices with no edges between them?
+
+**Vertex Cover:** Does graph G have k vertices that *touch* every edge?
+
+. . .
+
+**Claim:** These two problems are equivalent via a simple reduction.
+
+. . .
+
+::: {.callout-note}
+## The Key Observation
+A set S is an independent set ↔ V \ S (all other vertices) is a vertex cover.
+:::
+
+. . .
+
+**Why?** Every edge must have at least one endpoint in V \ S — because if both endpoints were in S, they'd violate the independent set condition.
+
+---
+
+## Independent Set ↔ Vertex Cover: Example
+
+Consider this graph (6 vertices):
+
+```
+    1 ─── 2
+    │     │
+    3 ─── 4 ─── 5
+              │
+              6
+```
+
+. . .
+
+- **Independent Set** of size 3: {1, 4, 6}? Check: no edges between them... yes! ✓
+- **Vertex Cover** of size 3: {2, 3, 5}? Check: does every edge have an endpoint here?  
+  - 1-2 ✓, 2-4 ✓, 1-3 ✓, 3-4 ✓, 4-5 ✓, 5-6 ✓ — yes! ✓
+
+. . .
+
+The independent set and vertex cover are **complements** of each other.
+
+---
+
+## The Reduction (Formally)
+
+**Reducing Independent Set to Vertex Cover:**
+
+Given: Instance (G, k) of Independent Set  
+Produce: Instance (G, n−k) of Vertex Cover  
+
+. . .
+
+- Same graph G
+- Target size changes from k to n−k
+- **Answer is the same!**
+
+. . .
+
+This transformation takes $O(1)$ time — it's trivially polynomial.  
+So Independent Set $\leq_p$ Vertex Cover, and vice versa.
+
+---
+
+## 3-SAT: The Universal Problem
+
+**3-SAT:** Given a Boolean formula in CNF with exactly 3 literals per clause, is there an assignment of variables that makes it true?
+
+. . .
+
+Example:
+$$(x_1 \lor \lnot x_2 \lor x_3) \land (\lnot x_1 \lor x_2 \lor x_4) \land (x_2 \lor \lnot x_3 \lor \lnot x_4)$$
+
+. . .
+
+3-SAT was the *first* problem proved NP-complete (Cook, 1971). Almost every NP-hardness proof starts here.
+
+. . .
+
+> The game: reduce 3-SAT → your problem. Show that solving your problem would let us solve 3-SAT.
+
+---
+
+## Reduction: 3-SAT → Independent Set
+
+**Idea:** Build a graph where an independent set corresponds to a satisfying assignment.
+
+. . .
+
+**Construction:**  
+For each clause with 3 literals, create a triangle (3-clique) of nodes.  
+Add an edge between a literal and its negation across triangles.
+
+. . .
+
+```
+Clause 1: (x₁ ∨ ¬x₂ ∨ x₃)        Clause 2: (¬x₁ ∨ x₂ ∨ x₄)
+
+     x₁ ──── ¬x₂                      ¬x₁ ──── x₂
+      │  \  / │                         │  \   / │
+      │   \/  │                         │   \/   │
+      │   /\  │                         │   /\   │
+      │  /  \ │                         │  /  \  │
+     x₃ ──── (triangle)               x₄ ──── (triangle)
+
+         x₁ ─────────────────────────── ¬x₁   (conflict edge)
+         ¬x₂ ────────────────────────── x₂    (conflict edge)
+```
+
+. . .
+
+**Claim:** The formula is satisfiable ↔ the graph has an independent set of size = number of clauses.
+
+---
+
+## Why the Reduction Works
+
+- Each triangle represents a clause. An independent set can pick **at most one** node per triangle.
+- To get an independent set of size k (= number of clauses), we must pick **exactly one** from each triangle — i.e., one true literal per clause.
+- Conflict edges prevent picking contradictory literals (x₁ and ¬x₁).
+
+. . .
+
+So: a satisfying assignment → a valid independent set, and vice versa.
+
+. . .
+
+This proves **Independent Set is NP-hard** — because 3-SAT (known hard) reduces to it.
+
+---
+
+# Part 5: The Landscape of Hard Problems {background-color="#1a1a2e"}
+
+## NP-Completeness in the Wild
+
+Once we have a toolbox of NP-complete problems, we can prove new ones quickly.
+
+. . .
+
+The reduction chain looks like:
+
+```
+Circuit SAT
+    │
+    ▼
+  3-SAT ──────────────────────────┐
+    │                             │
+    ▼                             ▼
+Independent Set            Hamiltonian Cycle
+    │                             │
+    ▼                             ▼
+Vertex Cover               Traveling Salesman
+    │
+    ▼
+  Clique
+```
+
+. . .
+
+Each arrow is a polynomial-time reduction. Problems inherit hardness upward.
+
+---
+
+## A Reduction Story: Exam Scheduling
+
+**Scenario:** A university must schedule exams so that no student has two exams at the same time.
+
+. . .
+
+**Model as a graph:**
+- Node = each exam
+- Edge = two exams share a student
+
+. . .
+
+**Question:** Can we schedule k exam slots?  
+= Can we color the graph with k colors?
+
+. . .
+
+Graph coloring is NP-complete → exam scheduling is NP-hard.
+
+. . .
+
+**Practical takeaway:** Don't expect a perfect algorithm. Use heuristics, approximations, or exploit special structure.
+
+---
+
+## Reductions Give Us Two Powers
+
+::: {.columns}
+::: {.column width="50%"}
+**Power 1: Prove hardness**
+
+Reduce a known hard problem *to* your problem.
+
+"Even 3-SAT reduces to this — so it must be hard."
+:::
+::: {.column width="50%"}
+**Power 2: Solve via transformation**
+
+Reduce your problem *to* something you have a solver for.
+
+"I can transform my scheduling problem into an ILP and use an existing solver."
+:::
+:::
+
+. . .
+
+Both directions are useful! Theoretical computer scientists use Power 1. Practitioners often use Power 2.
+
+---
+
+# Part 6: What Do We Do About Hard Problems? {background-color="#16213e"}
+
+## We're Not Helpless
+
+Just because a problem is NP-complete doesn't mean we give up.
+
+. . .
+
+**Strategy 1: Exact algorithms for small inputs**  
+Exponential algorithms are fine when n is small. Many real scheduling problems have n < 30.
+
+. . .
+
+**Strategy 2: Approximation algorithms**  
+Find a solution guaranteed to be within some factor of optimal.  
+E.g., a 2-approximation for Vertex Cover runs in polynomial time.
+
+. . .
+
+**Strategy 3: Heuristics and local search**  
+No guarantees, but often work well in practice. (Simulated annealing, genetic algorithms, etc.)
+
+. . .
+
+**Strategy 4: Exploit special structure**  
+Many NP-hard problems become easy on special graph types (trees, planar graphs, etc.).
+
+---
+
+## The Vertex Cover 2-Approximation
+
+Here's a beautiful simple approximation:
+
+. . .
+
+```
+VertexCover-Approx(G):
+  C = {}
+  while G has edges:
+    pick any edge (u, v)
+    add both u and v to C
+    remove u, v, and all their edges from G
+  return C
+```
+
+. . .
+
+**Why it's a 2-approximation:**  
+Every optimal solution must include at least one of u or v from each picked edge.  
+We included both — so we're off by at most a factor of 2.
+
+. . .
+
+Polynomial time, guaranteed quality. Not optimal, but *provably good*.
+
+---
+
+## Special Cases: When Hard Problems Become Easy
+
+| General Problem | Special Case | Complexity |
+|---|---|---|
+| Graph Coloring | 2-coloring (bipartite check) | P |
+| Graph Coloring | Planar graphs | P (4 colors always suffice) |
+| TSP | Points in a metric space | Approx. in P |
+| Hamiltonian Cycle | Complete graphs | Trivially yes |
+| Vertex Cover | Trees | P |
+
+. . .
+
+**Lesson:** NP-completeness is a worst-case statement. Real inputs often have structure you can exploit.
+
+---
+
+# Part 7: Big Picture {background-color="#0f3460"}
+
+## The Complexity Zoo (Simplified)
+
+```
+         ┌──────────────────────────────────────────┐
+         │             All Problems                  │
+         │   ┌──────────────────────────────────┐   │
+         │   │         Decidable                │   │
+         │   │  ┌────────────────────────────┐  │   │
+         │   │  │          NP                │  │   │
+         │   │  │  ┌──────────────────────┐  │  │   │
+         │   │  │  │  NP-complete         │  │  │   │
+         │   │  │  │  ┌────────────────┐  │  │  │   │
+         │   │  │  │  │       P        │  │  │  │   │
+         │   │  │  │  └────────────────┘  │  │  │   │
+         │   │  │  └──────────────────────┘  │  │   │
+         │   │  └────────────────────────────┘  │   │
+         │   └──────────────────────────────────┘   │
+         └──────────────────────────────────────────┘
+```
+
+. . .
+
+NP-complete problems sit at the frontier of NP — they're in NP, and they're the hardest things in it.
+
+---
+
+## The Million Dollar Question (Literally)
+
+The **P vs. NP problem** is one of the **Millennium Prize Problems**.
+
+. . .
+
+The Clay Mathematics Institute will award **$1,000,000** for a solution — in either direction.
+
+. . .
+
+If **P = NP:**
+- Efficient proofs for math theorems
+- AI that could solve any problem a human could check
+- Cryptography as we know it **breaks**
+
+. . .
+
+If **P ≠ NP:** (what most believe)
+- Hard problems are genuinely hard — forever
+- Cryptography is on safe ground
+- Creativity and insight have intrinsic value
+
+---
+
+## Why This Matters for You as a Programmer
+
+. . .
+
+**When you encounter a new problem:**
+
+1. Try to solve it — maybe it's in P.
+2. If you're stuck, ask: *does this look like an NP-complete problem I've seen?*
+3. If yes: try to reduce a known NP-hard problem to yours — that's your evidence.
+4. If it seems NP-hard: pivot to approximations, heuristics, or special cases.
+
+. . .
+
+**Recognizing NP-complete problems** is a core professional skill.  
+It saves you from searching for an algorithm that doesn't exist.
+
+---
+
+## Classic NP-Complete Problems to Remember
+
+| Problem | What it asks |
+|---|---|
+| **3-SAT** | Can we satisfy a Boolean formula? |
+| **Clique** | Does the graph have k mutually connected nodes? |
+| **Independent Set** | Does the graph have k mutually disconnected nodes? |
+| **Vertex Cover** | Can k nodes touch every edge? |
+| **Hamiltonian Cycle** | Is there a cycle visiting every node exactly once? |
+| **Graph Coloring** | Can we color nodes with k colors, no two adjacent the same? |
+| **Subset Sum** | Does any subset add up to the target? |
+
+. . .
+
+These are your "reduction starting points."
+
+---
+
+## Summary
+
+::: {.incremental}
+- **P**: Problems solvable in polynomial time — our efficient algorithms live here.
+- **NP**: Problems *verifiable* in polynomial time — solutions are easy to check.
+- **NP-complete**: The hardest problems in NP — if any one is in P, then P = NP.
+- **Reduction**: A transformation showing one problem is "at least as hard as" another.
+- **P vs. NP**: Unsolved; most believe P ≠ NP — finding and checking are genuinely different.
+- **In practice**: Use approximations, heuristics, or special-case algorithms for NP-hard problems.
+:::
+
+---
+
+## Looking Ahead {visibility="hidden"}
+
+Next topics to explore:
+
+. . .
+
+- **Approximation algorithms** — with provable guarantees (Set Cover, TSP in metric spaces)
+- **Fixed-parameter tractability** — solving NP-hard problems efficiently when some parameter is small
+- **Randomized algorithms** — sometimes randomness breaks hardness
+- **More NP-complete reductions** — practice makes perfect
+
+. . .
+
+> "A problem well-reduced is a problem half-understood."
+
+---
+
+## Discussion Questions {visibility="hidden"}
+
+1. Can you think of a problem in your daily life that feels more like "checking" than "finding"? What's the difference?
+
+2. If P = NP were proved tomorrow, which consequence would be most significant — the cryptography implications, or the AI implications? Why?
+
+3. We showed Independent Set ↔ Vertex Cover. Can you *intuitively* convince yourself these are the same problem?
+
+4. The 2-approximation for Vertex Cover is simple and elegant. Why might a *3-approximation* be easier to find than a *1.5-approximation*?
+
+5. The exam scheduling problem reduces to graph coloring. What does it mean for a university scheduler if graph coloring is NP-hard?
+
+---
+
+## Practice Problems {visibility="hidden"}
+
+**Problem 1:** Show that the **Clique** problem (does G have a clique of size k?) reduces to **Independent Set**.  
+*Hint: Think about the complement graph.*
+
+. . .
+
+**Problem 2:** The **Subset Sum** problem: given integers $S = \{s_1, \ldots, s_n\}$ and target $T$, does any subset sum to $T$? Is this in NP? Argue why or why not.
+
+. . .
+
+**Problem 3:** Consider the **Partition** problem: can we split $S$ into two subsets with equal sum? Show this reduces to Subset Sum.
+
+. . .
+
+**Problem 4 (Challenge):** Suppose someone claimed to have a polynomial-time algorithm for 3-SAT. Outline how you would use it to solve **Hamiltonian Cycle** in polynomial time. (Use the reduction chain from the lecture.)
+
+---
+
+## Further Reading {visibility="hidden"}
+
+- **Skiena, Ch. 11** — NP-completeness and reductions (your textbook)
+- **Sipser, *Introduction to the Theory of Computation*** — More rigorous treatment of complexity
+- **Scott Aaronson's blog (Shtetl-Optimized)** — Accessible and fascinating writing on P vs. NP
+- **"Computers and Intractability" by Garey & Johnson** — The classic reference for NP-completeness proofs
+- **P vs. NP problem page (Clay Mathematics Institute)** — clay math.org
+
+. . .
+
+And if you solve P vs. NP: please let me know before submitting to the journal.
