@@ -1971,21 +1971,21 @@
     "href": "cosc445/slides/p-np-reductions.html#the-hardest-problems-in-np",
     "title": "P, NP, and the Hardest Problems",
     "section": "The Hardest Problems in NP",
-    "text": "The Hardest Problems in NP\nSome problems in NP seem especially hard. We call them NP-complete.\n\nAn NP-complete problem is one that is:\n\nIn NP — solutions can be verified quickly.\nNP-hard — at least as hard as every other problem in NP.\n\n\n\nInformally: if you could solve any NP-complete problem efficiently, you could solve all of NP efficiently — and P would equal NP.\n\n\n\n\n\n\n\n\nThe Stakes\n\n\nIf anyone finds a polynomial-time algorithm for even one NP-complete problem, then P = NP and cryptography, as we know it, collapses."
+    "text": "The Hardest Problems in NP\nSome problems in NP seem especially hard. We call them NP-complete.\n\nDefinition: A problem \\(X\\) is NP-Complete if:\n\n\\(X \\in\\) NP — a proposed solution can be verified in polynomial time\nEvery problem in NP is polynomial-time reducible to \\(X\\)\n\n\n\nInformally: if you could solve any NP-complete problem efficiently, you could solve all of NP efficiently — and P would equal NP.\n\n\n\n\n\n\n\n\nThe Stakes\n\n\nIf anyone finds a polynomial-time algorithm for even one NP-complete problem, then P = NP and cryptography, as we know it, collapses."
   },
   {
     "objectID": "cosc445/slides/p-np-reductions.html#famous-np-complete-problems",
     "href": "cosc445/slides/p-np-reductions.html#famous-np-complete-problems",
     "title": "P, NP, and the Hardest Problems",
     "section": "Famous NP-Complete Problems",
-    "text": "Famous NP-Complete Problems\n\n\nGraph Problems\n\nHamiltonian Cycle\nGraph Coloring (3+ colors)\nClique\nIndependent Set\nVertex Cover\n\n\nOther Problems\n\n3-SAT (Boolean satisfiability)\nSubset Sum\nBin Packing\nTraveling Salesman (decision version)\nScheduling with constraints\n\n\n\nThese all look completely different — but they’re all secretly the same problem in disguise.\n\n\nThat’s where reductions come in."
+    "text": "Famous NP-Complete Problems\n\n\nGraph Problems\n\nHamiltonian Cycle\nGraph Coloring (3+ colors)\nClique\nIndependent Set\nVertex Cover\n\n\nOther Problems\n\n3-SAT (Boolean satisfiability) - first proven NP-Complete (Cook, 1971)\nSubset Sum\nBin Packing\nTraveling Salesman (decision version)\nScheduling with constraints\n\n\n\nThese all look completely different — but they’re all secretly the same problem in disguise.\n\n\nThat’s where reductions come in."
   },
   {
     "objectID": "cosc445/slides/p-np-reductions.html#what-is-a-reduction",
     "href": "cosc445/slides/p-np-reductions.html#what-is-a-reduction",
     "title": "P, NP, and the Hardest Problems",
     "section": "What Is a Reduction?",
-    "text": "What Is a Reduction?\nA reduction from problem A to problem B means:\n\n“If I can solve B, I can solve A.”\n\n\nWe transform any instance of A into an instance of B, solve B, and translate the answer back.\n\n\n   Input to A ──► [Transform] ──► Input to B ──► [Solve B] ──► Answer to B\n                                                                     │\n   Answer to A ◄───────────────────────────────────────────────────[Translate]\n\n\nKey requirement: The transformation must run in polynomial time."
+    "text": "What Is a Reduction?\nA reduction from problem A to problem B means:\n\n“If I can solve B, I can solve A.”\n\n\nWe transform any instance of A into an instance of B, solve B, and translate the answer back.\n\n\n   Input to A ──&gt; [Transform] ──&gt; Input to B ──&gt; [Solve B] ──&gt; Answer to B\n                                                                     │\n                                                                     v\n   Answer to A &lt;───────────────────────────────────────────────────[Translate]\n\n\nKey requirement: The transformation must run in polynomial time."
   },
   {
     "objectID": "cosc445/slides/p-np-reductions.html#reduction-intuition-the-adapter",
@@ -1999,7 +1999,7 @@
     "href": "cosc445/slides/p-np-reductions.html#reduction-the-logic",
     "title": "P, NP, and the Hardest Problems",
     "section": "Reduction: The Logic",
-    "text": "Reduction: The Logic\nIf A reduces to B (written \\(A \\leq_p B\\)), then:\n\n\nB is at least as hard as A.\n(If B were easy, A would be too.)\n\n\n\n\nContrapositively: If A is hard, then B must be hard too.\n\n\n\n\n\n\n\n\n\nProving NP-hardness\n\n\nTo show a new problem X is NP-hard:\nTake a known NP-hard problem (like 3-SAT) and reduce it to X.\nThis shows X is at least as hard as 3-SAT."
+    "text": "Reduction: The Logic\nIf A reduces to B (written \\(A \\leq_p B\\)), then:\n\n\nB is at least as hard as A.\n(If B were easy, A would be too.)\n\n\n\n\nContrapositively: If A is hard, then B must be hard too.\n\n\n\n\n\n\n\n\n\nProving NP-completeness\n\n\nTo show a new problem X is NP-complete:\n1. Show X is in NP (easy if you can verify solutions quickly)\n2. Take a known NP-complete problem (like 3-SAT) and reduce it to X.\nThis shows X is at least as hard as 3-SAT, so X is NP-complete."
   },
   {
     "objectID": "cosc445/slides/p-np-reductions.html#a-concrete-example-independent-set-vertex-cover",
@@ -2147,5 +2147,26 @@
     "title": "P, NP, and the Hardest Problems",
     "section": "Further Reading",
     "text": "Further Reading\n\nSkiena, Ch. 11 — NP-completeness and reductions (your textbook)\nSipser, Introduction to the Theory of Computation — More rigorous treatment of complexity\nScott Aaronson’s blog (Shtetl-Optimized) — Accessible and fascinating writing on P vs. NP\n“Computers and Intractability” by Garey & Johnson — The classic reference for NP-completeness proofs\nP vs. NP problem page (Clay Mathematics Institute) — clay math.org\n\n\nAnd if you solve P vs. NP: please let me know before submitting to the journal."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#np-hard",
+    "href": "cosc445/slides/p-np-reductions.html#np-hard",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "NP-Hard",
+    "text": "NP-Hard\nDefinition: A problem \\(X\\) is NP-Hard if:\n\nEvery problem in NP is polynomial-time reducible to \\(X\\)\nBut \\(X\\) itself need not be in NP\n\n\nClassic examples:\n\nHalting Problem (undecidable — not even in NP)\nTravelling Salesman Problem (optimization version)\nChess on an \\(n \\times n\\) board\nProtein folding (general case)\nMinimum circuit size problem\n\n\n\n\n\n\n\n\n\nWarning\n\n\nNP-Hard problems may be harder than NP-Complete — some are undecidable entirely."
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-core-difference",
+    "href": "cosc445/slides/p-np-reductions.html#the-core-difference",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Core Difference",
+    "text": "The Core Difference\n\n\n\nProperty\nNP-Complete\nNP-Hard\n\n\n\n\nMust be a decision problem\n✅ Yes\n❌ No\n\n\nSolution verifiable in poly-time\n✅ Yes\n❌ Not required\n\n\nNP-Hard (every NP reduces to it)\n✅ Yes\n✅ Yes\n\n\nCan be undecidable\n❌ No\n✅ Yes\n\n\nSubset relationship\nNPC ⊆ NP-Hard\nNP-Hard ⊇ NPC"
+  },
+  {
+    "objectID": "cosc445/slides/p-np-reductions.html#the-complexity-landscape",
+    "href": "cosc445/slides/p-np-reductions.html#the-complexity-landscape",
+    "title": "P, NP, and the Hardest Problems",
+    "section": "The Complexity Landscape",
+    "text": "The Complexity Landscape\n\nThis diagram assumes P ≠ NP, which is the widely believed but unproven conjecture. If P = NP, then the entire NP circle would collapse into P."
   }
 ]

@@ -46,38 +46,60 @@
             const doc = parser.parseFromString(text, "image/svg+xml");
             const svg = doc.querySelector('svg');
 
-            // 1. Build Timeline Data
+            // 1. Build Timeline Data with helpful hints
             const timeline = [];
-            // Excalidraw usually places elements inside <g> tags
             const groups = Array.from(svg.children).filter(n => n.nodeName === 'g');
 
             groups.forEach((g, i) => {
                 const id = `step-${i}`;
                 g.setAttribute('id', id);
                 g.setAttribute('style', 'opacity: 0;'); 
+
+                const textNode = g.querySelector('text');
+                const isText = textNode !== null;
                 
-                const isText = g.querySelector('text') !== null;
-                // JavaScript uses .push() instead of .append()
+                // Create the "Hint"
+                let hint = "path";
+                if (isText) {
+                    // We get the text, trim it, and replace any double quotes with single quotes
+                    // so they don't break the JSON formatting.
+                    const content = textNode.textContent.trim().replace(/"/g, "'"); 
+                    hint = `text: ${content.substring(0, 15)}${content.length > 15 ? '...' : ''}`;
+                } else if (g.querySelector('path')) {
+                    hint = "line/path";
+                }
+
                 timeline.push({
                     id: id,
                     step: i,
                     type: isText ? 'fast' : 'slow',
-                    duration: isText ? 300 : 1200
+                    hint: hint // This is your label
                 });
             });
 
-            // 2. Create Config Object
-            const config = {
+            // 2. Format the JSON as a "Table" (Keys on one line, tabs between)
+            // We map each object to a single-line string
+            const tableRows = timeline.map(item => 
+                `  { "id": "${item.id}",\t"step": ${item.step},\t"type": "${item.type}",\t"label": "${item.hint}" }`
+            );
+            const jsonTable = "[\n" + tableRows.join(",\n") + "\n]";
+
+            // 3. Inject the formatted JSON
+            const configObj = {
                 auto: autoPlayCheck.checked,
                 interval: parseInt(intervalInput.value),
-                timeline: timeline
+                timeline: "__TIMELINE_PLACEHOLDER__"
             };
 
-            // 3. Inject Config Script
             const configScript = doc.createElementNS("http://www.w3.org/2000/svg", "script");
             configScript.setAttribute('id', 'animation-config');
             configScript.setAttribute('type', 'application/json');
-            configScript.textContent = JSON.stringify(config, null, 2);
+
+            // We stringify the wrapper, then swap the placeholder for our tabbed table
+            let finalConfig = JSON.stringify(configObj, null, 2);
+            finalConfig = finalConfig.replace('"__TIMELINE_PLACEHOLDER__"', jsonTable);
+
+            configScript.textContent = finalConfig;
             svg.insertBefore(configScript, svg.firstChild);
 
             // 4. Inject Animation Engine
@@ -92,26 +114,36 @@
                 function runStep(idx) {
                     const items = data.timeline.filter(d => d.step === idx);
                     if (items.length === 0) return false;
+
                     items.forEach(item => {
                         const el = document.getElementById(item.id);
                         if (!el) return;
+
                         if (item.type === 'slow') {
-                            el.querySelectorAll('path').forEach(p => {
+                            // SLOW DRAW LOGIC
+                            const paths = el.querySelectorAll('path');
+                            paths.forEach(p => {
                                 const len = p.getTotalLength();
                                 p.style.strokeDasharray = len;
                                 p.style.strokeDashoffset = len;
-                                p.getBoundingClientRect();
+                                p.getBoundingClientRect(); // Force reflow
                                 p.style.transition = 'stroke-dashoffset ' + item.duration + 'ms ease-in-out';
                                 p.style.strokeDashoffset = '0';
+                                p.style.opacity = '1';
                             });
+                            el.style.opacity = '1';
+                        } else {
+                            // FAST APPEAR LOGIC
+                            el.style.transition = 'opacity ' + item.duration + 'ms';
+                            el.style.opacity = '1';
                         }
-                        el.style.opacity = '1';
-                        el.style.transition = 'opacity ' + item.duration + 'ms';
                     });
                     return true;
                 }
 
                 if (data.auto) {
+                    // To prevent "clumping", we ensure the interval is at least 
+                    // as long as the animation duration
                     const timer = setInterval(() => { 
                         if (!runStep(currentStep++)) clearInterval(timer); 
                     }, data.interval);
