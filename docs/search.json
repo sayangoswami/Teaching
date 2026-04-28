@@ -2027,7 +2027,7 @@
     "href": "cosc445/slides/p-np-reductions.html#sat-the-universal-problem",
     "title": "P, NP, and the Hardest Problems",
     "section": "3-SAT: The Universal Problem",
-    "text": "3-SAT: The Universal Problem\n3-SAT: Given a Boolean formula in CNF with exactly 3 literals per clause, is there an assignment of variables that makes it true?\n\nExample: \\[(x_1 \\lor \\lnot x_2 \\lor x_3) \\land (\\lnot x_1 \\lor x_2 \\lor x_4) \\land (x_2 \\lor \\lnot x_3 \\lor \\lnot x_4)\\]\n\n\n3-SAT was the first problem proved NP-complete (Cook, 1971). Almost every NP-hardness proof starts here.\n\n\n\nThe game: reduce 3-SAT → your problem. Show that solving your problem would let us solve 3-SAT."
+    "text": "3-SAT: The Universal Problem\n3-SAT: Given a Boolean formula in Conjunctive Normal Form (CNF) with exactly 3 literals per clause, is there an assignment of variables that makes it true?\n\nExample: \\[(x_1 \\lor \\lnot x_2 \\lor x_3) \\land (\\lnot x_1 \\lor x_2 \\lor x_4) \\land (x_2 \\lor \\lnot x_3 \\lor \\lnot x_4)\\]\n\n\n3-SAT was the first problem proved NP-complete (Cook, 1971). Almost every NP-hardness proof starts here.\n\n\n\nThe game: reduce 3-SAT → your problem. Show that solving your problem would let us solve 3-SAT."
   },
   {
     "objectID": "cosc445/slides/p-np-reductions.html#reduction-3-sat-independent-set",

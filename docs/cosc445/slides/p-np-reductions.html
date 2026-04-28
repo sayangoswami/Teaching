@@ -629,7 +629,7 @@ So Independent Set <span class="math inline">\(\leq_p\)</span> Vertex Cover, and
 </section>
 <section id="sat-the-universal-problem" class="slide level2">
 <h2>3-SAT: The Universal Problem</h2>
-<p><strong>3-SAT:</strong> Given a Boolean formula in CNF with exactly 3 literals per clause, is there an assignment of variables that makes it true?</p>
+<p><strong>3-SAT:</strong> Given a Boolean formula in Conjunctive Normal Form (CNF) with exactly 3 literals per clause, is there an assignment of variables that makes it true?</p>
 <div class="fragment">
 <p>Example: <span class="math display">\[(x_1 \lor \lnot x_2 \lor x_3) \land (\lnot x_1 \lor x_2 \lor x_4) \land (x_2 \lor \lnot x_3 \lor \lnot x_4)\]</span></p>
 </div>
@@ -640,9 +640,206 @@ So Independent Set <span class="math inline">\(\leq_p\)</span> Vertex Cover, and
 <blockquote>
 <p>The game: reduce 3-SAT → your problem. Show that solving your problem would let us solve 3-SAT.</p>
 </blockquote>
-
-
 </div>
+</section>
+<section id="a-reduction-story-exam-scheduling" class="slide level2">
+<h2>A Reduction Story: Exam Scheduling</h2>
+<p><strong>Scenario:</strong> A university must schedule exams so that no student has two exams at the same time.</p>
+<div class="fragment">
+<p><strong>Model as a graph:</strong> - Node = each exam - Edge = two exams share a student</p>
+</div>
+<div class="fragment">
+<p><strong>Question:</strong> Can we schedule k exam slots?<br>
+= Can we color the graph with k colors?</p>
+</div>
+<div class="fragment">
+<p>Graph coloring is NP-complete → exam scheduling is NP-hard.</p>
+</div>
+<div class="fragment">
+<p><strong>Practical takeaway:</strong> Don’t expect a perfect algorithm. Use heuristics, approximations, or exploit special structure.</p>
+</div>
+</section>
+<section id="reductions-give-us-two-powers" class="slide level2">
+<h2>Reductions Give Us Two Powers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Power 1: Prove hardness</strong></p>
+<p>Reduce a known hard problem <em>to</em> your problem.</p>
+<p>“Even 3-SAT reduces to this — so it must be hard.”</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Power 2: Solve via transformation</strong></p>
+<p>Reduce your problem <em>to</em> something you have a solver for.</p>
+<p>“I can transform my scheduling problem into an ILP and use an existing solver.”</p>
+</div></div>
+<div class="fragment">
+<p>Both directions are useful! Theoretical computer scientists use Power 1. Practitioners often use Power 2.</p>
+</div>
+</section></section>
+<section>
+<section id="part-5-what-do-we-do-about-hard-problems" class="title-slide slide level1 center" data-background-color="#16213e">
+<h1>Part 5: What Do We Do About Hard Problems?</h1>
+
+</section>
+<section id="were-not-helpless" class="slide level2">
+<h2>We’re Not Helpless</h2>
+<p>Just because a problem is NP-complete doesn’t mean we give up.</p>
+<div class="fragment">
+<p><strong>Strategy 1: Exact algorithms for small inputs</strong><br>
+Exponential algorithms are fine when n is small. Many real scheduling problems have n &lt; 30.</p>
+</div>
+<div class="fragment">
+<p><strong>Strategy 2: Approximation algorithms</strong><br>
+Find a solution guaranteed to be within some factor of optimal.<br>
+E.g., a 2-approximation for Vertex Cover runs in polynomial time.</p>
+</div>
+<div class="fragment">
+<p><strong>Strategy 3: Heuristics and local search</strong><br>
+No guarantees, but often work well in practice. (Simulated annealing, genetic algorithms, etc.)</p>
+</div>
+<div class="fragment">
+<p><strong>Strategy 4: Exploit special structure</strong><br>
+Many NP-hard problems become easy on special graph types (trees, planar graphs, etc.).</p>
+</div>
+</section>
+<section id="the-vertex-cover-2-approximation" class="slide level2">
+<h2>The Vertex Cover 2-Approximation</h2>
+<p>Here’s a beautiful simple approximation:</p>
+<div class="fragment">
+<pre><code>VertexCover-Approx(G):
+  C = {}
+  while G has edges:
+    pick any edge (u, v)
+    add both u and v to C
+    remove u, v, and all their edges from G
+  return C</code></pre>
+</div>
+<div class="fragment">
+<p><strong>Why it’s a 2-approximation:</strong><br>
+Every optimal solution must include at least one of u or v from each picked edge.<br>
+We included both — so we’re off by at most a factor of 2.</p>
+</div>
+<div class="fragment">
+<p>Polynomial time, guaranteed quality. Not optimal, but <em>provably good</em>.</p>
+</div>
+</section>
+<section id="special-cases-when-hard-problems-become-easy" class="slide level2">
+<h2>Special Cases: When Hard Problems Become Easy</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>General Problem</th>
+<th>Special Case</th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Graph Coloring</td>
+<td>2-coloring (bipartite check)</td>
+<td>P</td>
+</tr>
+<tr class="even">
+<td>Graph Coloring</td>
+<td>Planar graphs</td>
+<td>P (4 colors always suffice)</td>
+</tr>
+<tr class="odd">
+<td>TSP</td>
+<td>Points in a metric space</td>
+<td>Approx. in P</td>
+</tr>
+<tr class="even">
+<td>Hamiltonian Cycle</td>
+<td>Complete graphs</td>
+<td>Trivially yes</td>
+</tr>
+<tr class="odd">
+<td>Vertex Cover</td>
+<td>Trees</td>
+<td>P</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>Lesson:</strong> NP-completeness is a worst-case statement. Real inputs often have structure you can exploit.</p>
+</div>
+</section>
+<section id="why-this-matters-for-you-as-a-programmer" class="slide level2">
+<h2>Why This Matters for You as a Programmer</h2>
+<div class="fragment">
+<p><strong>When you encounter a new problem:</strong></p>
+<ol type="1">
+<li>Try to solve it — maybe it’s in P.</li>
+<li>If you’re stuck, ask: <em>does this look like an NP-complete problem I’ve seen?</em></li>
+<li>If yes: try to reduce a known NP-hard problem to yours — that’s your evidence.</li>
+<li>If it seems NP-hard: pivot to approximations, heuristics, or special cases.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Recognizing NP-complete problems</strong> is a core professional skill.<br>
+It saves you from searching for an algorithm that doesn’t exist.</p>
+</div>
+</section>
+<section id="classic-np-complete-problems-to-remember" class="slide level2">
+<h2>Classic NP-Complete Problems to Remember</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>What it asks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>3-SAT</strong></td>
+<td>Can we satisfy a Boolean formula?</td>
+</tr>
+<tr class="even">
+<td><strong>Clique</strong></td>
+<td>Does the graph have k mutually connected nodes?</td>
+</tr>
+<tr class="odd">
+<td><strong>Independent Set</strong></td>
+<td>Does the graph have k mutually disconnected nodes?</td>
+</tr>
+<tr class="even">
+<td><strong>Vertex Cover</strong></td>
+<td>Can k nodes touch every edge?</td>
+</tr>
+<tr class="odd">
+<td><strong>Hamiltonian Cycle</strong></td>
+<td>Is there a cycle visiting every node exactly once?</td>
+</tr>
+<tr class="even">
+<td><strong>Graph Coloring</strong></td>
+<td>Can we color nodes with k colors, no two adjacent the same?</td>
+</tr>
+<tr class="odd">
+<td><strong>Subset Sum</strong></td>
+<td>Does any subset add up to the target?</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>These are your “reduction starting points.”</p>
+</div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li class="fragment"><strong>P</strong>: Problems solvable in polynomial time — our efficient algorithms live here.</li>
+<li class="fragment"><strong>NP</strong>: Problems <em>verifiable</em> in polynomial time — solutions are easy to check.</li>
+<li class="fragment"><strong>NP-complete</strong>: The hardest problems in NP — if any one is in P, then P = NP.</li>
+<li class="fragment"><strong>Reduction</strong>: A transformation showing one problem is “at least as hard as” another.</li>
+<li class="fragment"><strong>P vs.&nbsp;NP</strong>: Unsolved; most believe P ≠ NP — finding and checking are genuinely different.</li>
+<li class="fragment"><strong>In practice</strong>: Use approximations, heuristics, or special-case algorithms for NP-hard problems.</li>
+</ul>
+
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
